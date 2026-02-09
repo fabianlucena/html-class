@@ -1,0 +1,44 @@
+.notistack-container {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+  color: #fff;
+  z-index: 1000;
+  font-size: .9em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.notistack-container .notification {
+  background: #333;
+  color: #fff;
+  padding: .3em .8em;
+  border-radius: 0.3em;
+  border: .15em solid #555;
+}
+
+.notistack-container .notification.info {
+  background: #062a47;
+  border-color: #004891;
+}
+
+.notistack-container .notification.error {
+  background: #470606;
+  border-color: #9b0000;
+}
+
+.notistack-container .notification.success {
+  background: #054112;
+  border-color: #01a031;
+}
+
+.notistack-container .notification.warning {
+  background: #495007;
+  border-color: #88a000;
+}
+
+.notistack-container .notification.debug {
+  background: #440750;
+  border-color: #9b00a0;
+}
