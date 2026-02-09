@@ -1,9 +1,9 @@
-import './actdia-tools.css';
-import Item from '../actdia/item.js';
-import { escapeHTML } from '../actdia/utils.js';
-import Dialog from '../../../../dialog/dialog.js';
-import { _ } from '../actdia/locale.js';
-import { pushNotification } from './notistack.js';
+import 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/actdia-tools/actdia-tools.css';
+import Item from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/actdia/item.js';
+import { escapeHTML } from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/utils/html.js';
+import Dialog from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/dialog/dialog.js';
+import { _ } from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/locale/locale.js';
+import { pushNotification } from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/notistack/notistack.js';
 
 export default class ActDiaTools {
   tools = [

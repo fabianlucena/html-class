@@ -1,11 +1,11 @@
-import ActDia from '../actdia/actdia.js';
-import NodeSelector from './node-selector.js';
-import NodeForm from './node-form.js';
-import { _, loadLocale } from '../actdia/locale.js';
-import { pushNotification, container as notificationContainer } from './notistack.js';
-import '../../../../drag/drag.js';
-import { getPath } from '../actdia/utils.js';
-import ActDiaTools from './actdia-tools.js';
+import ActDia from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/actdia/actdia.js';
+import NodeSelector from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/actdia-tools/node-selector.js';
+import NodeForm from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/actdia-tools/node-form.js';
+import { _, loadLocale } from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/locale/locale.js';
+import { pushNotification, container as notificationContainer } from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/notistack/notistack.js';
+import 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/drag/drag.js';
+import { getPath } from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/utils/string.js';
+import ActDiaTools from 'https://cdn.jsdelivr.net/gh/fabianlucena/html-class/components/actdia-tools/actdia-tools.js';
 
 let container = null,
   actdia = null,
