@@ -1,0 +1,61 @@
+{
+  "actdia": {
+    "version": "0.1.0"
+  },
+  "imports": [
+    "../nodes/uml/actor.js",
+    "../nodes/uml/use_case.js",
+    "./connection.js"
+  ],
+  "locales": {
+    ".": [
+      "es"
+    ]
+  },
+  "nodes": [
+    {
+      "elementClass": "UseCase",
+      "url": "../nodes/uml/use_case.js",
+      "id": "834cb1ce-f0e6-447d-bb98-db7a874f431d",
+      "fqcn": "../nodes/uml/use_case.js/UseCase",
+      "x": 22,
+      "y": 31,
+      "name": "UseCase - 34cb1",
+      "connectors": [
+        {
+          "id": "d89cec66-9da0-4b33-9404-5a50b2a06154"
+        }
+      ]
+    },
+    {
+      "elementClass": "Actor",
+      "url": "../nodes/uml/actor.js",
+      "id": "18814f47-510a-4c91-9172-1e089be8aeaa",
+      "fqcn": "../nodes/uml/actor.js/Actor",
+      "x": 10,
+      "y": 30,
+      "name": "Actor - 8814f",
+      "selected": true,
+      "connectors": [
+        {
+          "id": "2fa95117-6cf3-4906-b028-0d23b3a79dc2"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "111f1086-d142-4dba-be7e-149704bd767e",
+      "from": {
+        "connector": "2fa95117-6cf3-4906-b028-0d23b3a79dc2",
+        "item": "18814f47-510a-4c91-9172-1e089be8aeaa"
+      },
+      "to": {
+        "connector": "d89cec66-9da0-4b33-9404-5a50b2a06154",
+        "item": "834cb1ce-f0e6-447d-bb98-db7a874f431d"
+      }
+    }
+  ]
+}

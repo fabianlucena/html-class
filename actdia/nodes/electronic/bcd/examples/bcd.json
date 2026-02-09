@@ -1,0 +1,1131 @@
+{
+  "actdia": {
+    "version": "0.1.0"
+  },
+  "imports": [
+    "../nodes/bus.js",
+    "../nodes/electronic/bcd/bcd_counter.js",
+    "../nodes/electronic/bcd/bcd_to_7_segments.js",
+    "../nodes/electronic/bcd/seven-segment_display.js",
+    "../nodes/electronic/led.js",
+    "../nodes/label_input.js",
+    "../nodes/label_output.js",
+    "../nodes/oscillograph.js",
+    "../nodes/pulse_generator.js",
+    "../nodes/single_pulse.js",
+    "../nodes/slider.js",
+    "../nodes/switch.js",
+    "./connection.js"
+  ],
+  "locales": {
+    ".": [
+      "es"
+    ],
+    "../nodes": [
+      "es"
+    ],
+    "../nodes/electronic": [
+      "es"
+    ],
+    "../nodes/electronic/bcd": [
+      "es"
+    ]
+  },
+  "nodes": [
+    {
+      "elementClass": "BCDCounter",
+      "url": "../nodes/electronic/bcd/bcd_counter.js",
+      "id": "18b98f4f-559b-4267-83d2-ca9e18a286cc",
+      "previousClockStatus": 1,
+      "x": 14,
+      "y": 15,
+      "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "name": "Contador BCD - 8b98f",
+      "connectors": [
+        {
+          "id": "ff8b53de-8538-438a-a03a-668d4b49322f"
+        },
+        {
+          "id": "940638ec-32d9-412c-ad4d-a2a58b4ab539"
+        },
+        {
+          "id": "8311db90-a83d-4c2c-bdfc-ea1da723ce72"
+        },
+        {
+          "id": "890d4023-d070-44c1-832e-3b324c0a4950"
+        },
+        {
+          "id": "d0b7f5a2-f637-463e-b09e-00eb3749f329"
+        },
+        {
+          "id": "a06e2529-cd32-4c37-9aae-608db5e2da04"
+        },
+        {
+          "id": "52087603-0811-43b5-be88-f7d3accd36eb"
+        },
+        {
+          "id": "cc858340-deea-4864-a943-6c9256401c76"
+        }
+      ]
+    },
+    {
+      "elementClass": "Led",
+      "url": "../nodes/electronic/led.js",
+      "id": "2ef6372f-a5d6-492c-b0df-782e81fdf258",
+      "x": 28,
+      "y": 10,
+      "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - ef637",
+      "connectors": [
+        {
+          "id": "86af0cc6-9266-406c-bd15-c91145833582"
+        }
+      ]
+    },
+    {
+      "elementClass": "Led",
+      "url": "../nodes/electronic/led.js",
+      "id": "fbeb0680-8ddf-4f21-8844-b68277542d5a",
+      "x": 27,
+      "y": 10,
+      "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - beb06",
+      "connectors": [
+        {
+          "id": "94fd4385-ac30-4b40-9451-1f07b3f6dcfc"
+        }
+      ]
+    },
+    {
+      "elementClass": "Led",
+      "url": "../nodes/electronic/led.js",
+      "id": "62da1762-b96a-47fe-ac2a-0e40125daed9",
+      "x": 26,
+      "y": 10,
+      "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - 2da17",
+      "connectors": [
+        {
+          "id": "ab29f4d9-e76b-4c4f-9f54-754c61da8e80"
+        }
+      ]
+    },
+    {
+      "elementClass": "Led",
+      "url": "../nodes/electronic/led.js",
+      "id": "7703106d-4422-4dfd-b887-5f802b44e57c",
+      "x": 25,
+      "y": 10,
+      "fqcn": "../nodes/electronic/led.js/Led",
+      "name": "Led - 70310",
+      "connectors": [
+        {
+          "id": "98e43889-b8b5-4f8b-a4f4-7a1f43e52be4"
+        }
+      ]
+    },
+    {
+      "elementClass": "Switch",
+      "url": "../nodes/switch.js",
+      "id": "75362cd0-ac01-4cff-ae3b-d9bb370510b4",
+      "x": 7.5,
+      "y": 3,
+      "fqcn": "../nodes/switch.js/Switch",
+      "class": "Switch",
+      "name": "Switch - 5362c",
+      "status": true,
+      "connectors": [
+        {
+          "id": "88737ca7-9445-4f62-9237-916767ee9a06"
+        }
+      ]
+    },
+    {
+      "elementClass": "PulseGenerator",
+      "url": "../nodes/pulse_generator.js",
+      "id": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f",
+      "interval": 11,
+      "x": 4,
+      "y": 10,
+      "fqcn": "../nodes/pulse_generator.js/PulseGenerator",
+      "name": "Generador de pulsos - 0717f",
+      "factor": 1.975000000000008,
+      "active": true,
+      "connectors": [
+        {
+          "id": "18f799ba-1703-4f6e-aa13-b4d78bb44578"
+        },
+        {
+          "id": "84959673-2f82-4919-9cf5-689e242b83e0",
+          "textDecoration": "overline"
+        },
+        {
+          "id": "995a7c0e-47d3-40b7-95db-8c283a85a5b7"
+        }
+      ]
+    },
+    {
+      "elementClass": "SevenSegmentDisplay",
+      "url": "../nodes/electronic/bcd/seven-segment_display.js",
+      "id": "d6585a91-009e-4c85-b515-7822ec37619a",
+      "x": 49,
+      "y": 21,
+      "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "name": "Seven Segment Display - 6585a",
+      "connectors": [
+        {
+          "id": "ee51c731-d493-4675-b7df-41d40b3800d6"
+        },
+        {
+          "id": "f0605827-eee6-4697-9e51-b3d982c01228"
+        },
+        {
+          "id": "d20d4067-eea4-4a49-a8d4-bf58847dc010"
+        },
+        {
+          "id": "719fe43f-6914-4072-b195-749ba8ea2a37"
+        },
+        {
+          "id": "f792f452-3af2-4363-bb72-aa3ee40414e2"
+        },
+        {
+          "id": "d42fb340-ddcd-42f5-9158-3f5fe06bdda2"
+        },
+        {
+          "id": "3e252675-021b-430f-960e-585e8b0a3c94"
+        },
+        {
+          "id": "f0720707-7bbb-4dd2-9b7d-16dd3755c988"
+        }
+      ]
+    },
+    {
+      "elementClass": "BCTo7Segments",
+      "url": "../nodes/electronic/bcd/bcd_to_7_segments.js",
+      "id": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1",
+      "x": 29,
+      "y": 14,
+      "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "name": "BCD to 7 Segments - 8b410",
+      "connectors": [
+        {
+          "id": "13fc1803-7381-4332-8746-ff62c31124b9"
+        },
+        {
+          "id": "51085691-823a-454f-a269-bd614095d477"
+        },
+        {
+          "id": "5a2f7a62-f0b6-41bc-a8b7-41374719789e"
+        },
+        {
+          "id": "fec89fbf-1cab-4bd0-b29b-bc14de815a8f"
+        },
+        {
+          "id": "fdf465db-c4ea-49e9-925d-460715293b5f"
+        },
+        {
+          "id": "8f126f08-68b3-4788-9cb7-1048853e273c"
+        },
+        {
+          "id": "ec600983-823d-4a7e-a1f7-5ac549d705b1"
+        },
+        {
+          "id": "c66fc39a-b36c-4018-9034-5f3584c6cc79"
+        },
+        {
+          "id": "dc20157f-d1ac-48f4-af56-3a55197e8abc"
+        },
+        {
+          "id": "d787beac-c38d-4bb4-8eca-f30bd82c1704"
+        },
+        {
+          "id": "8eb15171-4d5f-4216-8225-c0712d51766d"
+        }
+      ]
+    },
+    {
+      "elementClass": "SevenSegmentDisplay",
+      "url": "../nodes/electronic/bcd/seven-segment_display.js",
+      "id": "43979426-7f73-4871-945f-922ba95fbcd8",
+      "x": 43,
+      "y": 21,
+      "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "name": "Seven Segment Display - 39794",
+      "connectors": [
+        {
+          "id": "83bc9bae-b2b9-43a4-a764-c667bc79bd28"
+        },
+        {
+          "id": "f8f63fe2-0153-49a3-9e4c-d208c046b9cf"
+        },
+        {
+          "id": "a4a61634-12fb-45cc-951c-32dba8d99cf4"
+        },
+        {
+          "id": "111cff9f-f937-477b-b79b-a78d2661c506"
+        },
+        {
+          "id": "4ba6d850-0d61-4ef1-a47e-6d1041168328"
+        },
+        {
+          "id": "95252246-ff71-4656-befe-e58c2a1ee625"
+        },
+        {
+          "id": "f4fa9c4f-9610-4fce-82e4-0d0c98ae2bb8"
+        },
+        {
+          "id": "9f2aef19-a0bd-40b3-9ee5-43fc8fd2a0ab"
+        }
+      ]
+    },
+    {
+      "elementClass": "BCDCounter",
+      "url": "../nodes/electronic/bcd/bcd_counter.js",
+      "id": "b3d90567-fb41-411c-94db-5eafa5e4f8e9",
+      "x": 21,
+      "y": 26,
+      "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "name": "Contador BCD - 3d905",
+      "connectors": [
+        {
+          "id": "cb01e83c-5e06-4f59-b920-ad662a068d51"
+        },
+        {
+          "id": "850e6da4-1d25-4ea8-9016-f264c4043432"
+        },
+        {
+          "id": "198b42a0-e105-4926-89e9-c2eaa7ee53d4"
+        },
+        {
+          "id": "edbee1e4-7d11-493e-9a04-72daf077531e"
+        },
+        {
+          "id": "235fea99-0316-47e5-8c75-543ce8b0fd43"
+        },
+        {
+          "id": "bcae035c-53a1-4f07-921d-9710abcad764"
+        },
+        {
+          "id": "8a84e244-ad66-4f78-ad49-0999fae84ed7"
+        },
+        {
+          "id": "d3fa6b3a-8fda-4b69-a8af-a3c8dc335dd7"
+        }
+      ]
+    },
+    {
+      "elementClass": "BCTo7Segments",
+      "url": "../nodes/electronic/bcd/bcd_to_7_segments.js",
+      "id": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff",
+      "x": 29,
+      "y": 25,
+      "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "name": "BCD to 7 Segments - 7e2a6",
+      "connectors": [
+        {
+          "id": "27844e71-8379-49ac-a3c6-305f618dd283"
+        },
+        {
+          "id": "0e257cd0-48c8-4417-bdf2-9d01efb29d52"
+        },
+        {
+          "id": "3d91117a-e32c-437e-974d-6789cf46efa6"
+        },
+        {
+          "id": "980a0bf0-c794-4528-a3b1-df6f9b47bd19"
+        },
+        {
+          "id": "d202ff26-6ae2-4638-82f6-8a6741ea24a9"
+        },
+        {
+          "id": "b62309cb-f8e5-4c98-b351-f02e2f2b8e5d"
+        },
+        {
+          "id": "ee887684-dd31-4a69-930a-ef14ac2e8d72"
+        },
+        {
+          "id": "82fe37f2-e5b2-45ad-8820-99211ad1d8f0"
+        },
+        {
+          "id": "5dc6e1a6-eb07-4fbc-944d-90d3ce08f05b"
+        },
+        {
+          "id": "87747ce5-6557-48d4-b626-493b6f8992b9"
+        },
+        {
+          "id": "b2bacb29-3652-4137-a38d-32b55e8b7fbf"
+        }
+      ]
+    },
+    {
+      "elementClass": "SinglePulse",
+      "url": "../nodes/single_pulse.js",
+      "id": "98a83977-04d3-4a4c-a18a-213d20b2fe77",
+      "fqcn": "../nodes/single_pulse.js/SinglePulse",
+      "x": 5,
+      "y": 5,
+      "name": "Pulso único - 8a839",
+      "connectors": [
+        {
+          "id": "51754cb6-81d9-4d9d-93b7-ca506e5dc4ec"
+        },
+        {
+          "id": "603c0f3d-98d1-454c-88f7-14648a6b1cab",
+          "textDecoration": "overline"
+        }
+      ]
+    },
+    {
+      "elementClass": "Led",
+      "url": "../nodes/electronic/led.js",
+      "id": "15338325-5b63-4281-92ff-062dfd75ad3f",
+      "fqcn": "../nodes/electronic/led.js/Led",
+      "x": 0,
+      "y": 0,
+      "name": "Led - 53383",
+      "connectors": [
+        {
+          "id": "ed74b0b1-8f57-4aaf-92f5-ead0c5396f8c"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../nodes/label_input.js",
+      "id": "ff3566a0-caba-4dfa-9d0a-e0ed11350361",
+      "label": "clock",
+      "name": "clk",
+      "fqcn": "../nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 11,
+      "description": "",
+      "connectors": [
+        {
+          "id": "7a010d47-bd5b-4472-8ee3-786e1a2fff79"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "ac657088-d7d2-4706-ba25-92796f31925f",
+      "label": "clock",
+      "name": "clk",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 7,
+      "y": 19,
+      "description": "",
+      "connectors": [
+        {
+          "id": "490f3d07-fca5-4189-b902-1fe56cfd555f"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../nodes/label_input.js",
+      "id": "758f4c0c-705d-4bf7-a76d-d9d95e95ab4f",
+      "label": "enable",
+      "name": "enable",
+      "fqcn": "../nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 3,
+      "description": "",
+      "connectors": [
+        {
+          "id": "2270a799-eab5-481d-91b7-c4eb0e159a75"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "b9315fd4-f554-48c2-8c2d-78d33469df83",
+      "label": "enable",
+      "name": "enable",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 7,
+      "y": 20,
+      "description": "",
+      "connectors": [
+        {
+          "id": "6a2549fe-0af0-44d7-8230-58ee1595ae0c"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "c9aa7e99-f1a6-4da4-a19e-e87999ed4257",
+      "label": "enable",
+      "name": "enable",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 13,
+      "y": 31,
+      "description": "",
+      "connectors": [
+        {
+          "id": "bc62880c-61a5-464d-8fb8-cef5500bb500"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../nodes/label_input.js",
+      "id": "08664414-0ab5-4f06-aaab-5466e5b0d47b",
+      "label": "reset",
+      "name": "reset",
+      "fqcn": "../nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 6,
+      "description": "",
+      "connectors": [
+        {
+          "id": "47e097bd-0879-449f-b49d-94d13010816d"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "cf666975-339e-4417-9c3e-25880e934eca",
+      "label": "reset",
+      "name": "reset",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 7,
+      "y": 21,
+      "description": "",
+      "connectors": [
+        {
+          "id": "64c2f4fc-86f7-47c1-9110-daff1b74420d"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../nodes/label_output.js",
+      "id": "47aaf4a7-7c26-41cd-9a1a-73e44553caf7",
+      "label": "reset",
+      "name": "reset",
+      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "x": 13,
+      "y": 32,
+      "description": "",
+      "connectors": [
+        {
+          "id": "6699c973-30bb-446b-8777-e92c9045a829"
+        }
+      ]
+    },
+    {
+      "elementClass": "Slider",
+      "url": "../nodes/slider.js",
+      "id": "fd24eb9e-0e30-41b5-a644-e0aaed19dbec",
+      "max": 50,
+      "fqcn": "../nodes/slider.js/Slider",
+      "x": 3,
+      "y": 23,
+      "name": "Slider - d24eb",
+      "description": "",
+      "rotation": "270",
+      "connectors": [
+        {
+          "id": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1"
+        }
+      ],
+      "status": 1.975000000000008,
+      "function": "linear",
+      "size": 6,
+      "min": 0
+    },
+    {
+      "elementClass": "Oscillograph",
+      "url": "../nodes/oscillograph.js",
+      "id": "62891554-d944-4063-a548-342c8c42658a",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 20,
+        "height": 6
+      },
+      "fqcn": "../nodes/oscillograph.js/Oscillograph",
+      "x": 43,
+      "y": 5,
+      "name": "Oscillograph - 28915",
+      "connectors": [
+        {
+          "id": "da059496-4a60-4544-a06c-5ce44278d9d7"
+        }
+      ]
+    },
+    {
+      "elementClass": "Bus",
+      "url": "../nodes/bus.js",
+      "id": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 1,
+        "height": 4
+      },
+      "fqcn": "../nodes/bus.js/Bus",
+      "x": 35,
+      "y": 6,
+      "name": "Canal - 3a53c",
+      "description": "",
+      "channelWidth": 4,
+      "connectors": [
+        {
+          "id": "ce82da5b-96a7-4021-9b41-af9a501292f7"
+        },
+        {
+          "id": "0821289b-9e4b-47ef-89ab-f1632399850a"
+        },
+        {
+          "id": "e04c8365-8a63-4ae2-92f1-8b3538d9b62a"
+        },
+        {
+          "id": "796fcc68-9be5-4c99-b13a-35b94100fb95"
+        },
+        {
+          "id": "9c2df81d-89d4-4bd0-afef-d939ecb4cd2d"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "0e136301-ce55-4891-8bf7-fe1c7cf930ff",
+      "from": {
+        "connector": "890d4023-d070-44c1-832e-3b324c0a4950",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "86af0cc6-9266-406c-bd15-c91145833582",
+        "item": "2ef6372f-a5d6-492c-b0df-782e81fdf258"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "ec621065-99c5-4402-a867-828d7797e926",
+      "from": {
+        "connector": "d0b7f5a2-f637-463e-b09e-00eb3749f329",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "94fd4385-ac30-4b40-9451-1f07b3f6dcfc",
+        "item": "fbeb0680-8ddf-4f21-8844-b68277542d5a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "0d8d4b64-1249-4dfb-8e5d-9b7d0228e95f",
+      "from": {
+        "connector": "a06e2529-cd32-4c37-9aae-608db5e2da04",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "ab29f4d9-e76b-4c4f-9f54-754c61da8e80",
+        "item": "62da1762-b96a-47fe-ac2a-0e40125daed9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "0493404a-40fc-4ecd-9b73-3a1591652122",
+      "from": {
+        "connector": "52087603-0811-43b5-be88-f7d3accd36eb",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "98e43889-b8b5-4f8b-a4f4-7a1f43e52be4",
+        "item": "7703106d-4422-4dfd-b887-5f802b44e57c"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9824ba22-f0bd-4c29-99cf-cb4c698429fc",
+      "from": {
+        "connector": "890d4023-d070-44c1-832e-3b324c0a4950",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "13fc1803-7381-4332-8746-ff62c31124b9",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "227eb4ec-89ec-4cd5-8295-674159a9aec2",
+      "from": {
+        "connector": "d0b7f5a2-f637-463e-b09e-00eb3749f329",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "51085691-823a-454f-a269-bd614095d477",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f997bbe7-90cd-47ae-943b-6577d318db0e",
+      "from": {
+        "connector": "a06e2529-cd32-4c37-9aae-608db5e2da04",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "5a2f7a62-f0b6-41bc-a8b7-41374719789e",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "1bb3978a-ff9d-4b34-8113-eb1ce4f3522c",
+      "from": {
+        "connector": "52087603-0811-43b5-be88-f7d3accd36eb",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "fec89fbf-1cab-4bd0-b29b-bc14de815a8f",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "3ca0723a-073a-43ae-a7b1-952554e7ae4b",
+      "from": {
+        "connector": "fdf465db-c4ea-49e9-925d-460715293b5f",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      },
+      "to": {
+        "connector": "ee51c731-d493-4675-b7df-41d40b3800d6",
+        "item": "d6585a91-009e-4c85-b515-7822ec37619a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f8bdac4b-6bc1-40af-8fff-54ab7323fa70",
+      "from": {
+        "connector": "8f126f08-68b3-4788-9cb7-1048853e273c",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      },
+      "to": {
+        "connector": "f0605827-eee6-4697-9e51-b3d982c01228",
+        "item": "d6585a91-009e-4c85-b515-7822ec37619a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9284d435-0e72-4c99-8b2b-b77bdfe0f07d",
+      "from": {
+        "connector": "ec600983-823d-4a7e-a1f7-5ac549d705b1",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      },
+      "to": {
+        "connector": "d20d4067-eea4-4a49-a8d4-bf58847dc010",
+        "item": "d6585a91-009e-4c85-b515-7822ec37619a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "e07004fd-5905-472e-a276-12cddaa6e31e",
+      "from": {
+        "connector": "c66fc39a-b36c-4018-9034-5f3584c6cc79",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      },
+      "to": {
+        "connector": "719fe43f-6914-4072-b195-749ba8ea2a37",
+        "item": "d6585a91-009e-4c85-b515-7822ec37619a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "7ab0de1d-74ef-46b6-a353-de95ac2db133",
+      "from": {
+        "connector": "dc20157f-d1ac-48f4-af56-3a55197e8abc",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      },
+      "to": {
+        "connector": "f792f452-3af2-4363-bb72-aa3ee40414e2",
+        "item": "d6585a91-009e-4c85-b515-7822ec37619a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "1140cf04-8ccd-4c22-8588-c1def2898fc7",
+      "from": {
+        "connector": "d787beac-c38d-4bb4-8eca-f30bd82c1704",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      },
+      "to": {
+        "connector": "d42fb340-ddcd-42f5-9158-3f5fe06bdda2",
+        "item": "d6585a91-009e-4c85-b515-7822ec37619a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "43ca9a5b-c3a6-4b27-af9f-845ee75e04c4",
+      "from": {
+        "connector": "8eb15171-4d5f-4216-8225-c0712d51766d",
+        "item": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1"
+      },
+      "to": {
+        "connector": "3e252675-021b-430f-960e-585e8b0a3c94",
+        "item": "d6585a91-009e-4c85-b515-7822ec37619a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "bbe98b1c-d418-476d-b329-08d450f13526",
+      "from": {
+        "connector": "edbee1e4-7d11-493e-9a04-72daf077531e",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      },
+      "to": {
+        "connector": "27844e71-8379-49ac-a3c6-305f618dd283",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "c813df71-ecef-4a2d-9a0b-2925880fff93",
+      "from": {
+        "connector": "235fea99-0316-47e5-8c75-543ce8b0fd43",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      },
+      "to": {
+        "connector": "0e257cd0-48c8-4417-bdf2-9d01efb29d52",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "e2399b17-b950-4336-89a9-ba818ef905ef",
+      "from": {
+        "connector": "bcae035c-53a1-4f07-921d-9710abcad764",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      },
+      "to": {
+        "connector": "3d91117a-e32c-437e-974d-6789cf46efa6",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "19490780-6153-41b9-8980-ba1bff984f3e",
+      "from": {
+        "connector": "8a84e244-ad66-4f78-ad49-0999fae84ed7",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      },
+      "to": {
+        "connector": "980a0bf0-c794-4528-a3b1-df6f9b47bd19",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "597f110f-b729-4ae9-adde-07924d08c79e",
+      "from": {
+        "connector": "d202ff26-6ae2-4638-82f6-8a6741ea24a9",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      },
+      "to": {
+        "connector": "83bc9bae-b2b9-43a4-a764-c667bc79bd28",
+        "item": "43979426-7f73-4871-945f-922ba95fbcd8"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "31b5f65f-31c5-4584-90c1-fa9e20ee260d",
+      "from": {
+        "connector": "b62309cb-f8e5-4c98-b351-f02e2f2b8e5d",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      },
+      "to": {
+        "connector": "f8f63fe2-0153-49a3-9e4c-d208c046b9cf",
+        "item": "43979426-7f73-4871-945f-922ba95fbcd8"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "051b0acf-49c8-48cc-84f5-aa02f9e1a5cb",
+      "from": {
+        "connector": "ee887684-dd31-4a69-930a-ef14ac2e8d72",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      },
+      "to": {
+        "connector": "a4a61634-12fb-45cc-951c-32dba8d99cf4",
+        "item": "43979426-7f73-4871-945f-922ba95fbcd8"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "bfd5cc62-7649-4f80-ad43-b325d2dd7acb",
+      "from": {
+        "connector": "82fe37f2-e5b2-45ad-8820-99211ad1d8f0",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      },
+      "to": {
+        "connector": "111cff9f-f937-477b-b79b-a78d2661c506",
+        "item": "43979426-7f73-4871-945f-922ba95fbcd8"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "6e75ebf5-bed6-4d11-9534-a093e2370a32",
+      "from": {
+        "connector": "5dc6e1a6-eb07-4fbc-944d-90d3ce08f05b",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      },
+      "to": {
+        "connector": "4ba6d850-0d61-4ef1-a47e-6d1041168328",
+        "item": "43979426-7f73-4871-945f-922ba95fbcd8"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "cd88a35e-dff8-4dc2-8d21-d36b7b1695c8",
+      "from": {
+        "connector": "87747ce5-6557-48d4-b626-493b6f8992b9",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      },
+      "to": {
+        "connector": "95252246-ff71-4656-befe-e58c2a1ee625",
+        "item": "43979426-7f73-4871-945f-922ba95fbcd8"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "7828e345-036c-4bf2-9080-8e2726d052cb",
+      "from": {
+        "connector": "b2bacb29-3652-4137-a38d-32b55e8b7fbf",
+        "item": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff"
+      },
+      "to": {
+        "connector": "f4fa9c4f-9610-4fce-82e4-0d0c98ae2bb8",
+        "item": "43979426-7f73-4871-945f-922ba95fbcd8"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "c080a3dd-925c-4131-b911-5507f238d303",
+      "from": {
+        "connector": "cc858340-deea-4864-a943-6c9256401c76",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "cb01e83c-5e06-4f59-b920-ad662a068d51",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9699c0f6-ca55-412b-837b-d194aaef06a6",
+      "from": {
+        "connector": "18f799ba-1703-4f6e-aa13-b4d78bb44578",
+        "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
+      },
+      "to": {
+        "connector": "7a010d47-bd5b-4472-8ee3-786e1a2fff79",
+        "item": "ff3566a0-caba-4dfa-9d0a-e0ed11350361"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "37646142-1516-4b1e-949d-70bcf0ae6d9a",
+      "from": {
+        "connector": "490f3d07-fca5-4189-b902-1fe56cfd555f",
+        "item": "ac657088-d7d2-4706-ba25-92796f31925f"
+      },
+      "to": {
+        "connector": "ff8b53de-8538-438a-a03a-668d4b49322f",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "6e482aef-7906-41d5-947d-abc6fa0b103e",
+      "from": {
+        "connector": "88737ca7-9445-4f62-9237-916767ee9a06",
+        "item": "75362cd0-ac01-4cff-ae3b-d9bb370510b4"
+      },
+      "to": {
+        "connector": "2270a799-eab5-481d-91b7-c4eb0e159a75",
+        "item": "758f4c0c-705d-4bf7-a76d-d9d95e95ab4f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9b0546ed-5ad7-4000-819d-1dd475de1579",
+      "from": {
+        "connector": "6a2549fe-0af0-44d7-8230-58ee1595ae0c",
+        "item": "b9315fd4-f554-48c2-8c2d-78d33469df83"
+      },
+      "to": {
+        "connector": "940638ec-32d9-412c-ad4d-a2a58b4ab539",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f013acc5-ca8f-43ad-92b1-7316dbd6c77e",
+      "from": {
+        "connector": "bc62880c-61a5-464d-8fb8-cef5500bb500",
+        "item": "c9aa7e99-f1a6-4da4-a19e-e87999ed4257"
+      },
+      "to": {
+        "connector": "850e6da4-1d25-4ea8-9016-f264c4043432",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "596323f8-1aa9-4fe3-9698-54f01bdd7146",
+      "from": {
+        "connector": "6699c973-30bb-446b-8777-e92c9045a829",
+        "item": "47aaf4a7-7c26-41cd-9a1a-73e44553caf7"
+      },
+      "to": {
+        "connector": "198b42a0-e105-4926-89e9-c2eaa7ee53d4",
+        "item": "b3d90567-fb41-411c-94db-5eafa5e4f8e9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "e8e7b827-2d36-494d-b632-d1f64e92eada",
+      "from": {
+        "connector": "64c2f4fc-86f7-47c1-9110-daff1b74420d",
+        "item": "cf666975-339e-4417-9c3e-25880e934eca"
+      },
+      "to": {
+        "connector": "8311db90-a83d-4c2c-bdfc-ea1da723ce72",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "aa8b9e6b-31f7-4985-89bd-4b08f1905631",
+      "from": {
+        "connector": "47e097bd-0879-449f-b49d-94d13010816d",
+        "item": "08664414-0ab5-4f06-aaab-5466e5b0d47b"
+      },
+      "to": {
+        "connector": "51754cb6-81d9-4d9d-93b7-ca506e5dc4ec",
+        "item": "98a83977-04d3-4a4c-a18a-213d20b2fe77"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "51f5f8a5-ad41-45d9-b6fa-9d21f2b12ef4",
+      "from": {
+        "connector": "a0578c6c-b39d-42f9-aa9d-0ab5c92814c1",
+        "item": "fd24eb9e-0e30-41b5-a644-e0aaed19dbec"
+      },
+      "to": {
+        "connector": "995a7c0e-47d3-40b7-95db-8c283a85a5b7",
+        "item": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "ff830aed-6d02-4e48-89b0-1189af34328c",
+      "from": {
+        "connector": "ce82da5b-96a7-4021-9b41-af9a501292f7",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      },
+      "to": {
+        "connector": "da059496-4a60-4544-a06c-5ce44278d9d7",
+        "item": "62891554-d944-4063-a548-342c8c42658a"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "3a83b07c-f381-43ff-8217-77b3f9d489e6",
+      "from": {
+        "connector": "890d4023-d070-44c1-832e-3b324c0a4950",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "0821289b-9e4b-47ef-89ab-f1632399850a",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "1ff38b2c-d445-499f-9efe-541ef8b618be",
+      "from": {
+        "connector": "d0b7f5a2-f637-463e-b09e-00eb3749f329",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "e04c8365-8a63-4ae2-92f1-8b3538d9b62a",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "039c79f0-7ca1-4233-b2dd-7548d0cf18b0",
+      "from": {
+        "connector": "a06e2529-cd32-4c37-9aae-608db5e2da04",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "796fcc68-9be5-4c99-b13a-35b94100fb95",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "ec370c36-25c6-4f43-bc36-f0698ca09502",
+      "from": {
+        "connector": "52087603-0811-43b5-be88-f7d3accd36eb",
+        "item": "18b98f4f-559b-4267-83d2-ca9e18a286cc"
+      },
+      "to": {
+        "connector": "9c2df81d-89d4-4bd0-afef-d939ecb4cd2d",
+        "item": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0"
+      }
+    }
+  ]
+}

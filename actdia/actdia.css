@@ -1,0 +1,116 @@
+@import url('./actdia-items.css');
+
+.actdia {
+  background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.actdia-page {
+  stroke: #525252;
+}
+
+.actdia .selection-box {
+  fill: #60606022;
+  stroke: #909090aa;
+  stroke-dasharray: .2 .2;
+}
+
+.actdia-item {
+  fill: #313131;
+  stroke: #d6d6d6;
+}
+
+.actdia-tools {
+  position: fixed;
+  right: 1em;
+  top: 1em;
+  min-width: 2em;
+  min-height: 2em;
+  fill: #8a8a8a;
+  stroke: #dbdbdb;
+  border: .1em solid #464646;
+  background-color: #2e2e2e;
+  display: flex;
+  flex-direction: column;
+  gap: .2em;
+}
+
+.actdia-tools .button {
+  width: 1.6em;
+  height: 1.6em;
+  margin: 0;
+  border: .15em solid transparent;
+  border-radius: .2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: .3em;
+}
+
+.actdia-tools .button:not(:first-child) {
+  border-top-color: #464646;
+  border-top-style: dashed;
+}
+
+.actdia-tools .button:hover {
+  background-color: #464646;
+  border-color: #555555;
+  border-style: solid;
+  box-shadow: 0 0 .5em #ffffffaa;
+}
+
+.actdia-item text {
+  fill: #c0c0c0;
+}
+
+.actdia-tool {
+  cursor: pointer;
+  fill: #585858;
+  stroke: #e7e7e7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.actdia-grid {
+  fill: none;
+  stroke: rgba(100, 100, 100, 0.25);
+}
+
+.actdia-grid .major-grid {
+  stroke-dasharray: 0.1 0.2;
+  stroke: rgba(192, 192, 192, 0.5);
+}
+
+.print .actdia-grid {
+  fill: rgba(0, 0, 0, 0);
+}
+
+.actdia-label {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  background: rgba(54, 54, 54, 0.8);
+  color: white;
+  padding: .3em .5em;
+  font-family: Arial, sans-serif;
+  font-size: .8em;
+  z-index: 10;
+  border: .15em solid #464646;
+  border-radius: .3em;
+}
+
+.actdia-item .hi {
+  fill: #284028;
+}
+.actdia-item .lo {
+  fill: #402828;
+}
+
+.actdia-item .updated {
+  fill: #282860;
+}
+
+.actdia-item .bright {
+  fill: #e0e0e0;
+}

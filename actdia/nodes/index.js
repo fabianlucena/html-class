@@ -1,0 +1,25 @@
+export default {
+  _label: 'Basic',
+  locale: ['es'],
+  nodesClasses: [
+    'bus.js',
+    'unbus.js',
+    'oscillograph.js',
+    'pulse_generator.js',
+    'single_pulse.js',
+    'switch.js',
+    'pushbutton.js',
+    'slider.js',
+    'viewer.js',
+    'json_data.js',
+    'selector.js',
+    'label_input.js',
+    'label_output.js',
+  ],
+  categories: [
+    { url: 'electronic', _label: 'Electronic' },
+    { url: 'uml', _label: 'UML' },
+    { url: 'internet', _label: 'Internet' },
+    { url: 'ai', _label: 'AI' },
+  ],
+};

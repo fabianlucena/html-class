@@ -1,0 +1,285 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1122" height="793">
+    <style>
+      :root {
+        --stroke-width: .003em;
+      }
+      
+      .actdia {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: auto;
+        background-color: #dddddd;
+        color: #242424;
+        stroke-width: var(--stroke-width, 0.06);
+      }
+      
+      .actdia-page {
+        fill: rgba(0, 0, 0, 0);
+        stroke: #C4C4C4;
+        stroke-dasharray: 1 .5;
+      }
+      
+      .actdia-item,
+      .print .actdia-item {
+        fill: #d1d1d1;
+        stroke: #474747;
+        stroke-dasharray: 0;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        vector-effect: non-scaling-stroke;
+      }
+      
+      .actdia-item text {
+        font-size: 1.2;
+        font-family: Arial;
+        stroke: none;
+        fill: #2e2e2e;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      
+      .actdia-item.full-filled {
+        fill: #747474;
+        stroke: #747474;
+      }
+      
+      .actdia-item.actdia-item-connection {
+        fill: rgba(0, 0, 0, 0);
+        stroke: #949494;
+        stroke-dasharray: 0;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        vector-effect: non-scaling-stroke;
+      }
+      
+      .actdia-item.actdia-item-connection.actdia-selected {
+        stroke: #8080FF;
+      }
+      
+      .actdia-item-connection .actdia-node-name {
+        display: none;
+      }
+      
+      .actdia-node-name {
+        display: none;
+      }
+      
+      .actdia-selection-box {
+        display: none;
+      }
+      
+      .actdia-selected > .actdia-selection-box {
+        display: inline;
+        stroke: #8080FF;
+        fill: rgba(128, 128, 255, 0.1);
+        stroke-width: calc(var(--stroke-width, 0.06) * 2);
+        stroke-dasharray: calc(var(--stroke-width, 0.06) * 1.5) calc(var(--stroke-width, 0.06) * 3);
+      }
+      
+      .actdia-item .hi {
+        fill: #80D080;
+      }
+      .actdia-item .lo {
+        fill: #D08080;
+      }
+      
+      .actdia-item .updated {
+        fill: #8080D0;
+      }
+      
+      .print {
+        .actdia-item .hi {
+          fill: #80D080;
+        }
+        .actdia-item .lo {
+          fill: #D08080;
+        }
+      
+        .actdia-item .updated {
+          fill: #8080D0;
+        }
+      }
+    </style>
+  <g
+    class="actdia"
+    transform="scale(16,16)"
+  >
+    <g
+      class="actdia-connections-layer"
+    >
+      <g
+        id="111f1086-d142-4dba-be7e-149704bd767e"
+        name="Connection - 11f10"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 13.5 33 C 16.333333333333332 33 19.166666666666668 33 22 33"
+        >
+        </path>
+      </g>
+    </g>
+    <g
+      class="actdia-nodes-layer"
+    >
+      <g
+        id="834cb1ce-f0e6-447d-bb98-db7a874f431d"
+        name="UseCase - 34cb1"
+        class="actdia-item actdia-item-usecase" transform="translate(22, 31)"
+        data-item-class="UseCase"
+        data-url="../nodes/uml/use_case.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="11"
+          height="5"
+        />
+        <ellipse
+          class="actdia-shape"
+          cx="5"
+          cy="2"
+          rx="5"
+          ry="2"
+        >
+        </ellipse>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="5"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="5"
+            dy="0"
+          >
+            UseCase - 34cb1
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="0"
+            type="in"
+            id="d89cec66-9da0-4b33-9404-5a50b2a06154"
+            transform=" translate(0, 2) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.5"
+            >
+            </circle>
+            <path
+              d="M 0.3 -0.3 L -0.4 0 L 0.3 0.3"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="18814f47-510a-4c91-9172-1e089be8aeaa"
+        name="Actor - 8814f"
+        class="actdia-item actdia-item-actor" transform="translate(10, 30)"
+        data-item-class="Actor"
+        data-url="../nodes/uml/actor.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="4"
+          height="7"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="1.5"
+            cy="0.8"
+            r="0.8"
+          >
+          </circle>
+          <line
+            x1="1.5"
+            y1="1.6"
+            x2="1.5"
+            y2="4"
+          >
+          </line>
+          <line
+            x1="0.2"
+            y1="2.5"
+            x2="2.8"
+            y2="2.5"
+          >
+          </line>
+          <line
+            x1="1.5"
+            y1="4"
+            x2="0.7"
+            y2="6"
+          >
+          </line>
+          <line
+            x1="1.5"
+            y1="4"
+            x2="2.3"
+            y2="6"
+          >
+          </line>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="1.5"
+          y="3"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="1.5"
+            dy="0"
+          >
+            Actor - 8814f
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="0"
+            type="out"
+            id="2fa95117-6cf3-4906-b028-0d23b3a79dc2"
+            transform=" translate(3.5, 3)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.5"
+            >
+            </circle>
+            <path
+              d="M -0.3 -0.3 L 0.4 0 L -0.3 0.3"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+      class="actdia-others-layer"
+    >
+    </g>
+  </g>
+</svg>

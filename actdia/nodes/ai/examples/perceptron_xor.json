@@ -1,0 +1,631 @@
+{
+  "actdia": {
+    "version": "0.1.0"
+  },
+  "imports": [
+    "../nodes/ai/backpropagation.js",
+    "../nodes/ai/cost.js",
+    "../nodes/ai/perceptron.js",
+    "../nodes/json_data.js",
+    "../nodes/pulse_generator.js",
+    "../nodes/selector.js",
+    "../nodes/unbus.js",
+    "../nodes/viewer.js",
+    "./connection.js"
+  ],
+  "locales": {
+    ".": [
+      "es"
+    ],
+    "../nodes": [
+      "es"
+    ],
+    "../nodes/ai": [
+      "es"
+    ]
+  },
+  "nodes": [
+    {
+      "elementClass": "Selector",
+      "url": "../nodes/selector.js",
+      "id": "09326d6e-9f0f-4c50-8e7d-20d696d9b471",
+      "index": 2,
+      "fqcn": "../nodes/selector.js/Selector",
+      "x": 18,
+      "y": 3,
+      "connectors": [
+        {
+          "id": "cc49e2f6-737a-427e-b4eb-4efd57105171"
+        },
+        {
+          "id": "193d79a5-c38f-4370-b6a4-a036c86dba6d"
+        },
+        {
+          "id": "12188454-7119-4709-8935-c5fd0c668a55"
+        }
+      ]
+    },
+    {
+      "elementClass": "PulseGenerator",
+      "url": "../nodes/pulse_generator.js",
+      "id": "c9ef873f-974e-45cb-9312-3539207b7156",
+      "fqcn": "../nodes/pulse_generator.js/PulseGenerator",
+      "x": 3,
+      "y": 12,
+      "connectors": [
+        {
+          "id": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008",
+          "backStatus": 0
+        }
+      ]
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "../nodes/ai/perceptron.js",
+      "id": "3dc6283c-f782-496e-9057-17ac87003827",
+      "weights": [
+        55.507921510324564,
+        0.12191235962052005
+      ],
+      "fqcn": "../nodes/ai/perceptron.js/Perceptron",
+      "x": 24,
+      "y": 13,
+      "name": "n1",
+      "description": "",
+      "bias": 105.79370345131112,
+      "connectors": [
+        {
+          "id": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
+          "backStatus": 10.569370345131112
+        },
+        {
+          "id": "8d4d34b2-76ff-42a6-8577-ee88be1a75a3",
+          "direction": 133.59509870133553,
+          "x": 0.3104424071998706,
+          "y": 0.2757691485364001,
+          "backStatus": 0
+        },
+        {
+          "id": "c7dd1ac3-e044-4644-956f-8e73824e1c2c"
+        }
+      ],
+      "activationFunction": "relu"
+    },
+    {
+      "elementClass": "JsonData",
+      "url": "../nodes/json_data.js",
+      "id": "cafb6089-dbc1-4775-a33a-20042303e1ef",
+      "data": "[[0, 0, 0],\n [0, 1, 1],\n [1, 0, 1],\n [1, 1, 0]]",
+      "formDefinition": [
+        {
+          "name": "data",
+          "type": "textarea",
+          "_label": "JSON Data",
+          "label": "JSON Data",
+          "id": "data",
+          "previousValue": "[[0, 0, 0],\n [0, 1, 1],\n [1, 0, 1],\n [1, 1, 0]]"
+        }
+      ],
+      "fqcn": "../nodes/json_data.js/JsonData",
+      "x": 4,
+      "y": 3,
+      "name": "",
+      "description": "",
+      "connectors": [
+        {
+          "id": "a28e5969-d8af-43b3-a6fe-c3b1c66727b0"
+        }
+      ]
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "../nodes/viewer.js",
+      "id": "517c43e0-0371-4bd1-85ca-d1f8ffb7ea60",
+      "fqcn": "../nodes/viewer.js/Viewer",
+      "x": 30,
+      "y": 3,
+      "connectors": [
+        {
+          "id": "a4394d58-1787-4c58-8540-ef63562ac602"
+        }
+      ]
+    },
+    {
+      "elementClass": "Unbus",
+      "url": "../nodes/unbus.js",
+      "id": "ee236563-cd1d-4202-8956-cca72aae7552",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 1,
+        "height": 3
+      },
+      "fqcn": "../nodes/unbus.js/Unbus",
+      "x": 18,
+      "y": 14,
+      "name": "",
+      "description": "",
+      "connectors": [
+        {
+          "id": "36afe39c-5613-4e50-a277-09e47db44ca6"
+        },
+        {
+          "id": "9e1ae5c4-3277-490c-bd69-d2aafba082e0",
+          "backStatus": 0
+        },
+        {
+          "id": "ba662475-e313-4720-bbb5-f2fde515678f",
+          "backStatus": 0
+        },
+        {
+          "id": "6da4cf94-477e-48fa-981a-29c622772628"
+        }
+      ]
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "../nodes/viewer.js",
+      "id": "98037aca-22e1-47ab-b2da-79eaa6a5639c",
+      "fqcn": "../nodes/viewer.js/Viewer",
+      "x": 41,
+      "y": 9,
+      "connectors": [
+        {
+          "id": "c8498435-36e4-4216-9ecd-86e3f348f312"
+        }
+      ]
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "../nodes/viewer.js",
+      "id": "596171ce-93d8-4a43-9c72-67d5424ae5aa",
+      "fqcn": "../nodes/viewer.js/Viewer",
+      "x": 39,
+      "y": 17,
+      "connectors": [
+        {
+          "id": "971ce7a5-a611-4cf0-8f9b-5fa9b5235867"
+        }
+      ]
+    },
+    {
+      "elementClass": "Cost",
+      "url": "../nodes/ai/cost.js",
+      "id": "ec354e1e-83c9-4968-8b53-8c14cfb11f47",
+      "fqcn": "../nodes/ai/cost.js/Cost",
+      "x": 27,
+      "y": 21,
+      "backStatus": -283045511833.46893,
+      "connectors": [
+        {
+          "id": "663a9255-ab31-4ae2-a29c-9d1d2a8f16fb",
+          "direction": 180,
+          "backStatus": 283045511833.46893
+        },
+        {
+          "id": "cdee408f-98ef-4070-ba5c-c7e3afc5a6ce",
+          "direction": 180,
+          "backStatus": 283045511833.46893
+        },
+        {
+          "id": "d7749f7f-f1c7-4783-a7fb-153dee359f55"
+        }
+      ]
+    },
+    {
+      "elementClass": "Backpropagation",
+      "url": "../nodes/ai/backpropagation.js",
+      "id": "370e3ed8-9f44-4142-8f8c-2282d66d640f",
+      "fqcn": "../nodes/ai/backpropagation.js/Backpropagation",
+      "x": 34,
+      "y": 24,
+      "backStatus": 236629363623.97275,
+      "connectors": [
+        {
+          "id": "17f1aac6-c3a5-483f-a77c-9515050b0776",
+          "direction": 180,
+          "backStatus": 0
+        },
+        {
+          "id": "0b56c02d-db42-4981-886c-e7a17d8f4747",
+          "direction": 270,
+          "backStatus": 0
+        }
+      ]
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "../nodes/ai/perceptron.js",
+      "id": "003254f2-dda4-4c17-9a83-174c79244318",
+      "weights": [
+        -0.7706625195083525,
+        -0.9373632734391233
+      ],
+      "fqcn": "../nodes/ai/perceptron.js/Perceptron",
+      "x": 24,
+      "y": 17,
+      "name": "n2",
+      "description": "",
+      "bias": 0,
+      "connectors": [
+        {
+          "id": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
+          "backStatus": 0
+        },
+        {
+          "id": "2e59ee9b-546f-4800-90b7-a172cb6e0c02",
+          "direction": 133.59509870133553,
+          "x": 0.3104424071998706,
+          "y": 0.2757691485364001,
+          "backStatus": 0
+        },
+        {
+          "id": "3545343a-8694-4823-915a-79addb8bea2f"
+        }
+      ],
+      "activationFunction": "relu"
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "../nodes/ai/perceptron.js",
+      "id": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39",
+      "weights": [
+        7128.141018291084,
+        -2.140926156686336
+      ],
+      "fqcn": "../nodes/ai/perceptron.js/Perceptron",
+      "x": 34,
+      "y": 15,
+      "name": "n3",
+      "description": "",
+      "bias": 107.79999999999815,
+      "connectors": [
+        {
+          "id": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
+          "backStatus": 283045511833.46893
+        },
+        {
+          "id": "0e6ca12c-0e59-41c0-ac9f-5521ac7adc76",
+          "direction": 133.59509870133553,
+          "x": 0.3104424071998706,
+          "y": 0.2757691485364001,
+          "backStatus": 10.569370345131112
+        },
+        {
+          "id": "4ab38b41-0797-44c6-9573-786ad9e2b907"
+        }
+      ],
+      "activationFunction": "relu"
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "../nodes/ai/perceptron.js",
+      "id": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f",
+      "weights": [
+        4.744366249990687
+      ],
+      "fqcn": "../nodes/ai/perceptron.js/Perceptron",
+      "x": 29,
+      "y": 16,
+      "connectors": [
+        {
+          "id": "11a6b2c7-46d3-462d-b1a3-11f0001c94a4"
+        },
+        {
+          "id": "81c72e35-bfd9-4a42-8694-f021b5081636",
+          "y": 0.9999999999999999
+        }
+      ],
+      "activationFunction": "relu"
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "../nodes/ai/perceptron.js",
+      "id": "50fd99ed-a374-4574-95cc-6189323fbe9e",
+      "weights": [
+        0.5996531367339033
+      ],
+      "fqcn": "../nodes/ai/perceptron.js/Perceptron",
+      "x": 29,
+      "y": 13,
+      "connectors": [
+        {
+          "id": "f5f2e374-b527-4506-bd30-816662b382e7"
+        },
+        {
+          "id": "919cdd3b-7347-497d-8cdc-d6bd96673e61",
+          "y": 0.9999999999999999
+        }
+      ],
+      "activationFunction": "relu"
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "../nodes/viewer.js",
+      "id": "c7c66655-51ba-4b46-8292-6ee8ce3baff5",
+      "fqcn": "../nodes/viewer.js/Viewer",
+      "x": 39,
+      "y": 28,
+      "connectors": [
+        {
+          "id": "59d8ba5e-b68f-4fff-b115-4a3b85dac98f"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "30d8555f-72c2-4413-87ab-9264def56fed",
+      "from": {
+        "connector": "a28e5969-d8af-43b3-a6fe-c3b1c66727b0",
+        "item": "cafb6089-dbc1-4775-a33a-20042303e1ef"
+      },
+      "to": {
+        "connector": "cc49e2f6-737a-427e-b4eb-4efd57105171",
+        "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "59c44d74-e317-4884-bbc8-7012228faf40",
+      "from": {
+        "connector": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008",
+        "item": "c9ef873f-974e-45cb-9312-3539207b7156"
+      },
+      "to": {
+        "connector": "193d79a5-c38f-4370-b6a4-a036c86dba6d",
+        "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "ec8548a5-f9ef-40df-98a9-cc4deb7a87e4",
+      "from": {
+        "connector": "12188454-7119-4709-8935-c5fd0c668a55",
+        "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
+      },
+      "to": {
+        "connector": "a4394d58-1787-4c58-8540-ef63562ac602",
+        "item": "517c43e0-0371-4bd1-85ca-d1f8ffb7ea60"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "aa3e8c53-9c13-41d6-9ae1-a92b07da9c97",
+      "from": {
+        "connector": "12188454-7119-4709-8935-c5fd0c668a55",
+        "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
+      },
+      "to": {
+        "connector": "36afe39c-5613-4e50-a277-09e47db44ca6",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "983c8994-15f4-47a5-b155-b0d8c2ebeb9c",
+      "from": {
+        "connector": "ba662475-e313-4720-bbb5-f2fde515678f",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "c7dd1ac3-e044-4644-956f-8e73824e1c2c",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "7842fd01-efb1-4baa-b5b0-0efd3e316c91",
+      "from": {
+        "connector": "9e1ae5c4-3277-490c-bd69-d2aafba082e0",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "8d4d34b2-76ff-42a6-8577-ee88be1a75a3",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "bb98c2f4-2b3e-4c17-822b-dbdeeb27b7ff",
+      "from": {
+        "connector": "d7749f7f-f1c7-4783-a7fb-153dee359f55",
+        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
+      },
+      "to": {
+        "connector": "971ce7a5-a611-4cf0-8f9b-5fa9b5235867",
+        "item": "596171ce-93d8-4a43-9c72-67d5424ae5aa"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "2e9bbcd7-89ee-4802-9ad5-74d68e32c0ea",
+      "from": {
+        "connector": "6da4cf94-477e-48fa-981a-29c622772628",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "cdee408f-98ef-4070-ba5c-c7e3afc5a6ce",
+        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "afcf8f98-31a8-41e1-b002-264c8c4e9837",
+      "from": {
+        "connector": "d7749f7f-f1c7-4783-a7fb-153dee359f55",
+        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
+      },
+      "to": {
+        "connector": "17f1aac6-c3a5-483f-a77c-9515050b0776",
+        "item": "370e3ed8-9f44-4142-8f8c-2282d66d640f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "a12b4c26-915a-472d-ad92-a5333ed0df04",
+      "from": {
+        "connector": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008",
+        "item": "c9ef873f-974e-45cb-9312-3539207b7156"
+      },
+      "to": {
+        "connector": "0b56c02d-db42-4981-886c-e7a17d8f4747",
+        "item": "370e3ed8-9f44-4142-8f8c-2282d66d640f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "d1197439-9f59-49b0-b64e-91d955351677",
+      "from": {
+        "connector": "9e1ae5c4-3277-490c-bd69-d2aafba082e0",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "2e59ee9b-546f-4800-90b7-a172cb6e0c02",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "6cf69d0b-38e7-4c32-9dcc-0010d70c1cc0",
+      "from": {
+        "connector": "ba662475-e313-4720-bbb5-f2fde515678f",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "3545343a-8694-4823-915a-79addb8bea2f",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "395a673d-b9d8-4ed7-9ca7-a795103f63bc",
+      "from": {
+        "connector": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
+        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
+      },
+      "to": {
+        "connector": "663a9255-ab31-4ae2-a29c-9d1d2a8f16fb",
+        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "e3239f02-c39d-4419-ad79-0a1e32145fdb",
+      "from": {
+        "connector": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
+        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
+      },
+      "to": {
+        "connector": "c8498435-36e4-4216-9ecd-86e3f348f312",
+        "item": "98037aca-22e1-47ab-b2da-79eaa6a5639c"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "dc53388a-6660-4697-969d-e09ee9b65a0b",
+      "from": {
+        "connector": "f5f2e374-b527-4506-bd30-816662b382e7",
+        "item": "50fd99ed-a374-4574-95cc-6189323fbe9e"
+      },
+      "to": {
+        "connector": "0e6ca12c-0e59-41c0-ac9f-5521ac7adc76",
+        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "219ecaee-044e-4b16-96b2-1caf80b0d93d",
+      "from": {
+        "connector": "11a6b2c7-46d3-462d-b1a3-11f0001c94a4",
+        "item": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f"
+      },
+      "to": {
+        "connector": "4ab38b41-0797-44c6-9573-786ad9e2b907",
+        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "45d3bdbe-dd6d-4175-a195-df104ee0b97b",
+      "from": {
+        "connector": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
+      },
+      "to": {
+        "connector": "81c72e35-bfd9-4a42-8694-f021b5081636",
+        "item": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "a006a772-a796-4883-971e-90be3a023096",
+      "from": {
+        "connector": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      },
+      "to": {
+        "connector": "919cdd3b-7347-497d-8cdc-d6bd96673e61",
+        "item": "50fd99ed-a374-4574-95cc-6189323fbe9e"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "793e1c0b-5e9b-4104-ab88-171dfaad21a2",
+      "from": {
+        "connector": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
+      },
+      "to": {
+        "connector": "919cdd3b-7347-497d-8cdc-d6bd96673e61",
+        "item": "50fd99ed-a374-4574-95cc-6189323fbe9e"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "43201781-cc71-4b67-a0aa-da39fa5eea48",
+      "from": {
+        "connector": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      },
+      "to": {
+        "connector": "81c72e35-bfd9-4a42-8694-f021b5081636",
+        "item": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "3740de5c-471b-4ff2-bcbb-3c79c6494339",
+      "from": {
+        "connector": "59d8ba5e-b68f-4fff-b115-4a3b85dac98f",
+        "item": "c7c66655-51ba-4b46-8292-6ee8ce3baff5"
+      },
+      "to": {
+        "connector": "12188454-7119-4709-8935-c5fd0c668a55",
+        "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
+      }
+    }
+  ]
+}

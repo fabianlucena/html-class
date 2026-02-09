@@ -1,0 +1,5815 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1277" height="793">
+    <style>
+      :root {
+        --stroke-width: .003em;
+      }
+      
+      .actdia {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: auto;
+        background-color: #dddddd;
+        color: #242424;
+        stroke-width: var(--stroke-width, 0.06);
+      }
+      
+      .actdia-page {
+        fill: rgba(0, 0, 0, 0);
+        stroke: #C4C4C4;
+        stroke-dasharray: 1 .5;
+      }
+      
+      .actdia-item,
+      .print .actdia-item {
+        fill: #d1d1d1;
+        stroke: #474747;
+        stroke-dasharray: 0;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        vector-effect: non-scaling-stroke;
+      }
+      
+      .actdia-item text {
+        font-size: 1.2;
+        font-family: Arial;
+        stroke: none;
+        fill: #2e2e2e;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      
+      .actdia-item.full-filled {
+        fill: #747474;
+        stroke: #747474;
+      }
+      
+      .actdia-item.actdia-item-connection {
+        fill: rgba(0, 0, 0, 0);
+        stroke: #949494;
+        stroke-dasharray: 0;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        vector-effect: non-scaling-stroke;
+      }
+      
+      .actdia-item.actdia-item-connection.actdia-selected {
+        stroke: #8080FF;
+      }
+      
+      .actdia-item-connection .actdia-node-name {
+        display: none;
+      }
+      
+      .actdia-node-name {
+        display: none;
+      }
+      
+      .actdia-selection-box {
+        display: none;
+      }
+      
+      .actdia-selected > .actdia-selection-box {
+        display: inline;
+        stroke: #8080FF;
+        fill: rgba(128, 128, 255, 0.1);
+        stroke-width: calc(var(--stroke-width, 0.06) * 2);
+        stroke-dasharray: calc(var(--stroke-width, 0.06) * 1.5) calc(var(--stroke-width, 0.06) * 3);
+      }
+      
+      .actdia-item .hi {
+        fill: #80D080;
+      }
+      .actdia-item .lo {
+        fill: #D08080;
+      }
+      
+      .actdia-item .updated {
+        fill: #8080D0;
+      }
+      
+      .print {
+        .actdia-item .hi {
+          fill: #80D080;
+        }
+        .actdia-item .lo {
+          fill: #D08080;
+        }
+      
+        .actdia-item .updated {
+          fill: #8080D0;
+        }
+      }
+    </style>
+  <g
+    class="actdia"
+    transform="scale(16,16)"
+  >
+    <g
+      class="actdia-connections-layer"
+    >
+      <g
+        id="40c101eb-59f6-4cd2-ac35-b90ff676ee7a"
+        name="Connection - 0c101"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 9 C 16 9 17 9 18 9"
+        >
+        </path>
+      </g>
+      <g
+        id="94cac2ee-b31e-48ce-8718-633c735d5704"
+        name="Connection - 4cac2"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 11 C 16 11 17 11 18 11"
+        >
+        </path>
+      </g>
+      <g
+        id="ccb336e4-483b-443b-94d2-96ce232fdcd4"
+        name="Connection - cb336"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 22 10 C 22.333333333333332 10 22.666666666666668 10 23 10"
+        >
+        </path>
+      </g>
+      <g
+        id="051bbcff-5983-47a3-8344-897e6191919c"
+        name="Connection - 51bbc"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 14 C 16 14 17 14 18 14"
+        >
+        </path>
+      </g>
+      <g
+        id="a3cdf1c6-a6b5-47c0-9ca2-fe7b8affb80b"
+        name="Connection - 3cdf1"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 16 C 16 16 17 16 18 16"
+        >
+        </path>
+      </g>
+      <g
+        id="197423d2-e9f6-4177-a719-61f3f08a9788"
+        name="Connection - 97423"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 22 15 C 22.333333333333332 15 22.666666666666668 15 23 15"
+        >
+        </path>
+      </g>
+      <g
+        id="ac54d99f-62e8-46ab-bd25-a4421893438a"
+        name="Connection - c54d9"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 19 C 16 19 17 19 18 19"
+        >
+        </path>
+      </g>
+      <g
+        id="45517666-a43f-4790-97fe-dc6d1e05232c"
+        name="Connection - 55176"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 21 C 16 21 17 21 18 21"
+        >
+        </path>
+      </g>
+      <g
+        id="cabdda18-dcbf-4a3a-83fe-da974b865dab"
+        name="Connection - abdda"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 22 20 C 22.333333333333332 20 22.666666666666668 20 23 20"
+        >
+        </path>
+      </g>
+      <g
+        id="2df255ab-f7c5-4baa-944e-dd372d8c861a"
+        name="Connection - df255"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 6 C 16.333333333333332 6 17.666666666666668 6 19 6"
+        >
+        </path>
+      </g>
+      <g
+        id="51d0adfb-2dc8-45a7-b080-252543c60fce"
+        name="Connection - 1d0ad"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 21 6 C 21.666666666666668 6 22.333333333333332 6 23 6"
+        >
+        </path>
+      </g>
+      <g
+        id="9c07d6f7-4567-493b-990b-c84357438c5d"
+        name="Connection - c07d6"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 6 C 34.333333333333336 6 35.666666666666664 6 37 6"
+        >
+        </path>
+      </g>
+      <g
+        id="99332d77-4e18-4f98-aea4-7be3d0f154ca"
+        name="Connection - 9332d"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 39 6 C 39.666666666666664 6 40.333333333333336 6 41 6"
+        >
+        </path>
+      </g>
+      <g
+        id="295b437a-9b8b-4130-b6d2-e513ba2ad49c"
+        name="Connection - 95b43"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 40 10 C 40.333333333333336 10 40.666666666666664 10 41 10"
+        >
+        </path>
+      </g>
+      <g
+        id="9402cf44-0145-485f-bb9d-2e05a51afe78"
+        name="Connection - 402cf"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 9 C 34 9 35 9 36 9"
+        >
+        </path>
+      </g>
+      <g
+        id="4c2dcd10-27e7-4f29-9be3-a55cd54d7b43"
+        name="Connection - c2dcd"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 11 C 34 11 35 11 36 11"
+        >
+        </path>
+      </g>
+      <g
+        id="106839cd-cf17-496b-a8f6-3bab489cad8a"
+        name="Connection - 06839"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 14 C 34 14 35 14 36 14"
+        >
+        </path>
+      </g>
+      <g
+        id="783dd487-3965-4717-bb79-2de03e2e1c17"
+        name="Connection - 83dd4"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 16 C 34 16 35 16 36 16"
+        >
+        </path>
+      </g>
+      <g
+        id="789219f1-8a27-4c14-987a-32c18c0355b4"
+        name="Connection - 89219"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 19 C 34 19 35 19 36 19"
+        >
+        </path>
+      </g>
+      <g
+        id="0d53dc44-e252-4cb1-affd-04d6c5744048"
+        name="Connection - d53dc"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 21 C 34 21 35 21 36 21"
+        >
+        </path>
+      </g>
+      <g
+        id="39198cdd-2d9d-40e5-b076-0bf50e66e52f"
+        name="Connection - 9198c"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 40 20 C 40.333333333333336 20 40.666666666666664 20 41 20"
+        >
+        </path>
+      </g>
+      <g
+        id="69b26092-d2f1-419e-934d-93a1b2c15cbc"
+        name="Connection - 9b260"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 40 15 C 40.333333333333336 15 40.666666666666664 15 41 15"
+        >
+        </path>
+      </g>
+      <g
+        id="505eedb5-1aa3-4436-9dde-9b32f33214ad"
+        name="Connection - 05eed"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 26 C 16.333333333333332 26 17.666666666666668 26 19 26"
+        >
+        </path>
+      </g>
+      <g
+        id="7340cb71-b024-4d5b-86df-3aad17f1397e"
+        name="Connection - 340cb"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 21 26 C 21.666666666666668 26 22.333333333333332 26 23 26"
+        >
+        </path>
+      </g>
+      <g
+        id="1ad6d8d5-e6d3-4ecc-b593-e4ecadc4c781"
+        name="Connection - ad6d8"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 29 C 16 29 17 29 18 29"
+        >
+        </path>
+      </g>
+      <g
+        id="e9027482-66fa-4ec6-a5c3-8f36960692ec"
+        name="Connection - 90274"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 31 C 16 31 17 31 18 31"
+        >
+        </path>
+      </g>
+      <g
+        id="640ba841-610e-4b95-afc3-7367d1f49dc4"
+        name="Connection - 40ba8"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 22 30 C 22.333333333333332 30 22.666666666666668 30 23 30"
+        >
+        </path>
+      </g>
+      <g
+        id="096665dd-16c9-4aa3-8b97-2e35e6f95524"
+        name="Connection - 96665"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 22 35 C 22.333333333333332 35 22.666666666666668 35 23 35"
+        >
+        </path>
+      </g>
+      <g
+        id="961a419f-b221-48d4-b0c4-e69ee541b7b9"
+        name="Connection - 61a41"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 34 C 16 34 17 34 18 34"
+        >
+        </path>
+      </g>
+      <g
+        id="99873a0d-758f-439b-a6f5-5218fcaa666e"
+        name="Connection - 9873a"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 36 C 16 36 17 36 18 36"
+        >
+        </path>
+      </g>
+      <g
+        id="f4870829-9149-4a45-9bc3-9ca8ef754bb6"
+        name="Connection - 48708"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 39 C 16 39 17 39 18 39"
+        >
+        </path>
+      </g>
+      <g
+        id="49322e93-7d05-4591-9d4b-6788a0d7e9bc"
+        name="Connection - 9322e"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 15 41 C 16 41 17 41 18 41"
+        >
+        </path>
+      </g>
+      <g
+        id="affe732f-c953-497e-ba22-f390ed828b6f"
+        name="Connection - ffe73"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 22 40 C 22.333333333333332 40 22.666666666666668 40 23 40"
+        >
+        </path>
+      </g>
+      <g
+        id="8387649f-49e2-44fc-8e30-f8fb2d2b79cf"
+        name="Connection - 38764"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 26 C 34.333333333333336 26 35.666666666666664 26 37 26"
+        >
+        </path>
+      </g>
+      <g
+        id="5fcbc942-ff8b-4e82-898f-f03cb3dc7999"
+        name="Connection - fcbc9"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 39 26 C 39.666666666666664 26 40.333333333333336 26 41 26"
+        >
+        </path>
+      </g>
+      <g
+        id="bc02074a-cea5-40b3-ac92-cc45e43ba492"
+        name="Connection - c0207"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 29 C 34 29 35 29 36 29"
+        >
+        </path>
+      </g>
+      <g
+        id="c0e033a0-bf2d-44a3-bd4b-7553c58b319b"
+        name="Connection - 0e033"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 40 30 C 40.333333333333336 30 40.666666666666664 30 41 30"
+        >
+        </path>
+      </g>
+      <g
+        id="c8350041-7592-451a-995e-c0a3447f5c89"
+        name="Connection - 83500"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 31 C 34 31 35 31 36 31"
+        >
+        </path>
+      </g>
+      <g
+        id="f5bd52af-82d0-439d-b1da-650333f40f13"
+        name="Connection - 5bd52"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 40 35 C 40.333333333333336 35 40.666666666666664 35 41 35"
+        >
+        </path>
+      </g>
+      <g
+        id="33f1003a-6fdd-47a4-8836-6b4d9a37cdfa"
+        name="Connection - 3f100"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 34 C 34 34 35 34 36 34"
+        >
+        </path>
+      </g>
+      <g
+        id="21ec9c5f-e71a-49c3-b25e-c07b8ffa528e"
+        name="Connection - 1ec9c"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 36 C 34 36 35 36 36 36"
+        >
+        </path>
+      </g>
+      <g
+        id="aa5ce0f8-9fed-49ae-b086-802f36945225"
+        name="Connection - a5ce0"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 40 40 C 40.333333333333336 40 40.666666666666664 40 41 40"
+        >
+        </path>
+      </g>
+      <g
+        id="84652d63-346f-4403-9661-7363b7a32e13"
+        name="Connection - 4652d"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 39 C 34 39 35 39 36 39"
+        >
+        </path>
+      </g>
+      <g
+        id="0a5f709e-dded-4eac-ae64-22027b155a0d"
+        name="Connection - a5f70"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <path
+          class="actdia-shape"
+          d="M 33 41 C 34 41 35 41 36 41"
+        >
+        </path>
+      </g>
+    </g>
+    <g
+      class="actdia-nodes-layer"
+    >
+      <g
+        id="1dad9e4d-c43e-4f27-9280-9c12f5cccfd8"
+        name="Text - dad9e"
+        class="actdia-item actdia-item-text" transform="translate(24.27777777777778, 1.833333333333334)"
+        data-item-class="Text"
+        data-url="../nodes/text.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="9.115624904632568"
+          height="3.109375"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="8.115624904632568"
+            height="2.109375"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <text
+            x="4.057812452316284"
+            y="1"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="4.057812452316284"
+              dy="0"
+            >
+              Puertas lógicas
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="4.057812452316284"
+          y="1.0546875"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="4.057812452316284"
+            dy="0"
+          >
+            Text - dad9e
+          </tspan>
+        </text>
+      </g>
+      <g
+        id="87ac6b89-78bc-4dad-a1a5-893cf567d41a"
+        name="Led - 7ac6b"
+        class="actdia-item actdia-item-led" transform="translate(24, 10)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 7ac6b
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="22fbc68c-4b3c-41da-994f-5a1aa14dfc4a"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="a807b848-d4f9-4a80-882f-8cc051e42a04"
+        name="Switch - 807b8"
+        class="actdia-item actdia-item-switch" transform="translate(14, 9)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 807b8
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="5359b835-f826-4d56-bb11-bb93c4bd949b"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="c842e12f-67fc-42ad-bc2a-21252f0e3aec"
+        name="Switch - 842e1"
+        class="actdia-item actdia-item-switch" transform="translate(14, 11)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 842e1
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="74d601cf-1ad0-4df9-814b-ed96c4a0e9a7"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="1ab692c9-5868-485a-bbee-c52f514fb776"
+        name="And - ab692"
+        class="actdia-item actdia-item-and" transform="translate(18, 8)"
+        data-item-class="And"
+        data-url="../nodes/electronic/logic_gates/and.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <path
+          class="actdia-shape"
+          d="M 0 0 L 2 0 A 2 2 0 0 1 2 4 L 0 4 Z"
+        >
+        </path>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            And - ab692
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="c7d01baf-39e1-400e-ac78-ad7108e678f4"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="1b86260d-0a8d-45ad-8fea-e1b5e114526e"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="934bb9d6-809c-42f5-bd54-f059e689d129"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="2a193af1-3f39-4a2d-91dd-db13410a1e7c"
+        name="Or - a193a"
+        class="actdia-item actdia-item-or" transform="translate(18, 13)"
+        data-item-class="Or"
+        data-url="../nodes/electronic/logic_gates/or.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <path
+          class="actdia-shape"
+          d="M 0 0 C 1.7 0 3 0.6 4 2 C 3 3.4 1.7 4 0 4 C 1 3 1 1 0 0 Z M 0 1 H 0.6 M 0 3 H 0.6"
+        >
+        </path>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            Or - a193a
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="d5e29101-75a3-41f0-9f6a-d98b981b041b"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="0fed9c18-be61-4cad-bfec-7f00715cdbd7"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="3851e2e7-c18d-4b04-834c-b029aee6601e"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="63069231-4b61-42c0-8320-057d36e8b8fe"
+        name="Switch - 30692"
+        class="actdia-item actdia-item-switch" transform="translate(14, 14)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 30692
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="7ff22bd8-dd34-4407-8c36-fc69735d8007"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="a7dcd928-c4ae-41d2-b2b1-7847f1ec4e2b"
+        name="Switch - 7dcd9"
+        class="actdia-item actdia-item-switch" transform="translate(14, 16)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 7dcd9
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="c64b7e58-3124-4cf6-ad6e-cc7c29f81d76"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="0e380c38-4c57-43e0-838f-b95fdb6c5401"
+        name="Led - e380c"
+        class="actdia-item actdia-item-led" transform="translate(24, 15)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - e380c
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="d8d8c3a6-7a0b-4eb5-ae8d-02edcc7e1d53"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="b3623d94-0d8c-4c61-8622-1f2b64e82518"
+        name="Xor - 3623d"
+        class="actdia-item actdia-item-xor" transform="translate(18, 18)"
+        data-item-class="Xor"
+        data-url="../nodes/electronic/logic_gates/xor.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <path
+            d="M 0.5 0 C 2 0 3 0.6 4 2 C 3 3.4 2 4 0.5 4 C 1.5 3 1.5 1 0.5 0 Z"
+          >
+          </path>
+          <path
+            fill="none"
+            d="M 0 0 C 1 1 1 3 0 4 M 0 1 H 0.6 M 0 3 H 0.6"
+          >
+          </path>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            Xor - 3623d
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="c92b7101-3ca0-4b6d-a240-685a936fe28d"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="a9afed1a-eb78-4ef9-842a-b9327e568fb6"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="c18edfef-6935-4951-b803-481441c9997b"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="0dadf25f-cf6e-4a0f-a624-4cb3b23e5e9b"
+        name="Switch - dadf2"
+        class="actdia-item actdia-item-switch" transform="translate(14, 19)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - dadf2
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="819cf3f8-0a91-4ca6-b85c-1e9602a673bb"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="6b0324a8-8ba2-44c2-9cf4-d45f4ed91792"
+        name="Switch - b0324"
+        class="actdia-item actdia-item-switch" transform="translate(14, 21)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - b0324
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="fdfa93c7-5639-4caf-ad8c-0e62baf3f99f"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="1a72d2ad-066a-4503-9b89-8260683fdbab"
+        name="Led - a72d2"
+        class="actdia-item actdia-item-led" transform="translate(24, 20)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - a72d2
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="b0b6c44e-0da2-4b9f-ad80-4ae81e753dba"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="ad5067fa-d6e0-4e62-b506-f53dee2d6d49"
+        name="Switch - d5067"
+        class="actdia-item actdia-item-switch" transform="translate(14, 6)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - d5067
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="ec045ef0-59db-49f2-9e8c-86ba59083c9a"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="9cfc0dcf-d1f4-4494-8533-1525168db629"
+        name="Buffer - cfc0d"
+        class="actdia-item actdia-item-buffer" transform="translate(19, 5)"
+        data-item-class="Buffer"
+        data-url="../nodes/electronic/logic_gates/buffer.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="3"
+          height="3"
+        />
+        <path
+          class="actdia-shape"
+          d="M 0.3 0 L 1.7 1 L 0.3 2 Z M 0 1 L 0.3 1 M 1.7 1 L 2 1"
+        >
+        </path>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="1"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="1"
+            dy="0"
+          >
+            Buffer - cfc0d
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="4435458e-9b9c-4662-9d07-3f72cc9ea45f"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="904192d5-44bf-4c91-889a-eb72e8bb8757"
+            transform=" translate(2, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="fe735795-8b7d-46b2-92f0-2c10484a48fe"
+        name="Led - e7357"
+        class="actdia-item actdia-item-led" transform="translate(24, 6)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - e7357
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="9077d3fa-8926-4b11-89fa-d50fa3c61513"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="07caf486-0c16-4b89-9515-ec25ef9e48d1"
+        name="Switch - 7caf4"
+        class="actdia-item actdia-item-switch" transform="translate(32, 6)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 7caf4
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="867099b7-2ae6-4fbb-a1d2-cc10eb2bbb59"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="ffaa6eb4-5bdd-4b03-af2d-731d24832c0c"
+        name="Switch - faa6e"
+        class="actdia-item actdia-item-switch" transform="translate(32, 9)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - faa6e
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="7299a957-938d-45f6-b97e-3a0b4fc7518f"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="4887a245-5d02-4e6b-a41f-250be031b837"
+        name="Switch - 887a2"
+        class="actdia-item actdia-item-switch" transform="translate(32, 11)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 887a2
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="78444581-8727-4ba2-a3be-e8d345062f70"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="e32dcf83-c57f-4b5d-857c-13b01ec538fc"
+        name="Nand - 32dcf"
+        class="actdia-item actdia-item-nand" transform="translate(36, 8)"
+        data-item-class="Nand"
+        data-url="../nodes/electronic/logic_gates/nand.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <path
+            d="M 0 0 L 1.2 0 A 2 2 0 0 1 1.2 4 L 0 4 Z M 3.2 2 a 0.4 0.4 0 1 0 0.8 0 a 0.4 0.4 0 1 0 -0.8 0"
+          >
+          </path>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            Nand - 32dcf
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="107bcd7f-f6be-4eb2-b9f8-5fbc1bc985b5"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="1f34ecec-6ded-4fc3-90e7-3821d4ef6d27"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="22e15935-b00a-4c62-8c53-3be381557171"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="a758849b-4232-4711-860f-c3cbfaf04780"
+        name="Switch - 75884"
+        class="actdia-item actdia-item-switch" transform="translate(32, 14)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 75884
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="247a6767-f038-4158-b943-08e2d0cccfda"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="94e83d0c-f321-4362-be02-34ce3379b3ff"
+        name="Led - 4e83d"
+        class="actdia-item actdia-item-led" transform="translate(42, 10)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 4e83d
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="f7891581-7015-464d-967c-a5b33c27c2ff"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="08612303-ae33-4405-ae0c-58d469d5e95c"
+        name="Led - 86123"
+        class="actdia-item actdia-item-led" transform="translate(42, 6)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 86123
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="ebfee8b2-1c7c-4979-b37a-ce649aaff4dc"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="0dbe3f54-8ddb-44fc-802b-a45536b92ee3"
+        name="Not - dbe3f"
+        class="actdia-item actdia-item-not" transform="translate(37, 5)"
+        data-item-class="Not"
+        data-url="../nodes/electronic/logic_gates/not.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="3"
+          height="3"
+        />
+        <path
+          class="actdia-shape"
+          d="M 0 0 L 1.2 1 L 0 2 Z M 1.2 1 a 0.4 0.4 0 1 0 0.8 0 a 0.4 0.4 0 1 0 -0.8 0"
+        >
+        </path>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="1"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="1"
+            dy="0"
+          >
+            Not - dbe3f
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="78830477-2613-4feb-b1a8-fcdfc7e8c716"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="bad2f573-7474-47b3-8d82-148cf43ebcb7"
+            transform=" translate(2, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="59406c1f-2ba2-4a39-aea4-c3f378da279a"
+        name="Nor - 9406c"
+        class="actdia-item actdia-item-nor" transform="translate(36, 13)"
+        data-item-class="Nor"
+        data-url="../nodes/electronic/logic_gates/nor.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <path
+          class="actdia-shape"
+          d="M 0 0 C 1.7 0 2.8 0.6 3.2 2 C 2.8 3.4 1.7 4 0 4 C 1 3 1 1 0 0 Z M 3.2 2 a 0.4 0.4 0 1 0 0.8 0 a 0.4 0.4 0 1 0 -0.8 0 M 0 1 H 0.6 M 0 3 H 0.6"
+        >
+        </path>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            Nor - 9406c
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="0ac8fbb8-5ef6-491c-a6b8-81802b2c0c36"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="fd3eb3a2-5283-4548-90ad-ac9854e942c7"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="59e4220f-b80a-41eb-ac12-63466e89cb88"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="75d0fd14-74f0-4fdd-9bf5-b6d40866ed32"
+        name="Xnor - 5d0fd"
+        class="actdia-item actdia-item-xnor" transform="translate(36, 18)"
+        data-item-class="Xnor"
+        data-url="../nodes/electronic/logic_gates/xnor.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <path
+            d="M 0.5 0 C 2 0 3 1 3.2 2 C 2.7 3.8 1.5 4 0.5 4 C 1.5 3 1.5 1 0.5 0 Z"
+          >
+          </path>
+          <path
+            fill="none"
+            d="M 0 0 C 1 1 1 3 0 4 M 0 1 H 0.6 M 0 3 H 0.6"
+          >
+          </path>
+          <circle
+            cx="3.7"
+            cy="2"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            Xnor - 5d0fd
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="3a10d758-41ea-4eef-9d0d-4faf043b1509"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="afda48a4-9b97-49f6-a111-f6594f0c7597"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="2ca264c3-5081-4256-8b91-73ba4055bb81"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="adccfa8f-87e9-49d0-aa55-132c704b53c8"
+        name="Switch - dccfa"
+        class="actdia-item actdia-item-switch" transform="translate(32, 16)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - dccfa
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="6bd95366-2bec-4350-9322-108a0eccc7bd"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="7077f6c6-0d54-42ff-89c6-167607d0aee3"
+        name="Switch - 077f6"
+        class="actdia-item actdia-item-switch" transform="translate(32, 19)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 077f6
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="720e1016-7826-49ae-bdc0-8a0a13753662"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="9bd105b5-3407-41f5-b282-0ba05d260df7"
+        name="Switch - bd105"
+        class="actdia-item actdia-item-switch" transform="translate(32, 21)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - bd105
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="aa7e9e47-84ac-4636-9fe8-018929082d02"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="a42c1809-6377-4101-97ac-fce427e70ca8"
+        name="Led - 42c18"
+        class="actdia-item actdia-item-led" transform="translate(42, 15)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 42c18
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="3327cb19-53d0-479f-9d59-f7fd9798547a"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="2ff92871-f5d8-4b0f-a98a-4450185d93b0"
+        name="Led - ff928"
+        class="actdia-item actdia-item-led" transform="translate(42, 20)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - ff928
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="b705e8e6-d12f-48e5-a986-c1715a4c9aa3"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="4c49b39f-b7d4-4bb9-83fd-7b245f9a8e28"
+        name="IEEE And - c49b3"
+        class="actdia-item actdia-item-ieeeand" transform="translate(18, 28)"
+        data-item-class="IEEEAnd"
+        data-url="../nodes/electronic/logic_gates/ieee-and.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="4"
+            height="4"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="2"
+            y="2"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="2"
+              dy="0"
+            >
+              &amp;
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            IEEE And - c49b3
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="ca1fe962-c51e-4e49-9e9a-2ef3e55a62c9"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="6761e713-d5f0-4367-9702-c64bd979de13"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="d240bbb3-99fb-46e7-b44c-f929320b40a4"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="38759c27-f930-4530-80ca-034b1fb774e2"
+        name="IEEE Buffer - 8759c"
+        class="actdia-item actdia-item-ieeebuffer" transform="translate(19, 25)"
+        data-item-class="IEEEBuffer"
+        data-url="../nodes/electronic/logic_gates/ieee-buffer.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="3"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="2"
+            height="2"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="1"
+            y="1"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="1"
+              dy="0"
+            >
+              1
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="1"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="1"
+            dy="0"
+          >
+            IEEE Buffer - 8759c
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="e5f31db5-3940-4e8d-b16a-76dbcacb0396"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="d5fc92a2-50d0-4553-9cfa-de186f2f5cbc"
+            transform=" translate(2, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="8c078b55-da58-4357-bdd3-ff2edb8e98f0"
+        name="Switch - c078b"
+        class="actdia-item actdia-item-switch" transform="translate(14, 26)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - c078b
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="bc72b49b-f00b-4729-a6c4-c44b96ebd3ca"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="299282ed-80e3-4f13-9d81-35c2fbbbe202"
+        name="Switch - 99282"
+        class="actdia-item actdia-item-switch" transform="translate(14, 29)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 99282
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="26d3d1ee-dd35-40f2-8841-363aedacb4e5"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="6bcf8dea-e5ba-44de-9278-a51cbe5332fd"
+        name="Switch - bcf8d"
+        class="actdia-item actdia-item-switch" transform="translate(14, 31)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - bcf8d
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="8d3c4c78-0985-4708-9dab-1a32bd681d41"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="d10e3ef1-96cd-4564-a527-7e02e35f9c3a"
+        name="Led - 10e3e"
+        class="actdia-item actdia-item-led" transform="translate(24, 26)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 10e3e
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="7c886f2d-4d95-4645-8499-6b0e09295cc5"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="9d93f2e6-cb66-4ba8-9aff-21b37cc60d27"
+        name="Led - d93f2"
+        class="actdia-item actdia-item-led" transform="translate(24, 30)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - d93f2
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="db7b1a91-3c2f-4c2c-b9bf-a30be72f6cb0"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="13e4761b-2d68-42d1-9da6-7b5e0ec0a468"
+        name="IEEE Or - 3e476"
+        class="actdia-item actdia-item-ieeeor" transform="translate(18, 33)"
+        data-item-class="IEEEOr"
+        data-url="../nodes/electronic/logic_gates/ieee-or.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="4"
+            height="4"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="2"
+            y="2"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="2"
+              dy="0"
+            >
+              ≥1
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            IEEE Or - 3e476
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="f66fc069-c4e2-4918-9682-ad79dca87ea0"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="84cb32b8-01fd-40a3-932d-2ed40c95f434"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="0720c35d-75a8-4c18-9d78-64832348d5f8"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="23701bc5-f9e8-4c48-943c-8051d3d73627"
+        name="Switch - 3701b"
+        class="actdia-item actdia-item-switch" transform="translate(14, 34)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 3701b
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="40135914-1058-4e68-936f-1fdf73a35c96"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="aef5f664-668c-45d3-bff3-a537d483558b"
+        name="Switch - ef5f6"
+        class="actdia-item actdia-item-switch" transform="translate(14, 36)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - ef5f6
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="1c7f374a-48ac-4956-98e6-d02d6b55f208"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="2481be3a-05cb-4812-aaeb-2622cc4bb2e0"
+        name="Led - 481be"
+        class="actdia-item actdia-item-led" transform="translate(24, 35)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 481be
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="a4f49097-820f-4afd-8137-32e9ce97236c"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="23d7da88-5c01-4679-883c-ca7eb925f159"
+        name="Switch - 3d7da"
+        class="actdia-item actdia-item-switch" transform="translate(14, 39)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 3d7da
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="d4c5282a-9da8-4880-ac37-ca69780d1c7f"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="6078c8f1-5497-4e13-9ec9-d4409bf9790f"
+        name="Switch - 078c8"
+        class="actdia-item actdia-item-switch" transform="translate(14, 41)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 078c8
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="e447a588-3a2b-444d-9c52-d7ffd30c222d"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="dfb0f5c9-084b-48bf-bc45-8ef10590526e"
+        name="IEEE Xor - fb0f5"
+        class="actdia-item actdia-item-ieeexor" transform="translate(18, 38)"
+        data-item-class="IEEEXor"
+        data-url="../nodes/electronic/logic_gates/ieee-xor.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="4"
+            height="4"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="2"
+            y="2"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="2"
+              dy="0"
+            >
+              =1
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            IEEE Xor - fb0f5
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="2d591eea-b64d-48a2-aa54-a5e5a44312af"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="8e00c6d1-0e57-4df5-b8a1-a1ece336c53c"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="78c98162-ea03-42b0-a128-731a0959452a"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="930fa113-32ed-45f9-ac47-3bab5a6bff58"
+        name="Led - 30fa1"
+        class="actdia-item actdia-item-led" transform="translate(24, 40)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="0"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 30fa1
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="83ecef1b-6fa6-44b2-9c5e-03766885c2cb"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="898345dc-f1fa-4a95-a40c-a458cc9eb97e"
+        name="IEEE Not - 98345"
+        class="actdia-item actdia-item-ieeenot" transform="translate(37, 25)"
+        data-item-class="IEEENot"
+        data-url="../nodes/electronic/logic_gates/ieee-not.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="3"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="1.5"
+            height="2"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="0.6"
+            y="1"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="0.6"
+              dy="0"
+            >
+              1
+            </tspan>
+          </text>
+          <path
+            d="M 1.5 1 H 2 L 1.5 .5"
+          >
+          </path>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="1"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="1"
+            dy="0"
+          >
+            IEEE Not - 98345
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="cc570231-30d6-4efc-a573-007fb785bdcd"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="7e4fe90c-7496-4d25-9b16-9e49dc8b8aea"
+            transform=" translate(2, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="cfed966b-f985-4a3b-85ba-bc001559eb23"
+        name="Switch - fed96"
+        class="actdia-item actdia-item-switch" transform="translate(32, 26)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - fed96
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="223474d3-635b-4ad3-905a-bf806765e003"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="d8cffa04-7150-4dad-805d-55860d6f6fbc"
+        name="Led - 8cffa"
+        class="actdia-item actdia-item-led" transform="translate(42, 26)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 8cffa
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="4c705dc9-8d3c-4f08-bc2e-070936fa3074"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="311d3223-0d6f-4f8b-8d13-562a280aa319"
+        name="IEEE Nand - 11d32"
+        class="actdia-item actdia-item-ieeenand" transform="translate(36, 28)"
+        data-item-class="IEEENand"
+        data-url="../nodes/electronic/logic_gates/ieee-nand.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="3.5"
+            height="4"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="1.6"
+            y="2"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="1.6"
+              dy="0"
+            >
+              &amp;
+            </tspan>
+          </text>
+          <path
+            d="M 3.5 2 H 4 L 3.5 1.5"
+          >
+          </path>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            IEEE Nand - 11d32
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="01255501-9bd2-44e8-934c-e6a34b54e3c1"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="6c226aa6-eb1a-4667-b495-4d0655f54126"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="1666e972-6932-4583-90cd-a3a54162d326"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="7ed3d326-7ea5-40e8-8e2e-14c14427d619"
+        name="Switch - ed3d3"
+        class="actdia-item actdia-item-switch" transform="translate(32, 29)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - ed3d3
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="bc3c15df-4042-4e01-9159-a077669a3c18"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="e7c85c10-1d9e-460d-a942-edd79fd9a878"
+        name="Switch - 7c85c"
+        class="actdia-item actdia-item-switch" transform="translate(32, 31)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 7c85c
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="9b87214c-abf9-4670-a78f-a9820712153d"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="a2a80a02-53d0-461a-b022-4f67be7df2a1"
+        name="Led - 2a80a"
+        class="actdia-item actdia-item-led" transform="translate(42, 30)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 2a80a
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="99adbc23-b43d-4424-9b15-c077d3c3d033"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="92abf1d5-3a9b-4867-9a3a-cc0cf0be1818"
+        name="Switch - 2abf1"
+        class="actdia-item actdia-item-switch" transform="translate(32, 34)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 2abf1
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="3b6fd127-77f8-4ab6-8e60-397ceea8ac8d"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="d6a1c4f1-fdb8-4063-aa2f-f00038fcece9"
+        name="Switch - 6a1c4"
+        class="actdia-item actdia-item-switch" transform="translate(32, 36)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 6a1c4
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="3c76417d-c179-481a-8a8d-b8b0a33670ff"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="82601d65-1ac5-486c-a86a-bb7cc76f6351"
+        name="Switch - 2601d"
+        class="actdia-item actdia-item-switch" transform="translate(32, 41)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - 2601d
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="28620cc4-2dd8-4d5e-ba2f-e5b6564491e1"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="bc92cddc-14cf-4b35-acdb-7f65e9b6d0a9"
+        name="Switch - c92cd"
+        class="actdia-item actdia-item-switch" transform="translate(32, 39)"
+        data-item-class="Switch"
+        data-url="../nodes/switch.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1"
+          y="-1.5"
+          width="2"
+          height="3"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="-0.5"
+            y="-1"
+            width="1"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+          >
+          </rect>
+          <rect
+            x="-0.3"
+            y="-0.6"
+            width="0.6"
+            height="1.2"
+            rx="0.3"
+            ry="0.3"
+          >
+          </rect>
+          <circle
+            name="knob"
+            fill="darkred"
+            stroke="darkred"
+            cx="0"
+            cy="0.3"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="0"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="0"
+            dy="0"
+          >
+            Switch - c92cd
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="9f916fb9-1d57-4fe7-ad3c-1dcbe72ab3b4"
+            transform=" translate(0, 1) rotate(90 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="e01e0438-cdab-4804-aa2d-4306925abef4"
+        name="Led - 01e04"
+        class="actdia-item actdia-item-led" transform="translate(42, 35)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 01e04
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="98df7884-417c-467f-9ac7-75a0d09fa9a3"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="d9f2c039-96ca-4790-bc43-2568a3815612"
+        name="Led - 9f2c0"
+        class="actdia-item actdia-item-led" transform="translate(42, 40)"
+        data-item-class="Led"
+        data-url="../nodes/electronic/led.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-1.5"
+          y="-1"
+          width="2"
+          height="2"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <circle
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+          <circle
+            fill="#FF0000"
+            opacity="1"
+            cx="-0.5"
+            cy="0"
+            r="0.4"
+          >
+          </circle>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="-0.5"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="-0.5"
+            dy="0"
+          >
+            Led - 9f2c0
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="60371f17-e21a-4852-93ca-88c4b41d99d6"
+            transform=" translate(-1, 0) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="c647177b-8fe0-4568-8c26-485a20f5d3d9"
+        name="IEEE Nor - 64717"
+        class="actdia-item actdia-item-ieeenor" transform="translate(36, 33)"
+        data-item-class="IEEENor"
+        data-url="../nodes/electronic/logic_gates/ieee-nor.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="3.5"
+            height="4"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="1.6"
+            y="2"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="1.6"
+              dy="0"
+            >
+              ≥1
+            </tspan>
+          </text>
+          <path
+            d="M 3.5 2 H 4 L 3.5 1.5"
+          >
+          </path>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            IEEE Nor - 64717
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="625821c6-f93f-43f8-9956-cd9d07cab626"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="2a0a8677-d7fb-4a1c-8772-95a94aeb0d99"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="1c08f009-6858-40d4-82d2-777dd7a68953"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="4426a30e-c759-4263-9a6f-962a424c3708"
+        name="IEEE Xnor - 426a3"
+        class="actdia-item actdia-item-ieeexnor" transform="translate(36, 38)"
+        data-item-class="IEEEXnor"
+        data-url="../nodes/electronic/logic_gates/ieee-xnor.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.5"
+          y="-0.5"
+          width="5"
+          height="5"
+        />
+        <g
+          class="actdia-shape"
+          transform=""
+        >
+          <rect
+            x="0"
+            y="0"
+            width="3.5"
+            height="4"
+            rx="0"
+            ry="0"
+          >
+          </rect>
+          <text
+            x="1.6"
+            y="2"
+            font-size="1"
+            style="dominant-baseline: central;"
+          >
+            <tspan
+              x="1.6"
+              dy="0"
+            >
+              =1
+            </tspan>
+          </text>
+          <path
+            d="M 3.5 2 H 4 L 3.5 1.5"
+          >
+          </path>
+        </g>
+        <text
+          class="actdia-node-name actdia-node-name"
+          x="2"
+          y="2"
+          font-size="1"
+          style="dominant-baseline: central;"
+        >
+          <tspan
+            x="2"
+            dy="0"
+          >
+            IEEE Xnor - 426a3
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="20366e54-a310-423a-b000-776c8d4fb4b9"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="a4620690-3924-4d39-a41f-d450bb9de178"
+            transform=" translate(0, 3) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="d010fb39-7371-44f8-b7fa-24537b801c92"
+            transform=" translate(4, 2)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+      class="actdia-others-layer"
+    >
+    </g>
+  </g>
+</svg>

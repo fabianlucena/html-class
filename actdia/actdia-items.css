@@ -1,0 +1,102 @@
+:root {
+  --stroke-width: .003em;
+}
+
+.actdia {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+  background-color: #dddddd;
+  color: #242424;
+  stroke-width: var(--stroke-width, 0.06);
+}
+
+.actdia-page {
+  fill: rgba(0, 0, 0, 0);
+  stroke: #C4C4C4;
+  stroke-dasharray: 1 .5;
+}
+
+.actdia-item,
+.print .actdia-item {
+  fill: #d1d1d1;
+  stroke: #474747;
+  stroke-dasharray: 0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.actdia-item text {
+  font-size: 1.2;
+  font-family: Arial;
+  stroke: none;
+  fill: #2e2e2e;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.actdia-item.full-filled {
+  fill: #747474;
+  stroke: #747474;
+}
+
+.actdia-item.actdia-item-connection {
+  fill: rgba(0, 0, 0, 0);
+  stroke: #949494;
+  stroke-dasharray: 0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.actdia-item.actdia-item-connection.actdia-selected {
+  stroke: #8080FF;
+}
+
+.actdia-item-connection .actdia-node-name {
+  display: none;
+}
+
+.actdia-node-name {
+  display: none;
+}
+
+.actdia-selection-box {
+  display: none;
+}
+
+.actdia-selected > .actdia-selection-box {
+  display: inline;
+  stroke: #8080FF;
+  fill: rgba(128, 128, 255, 0.1);
+  stroke-width: calc(var(--stroke-width, 0.06) * 2);
+  stroke-dasharray: calc(var(--stroke-width, 0.06) * 1.5) calc(var(--stroke-width, 0.06) * 3);
+}
+
+.actdia-item .hi {
+  fill: #80D080;
+}
+.actdia-item .lo {
+  fill: #D08080;
+}
+
+.actdia-item .updated {
+  fill: #8080D0;
+}
+
+.print {
+  .actdia-item .hi {
+    fill: #80D080;
+  }
+  .actdia-item .lo {
+    fill: #D08080;
+  }
+
+  .actdia-item .updated {
+    fill: #8080D0;
+  }
+}
