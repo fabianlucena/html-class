@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug en Firefox",
+      "type": "firefox",
+      "profile": "scdev",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "timeout": 5000,
+      "keepProfileChanges": true,
+      "reAttach": true,
+      "preLaunchTask": "Iniciar Vite"
+    }
+  ]
+}

@@ -1,0 +1,722 @@
+{
+  "actdia": {
+    "version": "0.1.0"
+  },
+  "imports": [
+    "./connection.js",
+    "./connector-in.js",
+    "./connector-out.js",
+    "./nodes/ai/perceptron.js",
+    "./nodes/electronic/led.js",
+    "./nodes/json_data.js",
+    "./nodes/pulse_generator.js",
+    "./nodes/selector.js",
+    "./nodes/unbus.js",
+    "./nodes/viewer.js"
+  ],
+  "locales": {
+    ".": [
+      "es"
+    ],
+    "./nodes": [
+      "es"
+    ],
+    "./nodes/electronic": [
+      "es"
+    ],
+    "./nodes/ai": [
+      "es"
+    ]
+  },
+  "nodes": [
+    {
+      "elementClass": "JsonData",
+      "url": "./nodes/json_data.js",
+      "id": "0f4f010c-09e3-4d37-a9d9-eff5eefbf3be",
+      "data": "[[0, 0, 0], [0, 1, 1],\n[1, 0, 1], [1, 1, 0]]",
+      "fqcn": "./nodes/json_data.js/JsonData",
+      "x": 2,
+      "y": 2,
+      "svgConnectors": {},
+      "name": "",
+      "description": "",
+      "connectors": [
+        {
+          "id": "7ca21cbb-94c2-40dd-9fba-c663b8739c4d",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              1,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "./nodes/viewer.js",
+      "id": "959faa91-ac0c-4f50-acf6-8552252593ad",
+      "fqcn": "./nodes/viewer.js/Viewer",
+      "x": 24,
+      "y": 2,
+      "svgConnectors": {},
+      "connectors": [
+        {
+          "id": "dfd5fb23-f51a-4b9f-9b7a-38effe8363e7",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "status": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "elementClass": "Selector",
+      "url": "./nodes/selector.js",
+      "id": "23b953ba-be61-4fcb-afe7-77d9b315132b",
+      "fqcn": "./nodes/selector.js/Selector",
+      "x": 17,
+      "y": 2,
+      "svgConnectors": {},
+      "connectors": [
+        {
+          "id": "f49d48d0-8d25-44a3-bdcd-1ba246746525",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "status": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "56bee3d4-f09d-4c8b-85f7-0e8dac41475f",
+          "direction": 4.71238898038469,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "status": false
+        },
+        {
+          "id": "8832bb3e-a9bc-496a-866e-3c8f48a8a4ea",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "elementClass": "PulseGenerator",
+      "url": "./nodes/pulse_generator.js",
+      "id": "b38dc037-df27-4907-b0ed-656af29622b1",
+      "fqcn": "./nodes/pulse_generator.js/PulseGenerator",
+      "x": 9,
+      "y": 9,
+      "svgConnectors": {},
+      "connectors": [
+        {
+          "id": "a60cd019-2ee3-4abd-bf1a-a7cd25f86c70",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": false
+        }
+      ]
+    },
+    {
+      "elementClass": "Unbus",
+      "url": "./nodes/unbus.js",
+      "id": "cb41fd64-263c-4d75-86f0-8d350932107f",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 1,
+        "height": 3
+      },
+      "fqcn": "./nodes/unbus.js/Unbus",
+      "x": 25,
+      "y": 10,
+      "svgConnectors": {},
+      "name": "",
+      "description": "",
+      "connectors": [
+        {
+          "id": "37b04af6-a9ac-46a1-855d-b6b6cc72c1c3",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "status": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "c519ac57-f90c-447b-82de-648a91fb0944",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": 0
+        },
+        {
+          "id": "e07bc76e-475a-4faf-8b66-0f4884900198",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": 0
+        },
+        {
+          "id": "8f4e43ad-971c-4046-acd9-19538a13fe44"
+        }
+      ]
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "./nodes/ai/perceptron.js",
+      "id": "81ac9f40-1ef2-40e4-a9c7-2e25e1e8b67e",
+      "formDefinition": [
+        {
+          "name": "inputsCount",
+          "type": "number",
+          "min": 1,
+          "_label": "Inputs count"
+        },
+        {
+          "name": "activationFunction",
+          "type": "select",
+          "_label": "Activation function",
+          "options": [
+            {
+              "value": "relu",
+              "label": "ReLU",
+              "title": "Rectified Linear Unit: f(x) = x for x > 0, else 0"
+            },
+            {
+              "value": "sigmoid",
+              "label": "Sigmoid",
+              "title": "Sigmoid function: f(x) = 1 / (1 + e^(-x))"
+            },
+            {
+              "value": "tanh",
+              "label": "Tanh",
+              "title": "Hyperbolic Tangent: f(x) = (e^x - e^(-x)) / (e^x + e^(-x))"
+            },
+            {
+              "value": "identity",
+              "label": "Identity",
+              "title": "Identity function: f(x) = x"
+            },
+            {
+              "value": "step",
+              "label": "Step",
+              "title": "Step function: f(x) = 1 for x >= 0, else 0"
+            },
+            {
+              "value": "softmax",
+              "label": "Softmax",
+              "title": "Softmax function: f(x) = e^(x_i) / Σ e^(x_j) for all j"
+            },
+            {
+              "value": "clamped",
+              "label": "Clamped",
+              "title": "Clamped function: f(x) = 0 for x < 0, f(x) = 1 for x > 1, else f(x) = x"
+            },
+            {
+              "value": "clampedSymmetric",
+              "label": "Clamped Symmetric",
+              "title": "Clamped Symmetric function: f(x) = -1 for x < -1, f(x) = 1 for x > 1, else f(x) = x"
+            },
+            {
+              "value": "leakyReLU",
+              "label": "Leaky ReLU",
+              "title": "Leaky Rectified Linear Unit: f(x) = x for x > 0, else 0.01 * x"
+            },
+            {
+              "value": "elu",
+              "label": "ELU",
+              "title": "Exponential Linear Unit: f(x) = x for x >= 0, else e^x - 1"
+            },
+            {
+              "value": "selu",
+              "label": "SELU",
+              "title": "Scaled Exponential Linear Unit: f(x) = 1.0507 * x for x >= 0, else 1.0507 * (e^x - 1)"
+            },
+            {
+              "value": "gelu",
+              "label": "GELU",
+              "title": "Gaussian Error Linear Unit: f(x) = 0.5 * x * (1 + tanh(√(2/π) * (x + 0.044715 * x³)))"
+            },
+            {
+              "value": "swish",
+              "label": "Swish / SiLU",
+              "title": "Swish / Sigmoid Linear Unit: f(x) = x / (1 + e^(-x))"
+            }
+          ]
+        },
+        {
+          "name": "bias",
+          "type": "number",
+          "_label": "Bias",
+          "step": "any"
+        },
+        {
+          "name": "weights",
+          "type": "list",
+          "_label": "Weights",
+          "item": {
+            "type": "number",
+            "step": "any"
+          }
+        }
+      ],
+      "weights": [
+        -0.5619806048017963
+      ],
+      "fqcn": "./nodes/ai/perceptron.js/Perceptron",
+      "x": 30,
+      "y": 10,
+      "svgConnectors": {},
+      "bias": 3,
+      "name": "",
+      "description": "",
+      "connectors": [
+        {
+          "id": "7740a865-d9ec-4a85-a35c-9e884d205c3c",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": 2.8577223804672998
+        },
+        {
+          "id": "2eb22294-d563-4c9c-8d16-b5b560f35a3b",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "y": 0.9999999999999999,
+          "status": 0
+        }
+      ],
+      "activationFunction": "swish"
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "./nodes/ai/perceptron.js",
+      "id": "442c55fe-a9dd-4dca-bad1-b5f3d829680b",
+      "weights": [
+        -0.0716335797756793
+      ],
+      "fqcn": "./nodes/ai/perceptron.js/Perceptron",
+      "x": 30,
+      "y": 14,
+      "svgConnectors": {},
+      "connectors": [
+        {
+          "id": "c371e70e-fffb-490b-84a4-7a4b24eeca2b",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": 0
+        },
+        {
+          "id": "50eef106-cef8-4f1d-bc2d-3075ef10674b",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "y": 0.9999999999999999,
+          "status": 0
+        }
+      ],
+      "activationFunction": "relu"
+    },
+    {
+      "elementClass": "Perceptron",
+      "url": "./nodes/ai/perceptron.js",
+      "id": "0f0d37f6-e17d-46e7-a7f8-22954d279ca7",
+      "weights": [
+        2.94303181259607,
+        3.627557936955288
+      ],
+      "fqcn": "./nodes/ai/perceptron.js/Perceptron",
+      "x": 34,
+      "y": 12,
+      "svgConnectors": {},
+      "name": "",
+      "description": "",
+      "bias": 1,
+      "connectors": [
+        {
+          "id": "1407d943-f3e7-43c4-8a95-d9102802c50a",
+          "direction": 0,
+          "accepts": [
+            "in"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorOut",
+          "url": "./connector-out.js",
+          "fqcn": "./connector-out.js/ConnectorOut",
+          "_label": "ConnectorOut",
+          "status": 9.40959750578742
+        },
+        {
+          "id": "64da842b-ed1b-489b-9cb8-ac6529a3c272",
+          "direction": 2.3316743368651056,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "x": 0.3104424071998706,
+          "y": 0.2757691485364001,
+          "status": 2.8577223804672998
+        },
+        {
+          "id": "13e44185-2924-4445-9053-15aa23e6f433"
+        }
+      ],
+      "activationFunction": "swish"
+    },
+    {
+      "elementClass": "Led",
+      "url": "./nodes/electronic/led.js",
+      "id": "7ccd2679-0c06-4bd6-ae03-f23bf4cb13b0",
+      "fqcn": "./nodes/electronic/led.js/Led",
+      "x": 39,
+      "y": 12,
+      "svgConnectors": {},
+      "connectors": [
+        {
+          "id": "ff069305-05f5-422b-b917-9d0e47fdf123",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "status": 9.40959750578742
+        }
+      ]
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "./nodes/viewer.js",
+      "id": "ae7fe7b8-5982-423a-af98-f70fc77f075e",
+      "fqcn": "./nodes/viewer.js/Viewer",
+      "x": 45,
+      "y": 17,
+      "svgConnectors": {},
+      "connectors": [
+        {
+          "id": "3920d048-1144-46bf-8c3a-ecb2ad7ae38a",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "status": 9.40959750578742
+        }
+      ]
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "./nodes/viewer.js",
+      "id": "801453c9-e3cf-4172-8f68-07400170d9a4",
+      "fqcn": "./nodes/viewer.js/Viewer",
+      "x": 45,
+      "y": 8,
+      "svgConnectors": {},
+      "connectors": [
+        {
+          "id": "5a8d165b-60d6-4915-bfa1-180c0840ac2f",
+          "direction": 3.141592653589793,
+          "accepts": [
+            "out"
+          ],
+          "multiple": false,
+          "elementClass": "ConnectorIn",
+          "url": "./connector-in.js",
+          "fqcn": "./connector-in.js/ConnectorIn",
+          "_label": "ConnectorIn",
+          "status": 2.8577223804672998
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "0c43404e-d1ef-43c1-af51-da69c21859d5",
+      "from": {
+        "connector": "a60cd019-2ee3-4abd-bf1a-a7cd25f86c70",
+        "item": "b38dc037-df27-4907-b0ed-656af29622b1"
+      },
+      "to": {
+        "connector": "56bee3d4-f09d-4c8b-85f7-0e8dac41475f",
+        "item": "23b953ba-be61-4fcb-afe7-77d9b315132b"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "8372a485-a545-41ce-81f0-9e04fa7d4a1d",
+      "from": {
+        "connector": "7ca21cbb-94c2-40dd-9fba-c663b8739c4d",
+        "item": "0f4f010c-09e3-4d37-a9d9-eff5eefbf3be"
+      },
+      "to": {
+        "connector": "f49d48d0-8d25-44a3-bdcd-1ba246746525",
+        "item": "23b953ba-be61-4fcb-afe7-77d9b315132b"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "cb322330-8507-4f61-b739-db58e23367c2",
+      "from": {
+        "connector": "8832bb3e-a9bc-496a-866e-3c8f48a8a4ea",
+        "item": "23b953ba-be61-4fcb-afe7-77d9b315132b"
+      },
+      "to": {
+        "connector": "dfd5fb23-f51a-4b9f-9b7a-38effe8363e7",
+        "item": "959faa91-ac0c-4f50-acf6-8552252593ad"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "312272a0-28c5-4c25-80cc-08124a7c9d4e",
+      "from": {
+        "connector": "8832bb3e-a9bc-496a-866e-3c8f48a8a4ea",
+        "item": "23b953ba-be61-4fcb-afe7-77d9b315132b"
+      },
+      "to": {
+        "connector": "37b04af6-a9ac-46a1-855d-b6b6cc72c1c3",
+        "item": "cb41fd64-263c-4d75-86f0-8d350932107f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "557e77d4-dbaf-412a-a110-7afbb4e4097a",
+      "from": {
+        "connector": "c519ac57-f90c-447b-82de-648a91fb0944",
+        "item": "cb41fd64-263c-4d75-86f0-8d350932107f"
+      },
+      "to": {
+        "connector": "2eb22294-d563-4c9c-8d16-b5b560f35a3b",
+        "item": "81ac9f40-1ef2-40e4-a9c7-2e25e1e8b67e"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9c3eea9a-0a25-4bf6-aff7-6bf773a3b427",
+      "from": {
+        "connector": "e07bc76e-475a-4faf-8b66-0f4884900198",
+        "item": "cb41fd64-263c-4d75-86f0-8d350932107f"
+      },
+      "to": {
+        "connector": "50eef106-cef8-4f1d-bc2d-3075ef10674b",
+        "item": "442c55fe-a9dd-4dca-bad1-b5f3d829680b"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f73f93e7-7a87-4c60-b812-26252084d057",
+      "from": {
+        "connector": "7740a865-d9ec-4a85-a35c-9e884d205c3c",
+        "item": "81ac9f40-1ef2-40e4-a9c7-2e25e1e8b67e"
+      },
+      "to": {
+        "connector": "64da842b-ed1b-489b-9cb8-ac6529a3c272",
+        "item": "0f0d37f6-e17d-46e7-a7f8-22954d279ca7"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "97c3c091-5295-46b1-b200-fe39efedd496",
+      "from": {
+        "connector": "c371e70e-fffb-490b-84a4-7a4b24eeca2b",
+        "item": "442c55fe-a9dd-4dca-bad1-b5f3d829680b"
+      },
+      "to": {
+        "connector": "13e44185-2924-4445-9053-15aa23e6f433",
+        "item": "0f0d37f6-e17d-46e7-a7f8-22954d279ca7"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "35e8ecd4-69a8-4384-889c-c0cb17dd841a",
+      "from": {
+        "connector": "1407d943-f3e7-43c4-8a95-d9102802c50a",
+        "item": "0f0d37f6-e17d-46e7-a7f8-22954d279ca7"
+      },
+      "to": {
+        "connector": "ff069305-05f5-422b-b917-9d0e47fdf123",
+        "item": "7ccd2679-0c06-4bd6-ae03-f23bf4cb13b0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "5bf91ef5-9132-4341-ad17-7e10d854ed12",
+      "from": {
+        "connector": "1407d943-f3e7-43c4-8a95-d9102802c50a",
+        "item": "0f0d37f6-e17d-46e7-a7f8-22954d279ca7"
+      },
+      "to": {
+        "connector": "3920d048-1144-46bf-8c3a-ecb2ad7ae38a",
+        "item": "ae7fe7b8-5982-423a-af98-f70fc77f075e"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "2d45c5c6-11ca-47d8-9d01-3e67d1a60623",
+      "from": {
+        "connector": "7740a865-d9ec-4a85-a35c-9e884d205c3c",
+        "item": "81ac9f40-1ef2-40e4-a9c7-2e25e1e8b67e"
+      },
+      "to": {
+        "connector": "5a8d165b-60d6-4915-bfa1-180c0840ac2f",
+        "item": "801453c9-e3cf-4172-8f68-07400170d9a4"
+      }
+    }
+  ]
+}
