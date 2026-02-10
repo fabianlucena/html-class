@@ -1,0 +1,30 @@
+.proj-navigator {
+  display: flex;
+  gap: 0.15em;
+  background: #eee;
+}
+
+.proj-navigator button {
+  padding: .5em;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.proj-navigator button:not(:first-child) {
+  border-left: 1px dotted #bbb;
+}
+
+.proj-navigator button.active::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: .5em solid transparent;
+  border-right: .5em solid transparent;
+  border-top: .5em solid #bbb;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}

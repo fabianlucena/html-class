@@ -1,0 +1,22 @@
+.cards-screen-issues {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: .2em;
+}
+
+.cards-screen-issue {
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: .5em;
+  border-radius: .25em;
+  border: .1em solid #ccc;
+}
+
+.cards-screen-issue .label {
+  background-color: #007bff;
+  color: white;
+  padding: .1em .3em;
+  border-radius: .2em;
+  margin-right: .2em;
+}
