@@ -1,5 +1,5 @@
-import Screen from './screen';
-import { _ } from '../locale/locale';
+import Screen from './screen.js';
+import { _ } from '../locale/locale.js';
 
 export default class GanttScreen extends Screen {
   constructor(options = {}) {

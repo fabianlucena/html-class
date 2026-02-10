@@ -1,7 +1,9 @@
-import './screen.css';
-import Base from '../utils/base';
-import { _ } from '../locale/locale';
-import { newId } from '../utils/id';
+import { importCss } from '../utils/import-css.js';
+import Base from '../utils/base.js';
+import { _ } from '../locale/locale.js';
+import { newId } from '../utils/id.js';
+
+importCss('./screen.css', import.meta.url);
 
 export default class Screen extends Base {
   #name = '';

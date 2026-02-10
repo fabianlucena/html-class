@@ -1,5 +1,5 @@
+import { importCss } from '../utils/import-css.js';
 import actdiaItemsCss from './actdia-items.css?raw';
-import './actdia.css';
 import Element from './element.js';
 import Item from './item.js';
 import Node from './node.js';
@@ -11,6 +11,8 @@ import { getPath } from '../utils/string.js';
 import { newId } from '../utils/id.js';
 import { _ } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
+
+importCss('./actdia.css', import.meta.url);
 
 export default class ActDia {
   style = {

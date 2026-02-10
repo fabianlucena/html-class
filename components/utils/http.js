@@ -1,4 +1,4 @@
-import { _ } from '../locale/locale';
+import { _ } from '../locale/locale.js';
 
 export function getStatusText(status) {
   if (status === null)

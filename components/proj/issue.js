@@ -1,6 +1,6 @@
-import { _, _f, dateTimeSmallFormatNoSeconds, onLanguageLoaded } from '../locale/locale';
-import { newId } from '../utils/id';
-import getOptions from './options';
+import { _, _f, dateTimeSmallFormatNoSeconds, onLanguageLoaded } from '../locale/locale.js';
+import { newId } from '../utils/id.js';
+import getOptions from './options.js';
 
 export default class Issue {
   static fields = [

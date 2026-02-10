@@ -1,9 +1,10 @@
-import './form.css';
+import { importCss } from '../utils/import-css.js';
 import { _, addLocaleUrl } from '../locale/locale.js';
 import Base from '../utils/base';
 import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
 import { newId } from '../utils/id.js';
 
+importCss('./form.css', import.meta.url);
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
 export default class Form extends Base {

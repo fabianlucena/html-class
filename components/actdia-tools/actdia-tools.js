@@ -1,9 +1,11 @@
-import './actdia-tools.css';
+import { importCss } from '../utils/import-css.js';
 import Item from '../actdia/item.js';
 import { escapeHTML } from '../utils/html.js';
 import Dialog from '../dialog/dialog.js';
 import { _ } from '../locale/locale.js';
 import { pushNotification } from '../notistack/notistack.js';
+
+importCss('./actdia-tools.css', import.meta.url);
 
 export default class ActDiaTools {
   tools = [

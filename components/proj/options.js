@@ -1,4 +1,4 @@
-import { _, onLanguageLoaded } from '../locale/locale';
+import { _, onLanguageLoaded } from '../locale/locale.js';
 
 onLanguageLoaded(updateTranslations);
 

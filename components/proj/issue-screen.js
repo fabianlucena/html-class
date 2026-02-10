@@ -1,7 +1,7 @@
-import Screen from './screen';
-import { _ } from '../locale/locale';
-import Form from '../form/form';
-import Issue from './issue';
+import Screen from './screen.js';
+import { _ } from '../locale/locale.js';
+import Form from '../form/form.js';
+import Issue from './issue.js';
 
 export default class IssueScreen extends Screen {
   button = false;

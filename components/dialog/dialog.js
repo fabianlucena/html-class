@@ -1,5 +1,7 @@
-import './dialog.css';
+import { importCss } from '../utils/import-css.js';
 import { _, addLocaleUrl } from '../locale/locale.js';
+
+importCss('./dialog.css', import.meta.url);
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 

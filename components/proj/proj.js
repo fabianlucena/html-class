@@ -1,9 +1,11 @@
-import './proj.css';
-import Base from '../utils/base';
-import Issue from './issue';
-import { addLocaleUrl } from '../locale/locale';
-import { navigate, registerRouter } from '../router/router';
-import IssueScreen from './issue-screen';
+import { importCss } from '../utils/import-css.js';
+import Base from '../utils/base.js';
+import Issue from './issue.js';
+import { addLocaleUrl } from '../locale/locale.js';
+import { navigate, registerRouter } from '../router/router.js';
+import IssueScreen from './issue-screen.js';
+
+importCss('./proj.css', import.meta.url);
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 

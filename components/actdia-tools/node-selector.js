@@ -1,7 +1,9 @@
-import './node-selector.css';
+import { importCss } from '../utils/import-css.js';
 import Dialog from '../dialog/dialog.js';
 import Item from '../actdia/item.js';
 import { _ } from '../locale/locale.js';
+
+importCss('./node-selector.css', import.meta.url);
 
 export default class NodeSelector extends Dialog {
   breadcrumbsContainer = null;

@@ -1,8 +1,10 @@
-import './style.css';
-import Proj from '../../components/proj/proj';
-import GanttScreen from '../../components/proj/gantt-screen';
-import CardsScreen from '../../components/proj/cards-screen';
-import { loadLanguage } from '../../components/locale/locale';
+import { importCss } from '../../components/utils/import-css.js';
+import Proj from '../../components/proj/proj.js';
+import GanttScreen from '../../components/proj/gantt-screen.js';
+import CardsScreen from '../../components/proj/cards-screen.js';
+import { loadLanguage } from '../../components/locale/locale.js';
+
+importCss('./style.css', import.meta.url);
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadLanguage();

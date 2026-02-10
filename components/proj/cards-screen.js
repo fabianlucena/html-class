@@ -1,9 +1,11 @@
-import './cards-screen.css';
-import Screen from './screen';
-import Issue from './issue';
-import { _ } from '../locale/locale';
-import { navigate } from '../router/router';
-import { getValueByPath } from '../utils/object';
+import { importCss } from '../utils/import-css.js';
+import Screen from './screen.js';
+import Issue from './issue.js';
+import { _ } from '../locale/locale.js';
+import { navigate } from '../router/router.js';
+import { getValueByPath } from '../utils/object.js';
+
+importCss('./cards-screen.css', import.meta.url);
 
 export default class CardsScreen extends Screen {
   #issuesElement = null;

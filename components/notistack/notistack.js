@@ -1,4 +1,6 @@
-import './notistack.css';
+import { importCss } from '../utils/import-css.js';
+
+importCss('./notistack.css', import.meta.url);
 
 export let container;
 
