@@ -173,6 +173,9 @@ export default function create({ Node, _ }) {
       }
     }
 
+    minInitialValue = -5;
+    maxInitialValue = 5;
+    bias = null;
     weights = [];
     #activationFunction = 'relu';
     #func = activationFunctions.relu.func;
@@ -231,11 +234,13 @@ export default function create({ Node, _ }) {
         input.connections?.forEach(conn => conn.update());
       }
 
+      const range = this.maxInitialValue - this.minInitialValue;
+      this.bias ??= Math.random() * range + this.minInitialValue;
       this.weights ??= [];
       this.weights = this.weights?.slice(0, inputs.length);
       if (this.weights.length < inputs.length) {
         for (let i = this.weights.length; i < inputs.length; i++) {
-          this.weights.push(Math.random() * 10 - 5);
+          this.weights.push(Math.random() * range + this.minInitialValue);
         }
       }
 
