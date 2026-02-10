@@ -1,7 +1,7 @@
 import ActDia from '../actdia/actdia.js';
 import NodeSelector from './node-selector.js';
 import NodeForm from './node-form.js';
-import { _, addUrlTranslationsTable } from '../locale/locale.js';
+import { _, addUrlTranslationsTable, loadLanguage } from '../locale/locale.js';
 import { pushNotification, container as notificationContainer } from '../notistack/notistack.js';
 import '../drag/drag.js';
 import ActDiaTools from './actdia-tools.js';
@@ -20,6 +20,8 @@ window.addEventListener('beforeprint', () => notificationContainer.style.display
 window.addEventListener('afterprint', () => notificationContainer.style.display = '');
 
 window.addEventListener('DOMContentLoaded', async () => {
+  await loadLanguage();
+
   container = document.querySelector('#actdia');
   actdia = new ActDia({ container, editable: true });
   await actdia.init();
