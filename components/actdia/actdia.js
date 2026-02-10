@@ -1,5 +1,5 @@
 import { importCss } from '../utils/import-css.js';
-import actdiaItemsCss from './actdia-items.css?raw';
+//import actdiaItemsCss from './actdia-items.css?raw';
 import Element from './element.js';
 import Item from './item.js';
 import Node from './node.js';
@@ -627,7 +627,7 @@ export default class ActDia {
       itemsOptions = { escapeHTML: true, ...options, prefix: layersOptions.prefix + options.tab };
 
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${this.svg.clientWidth}" height="${this.svg.clientHeight}">`
-        + (options.includeStyles && this.getSVGStyles(layersOptions) || '')
+        + (options.includeStyles && await this.getSVGStyles(layersOptions) || '')
         + baseOptions.prefix + '<g'
           + layersOptions.prefix + `class="actdia"`
           + layersOptions.prefix + `transform="scale(${this.style.sx},${this.style.sy})"`
@@ -665,14 +665,22 @@ export default class ActDia {
     return svg;
   }
 
-  getSVGStyles(options) {
+  static actdiaItemsCss = null;
+  async getSVGStyles(options) {
+    if (ActDia.actdiaItemsCss === null) {
+      const url = new URL('/actdia-items.css', import.meta.url);
+      const res = await fetch(url);
+      ActDia.actdiaItemsCss = await res.text();
+      console.log(ActDia.actdiaItemsCss);
+    }
+
     options ??= {};
     options.prefix ??= '\n';
     options.tab ??= ' ';
 
     const prefix1 = options.prefix + options.tab;
     return options.prefix + '<style>'
-        + prefix1 + actdiaItemsCss.replace(/\n/g, prefix1)
+        + prefix1 + ActDia.actdiaItemsCss.replace(/\n/g, prefix1)
       + options.prefix + '</style>';
   }
 
