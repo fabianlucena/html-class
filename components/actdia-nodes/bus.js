@@ -59,7 +59,6 @@ export default function create({ Node }) {
     }
 
     update() {
-      console.log('updating bus', this.channelWidth);
       const height = Math.max(this.channelWidth, 1);
       this.box.height = height;
       this.shape.height = height;
