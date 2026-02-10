@@ -5,7 +5,7 @@ import { addUrlTranslationsTable } from '../locale/locale';
 import { navigate, registerRouter } from '../router/router';
 import IssueScreen from './issue-screen';
 
-addUrlTranslationsTable('/translations', ['es-AR'], { file: import.meta.url });
+addUrlTranslationsTable('/locale', ['es-AR'], { file: import.meta.url });
 
 export default class Proj extends Base {
   #navigator = null;
