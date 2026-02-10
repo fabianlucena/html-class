@@ -58,11 +58,10 @@ export default class Form extends Base {
     if (!this.data)
       return;
 
-    const name = field.field || field.name;
-    if (!name)
+    if (!field.name)
       return;
 
-    return getValueByPath(this.data, name);
+    return getValueByPath(this.data, field.name);
   }
 
   setValue(field, value) {

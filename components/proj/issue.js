@@ -5,7 +5,7 @@ import getOptions from './options';
 export default class Issue {
   static fields = [
     {
-      field: 'id',
+      name: 'id',
       label: 'ID',
       _label: _f('ID'),
       description: 'Unique identifier of the issue',
@@ -15,21 +15,21 @@ export default class Issue {
       type: 'id',
     },
     {
-      field: 'title',
+      name: 'title',
       _label: _f('Title'),
       _description: _f('Short summary of the issue'),
       _defaultValue: _f('Untitled issue'),
       type: 'text',
     },
     {
-      field: 'description',
+      name: 'description',
       _label: _f('Description'),
       _description: _f('Detailed information about the issue'),
       _defaultValue: _f('No description'),
       type: 'textarea',
     },
     {
-      field: 'assignee',
+      name: 'assignee',
       _label: _f('Assignee'),
       _description: _f('Person responsible for resolving the issue'),
       _defaultValue: _f('Unassigned'),
@@ -37,7 +37,7 @@ export default class Issue {
       options: getOptions('assignees'),
     },
     {
-      field: 'createdAt',
+      name: 'createdAt',
       _label: _f('Created at'),
       _description: _f('Date and time when the issue was created'),
       _defaultValue: _f('Unknown date'),
@@ -45,7 +45,7 @@ export default class Issue {
       type: 'datetime',
     },
     {
-      field: 'status',
+      name: 'status',
       _label: _f('Status'),
       _defaultValue: _f('No status'),
       _description: _f('Current state of the issue (e.g., open, in progress, closed)'),
@@ -54,7 +54,7 @@ export default class Issue {
       options: getOptions('statuses'),
     },
     {
-      field: 'priority',
+      name: 'priority',
       _label: _f('Priority'),
       _description: _f('Importance level of the issue'),
       _defaultValue: _f('No priority'),
@@ -63,7 +63,7 @@ export default class Issue {
       options: getOptions('priorities'),
     },
     {
-      field: 'reporter',
+      name: 'reporter',
       _label: _f('Reporter'),
       _description: _f('Person who reported the issue'),
       _defaultValue: _f('Unknown'),
@@ -72,7 +72,7 @@ export default class Issue {
       options: getOptions('reporters'),
     },
     {
-      field: 'labels',
+      name: 'labels',
       _label: _f('Labels'),
       _description: _f('Labels associated with the issue'),
       _defaultValue: _f('No labels'),
@@ -80,7 +80,7 @@ export default class Issue {
       type: 'tags',
     },
     {
-      field: 'tags',
+      name: 'tags',
       _label: _f('Tags'),
       _description: _f('Tags associated with the issue'),
       _defaultValue: _f('No tags'),
@@ -88,7 +88,7 @@ export default class Issue {
       type: 'tags',
     },
     {
-      field: 'estimation',
+      name: 'estimation',
       _label: _f('Estimation'),
       _description: _f('Estimated complexity used to calculate the expected duration and cost'),
       _defaultValue: _f('No estimation'),
@@ -96,7 +96,7 @@ export default class Issue {
       type: 'number',
     },
     {
-      field: 'scheduledStart',
+      name: 'scheduledStart',
       _label: _f('Scheduled start'),
       _description: _f('Planned start date and time for working on the issue'),
       _defaultValue: _f('No scheduled start'),
@@ -105,7 +105,7 @@ export default class Issue {
       type: 'datetime',
     },
     {
-      field: 'estimatedDuration',
+      name: 'estimatedDuration',
       _label: _f('Estimated duration'),
       _description: _f('Estimated time to resolve the issue (e.g., "3h", "2d")'),
       _defaultValue: _f('No estimated duration'),
@@ -113,7 +113,7 @@ export default class Issue {
       type: 'duration',
     },
     {
-      field: 'dueDate',
+      name: 'dueDate',
       _label: _f('Due date'),
       _description: _f('Deadline or expected completion date for the issue'),
       _defaultValue: _f('No due date'),
@@ -122,7 +122,7 @@ export default class Issue {
       type: 'datetime',
     },
     {
-      field: 'actualStart',
+      name: 'actualStart',
       _label: _f('Actual start'),
       _description: _f('The date and time when work on the issue actually began'),
       _defaultValue: _f('Not started'),
@@ -131,7 +131,7 @@ export default class Issue {
       type: 'datetime',
     },
     {
-      field: 'actualEnd',
+      name: 'actualEnd',
       _label: _f('Actual end'),
       _description: _f('The date and time when work on the issue was completed'),
       _defaultValue: _f('Not completed'),

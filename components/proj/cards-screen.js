@@ -57,8 +57,8 @@ export default class CardsScreen extends Screen {
 
       let body = '';
       Issue.fields.forEach(field => {
-        if (field.field) {
-          let value = issue[field.field];
+        if (field.name) {
+          let value = issue[field.name];
           if (value) {
             if (field.formater) {
               value = field.formater(value);
@@ -75,7 +75,7 @@ export default class CardsScreen extends Screen {
             value = field.defaultValue || '';
           }
 
-          body += `<div class="${field.field}" title="${field.description}"><strong>${field.label}:</strong> ${value}</div>`;
+          body += `<div class="${field.name}" title="${field.description}"><strong>${field.label}:</strong> ${value}</div>`;
         } else if (field.type === 'button') {
           body += `<button class="edit-issue" data-link="issue/${issue.id}">${field.label}</button>`;
         }
