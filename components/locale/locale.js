@@ -1,3 +1,5 @@
+import { getPath } from '../utils/path.js';
+
 let translations = {};
 let language = (navigator.language || navigator.userLanguage || 'en')
   .split('-')[0]
@@ -15,8 +17,7 @@ export function onLanguageLoaded(callback) {
 
 export function addLocaleUrl(url, languages, options = {}) {
   if (options.file) {
-    const fileUrl = new URL(options.file);
-    const currentDir = fileUrl.pathname.substring(0, fileUrl.pathname.lastIndexOf('/'));
+    const currentDir = getPath(options.file);
     url = currentDir + url;
   }
   
@@ -32,7 +33,6 @@ export function format(text, ...args) {
   text = text.replace(/%s/g, () => _args.shift());
   return text.replace(/{(\d+)}/g, (match, number) => typeof args[number] !== 'undefined' ? args[number] : match);
 }
-
 
 export function _(text, ...args) {
   if (typeof text !== 'string') {
@@ -53,20 +53,25 @@ export async function loadLanguage(newLang) {
 
   translations = {};
   for (const { url, languages } of urlTranslationsTables) {
-    if (!languages.includes(language)) {
-      continue;
-    }
-
-    const importUrl = `${url}/${language}.js`;
-    try {
-      const table = (await import(/* @vite-ignore */ importUrl)).default;
-      Object.assign(translations, table);
-    } catch (error) {
-      console.error(`Error loading translations from ${importUrl}:`, error);
-    }
+    await loadLocale(url, { languages });
   }
 
   onLanguageLoadedCallbacks.forEach(callback => callback());
+}
+
+export async function loadLocale(url, options = {}) {
+  const lang = options.lang || language;
+  if (!options.languages.includes(lang)) {
+    return;
+  }
+  
+  const importUrl = `${url}/${lang}.js`;
+  try {
+    const table = (await import(/* @vite-ignore */ importUrl)).default;
+    Object.assign(translations, table);
+  } catch (error) {
+    console.error(`Error loading translations from ${importUrl}:`, error);
+  }
 }
 
 export function dateTimeSmallFormatNoSeconds(date) {
