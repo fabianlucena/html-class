@@ -1,11 +1,11 @@
 import './proj.css';
 import Base from '../utils/base';
 import Issue from './issue';
-import { addUrlTranslationsTable } from '../locale/locale';
+import { addLocaleUrl } from '../locale/locale';
 import { navigate, registerRouter } from '../router/router';
 import IssueScreen from './issue-screen';
 
-addUrlTranslationsTable('/locale', ['es-AR'], { file: import.meta.url });
+addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
 export default class Proj extends Base {
   #navigator = null;

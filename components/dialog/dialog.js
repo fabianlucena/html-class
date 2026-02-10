@@ -1,7 +1,7 @@
 import './dialog.css';
-import { _, addUrlTranslationsTable } from '../locale/locale.js';
+import { _, addLocaleUrl } from '../locale/locale.js';
 
-addUrlTranslationsTable('/locale', ['es-AR'], { file: import.meta.url });
+addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
 export default class Dialog {
   onClose = null;

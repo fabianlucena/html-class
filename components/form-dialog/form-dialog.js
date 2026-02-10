@@ -1,8 +1,8 @@
 import Form from '../form/form.js';
 import Dialog from '../dialog/dialog.js';
-import { _, addUrlTranslationsTable } from '../locale/locale.js';
+import { _, addLocaleUrl } from '../locale/locale.js';
 
-addUrlTranslationsTable('/locale', ['es-AR'], { file: import.meta.url });
+addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
 export class FormDialog extends Dialog {
   constructor(options = {}) {

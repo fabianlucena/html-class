@@ -1,13 +1,13 @@
 import ActDia from '../actdia/actdia.js';
 import NodeSelector from './node-selector.js';
 import NodeForm from './node-form.js';
-import { _, addUrlTranslationsTable, loadLanguage } from '../locale/locale.js';
+import { _, addLocaleUrl, loadLanguage } from '../locale/locale.js';
 import { pushNotification, container as notificationContainer } from '../notistack/notistack.js';
 import '../drag/drag.js';
 import ActDiaTools from './actdia-tools.js';
 import { newId } from '../utils/id.js';
 
-addUrlTranslationsTable('/locale', ['es'], { file: import.meta.url });
+addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
 let container = null,
   actdia = null,

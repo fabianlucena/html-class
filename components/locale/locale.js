@@ -13,7 +13,7 @@ export function onLanguageLoaded(callback) {
   }
 }
 
-export function addUrlTranslationsTable(url, languages, options = {}) {
+export function addLocaleUrl(url, languages, options = {}) {
   if (options.file) {
     const fileUrl = new URL(options.file);
     const currentDir = fileUrl.pathname.substring(0, fileUrl.pathname.lastIndexOf('/'));
