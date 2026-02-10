@@ -43,7 +43,7 @@ export default function create({ Node }) {
     box = {
       x: 0,
       y: 0,
-      width: 12,
+      width: 15,
       height: 4,
     };
 
