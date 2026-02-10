@@ -1,6 +1,6 @@
 import { importCss } from '../utils/import-css.js';
 import { _, addLocaleUrl } from '../locale/locale.js';
-import Base from '../utils/base';
+import Base from '../utils/base.js';
 import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
 import { newId } from '../utils/id.js';
 
