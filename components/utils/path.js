@@ -1,6 +1,12 @@
 export function getPath(urlString) {
-  const fileUrl = new URL(urlString);
-  const currentDir = fileUrl.pathname.substring(0, fileUrl.pathname.lastIndexOf('/'));
-  
-  return currentDir;
+  let path;
+
+  try {
+    const fileUrl = new URL(urlString);
+    path = fileUrl.pathname.substring(0, fileUrl.pathname.lastIndexOf('/'));
+  } catch (error) {
+    path = urlString.replace(/\/[^\/]*$/, '');
+  }
+
+  return path;
 }
