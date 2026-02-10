@@ -689,7 +689,7 @@
         name="Text - dad9e"
         class="actdia-item actdia-item-text" transform="translate(24.27777777777778, 1.833333333333334)"
         data-item-class="Text"
-        data-url="../nodes/text.js"
+        data-url="../actdia-nodes/text.js"
       >
         <rect
           class="actdia-selection-box"
@@ -745,7 +745,7 @@
         name="Led - 7ac6b"
         class="actdia-item actdia-item-led" transform="translate(24, 10)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -815,7 +815,7 @@
         name="Switch - 807b8"
         class="actdia-item actdia-item-switch" transform="translate(14, 9)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -898,7 +898,7 @@
         name="Switch - 842e1"
         class="actdia-item actdia-item-switch" transform="translate(14, 11)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -981,7 +981,7 @@
         name="And - ab692"
         class="actdia-item actdia-item-and" transform="translate(18, 8)"
         data-item-class="And"
-        data-url="../nodes/electronic/logic_gates/and.js"
+        data-url="../actdia-nodes/electronic/logic_gates/and.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1073,7 +1073,7 @@
         name="Or - a193a"
         class="actdia-item actdia-item-or" transform="translate(18, 13)"
         data-item-class="Or"
-        data-url="../nodes/electronic/logic_gates/or.js"
+        data-url="../actdia-nodes/electronic/logic_gates/or.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1165,7 +1165,7 @@
         name="Switch - 30692"
         class="actdia-item actdia-item-switch" transform="translate(14, 14)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1248,7 +1248,7 @@
         name="Switch - 7dcd9"
         class="actdia-item actdia-item-switch" transform="translate(14, 16)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1331,7 +1331,7 @@
         name="Led - e380c"
         class="actdia-item actdia-item-led" transform="translate(24, 15)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1401,7 +1401,7 @@
         name="Xor - 3623d"
         class="actdia-item actdia-item-xor" transform="translate(18, 18)"
         data-item-class="Xor"
-        data-url="../nodes/electronic/logic_gates/xor.js"
+        data-url="../actdia-nodes/electronic/logic_gates/xor.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1502,7 +1502,7 @@
         name="Switch - dadf2"
         class="actdia-item actdia-item-switch" transform="translate(14, 19)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1585,7 +1585,7 @@
         name="Switch - b0324"
         class="actdia-item actdia-item-switch" transform="translate(14, 21)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1668,7 +1668,7 @@
         name="Led - a72d2"
         class="actdia-item actdia-item-led" transform="translate(24, 20)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1738,7 +1738,7 @@
         name="Switch - d5067"
         class="actdia-item actdia-item-switch" transform="translate(14, 6)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1821,7 +1821,7 @@
         name="Buffer - cfc0d"
         class="actdia-item actdia-item-buffer" transform="translate(19, 5)"
         data-item-class="Buffer"
-        data-url="../nodes/electronic/logic_gates/buffer.js"
+        data-url="../actdia-nodes/electronic/logic_gates/buffer.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1895,7 +1895,7 @@
         name="Led - e7357"
         class="actdia-item actdia-item-led" transform="translate(24, 6)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1965,7 +1965,7 @@
         name="Switch - 7caf4"
         class="actdia-item actdia-item-switch" transform="translate(32, 6)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2048,7 +2048,7 @@
         name="Switch - faa6e"
         class="actdia-item actdia-item-switch" transform="translate(32, 9)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2131,7 +2131,7 @@
         name="Switch - 887a2"
         class="actdia-item actdia-item-switch" transform="translate(32, 11)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2214,7 +2214,7 @@
         name="Nand - 32dcf"
         class="actdia-item actdia-item-nand" transform="translate(36, 8)"
         data-item-class="Nand"
-        data-url="../nodes/electronic/logic_gates/nand.js"
+        data-url="../actdia-nodes/electronic/logic_gates/nand.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2310,7 +2310,7 @@
         name="Switch - 75884"
         class="actdia-item actdia-item-switch" transform="translate(32, 14)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2393,7 +2393,7 @@
         name="Led - 4e83d"
         class="actdia-item actdia-item-led" transform="translate(42, 10)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2463,7 +2463,7 @@
         name="Led - 86123"
         class="actdia-item actdia-item-led" transform="translate(42, 6)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2533,7 +2533,7 @@
         name="Not - dbe3f"
         class="actdia-item actdia-item-not" transform="translate(37, 5)"
         data-item-class="Not"
-        data-url="../nodes/electronic/logic_gates/not.js"
+        data-url="../actdia-nodes/electronic/logic_gates/not.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2607,7 +2607,7 @@
         name="Nor - 9406c"
         class="actdia-item actdia-item-nor" transform="translate(36, 13)"
         data-item-class="Nor"
-        data-url="../nodes/electronic/logic_gates/nor.js"
+        data-url="../actdia-nodes/electronic/logic_gates/nor.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2699,7 +2699,7 @@
         name="Xnor - 5d0fd"
         class="actdia-item actdia-item-xnor" transform="translate(36, 18)"
         data-item-class="Xnor"
-        data-url="../nodes/electronic/logic_gates/xnor.js"
+        data-url="../actdia-nodes/electronic/logic_gates/xnor.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2806,7 +2806,7 @@
         name="Switch - dccfa"
         class="actdia-item actdia-item-switch" transform="translate(32, 16)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2889,7 +2889,7 @@
         name="Switch - 077f6"
         class="actdia-item actdia-item-switch" transform="translate(32, 19)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2972,7 +2972,7 @@
         name="Switch - bd105"
         class="actdia-item actdia-item-switch" transform="translate(32, 21)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3055,7 +3055,7 @@
         name="Led - 42c18"
         class="actdia-item actdia-item-led" transform="translate(42, 15)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3125,7 +3125,7 @@
         name="Led - ff928"
         class="actdia-item actdia-item-led" transform="translate(42, 20)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3195,7 +3195,7 @@
         name="IEEE And - c49b3"
         class="actdia-item actdia-item-ieeeand" transform="translate(18, 28)"
         data-item-class="IEEEAnd"
-        data-url="../nodes/electronic/logic_gates/ieee-and.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-and.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3309,7 +3309,7 @@
         name="IEEE Buffer - 8759c"
         class="actdia-item actdia-item-ieeebuffer" transform="translate(19, 25)"
         data-item-class="IEEEBuffer"
-        data-url="../nodes/electronic/logic_gates/ieee-buffer.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-buffer.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3405,7 +3405,7 @@
         name="Switch - c078b"
         class="actdia-item actdia-item-switch" transform="translate(14, 26)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3488,7 +3488,7 @@
         name="Switch - 99282"
         class="actdia-item actdia-item-switch" transform="translate(14, 29)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3571,7 +3571,7 @@
         name="Switch - bcf8d"
         class="actdia-item actdia-item-switch" transform="translate(14, 31)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3654,7 +3654,7 @@
         name="Led - 10e3e"
         class="actdia-item actdia-item-led" transform="translate(24, 26)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3724,7 +3724,7 @@
         name="Led - d93f2"
         class="actdia-item actdia-item-led" transform="translate(24, 30)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3794,7 +3794,7 @@
         name="IEEE Or - 3e476"
         class="actdia-item actdia-item-ieeeor" transform="translate(18, 33)"
         data-item-class="IEEEOr"
-        data-url="../nodes/electronic/logic_gates/ieee-or.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-or.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3908,7 +3908,7 @@
         name="Switch - 3701b"
         class="actdia-item actdia-item-switch" transform="translate(14, 34)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3991,7 +3991,7 @@
         name="Switch - ef5f6"
         class="actdia-item actdia-item-switch" transform="translate(14, 36)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4074,7 +4074,7 @@
         name="Led - 481be"
         class="actdia-item actdia-item-led" transform="translate(24, 35)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4144,7 +4144,7 @@
         name="Switch - 3d7da"
         class="actdia-item actdia-item-switch" transform="translate(14, 39)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4227,7 +4227,7 @@
         name="Switch - 078c8"
         class="actdia-item actdia-item-switch" transform="translate(14, 41)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4310,7 +4310,7 @@
         name="IEEE Xor - fb0f5"
         class="actdia-item actdia-item-ieeexor" transform="translate(18, 38)"
         data-item-class="IEEEXor"
-        data-url="../nodes/electronic/logic_gates/ieee-xor.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-xor.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4424,7 +4424,7 @@
         name="Led - 30fa1"
         class="actdia-item actdia-item-led" transform="translate(24, 40)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4494,7 +4494,7 @@
         name="IEEE Not - 98345"
         class="actdia-item actdia-item-ieeenot" transform="translate(37, 25)"
         data-item-class="IEEENot"
-        data-url="../nodes/electronic/logic_gates/ieee-not.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-not.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4594,7 +4594,7 @@
         name="Switch - fed96"
         class="actdia-item actdia-item-switch" transform="translate(32, 26)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4677,7 +4677,7 @@
         name="Led - 8cffa"
         class="actdia-item actdia-item-led" transform="translate(42, 26)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4747,7 +4747,7 @@
         name="IEEE Nand - 11d32"
         class="actdia-item actdia-item-ieeenand" transform="translate(36, 28)"
         data-item-class="IEEENand"
-        data-url="../nodes/electronic/logic_gates/ieee-nand.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-nand.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4865,7 +4865,7 @@
         name="Switch - ed3d3"
         class="actdia-item actdia-item-switch" transform="translate(32, 29)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4948,7 +4948,7 @@
         name="Switch - 7c85c"
         class="actdia-item actdia-item-switch" transform="translate(32, 31)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5031,7 +5031,7 @@
         name="Led - 2a80a"
         class="actdia-item actdia-item-led" transform="translate(42, 30)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5101,7 +5101,7 @@
         name="Switch - 2abf1"
         class="actdia-item actdia-item-switch" transform="translate(32, 34)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5184,7 +5184,7 @@
         name="Switch - 6a1c4"
         class="actdia-item actdia-item-switch" transform="translate(32, 36)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5267,7 +5267,7 @@
         name="Switch - 2601d"
         class="actdia-item actdia-item-switch" transform="translate(32, 41)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5350,7 +5350,7 @@
         name="Switch - c92cd"
         class="actdia-item actdia-item-switch" transform="translate(32, 39)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5433,7 +5433,7 @@
         name="Led - 01e04"
         class="actdia-item actdia-item-led" transform="translate(42, 35)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5503,7 +5503,7 @@
         name="Led - 9f2c0"
         class="actdia-item actdia-item-led" transform="translate(42, 40)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5573,7 +5573,7 @@
         name="IEEE Nor - 64717"
         class="actdia-item actdia-item-ieeenor" transform="translate(36, 33)"
         data-item-class="IEEENor"
-        data-url="../nodes/electronic/logic_gates/ieee-nor.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-nor.js"
       >
         <rect
           class="actdia-selection-box"
@@ -5691,7 +5691,7 @@
         name="IEEE Xnor - 426a3"
         class="actdia-item actdia-item-ieeexnor" transform="translate(36, 38)"
         data-item-class="IEEEXnor"
-        data-url="../nodes/electronic/logic_gates/ieee-xnor.js"
+        data-url="../actdia-nodes/electronic/logic_gates/ieee-xnor.js"
       >
         <rect
           class="actdia-selection-box"

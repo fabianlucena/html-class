@@ -344,7 +344,7 @@
         id="09326d6e-9f0f-4c50-8e7d-20d696d9b471"
         class="actdia-item actdia-item-selector" transform="translate(18, 3)"
         data-item-class="Selector"
-        data-url="../nodes/selector.js"
+        data-url="../actdia-nodes/selector.js"
       >
         <rect
           class="actdia-selection-box"
@@ -472,7 +472,7 @@
         id="c9ef873f-974e-45cb-9312-3539207b7156"
         class="actdia-item actdia-item-pulsegenerator" transform="translate(3, 12)"
         data-item-class="PulseGenerator"
-        data-url="../nodes/pulse_generator.js"
+        data-url="../actdia-nodes/pulse_generator.js"
       >
         <rect
           class="actdia-selection-box"
@@ -566,7 +566,7 @@
         name="n1"
         class="actdia-item actdia-item-perceptron" transform="translate(24, 13)"
         data-item-class="Perceptron"
-        data-url="../nodes/ai/perceptron.js"
+        data-url="../actdia-nodes/ai/perceptron.js"
       >
         <rect
           class="actdia-selection-box"
@@ -676,7 +676,7 @@
         id="cafb6089-dbc1-4775-a33a-20042303e1ef"
         class="actdia-item actdia-item-jsondata" transform="translate(4, 3)"
         data-item-class="JsonData"
-        data-url="../nodes/json_data.js"
+        data-url="../actdia-nodes/json_data.js"
       >
         <rect
           class="actdia-selection-box"
@@ -771,7 +771,7 @@
         id="517c43e0-0371-4bd1-85ca-d1f8ffb7ea60"
         class="actdia-item actdia-item-viewer" transform="translate(30, 3)"
         data-item-class="Viewer"
-        data-url="../nodes/viewer.js"
+        data-url="../actdia-nodes/viewer.js"
       >
         <rect
           class="actdia-selection-box"
@@ -848,7 +848,7 @@
         id="ee236563-cd1d-4202-8956-cca72aae7552"
         class="actdia-item actdia-item-unbus" transform="translate(18, 14)"
         data-item-class="Unbus"
-        data-url="../nodes/unbus.js"
+        data-url="../actdia-nodes/unbus.js"
       >
         <rect
           class="actdia-selection-box"
@@ -962,7 +962,7 @@
         id="98037aca-22e1-47ab-b2da-79eaa6a5639c"
         class="actdia-item actdia-item-viewer" transform="translate(41, 9)"
         data-item-class="Viewer"
-        data-url="../nodes/viewer.js"
+        data-url="../actdia-nodes/viewer.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1039,7 +1039,7 @@
         id="596171ce-93d8-4a43-9c72-67d5424ae5aa"
         class="actdia-item actdia-item-viewer" transform="translate(39, 17)"
         data-item-class="Viewer"
-        data-url="../nodes/viewer.js"
+        data-url="../actdia-nodes/viewer.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1116,7 +1116,7 @@
         id="ec354e1e-83c9-4968-8b53-8c14cfb11f47"
         class="actdia-item actdia-item-cost" transform="translate(27, 21)"
         data-item-class="Cost"
-        data-url="../nodes/ai/cost.js"
+        data-url="../actdia-nodes/ai/cost.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1217,7 +1217,7 @@
         id="370e3ed8-9f44-4142-8f8c-2282d66d640f"
         class="actdia-item actdia-item-backpropagation" transform="translate(34, 24)"
         data-item-class="Backpropagation"
-        data-url="../nodes/ai/backpropagation.js"
+        data-url="../actdia-nodes/ai/backpropagation.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1302,7 +1302,7 @@
         name="n2"
         class="actdia-item actdia-item-perceptron" transform="translate(24, 17)"
         data-item-class="Perceptron"
-        data-url="../nodes/ai/perceptron.js"
+        data-url="../actdia-nodes/ai/perceptron.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1413,7 +1413,7 @@
         name="n3"
         class="actdia-item actdia-item-perceptron" transform="translate(34, 15)"
         data-item-class="Perceptron"
-        data-url="../nodes/ai/perceptron.js"
+        data-url="../actdia-nodes/ai/perceptron.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1523,7 +1523,7 @@
         id="4a928d53-7cf4-4877-8d59-c36b58d3eb5f"
         class="actdia-item actdia-item-perceptron" transform="translate(29, 16)"
         data-item-class="Perceptron"
-        data-url="../nodes/ai/perceptron.js"
+        data-url="../actdia-nodes/ai/perceptron.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1615,7 +1615,7 @@
         id="50fd99ed-a374-4574-95cc-6189323fbe9e"
         class="actdia-item actdia-item-perceptron" transform="translate(29, 13)"
         data-item-class="Perceptron"
-        data-url="../nodes/ai/perceptron.js"
+        data-url="../actdia-nodes/ai/perceptron.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1707,7 +1707,7 @@
         id="c7c66655-51ba-4b46-8292-6ee8ce3baff5"
         class="actdia-item actdia-item-viewer" transform="translate(39, 28)"
         data-item-class="Viewer"
-        data-url="../nodes/viewer.js"
+        data-url="../actdia-nodes/viewer.js"
       >
         <rect
           class="actdia-selection-box"

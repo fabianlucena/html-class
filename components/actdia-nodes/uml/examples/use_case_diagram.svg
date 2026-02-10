@@ -130,7 +130,7 @@
         name="UseCase - 34cb1"
         class="actdia-item actdia-item-usecase" transform="translate(22, 31)"
         data-item-class="UseCase"
-        data-url="../nodes/uml/use_case.js"
+        data-url="../actdia-nodes/uml/use_case.js"
       >
         <rect
           class="actdia-selection-box"
@@ -189,7 +189,7 @@
         name="Actor - 8814f"
         class="actdia-item actdia-item-actor" transform="translate(10, 30)"
         data-item-class="Actor"
-        data-url="../nodes/uml/actor.js"
+        data-url="../actdia-nodes/uml/actor.js"
       >
         <rect
           class="actdia-selection-box"

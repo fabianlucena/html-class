@@ -650,7 +650,7 @@
         name="Contador BCD - 8b98f"
         class="actdia-item actdia-item-bcdcounter" transform="translate(14, 15)"
         data-item-class="BCDCounter"
-        data-url="../nodes/electronic/bcd/bcd_counter.js"
+        data-url="../actdia-nodes/electronic/bcd/bcd_counter.js"
       >
         <rect
           class="actdia-selection-box"
@@ -973,7 +973,7 @@
         name="Led - ef637"
         class="actdia-item actdia-item-led" transform="translate(28, 10)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1043,7 +1043,7 @@
         name="Led - beb06"
         class="actdia-item actdia-item-led" transform="translate(27, 10)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1113,7 +1113,7 @@
         name="Led - 2da17"
         class="actdia-item actdia-item-led" transform="translate(26, 10)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1183,7 +1183,7 @@
         name="Led - 70310"
         class="actdia-item actdia-item-led" transform="translate(25, 10)"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1253,7 +1253,7 @@
         name="Switch - 5362c"
         class="actdia-item actdia-item-switch" transform="translate(7.5, 3)"
         data-item-class="Switch"
-        data-url="../nodes/switch.js"
+        data-url="../actdia-nodes/switch.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1336,7 +1336,7 @@
         name="Generador de pulsos - 0717f"
         class="actdia-item actdia-item-pulsegenerator" transform="translate(4, 10)"
         data-item-class="PulseGenerator"
-        data-url="../nodes/pulse_generator.js"
+        data-url="../actdia-nodes/pulse_generator.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1508,7 +1508,7 @@
         name="Seven Segment Display - 6585a"
         class="actdia-item actdia-item-sevensegmentdisplay" transform="translate(49, 21)"
         data-item-class="SevenSegmentDisplay"
-        data-url="../nodes/electronic/bcd/seven-segment_display.js"
+        data-url="../actdia-nodes/electronic/bcd/seven-segment_display.js"
       >
         <rect
           class="actdia-selection-box"
@@ -1860,7 +1860,7 @@
         name="BCD to 7 Segments - 8b410"
         class="actdia-item actdia-item-bcto7segments" transform="translate(29, 14)"
         data-item-class="BCTo7Segments"
-        data-url="../nodes/electronic/bcd/bcd_to_7_segments.js"
+        data-url="../actdia-nodes/electronic/bcd/bcd_to_7_segments.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2285,7 +2285,7 @@
         name="Seven Segment Display - 39794"
         class="actdia-item actdia-item-sevensegmentdisplay" transform="translate(43, 21)"
         data-item-class="SevenSegmentDisplay"
-        data-url="../nodes/electronic/bcd/seven-segment_display.js"
+        data-url="../actdia-nodes/electronic/bcd/seven-segment_display.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2637,7 +2637,7 @@
         name="Contador BCD - 3d905"
         class="actdia-item actdia-item-bcdcounter" transform="translate(21, 26)"
         data-item-class="BCDCounter"
-        data-url="../nodes/electronic/bcd/bcd_counter.js"
+        data-url="../actdia-nodes/electronic/bcd/bcd_counter.js"
       >
         <rect
           class="actdia-selection-box"
@@ -2960,7 +2960,7 @@
         name="BCD to 7 Segments - 7e2a6"
         class="actdia-item actdia-item-bcto7segments" transform="translate(29, 25)"
         data-item-class="BCTo7Segments"
-        data-url="../nodes/electronic/bcd/bcd_to_7_segments.js"
+        data-url="../actdia-nodes/electronic/bcd/bcd_to_7_segments.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3385,7 +3385,7 @@
         name="Pulso único - 8a839"
         class="actdia-item actdia-item-singlepulse" transform="translate(5, 5)"
         data-item-class="SinglePulse"
-        data-url="../nodes/single_pulse.js"
+        data-url="../actdia-nodes/single_pulse.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3518,7 +3518,7 @@
         name="Led - 53383"
         class="actdia-item actdia-item-led"
         data-item-class="Led"
-        data-url="../nodes/electronic/led.js"
+        data-url="../actdia-nodes/electronic/led.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3588,7 +3588,7 @@
         name="clk"
         class="actdia-item actdia-item-labelinput" transform="translate(9, 11)"
         data-item-class="LabelInput"
-        data-url="../nodes/label_input.js"
+        data-url="../actdia-nodes/label_input.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3663,7 +3663,7 @@
         name="clk"
         class="actdia-item actdia-item-labeloutput" transform="translate(7, 19)"
         data-item-class="LabelOutput"
-        data-url="../nodes/label_output.js"
+        data-url="../actdia-nodes/label_output.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3738,7 +3738,7 @@
         name="enable"
         class="actdia-item actdia-item-labelinput" transform="translate(9, 3)"
         data-item-class="LabelInput"
-        data-url="../nodes/label_input.js"
+        data-url="../actdia-nodes/label_input.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3813,7 +3813,7 @@
         name="enable"
         class="actdia-item actdia-item-labeloutput" transform="translate(7, 20)"
         data-item-class="LabelOutput"
-        data-url="../nodes/label_output.js"
+        data-url="../actdia-nodes/label_output.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3888,7 +3888,7 @@
         name="enable"
         class="actdia-item actdia-item-labeloutput" transform="translate(13, 31)"
         data-item-class="LabelOutput"
-        data-url="../nodes/label_output.js"
+        data-url="../actdia-nodes/label_output.js"
       >
         <rect
           class="actdia-selection-box"
@@ -3963,7 +3963,7 @@
         name="reset"
         class="actdia-item actdia-item-labelinput" transform="translate(9, 6)"
         data-item-class="LabelInput"
-        data-url="../nodes/label_input.js"
+        data-url="../actdia-nodes/label_input.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4038,7 +4038,7 @@
         name="reset"
         class="actdia-item actdia-item-labeloutput" transform="translate(7, 21)"
         data-item-class="LabelOutput"
-        data-url="../nodes/label_output.js"
+        data-url="../actdia-nodes/label_output.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4113,7 +4113,7 @@
         name="reset"
         class="actdia-item actdia-item-labeloutput" transform="translate(13, 32)"
         data-item-class="LabelOutput"
-        data-url="../nodes/label_output.js"
+        data-url="../actdia-nodes/label_output.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4188,7 +4188,7 @@
         name="Slider - d24eb"
         class="actdia-item actdia-item-slider" transform="translate(3, 23)"
         data-item-class="Slider"
-        data-url="../nodes/slider.js"
+        data-url="../actdia-nodes/slider.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4279,7 +4279,7 @@
         name="Oscillograph - 28915"
         class="actdia-item actdia-item-oscillograph" transform="translate(43, 5)"
         data-item-class="Oscillograph"
-        data-url="../nodes/oscillograph.js"
+        data-url="../actdia-nodes/oscillograph.js"
       >
         <rect
           class="actdia-selection-box"
@@ -4386,7 +4386,7 @@
         name="Canal - 3a53c"
         class="actdia-item actdia-item-bus" transform="translate(35, 6)"
         data-item-class="Bus"
-        data-url="../nodes/bus.js"
+        data-url="../actdia-nodes/bus.js"
       >
         <rect
           class="actdia-selection-box"

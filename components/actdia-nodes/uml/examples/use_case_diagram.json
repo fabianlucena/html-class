@@ -3,8 +3,8 @@
     "version": "0.1.0"
   },
   "imports": [
-    "../nodes/uml/actor.js",
-    "../nodes/uml/use_case.js",
+    "../actdia-nodes/uml/actor.js",
+    "../actdia-nodes/uml/use_case.js",
     "./connection.js"
   ],
   "locales": {
@@ -15,9 +15,9 @@
   "nodes": [
     {
       "elementClass": "UseCase",
-      "url": "../nodes/uml/use_case.js",
+      "url": "../actdia-nodes/uml/use_case.js",
       "id": "834cb1ce-f0e6-447d-bb98-db7a874f431d",
-      "fqcn": "../nodes/uml/use_case.js/UseCase",
+      "fqcn": "../actdia-nodes/uml/use_case.js/UseCase",
       "x": 22,
       "y": 31,
       "name": "UseCase - 34cb1",
@@ -29,9 +29,9 @@
     },
     {
       "elementClass": "Actor",
-      "url": "../nodes/uml/actor.js",
+      "url": "../actdia-nodes/uml/actor.js",
       "id": "18814f47-510a-4c91-9172-1e089be8aeaa",
-      "fqcn": "../nodes/uml/actor.js/Actor",
+      "fqcn": "../actdia-nodes/uml/actor.js/Actor",
       "x": 10,
       "y": 30,
       "name": "Actor - 8814f",

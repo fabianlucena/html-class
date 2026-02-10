@@ -3,18 +3,18 @@
     "version": "0.1.0"
   },
   "imports": [
-    "../nodes/bus.js",
-    "../nodes/electronic/bcd/bcd_counter.js",
-    "../nodes/electronic/bcd/bcd_to_7_segments.js",
-    "../nodes/electronic/bcd/seven-segment_display.js",
-    "../nodes/electronic/led.js",
-    "../nodes/label_input.js",
-    "../nodes/label_output.js",
-    "../nodes/oscillograph.js",
-    "../nodes/pulse_generator.js",
-    "../nodes/single_pulse.js",
-    "../nodes/slider.js",
-    "../nodes/switch.js",
+    "../actdia-nodes/bus.js",
+    "../actdia-nodes/electronic/bcd/bcd_counter.js",
+    "../actdia-nodes/electronic/bcd/bcd_to_7_segments.js",
+    "../actdia-nodes/electronic/bcd/seven-segment_display.js",
+    "../actdia-nodes/electronic/led.js",
+    "../actdia-nodes/label_input.js",
+    "../actdia-nodes/label_output.js",
+    "../actdia-nodes/oscillograph.js",
+    "../actdia-nodes/pulse_generator.js",
+    "../actdia-nodes/single_pulse.js",
+    "../actdia-nodes/slider.js",
+    "../actdia-nodes/switch.js",
     "./connection.js"
   ],
   "locales": {
@@ -24,22 +24,22 @@
     "../nodes": [
       "es"
     ],
-    "../nodes/electronic": [
+    "../actdia-nodes/electronic": [
       "es"
     ],
-    "../nodes/electronic/bcd": [
+    "../actdia-nodes/electronic/bcd": [
       "es"
     ]
   },
   "nodes": [
     {
       "elementClass": "BCDCounter",
-      "url": "../nodes/electronic/bcd/bcd_counter.js",
+      "url": "../actdia-nodes/electronic/bcd/bcd_counter.js",
       "id": "18b98f4f-559b-4267-83d2-ca9e18a286cc",
       "previousClockStatus": 1,
       "x": 14,
       "y": 15,
-      "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "fqcn": "../actdia-nodes/electronic/bcd/bcd_counter.js/BCDCounter",
       "name": "Contador BCD - 8b98f",
       "connectors": [
         {
@@ -70,11 +70,11 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "2ef6372f-a5d6-492c-b0df-782e81fdf258",
       "x": 28,
       "y": 10,
-      "fqcn": "../nodes/electronic/led.js/Led",
+      "fqcn": "../actdia-nodes/electronic/led.js/Led",
       "name": "Led - ef637",
       "connectors": [
         {
@@ -84,11 +84,11 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "fbeb0680-8ddf-4f21-8844-b68277542d5a",
       "x": 27,
       "y": 10,
-      "fqcn": "../nodes/electronic/led.js/Led",
+      "fqcn": "../actdia-nodes/electronic/led.js/Led",
       "name": "Led - beb06",
       "connectors": [
         {
@@ -98,11 +98,11 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "62da1762-b96a-47fe-ac2a-0e40125daed9",
       "x": 26,
       "y": 10,
-      "fqcn": "../nodes/electronic/led.js/Led",
+      "fqcn": "../actdia-nodes/electronic/led.js/Led",
       "name": "Led - 2da17",
       "connectors": [
         {
@@ -112,11 +112,11 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "7703106d-4422-4dfd-b887-5f802b44e57c",
       "x": 25,
       "y": 10,
-      "fqcn": "../nodes/electronic/led.js/Led",
+      "fqcn": "../actdia-nodes/electronic/led.js/Led",
       "name": "Led - 70310",
       "connectors": [
         {
@@ -126,11 +126,11 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "75362cd0-ac01-4cff-ae3b-d9bb370510b4",
       "x": 7.5,
       "y": 3,
-      "fqcn": "../nodes/switch.js/Switch",
+      "fqcn": "../actdia-nodes/switch.js/Switch",
       "class": "Switch",
       "name": "Switch - 5362c",
       "status": true,
@@ -142,12 +142,12 @@
     },
     {
       "elementClass": "PulseGenerator",
-      "url": "../nodes/pulse_generator.js",
+      "url": "../actdia-nodes/pulse_generator.js",
       "id": "e0717f26-e4a2-4971-9d98-c7ae33a31c6f",
       "interval": 11,
       "x": 4,
       "y": 10,
-      "fqcn": "../nodes/pulse_generator.js/PulseGenerator",
+      "fqcn": "../actdia-nodes/pulse_generator.js/PulseGenerator",
       "name": "Generador de pulsos - 0717f",
       "factor": 1.975000000000008,
       "active": true,
@@ -166,11 +166,11 @@
     },
     {
       "elementClass": "SevenSegmentDisplay",
-      "url": "../nodes/electronic/bcd/seven-segment_display.js",
+      "url": "../actdia-nodes/electronic/bcd/seven-segment_display.js",
       "id": "d6585a91-009e-4c85-b515-7822ec37619a",
       "x": 49,
       "y": 21,
-      "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "fqcn": "../actdia-nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
       "name": "Seven Segment Display - 6585a",
       "connectors": [
         {
@@ -201,11 +201,11 @@
     },
     {
       "elementClass": "BCTo7Segments",
-      "url": "../nodes/electronic/bcd/bcd_to_7_segments.js",
+      "url": "../actdia-nodes/electronic/bcd/bcd_to_7_segments.js",
       "id": "d8b410d3-a5a4-487f-ac4c-0ea3458343f1",
       "x": 29,
       "y": 14,
-      "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "fqcn": "../actdia-nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
       "name": "BCD to 7 Segments - 8b410",
       "connectors": [
         {
@@ -245,11 +245,11 @@
     },
     {
       "elementClass": "SevenSegmentDisplay",
-      "url": "../nodes/electronic/bcd/seven-segment_display.js",
+      "url": "../actdia-nodes/electronic/bcd/seven-segment_display.js",
       "id": "43979426-7f73-4871-945f-922ba95fbcd8",
       "x": 43,
       "y": 21,
-      "fqcn": "../nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
+      "fqcn": "../actdia-nodes/electronic/bcd/seven-segment_display.js/SevenSegmentDisplay",
       "name": "Seven Segment Display - 39794",
       "connectors": [
         {
@@ -280,11 +280,11 @@
     },
     {
       "elementClass": "BCDCounter",
-      "url": "../nodes/electronic/bcd/bcd_counter.js",
+      "url": "../actdia-nodes/electronic/bcd/bcd_counter.js",
       "id": "b3d90567-fb41-411c-94db-5eafa5e4f8e9",
       "x": 21,
       "y": 26,
-      "fqcn": "../nodes/electronic/bcd/bcd_counter.js/BCDCounter",
+      "fqcn": "../actdia-nodes/electronic/bcd/bcd_counter.js/BCDCounter",
       "name": "Contador BCD - 3d905",
       "connectors": [
         {
@@ -315,11 +315,11 @@
     },
     {
       "elementClass": "BCTo7Segments",
-      "url": "../nodes/electronic/bcd/bcd_to_7_segments.js",
+      "url": "../actdia-nodes/electronic/bcd/bcd_to_7_segments.js",
       "id": "e7e2a6ec-feea-4c5d-988f-3c0a3c226cff",
       "x": 29,
       "y": 25,
-      "fqcn": "../nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
+      "fqcn": "../actdia-nodes/electronic/bcd/bcd_to_7_segments.js/BCTo7Segments",
       "name": "BCD to 7 Segments - 7e2a6",
       "connectors": [
         {
@@ -359,9 +359,9 @@
     },
     {
       "elementClass": "SinglePulse",
-      "url": "../nodes/single_pulse.js",
+      "url": "../actdia-nodes/single_pulse.js",
       "id": "98a83977-04d3-4a4c-a18a-213d20b2fe77",
-      "fqcn": "../nodes/single_pulse.js/SinglePulse",
+      "fqcn": "../actdia-nodes/single_pulse.js/SinglePulse",
       "x": 5,
       "y": 5,
       "name": "Pulso único - 8a839",
@@ -377,9 +377,9 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "15338325-5b63-4281-92ff-062dfd75ad3f",
-      "fqcn": "../nodes/electronic/led.js/Led",
+      "fqcn": "../actdia-nodes/electronic/led.js/Led",
       "x": 0,
       "y": 0,
       "name": "Led - 53383",
@@ -391,11 +391,11 @@
     },
     {
       "elementClass": "LabelInput",
-      "url": "../nodes/label_input.js",
+      "url": "../actdia-nodes/label_input.js",
       "id": "ff3566a0-caba-4dfa-9d0a-e0ed11350361",
       "label": "clock",
       "name": "clk",
-      "fqcn": "../nodes/label_input.js/LabelInput",
+      "fqcn": "../actdia-nodes/label_input.js/LabelInput",
       "x": 9,
       "y": 11,
       "description": "",
@@ -407,11 +407,11 @@
     },
     {
       "elementClass": "LabelOutput",
-      "url": "../nodes/label_output.js",
+      "url": "../actdia-nodes/label_output.js",
       "id": "ac657088-d7d2-4706-ba25-92796f31925f",
       "label": "clock",
       "name": "clk",
-      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "fqcn": "../actdia-nodes/label_output.js/LabelOutput",
       "x": 7,
       "y": 19,
       "description": "",
@@ -423,11 +423,11 @@
     },
     {
       "elementClass": "LabelInput",
-      "url": "../nodes/label_input.js",
+      "url": "../actdia-nodes/label_input.js",
       "id": "758f4c0c-705d-4bf7-a76d-d9d95e95ab4f",
       "label": "enable",
       "name": "enable",
-      "fqcn": "../nodes/label_input.js/LabelInput",
+      "fqcn": "../actdia-nodes/label_input.js/LabelInput",
       "x": 9,
       "y": 3,
       "description": "",
@@ -439,11 +439,11 @@
     },
     {
       "elementClass": "LabelOutput",
-      "url": "../nodes/label_output.js",
+      "url": "../actdia-nodes/label_output.js",
       "id": "b9315fd4-f554-48c2-8c2d-78d33469df83",
       "label": "enable",
       "name": "enable",
-      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "fqcn": "../actdia-nodes/label_output.js/LabelOutput",
       "x": 7,
       "y": 20,
       "description": "",
@@ -455,11 +455,11 @@
     },
     {
       "elementClass": "LabelOutput",
-      "url": "../nodes/label_output.js",
+      "url": "../actdia-nodes/label_output.js",
       "id": "c9aa7e99-f1a6-4da4-a19e-e87999ed4257",
       "label": "enable",
       "name": "enable",
-      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "fqcn": "../actdia-nodes/label_output.js/LabelOutput",
       "x": 13,
       "y": 31,
       "description": "",
@@ -471,11 +471,11 @@
     },
     {
       "elementClass": "LabelInput",
-      "url": "../nodes/label_input.js",
+      "url": "../actdia-nodes/label_input.js",
       "id": "08664414-0ab5-4f06-aaab-5466e5b0d47b",
       "label": "reset",
       "name": "reset",
-      "fqcn": "../nodes/label_input.js/LabelInput",
+      "fqcn": "../actdia-nodes/label_input.js/LabelInput",
       "x": 9,
       "y": 6,
       "description": "",
@@ -487,11 +487,11 @@
     },
     {
       "elementClass": "LabelOutput",
-      "url": "../nodes/label_output.js",
+      "url": "../actdia-nodes/label_output.js",
       "id": "cf666975-339e-4417-9c3e-25880e934eca",
       "label": "reset",
       "name": "reset",
-      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "fqcn": "../actdia-nodes/label_output.js/LabelOutput",
       "x": 7,
       "y": 21,
       "description": "",
@@ -503,11 +503,11 @@
     },
     {
       "elementClass": "LabelOutput",
-      "url": "../nodes/label_output.js",
+      "url": "../actdia-nodes/label_output.js",
       "id": "47aaf4a7-7c26-41cd-9a1a-73e44553caf7",
       "label": "reset",
       "name": "reset",
-      "fqcn": "../nodes/label_output.js/LabelOutput",
+      "fqcn": "../actdia-nodes/label_output.js/LabelOutput",
       "x": 13,
       "y": 32,
       "description": "",
@@ -519,10 +519,10 @@
     },
     {
       "elementClass": "Slider",
-      "url": "../nodes/slider.js",
+      "url": "../actdia-nodes/slider.js",
       "id": "fd24eb9e-0e30-41b5-a644-e0aaed19dbec",
       "max": 50,
-      "fqcn": "../nodes/slider.js/Slider",
+      "fqcn": "../actdia-nodes/slider.js/Slider",
       "x": 3,
       "y": 23,
       "name": "Slider - d24eb",
@@ -540,7 +540,7 @@
     },
     {
       "elementClass": "Oscillograph",
-      "url": "../nodes/oscillograph.js",
+      "url": "../actdia-nodes/oscillograph.js",
       "id": "62891554-d944-4063-a548-342c8c42658a",
       "box": {
         "x": 0,
@@ -548,7 +548,7 @@
         "width": 20,
         "height": 6
       },
-      "fqcn": "../nodes/oscillograph.js/Oscillograph",
+      "fqcn": "../actdia-nodes/oscillograph.js/Oscillograph",
       "x": 43,
       "y": 5,
       "name": "Oscillograph - 28915",
@@ -560,7 +560,7 @@
     },
     {
       "elementClass": "Bus",
-      "url": "../nodes/bus.js",
+      "url": "../actdia-nodes/bus.js",
       "id": "53a53c9a-94ed-44ae-bbc1-964cdbc560d0",
       "box": {
         "x": 0,
@@ -568,7 +568,7 @@
         "width": 1,
         "height": 4
       },
-      "fqcn": "../nodes/bus.js/Bus",
+      "fqcn": "../actdia-nodes/bus.js/Bus",
       "x": 35,
       "y": 6,
       "name": "Canal - 3a53c",

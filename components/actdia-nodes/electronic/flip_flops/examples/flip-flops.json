@@ -3,20 +3,20 @@
     "version": "0.1.0"
   },
   "imports": [
-    "../nodes/electronic/flip_flops/dff.js",
-    "../nodes/electronic/flip_flops/dff_e.js",
-    "../nodes/electronic/flip_flops/dff_l.js",
-    "../nodes/electronic/flip_flops/jkff.js",
-    "../nodes/electronic/flip_flops/jkff_e.js",
-    "../nodes/electronic/flip_flops/jkff_l.js",
-    "../nodes/electronic/flip_flops/srff.js",
-    "../nodes/electronic/flip_flops/srff_e.js",
-    "../nodes/electronic/flip_flops/srff_l.js",
-    "../nodes/electronic/flip_flops/tff.js",
-    "../nodes/electronic/flip_flops/tff_e.js",
-    "../nodes/electronic/flip_flops/tff_l.js",
-    "../nodes/electronic/led.js",
-    "../nodes/switch.js",
+    "../actdia-nodes/electronic/flip_flops/dff.js",
+    "../actdia-nodes/electronic/flip_flops/dff_e.js",
+    "../actdia-nodes/electronic/flip_flops/dff_l.js",
+    "../actdia-nodes/electronic/flip_flops/jkff.js",
+    "../actdia-nodes/electronic/flip_flops/jkff_e.js",
+    "../actdia-nodes/electronic/flip_flops/jkff_l.js",
+    "../actdia-nodes/electronic/flip_flops/srff.js",
+    "../actdia-nodes/electronic/flip_flops/srff_e.js",
+    "../actdia-nodes/electronic/flip_flops/srff_l.js",
+    "../actdia-nodes/electronic/flip_flops/tff.js",
+    "../actdia-nodes/electronic/flip_flops/tff_e.js",
+    "../actdia-nodes/electronic/flip_flops/tff_l.js",
+    "../actdia-nodes/electronic/led.js",
+    "../actdia-nodes/switch.js",
     "./connection.js"
   ],
   "locales": {
@@ -26,17 +26,17 @@
     "../nodes": [
       "es"
     ],
-    "../nodes/electronic": [
+    "../actdia-nodes/electronic": [
       "es"
     ],
-    "../nodes/electronic/flip_flops": [
+    "../actdia-nodes/electronic/flip_flops": [
       "es"
     ]
   },
   "nodes": [
     {
       "elementClass": "SRFF_L",
-      "url": "../nodes/electronic/flip_flops/srff_l.js",
+      "url": "../actdia-nodes/electronic/flip_flops/srff_l.js",
       "id": "c890de70-7697-4363-8f41-807253142ec2",
       "x": 9,
       "y": 9,
@@ -62,7 +62,7 @@
     },
     {
       "elementClass": "SRFF",
-      "url": "../nodes/electronic/flip_flops/srff.js",
+      "url": "../actdia-nodes/electronic/flip_flops/srff.js",
       "id": "420e4dd9-cc13-4d04-ad9a-0cf5f2ec69c6",
       "x": 9,
       "y": 2,
@@ -85,7 +85,7 @@
     },
     {
       "elementClass": "SRFF_E",
-      "url": "../nodes/electronic/flip_flops/srff_e.js",
+      "url": "../actdia-nodes/electronic/flip_flops/srff_e.js",
       "id": "dc4c15e5-1fd3-40be-91b5-b74618d632d0",
       "x": 9,
       "y": 16,
@@ -111,7 +111,7 @@
     },
     {
       "elementClass": "DFF",
-      "url": "../nodes/electronic/flip_flops/dff.js",
+      "url": "../actdia-nodes/electronic/flip_flops/dff.js",
       "id": "8fb46e83-7f05-43c4-b9eb-7f9c122ba952",
       "x": 42,
       "y": 2,
@@ -131,7 +131,7 @@
     },
     {
       "elementClass": "DFF_L",
-      "url": "../nodes/electronic/flip_flops/dff_l.js",
+      "url": "../actdia-nodes/electronic/flip_flops/dff_l.js",
       "id": "72f36b8f-95f1-4083-9e04-9555701ba35f",
       "x": 42,
       "y": 9,
@@ -154,7 +154,7 @@
     },
     {
       "elementClass": "DFF_E",
-      "url": "../nodes/electronic/flip_flops/dff_e.js",
+      "url": "../actdia-nodes/electronic/flip_flops/dff_e.js",
       "id": "945ffbaf-2300-4633-b312-c72d75afaced",
       "x": 42,
       "y": 16,
@@ -177,7 +177,7 @@
     },
     {
       "elementClass": "TFF",
-      "url": "../nodes/electronic/flip_flops/tff.js",
+      "url": "../actdia-nodes/electronic/flip_flops/tff.js",
       "id": "e46c7dcb-d55e-4828-bba9-2b5e1e05fe51",
       "x": 42,
       "y": 27,
@@ -197,7 +197,7 @@
     },
     {
       "elementClass": "JKFF",
-      "url": "../nodes/electronic/flip_flops/jkff.js",
+      "url": "../actdia-nodes/electronic/flip_flops/jkff.js",
       "id": "5118f287-44ab-4807-8fb6-61c2ecf8b1d7",
       "x": 9,
       "y": 27,
@@ -220,7 +220,7 @@
     },
     {
       "elementClass": "JKFF_L",
-      "url": "../nodes/electronic/flip_flops/jkff_l.js",
+      "url": "../actdia-nodes/electronic/flip_flops/jkff_l.js",
       "id": "7beca4c4-7a4f-44fe-95b3-80f7171e58c9",
       "x": 9,
       "y": 34,
@@ -246,7 +246,7 @@
     },
     {
       "elementClass": "JKFF_E",
-      "url": "../nodes/electronic/flip_flops/jkff_e.js",
+      "url": "../actdia-nodes/electronic/flip_flops/jkff_e.js",
       "id": "07ae995c-b81f-48f6-b094-cb44427cda21",
       "x": 9,
       "y": 41,
@@ -272,7 +272,7 @@
     },
     {
       "elementClass": "TFF_L",
-      "url": "../nodes/electronic/flip_flops/tff_l.js",
+      "url": "../actdia-nodes/electronic/flip_flops/tff_l.js",
       "id": "7f2992b6-5374-4954-a1af-e91f9c9e297f",
       "x": 42,
       "y": 34,
@@ -295,7 +295,7 @@
     },
     {
       "elementClass": "TFF_E",
-      "url": "../nodes/electronic/flip_flops/tff_e.js",
+      "url": "../actdia-nodes/electronic/flip_flops/tff_e.js",
       "id": "fb6fb15c-fc11-4d3d-956b-1c42fb70625f",
       "x": 42,
       "y": 41,
@@ -318,7 +318,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "60c4796c-bf89-469c-b0a5-9a3ef9f735e0",
       "x": 17,
       "y": 3,
@@ -332,7 +332,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "5f4382fb-c34e-479e-a9ea-0256c81edbf4",
       "x": 17,
       "y": 10,
@@ -346,7 +346,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "d9832308-2b06-4847-89b0-66c0b857d97d",
       "x": 17,
       "y": 17,
@@ -360,7 +360,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "79b9ae56-db62-4ad8-b2bb-071b307f4fa6",
       "x": 17,
       "y": 7,
@@ -373,7 +373,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "b93e06c9-293e-4bb9-9174-9fbd8e3387e6",
       "x": 17,
       "y": 14,
@@ -386,7 +386,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "7cdd8fcd-09b5-4a92-9d82-f25f8f83c862",
       "x": 17,
       "y": 21,
@@ -399,7 +399,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "108ec969-1481-4278-8668-ca34b36c9a7d",
       "x": 6,
       "y": 3,
@@ -417,7 +417,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "04072f2f-dfb2-4c90-8948-af13a2312837",
       "x": 6,
       "y": 7,
@@ -435,7 +435,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "195130b1-83f1-44ab-bba8-96597602c729",
       "x": 6,
       "y": 10,
@@ -453,7 +453,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "76085ae6-acc6-4eef-8afb-11a0f2d27005",
       "x": 6,
       "y": 12,
@@ -471,7 +471,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "fc1da01b-36bf-4113-a51b-5832703e5260",
       "x": 6,
       "y": 14,
@@ -489,7 +489,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "2e395b87-b507-417b-9b42-b114acc2b1a9",
       "x": 6,
       "y": 17,
@@ -507,7 +507,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "dadad1d7-b728-47c4-aa27-cd1e66b151da",
       "x": 6,
       "y": 19,
@@ -525,7 +525,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "862db302-3c2b-4210-af0e-5dbaf82ecc2c",
       "x": 6,
       "y": 21,
@@ -543,7 +543,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "fcb89d2c-51f9-4b65-b48c-518756b741be",
       "x": 39,
       "y": 3,
@@ -561,7 +561,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "cd3f9950-7b07-4423-b962-1cc93614e030",
       "x": 50,
       "y": 3,
@@ -575,7 +575,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "0fd24964-84f4-440e-95c7-725e841e33bd",
       "x": 50,
       "y": 7,
@@ -588,7 +588,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "965d44ec-68d5-4900-b291-46232aa684c6",
       "x": 50,
       "y": 10,
@@ -602,7 +602,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "f1ae8051-edf9-4c46-a068-1c62176cddb7",
       "x": 50,
       "y": 14,
@@ -615,7 +615,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "1db7c745-1e5f-4a4d-9237-70e02ffff2a2",
       "x": 39,
       "y": 10,
@@ -633,7 +633,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "25a99282-4088-419f-b854-d38a5a57ceb9",
       "x": 39,
       "y": 14,
@@ -651,7 +651,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "35300295-d484-4410-993f-2cf4b3999430",
       "x": 39,
       "y": 17,
@@ -669,7 +669,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "f6e47ff6-5451-417e-b549-3503e34e659d",
       "x": 39,
       "y": 21,
@@ -687,7 +687,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "931661dd-13f4-46b8-80c2-5a9d3752089a",
       "x": 50,
       "y": 17,
@@ -701,7 +701,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "ba14a5ce-01a3-4ced-9562-0606e926d33e",
       "x": 50,
       "y": 21,
@@ -714,7 +714,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "969039bc-7395-4a87-9c38-1a1ca4c4821d",
       "x": 17,
       "y": 28,
@@ -728,7 +728,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "465dc763-2913-4cbc-a8c9-46a93ffecdba",
       "x": 17,
       "y": 32,
@@ -741,7 +741,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "a357981d-bd72-4aaf-a1ba-f4cb5a9a522d",
       "x": 6,
       "y": 28,
@@ -759,7 +759,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "d4e86144-74bb-4de8-a3ea-d6601713440a",
       "x": 6,
       "y": 32,
@@ -777,7 +777,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "d20087f4-8ed5-4263-892c-0ff2d8e06926",
       "x": 17,
       "y": 35,
@@ -791,7 +791,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "b0c47695-f5ff-44e0-911a-aa1ecddd7d08",
       "x": 17,
       "y": 39,
@@ -804,7 +804,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "eb2d516d-2bc4-4af9-a9ce-d10ad144808f",
       "x": 6,
       "y": 35,
@@ -822,7 +822,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "cbed6604-826f-4f84-8d89-b586180c1bc7",
       "x": 6,
       "y": 37,
@@ -840,7 +840,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "43ad324f-8656-45ad-92dc-41edacd64323",
       "x": 6,
       "y": 39,
@@ -858,7 +858,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "8ad199fe-cbc3-4107-a491-5efe2722ef0e",
       "x": 17,
       "y": 42,
@@ -872,7 +872,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "f7d493de-6e94-48f1-8074-9e22fd810e7e",
       "x": 17,
       "y": 46,
@@ -885,7 +885,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "e3a6b1be-0841-401c-bef7-b002bc8be208",
       "x": 6,
       "y": 42,
@@ -903,7 +903,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "a95138cb-b2cb-4b0f-ba4e-fac2218ab85f",
       "x": 6,
       "y": 44,
@@ -921,7 +921,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "bd328064-bf2a-474f-8e4f-6561bd067cad",
       "x": 6,
       "y": 46,
@@ -939,7 +939,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "da8319e6-b618-455d-af93-3d420af327c5",
       "x": 50,
       "y": 28,
@@ -953,7 +953,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "a8779f7d-0c0a-4677-933a-7e69dffe9534",
       "x": 50,
       "y": 32,
@@ -966,7 +966,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "95e833af-93c8-4d7e-ba70-92e42b8c9f84",
       "x": 39,
       "y": 28,
@@ -984,7 +984,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "b02204d1-86d1-4e79-8472-41cd460dd0f6",
       "x": 50,
       "y": 35,
@@ -998,7 +998,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "f89b9924-187d-4575-b139-2d7d888f93c4",
       "x": 50,
       "y": 39,
@@ -1011,7 +1011,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "2629fa2a-5dc4-4c69-bd06-00c0c65e9c2d",
       "x": 39,
       "y": 35,
@@ -1029,7 +1029,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "d35c6920-be77-4f4d-a798-2df7a23b90d1",
       "x": 39,
       "y": 39,
@@ -1047,7 +1047,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "2b41ae79-b736-4227-a1a8-2e7c21860ee5",
       "x": 39,
       "y": 42,
@@ -1065,7 +1065,7 @@
     },
     {
       "elementClass": "Switch",
-      "url": "../nodes/switch.js",
+      "url": "../actdia-nodes/switch.js",
       "id": "37d3f1c8-e11e-4626-9986-a851ba560a53",
       "x": 39,
       "y": 46,
@@ -1083,7 +1083,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "d8dfdde4-b5d0-4de7-820d-073df150bf18",
       "x": 50,
       "y": 42,
@@ -1097,7 +1097,7 @@
     },
     {
       "elementClass": "Led",
-      "url": "../nodes/electronic/led.js",
+      "url": "../actdia-nodes/electronic/led.js",
       "id": "a0ed28af-bf21-4546-8ee2-005c9bd4ba5e",
       "x": 50,
       "y": 46,
