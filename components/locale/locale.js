@@ -1,49 +1,103 @@
-let l10n = {};
-let language;
-let locales = {};
+let translations = {};
+let language = (navigator.language || navigator.userLanguage || 'en')
+  .split('-')[0]
+  .toLowerCase();
+
+const onLanguageLoadedCallbacks = [];
+const urlTranslationsTables = [];
+
+export function onLanguageLoaded(callback) {
+  onLanguageLoadedCallbacks.push(callback);
+  if (Object.keys(translations).length) {
+    callback();
+  }
+}
+
+export function addUrlTranslationsTable(url, languages, options = {}) {
+  if (options.file) {
+    const fileUrl = new URL(options.file);
+    const currentDir = fileUrl.pathname.substring(0, fileUrl.pathname.lastIndexOf('/'));
+    url = currentDir + url;
+  }
+  
+  urlTranslationsTables.push({ url, languages });
+}
+
+export function _f(text, ...args) {
+  return format(text, ...args);
+}
+
+export function format(text, ...args) {
+  const _args = [...args];
+  text = text.replace(/%s/g, () => _args.shift());
+  return text.replace(/{(\d+)}/g, (match, number) => typeof args[number] !== 'undefined' ? args[number] : match);
+}
+
 
 export function _(text, ...args) {
-  return format(l10n[text] || text, ...args);
-}
-
-export function format(formatString, ...args) {
-  return formatString.replace(/%s/g, () => args.shift());
-}
-
-export function addL10n(newL10n) {
-  Object.assign(l10n, newL10n);
-}
-
-export async function loadLocale(url, ...languages) {
-  if (locales[url])
-    return;
+  if (typeof text !== 'string') {
+    return text;
+  }
   
-  if (!language) {
-    language = navigator.language || navigator.userLanguage || 'en';
-    language = language.toLowerCase().split('-')[0];
-  }
+  const _format = translations[text] || text;
+  return format(_format, ...args);
+}
 
-  try {
-    locales[url] = languages;
-    if (languages.includes(language)) {
-      const importUrl = `${url}/locale/${language}.js`;
-      console.log(`Loading locale from ${importUrl}`);
-      console.trace();
-      const l10n = (await import(importUrl)).default;
-      addL10n(l10n);
+export function addTranslationTranslations(newTranslations) {
+  Object.assign(translations, newTranslations);
+}
+
+export async function loadLanguage(newLang) {
+  if (newLang)
+    language = newLang;
+
+  translations = {};
+  for (const { url, languages } of urlTranslationsTables) {
+    if (!languages.includes(language)) {
+      continue;
     }
-  } catch {}
-}
 
-export function getLocales() {
-  return locales;
-}
-
-export async function loadLocales(locales) {
-  const promises = [];
-  for (let url in locales) {
-    promises.push(loadLocale(url, ...locales[url]));
+    try {
+      const importUrl = `${url}/${language}.json`;
+      console.log(`${url}/${language}.json`);
+      
+      
+      const table = (await import(/* @vite-ignore */ importUrl)).default;
+      Object.assign(translations, table);
+    } catch (error) {
+      console.error(`Error loading translations from ${url}/${language}.json:`, error);
+    }
   }
 
-  return Promise.all(promises);
+  onLanguageLoadedCallbacks.forEach(callback => callback());
+}
+
+export function dateTimeSmallFormatNoSeconds(date) {
+  const formatted = new Intl.DateTimeFormat(lang, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  })
+    .format(date)
+    .replace(',', '');
+
+  return formatted;
+}
+
+export function toLocalDatetimeInputValue(date) {
+  if (!date)
+    return '';
+
+  const pad = n => String(n).padStart(2, '0');
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }

@@ -1,7 +1,7 @@
 import './node-selector.css';
 import Dialog from '../dialog/dialog.js';
 import Item from '../actdia/item.js';
-import { _, loadLocale } from '../locale/locale.js';
+import { _ } from '../locale/locale.js';
 
 export default class NodeSelector extends Dialog {
   breadcrumbsContainer = null;
@@ -76,10 +76,7 @@ export default class NodeSelector extends Dialog {
   async loadCategory({ path, previousBreadcrumbs = [] }) {
     try {
       this.classesContainer.innerHTML = _('Loading...');
-      const categoriesData = (await import(`${path}/index.js`)).default;
-      if (categoriesData.locale) {
-        await loadLocale(path, ...categoriesData.locale);
-      }
+      const categoriesData = (await import(/* @vite-ignore */ `${path}/index.js`)).default;
 
       this.breadcrumbs = [
         ...previousBreadcrumbs,

@@ -8,7 +8,7 @@ import { isItem, isNode, isConnection } from './type.js';
 import { escapeHTML, isHTMLElement } from '../utils/html.js';
 import { getNumber, isNumber } from '../utils/type.js';
 import { getPath } from '../utils/string.js';
-import { _, loadLocale, getLocales, loadLocales } from '../locale/locale.js';
+import { _ } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
 
 export default class ActDia {
@@ -214,7 +214,6 @@ export default class ActDia {
   }
 
   async init() {
-    await loadLocale('.', 'es');
     await this.importElements(
       './node.js',
       './connection.js',
@@ -355,23 +354,12 @@ export default class ActDia {
         ...connections.map(item => item.url),
       ].filter(u => u))]
       .sort();
-
-    const allLocales = getLocales();
-    let locales = {};
-    const allPaths = imports.map(getPath);
-    for (const url in allLocales) {
-      if (!allPaths.includes(url))
-        continue;
-
-      locales[url] = allLocales[url];
-    }
     
     const data = {
       actdia: {
         version: '0.1.0',
       },
       imports,
-      locales,
       nodes,
       connections,
     };
@@ -412,7 +400,6 @@ export default class ActDia {
       this.#items.forEach(item => item.selected = false);
     }
     
-    await loadLocales(data.locales);
     await this.importElements(...data.imports.filter(u => u));
 
     const newNodes = await this.addOptionsItem(
