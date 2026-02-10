@@ -38,7 +38,6 @@ export default class FormDialog extends Dialog {
       renderOptions.data = options.data;
     }
 
-    console.log(this.fields);
     this.#form.render(renderOptions);
 
     super.show({

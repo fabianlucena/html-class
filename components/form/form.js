@@ -26,23 +26,23 @@ export default class Form extends Base {
   create(options) {
     super.create(options);
 
-    if (!this.formElement) {
-      this.formElement = document.createElement('form');
+    if (!this.element) {
+      this.element = document.createElement('form');
     }
-    this.formElement.className = 'form';
+    this.element.className = 'form';
 
     this.inputHandlerBinded = this.inputHandler.bind(this);
-    this.formElement.addEventListener('input', this.inputHandlerBinded);
+    this.element.addEventListener('input', this.inputHandlerBinded);
 
     if (this.parent) {
-      this.parent.appendChild(this.formElement);
+      this.parent.appendChild(this.element);
       if (this.fields?.length)
         this.render();
     }
   }
 
   destroy() {
-    this.formElement.removeEventListener('input', this.inputHandlerBinded);
+    this.element.removeEventListener('input', this.inputHandlerBinded);
   }
 
   render(options) {
@@ -59,9 +59,9 @@ export default class Form extends Base {
       .join('');
 
     if (options.parent)
-      this.parent.appendChild(this.formElement);
+      this.parent.appendChild(this.element);
 
-    this.formElement.innerHTML = html;
+    this.element.innerHTML = html;
   }
 
   getValue(field) {

@@ -12,6 +12,7 @@ export default class NodeForm extends FormDialog {
     }
 
     this.node = node;
+    this.form.data = node;
     this.updateFields();
     options.header ??= _('Node properties');
     
