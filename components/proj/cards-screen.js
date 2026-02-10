@@ -3,6 +3,7 @@ import Screen from './screen';
 import Issue from './issue';
 import { _ } from '../locale/locale';
 import { navigate } from '../router/router';
+import { getValueByPath } from '../utils/object';
 
 export default class CardsScreen extends Screen {
   #issuesElement = null;
@@ -58,7 +59,7 @@ export default class CardsScreen extends Screen {
       let body = '';
       Issue.fields.forEach(field => {
         if (field.name) {
-          let value = issue[field.name];
+          let value = getValueByPath(issue, field.name);
           if (value) {
             if (field.formater) {
               value = field.formater(value);
