@@ -96,16 +96,6 @@
       "url": "../actdia-nodes/json_data.js",
       "id": "cafb6089-dbc1-4775-a33a-20042303e1ef",
       "data": "[[0, 0, 0],\n [0, 1, 1],\n [1, 0, 1],\n [1, 1, 0]]",
-      "formDefinition": [
-        {
-          "name": "data",
-          "type": "textarea",
-          "_label": "JSON Data",
-          "label": "JSON Data",
-          "id": "data",
-          "previousValue": "[[0, 0, 0],\n [0, 1, 1],\n [1, 0, 1],\n [1, 1, 0]]"
-        }
-      ],
       "fqcn": "../actdia-nodes/json_data.js/JsonData",
       "x": 4,
       "y": 3,

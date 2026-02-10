@@ -72,7 +72,7 @@ export default function create({ Node, _ }) {
       { name: 'o0', type: 'out', x: 6, y: 0, direction: 'right', extends: 'tiny' },
     ];
 
-    get formDefinition() {
+    get fieldsDefinition() {
       return [
         {
           name: 'size',

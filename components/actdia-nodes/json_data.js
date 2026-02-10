@@ -39,7 +39,7 @@ export default function create({ Node }) {
 
     data = '';
 
-    formDefinition = [
+    fieldsDefinition = [
       {
         name: 'data',
         type: 'textarea',

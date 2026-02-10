@@ -12,14 +12,14 @@ export default class NodeForm extends FormDialog {
     }
 
     this.node = node;
-    this.updateFormDefinition();
+    this.updateFieldsDefinition();
     options.header ??= _('Node properties');
 
     super.show(options);
   }
 
-  updateFormDefinition() {
-    this.formDefinition = [
+  updateFieldsDefinition() {
+    this.fieldsDefinition = [
       {
         name: 'class',
         _label: 'Class',
@@ -92,7 +92,7 @@ export default class NodeForm extends FormDialog {
         _label: 'Dash',
         nullable: true,
       },
-      ...this.node.formDefinition || []
+      ...this.node.fieldsDefinition || []
     ];    
   }
 

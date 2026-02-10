@@ -43,7 +43,7 @@ export default function create({ Node }) {
       { name: 'o0', type: 'out', x: .5, y: 0, direction: 'right', extends: 'tiny' },
     ];
 
-    formDefinition = [
+    fieldsDefinition = [
       {
         name: 'variant',
         type: 'select',

@@ -36,7 +36,7 @@ export default function create({ Node, actdia }) {
       { name: 'i', type: 'in', x: 0, y: 0, direction: 'left', extends: 'tiny' },
     ];
 
-    formDefinition = [
+    fieldsDefinition = [
       {
         name: 'label',
         type: 'text',
