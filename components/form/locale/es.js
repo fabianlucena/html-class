@@ -1,0 +1,3 @@
+export default {
+  'Error in options definition': 'Error en la definición de opciones',
+};

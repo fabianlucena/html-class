@@ -57,12 +57,12 @@ export async function loadLanguage(newLang) {
       continue;
     }
 
+    const importUrl = `${url}/${language}.js`;
     try {
-      const importUrl = `${url}/${language}.json`;
       const table = (await import(/* @vite-ignore */ importUrl)).default;
       Object.assign(translations, table);
     } catch (error) {
-      console.error(`Error loading translations from ${url}/${language}.json:`, error);
+      console.error(`Error loading translations from ${importUrl}:`, error);
     }
   }
 
