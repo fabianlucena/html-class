@@ -1,9 +1,9 @@
-import Form from '../form/form.js';
+import FormDialog from '../form-dialog/form-dialog.js';
 import { isNode } from '../actdia/type.js';
 import { _ } from '../locale/locale.js';
 import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
 
-export default class NodeForm extends Form {
+export default class NodeForm extends FormDialog {
   showForNode(node, options) {
     if (!isNode(node)) {
       this.node = null;

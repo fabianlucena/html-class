@@ -16,7 +16,8 @@ export default class Dialog {
   onClosed = null;
 
   constructor(options) {
-    this.create(...arguments);
+    if (!options?.skipCreation)
+      this.create(...arguments);
   }
 
   create(options) {

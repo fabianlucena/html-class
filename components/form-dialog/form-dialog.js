@@ -4,18 +4,43 @@ import { _, addLocaleUrl } from '../locale/locale.js';
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
-export class FormDialog extends Dialog {
+export default class FormDialog extends Dialog {
+  #form = null;
+
   constructor(options = {}) {
-    super();
+    super({ skipCreation: true });
     this.create(options);
   }
 
+  get form() {
+    return this.#form;
+  }
+
+  create(options = {}) {
+    super.create(options);
+
+    if (!this.form) {
+      this.#form = new Form({
+        parent: this.contentElement,
+        fields: options.fields,
+        data: options.data,
+      });
+    }
+  }
+
   show(options = {}) {
-    const form = new Form({
-      parent: this.contentElement,
-      fields: options.fields,
-      data: options.data,
-    });
+    if (options.fields || options.data) {
+      const renderOptions = {};
+      if (options.fields) {
+        renderOptions.fields = options.fields;
+      }
+
+      if (options.data) {
+        renderOptions.data = options.data;
+      }
+
+      this.#form.render(renderOptions);
+    }
 
     super.show({
       header: options.header || _('Form'),
