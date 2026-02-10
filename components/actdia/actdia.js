@@ -5,14 +5,10 @@ import Item from './item.js';
 import Node from './node.js';
 import Connection from './node.js';
 import { isItem, isNode, isConnection } from './type.js';
-import {
-  escapeHTML,
-  getNumber,
-  isNumber,
-  isHTMLElement,
-  getPath,
-} from './utils.js';
-import { _, loadLocale, getLocales, loadLocales } from './locale.js';
+import { escapeHTML, isHTMLElement } from '../utils/html.js';
+import { getNumber, isNumber } from '../utils/type.js';
+import { getPath } from '../utils/string.js';
+import { _, loadLocale, getLocales, loadLocales } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
 
 export default class ActDia {

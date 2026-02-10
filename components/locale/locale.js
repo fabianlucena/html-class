@@ -26,7 +26,10 @@ export async function loadLocale(url, ...languages) {
   try {
     locales[url] = languages;
     if (languages.includes(language)) {
-      const l10n = (await import(`${url}/locale/${language}.js`)).default;
+      const importUrl = `${url}/locale/${language}.js`;
+      console.log(`Loading locale from ${importUrl}`);
+      console.trace();
+      const l10n = (await import(importUrl)).default;
       addL10n(l10n);
     }
   } catch {}

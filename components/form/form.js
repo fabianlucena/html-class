@@ -1,6 +1,6 @@
 import './form.css';
-import Dialog, { ConfirmDialog } from './dialog/dialog.js';
-import { _ } from './locale/locale.js';
+import Dialog, { ConfirmDialog } from '../dialog/dialog.js';
+import { _ } from '../locale/locale.js';
 
 export default class Form extends Dialog {
   create(options) {

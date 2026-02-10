@@ -1,7 +1,7 @@
 import Item from './item.js';
 import Connector from './connector.js';
-import { isEqual } from './utils.js';
-import { _ } from './locale.js';
+import { isEqual } from '../utils/type.js';
+import { _ } from '../locale/locale.js';
 
 export default class Node extends Item {
   shape = {

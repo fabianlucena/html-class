@@ -1,5 +1,5 @@
 import './dialog.css';
-import { _ } from '../actdia/locale.js';
+import { _ } from '../locale/locale.js';
 
 export default class Dialog {
   onClose = null;

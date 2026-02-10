@@ -1,4 +1,4 @@
-import { getPath } from './utils.js';
+import { getPath } from '../utils/string.js';
 
 const registry = {};
 

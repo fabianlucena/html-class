@@ -1,5 +1,6 @@
 import Element from './element.js';
-import { isEqual, getStatusText } from './utils.js';
+import { isEqual } from '../utils/type.js';
+import { getStatusText } from '../utils/http.js';
 
 export default class Item extends Element {
   shapes = [];

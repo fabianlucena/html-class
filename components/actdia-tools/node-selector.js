@@ -1,7 +1,7 @@
 import './node-selector.css';
-import Dialog from '../../../../dialog/dialog.js';
+import Dialog from '../dialog/dialog.js';
 import Item from '../actdia/item.js';
-import { _, loadLocale } from '../actdia/locale.js';
+import { _, loadLocale } from '../locale/locale.js';
 
 export default class NodeSelector extends Dialog {
   breadcrumbsContainer = null;

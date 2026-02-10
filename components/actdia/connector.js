@@ -1,6 +1,7 @@
 import Element from './element.js';
-import { _ } from './locale.js';
-import { doesExtend, getStatusText } from './utils.js';
+import { _ } from '../locale/locale.js';
+import { doesExtend } from '../utils/type.js';
+import { getStatusText } from '../utils/http.js';
 
 export const DIRECTIONS = {
   RIGHT: 0,

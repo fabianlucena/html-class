@@ -1,7 +1,7 @@
-import Form from '../../../../form/form.js';
+import Form from '../form/form.js';
 import { isNode } from '../actdia/type.js';
-import { _ } from '../actdia/locale.js';
-import { getValueByPath, setValueByPath, deletePropertyByPath } from '../actdia/utils.js';
+import { _ } from '../locale/locale.js';
+import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
 
 export default class NodeForm extends Form {
   showForNode(node, options) {
