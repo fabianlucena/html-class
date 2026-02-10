@@ -73,7 +73,7 @@ export async function loadLanguage(newLang) {
 }
 
 export function dateTimeSmallFormatNoSeconds(date) {
-  const formatted = new Intl.DateTimeFormat(lang, {
+  const formatted = new Intl.DateTimeFormat(language, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
