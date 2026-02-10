@@ -18,11 +18,12 @@ export function getValueByPath(obj, path) {
 
   let current = obj;
   for (let part of parts) {
-    if (!(part in current)) {
-      return undefined;
-    }
+    if (!(part in current))
+      return;
+
     current = current[part];
   }
+   
   return current;
 }
 
