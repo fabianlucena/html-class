@@ -3,8 +3,12 @@ import Proj from '../../components/proj/proj.js';
 import GanttScreen from '../../components/proj/gantt-screen.js';
 import CardsScreen from '../../components/proj/cards-screen.js';
 import { loadLanguage } from '../../components/locale/locale.js';
+import { getPath } from '../../components/utils/path.js';
+import { setBasePath } from '../../components/router/router.js';
 
 importCss('./style.css', import.meta.url);
+
+setBasePath(getPath(import.meta.url));
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadLanguage();

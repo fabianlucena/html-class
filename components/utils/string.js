@@ -8,7 +8,3 @@ export function randomString(length) {
 
   return result;
 }
-
-export function getPath(urlString) {
-  return urlString.replace(/\/[^\/]*$/, '');
-}
