@@ -2,9 +2,11 @@ window.addEventListener('popstate', () => {
   router(window.location.pathname);
 });
 
-export function navigate(path) {
+export function navigate(path, { skipRouter = false } = {}) {
   history.pushState({}, '', path);
-  router(window.location.pathname);
+  if (!skipRouter) {
+    router(window.location.pathname);
+  }
 }
 
 const routers = [];
