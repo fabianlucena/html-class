@@ -17,6 +17,7 @@ export default {
   'Inputs count': 'Cantidad de entradas',
   'Leaky ReLU': 'Leaky ReLU (ReLU con fugas)',
   'Leaky Rectified Linear Unit: f(x) = x for x > 0, else 0.01 * x': 'Unidad lineal rectificada con fugas: f(x) = x para x > 0, else 0.01 * x',
+  'Neural Network Viewer': 'Visor de redes neuronales',
   'Perceptron': 'Perceptrón',
   'Rectified Linear Unit: f(x) = x for x > 0, else 0': 'Unidad lineal rectificada: f(x) = x para x > 0, else 0',
   'ReLU': 'ReLU',

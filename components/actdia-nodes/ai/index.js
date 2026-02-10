@@ -6,6 +6,7 @@ export default {
     'delta.js',
     'cost.js',
     'backpropagation.js',
+    'nn-viewer.js',
   ],
   examples: [
     {
