@@ -3,14 +3,24 @@ import { _, addLocaleUrl } from '../locale/locale.js';
 import Base from '../utils/base.js';
 import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
 import { newId } from '../utils/id.js';
+import Dialog from '../dialog/dialog.js';
 
 importCss('./form.css', import.meta.url);
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
 export default class Form extends Base {
+  #messageDialog;
+
   constructor(options = {}) {
     super();
     this.create(options);
+  }
+
+  get messageDialog() {
+    if (!this.#messageDialog) {
+      this.#messageDialog = new Dialog({ container: this.container });
+    }
+    return this.#messageDialog;
   }
   
   create(options) {
@@ -19,6 +29,7 @@ export default class Form extends Base {
     if (!this.formElement) {
       this.formElement = document.createElement('form');
     }
+    this.formElement.className = 'form';
 
     this.inputHandlerBinded = this.inputHandler.bind(this);
     this.formElement.addEventListener('input', this.inputHandlerBinded);
@@ -37,8 +48,9 @@ export default class Form extends Base {
   render(options) {
     Object.assign(this, options);
 
-    if (!this.fields) {
-      this.showError(_('No form definition available.'));
+    if (!this.fields?.length) {
+      console.log(this.fields);
+      this.messageDialog.show(_('No form definition available.'));
       return;
     }
 
@@ -114,6 +126,7 @@ export default class Form extends Base {
       fieldHtml += `<textarea
           id="${field.id}"
           name="${field.name}"
+          class="field-control field-control-textarea ${field.className ?? ''}"
           ${field.readOnly ? 'readonly' : ''}
           ${field.disabled ? 'disabled="disabled"' : ''} 
         >${value || ''}</textarea>`;
@@ -121,6 +134,7 @@ export default class Form extends Base {
       fieldHtml += `<select
           id="${field.id}"
           name="${field.name}"
+          class="field-control field-control-select ${field.className ?? ''}"
           ${field.readOnly ? 'readonly' : ''}
           ${field.disabled ? 'disabled="disabled"' : ''} 
         >`;
@@ -149,7 +163,7 @@ export default class Form extends Base {
       });
       fieldHtml += `</select>`;
     } else if (tag === 'list' || type === 'list') {
-      fieldHtml += `<ul>
+      fieldHtml += `<ul class="field-control field-control-list ${field.className ?? ''}">
         ${(Array.isArray(value) ? value : []).map((_, index) => `
           <li>
             ${this.getFieldHtml({ name: `${field.name}[${index}]`, ...field.item })}
@@ -160,6 +174,7 @@ export default class Form extends Base {
       fieldHtml += `<${tag}
           id="${field.id}"
           name="${field.name}"
+          class="field-control field-control-input ${field.className ?? ''}"
           type="${type || 'text'}"
           ${(type === 'checkbox' && value) ? 'checked="checked"' : ''}
           ${typeof field.min !== 'undefined' ? `min="${field.min}"` : ''}
@@ -170,17 +185,12 @@ export default class Form extends Base {
           value="${value || ''}"
         >`;
     }
-
-    if (field.label) {
-      fieldHtml = `<label for="${field.id}">${field.label}:</label>
-        <span class="field ${field.className ?? ''}">${fieldHtml}</span>`;
-    }
     
     if (field.options?.length && (tag !== 'select' && type !== 'select')) {
-      fieldHtml += `<div class="options" data-name="${field.name}">`
+      fieldHtml += `<div class="field-options fields-options-select ${field.className ?? ''}" data-name="${field.name}">`
           + field.options.map(option =>
             `<span
-              class="option"
+              class="field-option"
               title="${option.title || ''}"
               data-value="${option.value}"
             >
@@ -188,6 +198,11 @@ export default class Form extends Base {
             </span>`
           ).join('')
         + '</div>';
+    }
+
+    if (field.label) {
+      fieldHtml = `<div class="field"><label for="${field.id}">${field.label}:</label>
+        <span class="field-label ${field.className ?? ''}">${fieldHtml}</span></div>`;
     }
 
     return fieldHtml;

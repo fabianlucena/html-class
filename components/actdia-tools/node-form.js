@@ -7,19 +7,19 @@ export default class NodeForm extends FormDialog {
   showForNode(node, options) {
     if (!isNode(node)) {
       this.node = null;
-      this.showError(_('The provided object is not a Node.'));
+      this.messageDialog.show(_('The provided object is not a Node.'));
       return;
     }
 
     this.node = node;
     this.updateFields();
     options.header ??= _('Node properties');
-
+    
     super.show(options);
   }
 
   updateFields() {
-    this.fields = [
+    this.form.fields = [
       {
         name: 'class',
         _label: 'Class',

@@ -29,18 +29,17 @@ export default class FormDialog extends Dialog {
   }
 
   show(options = {}) {
-    if (options.fields || options.data) {
-      const renderOptions = {};
-      if (options.fields) {
-        renderOptions.fields = options.fields;
-      }
-
-      if (options.data) {
-        renderOptions.data = options.data;
-      }
-
-      this.#form.render(renderOptions);
+    const renderOptions = {};
+    if (options.fields) {
+      renderOptions.fields = options.fields;
     }
+
+    if (options.data) {
+      renderOptions.data = options.data;
+    }
+
+    console.log(this.fields);
+    this.#form.render(renderOptions);
 
     super.show({
       header: options.header || _('Form'),
