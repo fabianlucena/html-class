@@ -5,6 +5,7 @@ import { _, addUrlTranslationsTable, loadLanguage } from '../locale/locale.js';
 import { pushNotification, container as notificationContainer } from '../notistack/notistack.js';
 import '../drag/drag.js';
 import ActDiaTools from './actdia-tools.js';
+import { newId } from '../utils/id.js';
 
 addUrlTranslationsTable('/locale', ['es'], { file: import.meta.url });
 
@@ -71,7 +72,7 @@ function pushState() {
   if (status !== (history.length ? history[history.length - 1].status : null)) {
     let id;
     do {
-      id = crypto.randomUUID().replaceAll('-', '');
+      id = newId().replaceAll('-', '');
     } while (history.find(h => h.id === id));
 
     history.push({ id, status });

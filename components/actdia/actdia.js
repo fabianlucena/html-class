@@ -8,6 +8,7 @@ import { isItem, isNode, isConnection } from './type.js';
 import { escapeHTML, isHTMLElement } from '../utils/html.js';
 import { getNumber, isNumber } from '../utils/type.js';
 import { getPath } from '../utils/string.js';
+import { newId } from '../utils/id.js';
 import { _ } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
 
@@ -477,7 +478,7 @@ export default class ActDia {
       }
       
       while (this.#items.find(n => n.id === item.id)) {
-        item.id = crypto.randomUUID();
+        item.id = newId();
       }
 
       this.autoNameForItem(item);

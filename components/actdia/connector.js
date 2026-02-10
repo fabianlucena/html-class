@@ -2,6 +2,7 @@ import Element from './element.js';
 import { _ } from '../locale/locale.js';
 import { doesExtend } from '../utils/type.js';
 import { getStatusText } from '../utils/http.js';
+import { newId } from '../utils/id.js';
 
 export const DIRECTIONS = {
   RIGHT: 0,
@@ -49,7 +50,7 @@ export default class Connector extends Element {
 
   init(options) {
     super.init(...arguments);
-    this.id ??= crypto.randomUUID();
+    this.id ??= newId();
     this.direction = this.getDirection(this.direction, 'left');
     if (typeof this.name === 'function') {
       this.name = this.name(this);

@@ -1,6 +1,7 @@
 import Element from './element.js';
 import { isEqual } from '../utils/type.js';
 import { getStatusText } from '../utils/http.js';
+import { newId } from '../utils/id.js';
 
 export default class Item extends Element {
   shapes = [];
@@ -128,7 +129,7 @@ export default class Item extends Element {
 
   init(options) {
     super.init(...arguments);
-    this.id ??= crypto.randomUUID();
+    this.id ??= newId();
   }
 
   clone() {
