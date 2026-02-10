@@ -1,5 +1,6 @@
 import { _, _f, dateTimeSmallFormatNoSeconds, onLanguageLoaded } from '../locale/locale';
 import { newId } from '../utils/id';
+import getOptions from './options';
 
 export default class Issue {
   static fields = [
@@ -33,7 +34,7 @@ export default class Issue {
       _description: _f('Person responsible for resolving the issue'),
       _defaultValue: _f('Unassigned'),
       type: 'select',
-      options: 'assignees',
+      options: getOptions('assignees'),
     },
     {
       field: 'createdAt',
@@ -50,7 +51,7 @@ export default class Issue {
       _description: _f('Current state of the issue (e.g., open, in progress, closed)'),
       showAlways: false,
       type: 'select',
-      options: 'statuses',
+      options: getOptions('statuses'),
     },
     {
       field: 'priority',
@@ -59,7 +60,7 @@ export default class Issue {
       _defaultValue: _f('No priority'),
       showAlways: false,
       type: 'select',
-      options: 'priorities',
+      options: getOptions('priorities'),
     },
     {
       field: 'reporter',
@@ -68,7 +69,7 @@ export default class Issue {
       _defaultValue: _f('Unknown'),
       showAlways: false,
       type: 'select',
-      options: 'reporters',
+      options: getOptions('reporters'),
     },
     {
       field: 'labels',
