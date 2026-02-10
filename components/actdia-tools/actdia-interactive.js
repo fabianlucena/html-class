@@ -90,7 +90,7 @@ function dblClickHandler(evt) {
     return;
 
   mouseSelectOn = actdia.getUntransformedPosition(actdia.mouse);
-  nodeSelector.show({ defaultPath: '../nodes' });
+  nodeSelector.show({ defaultPath: '../actdia-nodes' });
 }
 
 function itemDblClickHandler(evt) {

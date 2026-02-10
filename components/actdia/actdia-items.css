@@ -26,7 +26,6 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-miterlimit: 4;
-  vector-effect: non-scaling-stroke;
 }
 
 .actdia-item text {
@@ -50,7 +49,6 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-miterlimit: 4;
-  vector-effect: non-scaling-stroke;
 }
 
 .actdia-item.actdia-item-connection.actdia-selected {
