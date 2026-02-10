@@ -77,33 +77,37 @@ export default class Form extends Base {
     return getValueByPath(this.data, field.name);
   }
 
-  setValue(field, value) {
+  setValue(field, value, name) {
     if (field.set)
       return field.set(value);
 
     if (!this.data)
       return;
 
+    name ??= field.name;
+    if (!name)
+      return;
+
     if (typeof value === 'undefined') {
-      deletePropertyByPath(this.data, field.name);
+      deletePropertyByPath(this.data, name);
       return;
     }
 
     if (field.type === 'number') {
-      setValueByPath(this.data, field.name, value ? parseFloat(value) : null);
+      setValueByPath(this.data, name, value ? parseFloat(value) : null);
       return;
     }
     
-    if (field.type === 'text' && field.name === 'style.dash') {
+    if (field.type === 'text' && name === 'style.dash') {
       value = value? value
         .split(/[, ]/)
         .map(v => parseFloat(v.trim()))
         .filter(v => !isNaN(v)) : [];
 
-      setValueByPath(this.data, field.name, value);
+      setValueByPath(this.data, name, value);
     }
 
-    setValueByPath(this.data, field.name, value);
+    setValueByPath(this.data, name, value);
   }
 
   getFieldHtml(field) {
@@ -219,6 +223,13 @@ export default class Form extends Base {
 
     const name = evt.target.name;
     let field = this.fields.find(f => f.name === name);
+    if (!field) {
+      const matches = /^(.*)\[.+\]$/.exec(name);
+      if (matches) {
+        field = this.fields.find(f => f.name === matches[1]);
+      }
+    }
+
     let value;
     if (field) {
       value = evt.target.type === 'checkbox' ?
@@ -247,7 +258,7 @@ export default class Form extends Base {
       }
     }
 
-    this.setValue(field, value);
+    this.setValue(field, value, name);
   }
 
   clickHandler(evt) {
