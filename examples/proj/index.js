@@ -1,7 +1,8 @@
-import Proj from '@hcc/proj/proj';
-import GanttScreen from '@hcc/proj/gantt-screen';
-import CardsScreen from '@hcc/proj/cards-screen';
-import { loadLanguage } from '@hcc/locale/locale';
+import './style.css';
+import Proj from '../../components/proj/proj';
+import GanttScreen from '../../components/proj/gantt-screen';
+import CardsScreen from '../../components/proj/cards-screen';
+import { loadLanguage } from '../../components/locale/locale';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadLanguage();

@@ -5,7 +5,7 @@ export default defineConfig({
   server: {
     fs: {
       allow: [
-        path.resolve(__dirname, '../..'), 
+        path.resolve(__dirname, '..'), 
       ]
     }
   }

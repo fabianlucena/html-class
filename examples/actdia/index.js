@@ -1,4 +1,5 @@
-import { _, addLocaleUrl } from '@hcc/locale/locale.js';
-import '@hcc/actdia-tools/actdia-interactive.js';
+import './style.css';
+import { _, addLocaleUrl } from '../../components/locale/locale.js';
+import '../../components/actdia-tools/actdia-interactive.js';
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
