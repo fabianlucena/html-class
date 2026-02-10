@@ -1,5 +1,4 @@
 import { importCss } from '../utils/import-css.js';
-//import actdiaItemsCss from './actdia-items.css?raw';
 import Element from './element.js';
 import Item from './item.js';
 import Node from './node.js';
@@ -665,13 +664,12 @@ export default class ActDia {
     return svg;
   }
 
-  static actdiaItemsCss = null;
+  static itemsCss = null;
   async getSVGStyles(options) {
-    if (ActDia.actdiaItemsCss === null) {
+    if (ActDia.itemsCss === null) {
       const url = new URL('/actdia-items.css', import.meta.url);
       const res = await fetch(url);
-      ActDia.actdiaItemsCss = await res.text();
-      console.log(ActDia.actdiaItemsCss);
+      ActDia.itemsCss = await res.text();
     }
 
     options ??= {};
@@ -680,7 +678,7 @@ export default class ActDia {
 
     const prefix1 = options.prefix + options.tab;
     return options.prefix + '<style>'
-        + prefix1 + ActDia.actdiaItemsCss.replace(/\n/g, prefix1)
+        + prefix1 + ActDia.itemsCss.replace(/\n/g, prefix1)
       + options.prefix + '</style>';
   }
 
