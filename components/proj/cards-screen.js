@@ -1,8 +1,8 @@
 import './cards-screen.css';
 import Screen from './screen';
 import Issue from './issue';
-import { _ } from '../locale';
-import { navigate } from '../router';
+import { _ } from '../locale/locale';
+import { navigate } from '../router/router';
 
 export default class CardsScreen extends Screen {
   #issuesElement = null;

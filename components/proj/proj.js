@@ -1,8 +1,8 @@
 import './proj.css';
-import Base from './base';
+import Base from '../utils/base';
 import Issue from './issue';
-import { addUrlTranslationsTable } from '../locale';
-import { navigate, registerRouter } from '../router';
+import { addUrlTranslationsTable } from '../locale/locale';
+import { navigate, registerRouter } from '../router/router';
 import IssueScreen from './issue-screen';
 
 addUrlTranslationsTable('/translations', ['es-AR'], { file: import.meta.url });

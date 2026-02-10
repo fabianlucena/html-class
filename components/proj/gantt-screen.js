@@ -1,5 +1,5 @@
 import Screen from './screen';
-import { _ } from '../locale';
+import { _ } from '../locale/locale';
 
 export default class GanttScreen extends Screen {
   constructor(options = {}) {

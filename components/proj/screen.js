@@ -1,7 +1,7 @@
 import './screen.css';
-import Base from './base';
-import { _ } from '../locale';
-import { generateId } from '../id';
+import Base from '../utils/base';
+import { _ } from '../locale/locale';
+import { generateId } from '../utils/id';
 
 export default class Screen extends Base {
   #name = '';

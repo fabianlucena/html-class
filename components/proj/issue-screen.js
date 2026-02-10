@@ -1,5 +1,5 @@
 import Screen from './screen';
-import { _ } from '../locale';
+import { _ } from '../locale/locale';
 import Form from '../form/form';
 import Issue from './issue';
 

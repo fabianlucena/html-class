@@ -1,5 +1,5 @@
-import { _, _f, dateTimeSmallFormatNoSeconds, onLanguageLoaded } from '../locale';
-import { generateId } from '../id';
+import { _, _f, dateTimeSmallFormatNoSeconds, onLanguageLoaded } from '../locale/locale';
+import { generateId } from '../utils/id';
 
 export default class Issue {
   static items = [
