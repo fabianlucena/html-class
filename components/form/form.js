@@ -1,50 +1,104 @@
 import './form.css';
-import Dialog, { ConfirmDialog } from '../dialog/dialog.js';
-import { _ } from '../locale/locale.js';
+import { _, addUrlTranslationsTable } from '../locale/locale.js';
+import Base from '../utils/base';
+import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
+import { newId } from '../utils/id.js';
 
-export default class Form extends Dialog {
+addUrlTranslationsTable('/translations', ['es-AR'], { file: import.meta.url });
+
+export default class Form extends Base {
+  constructor(options = {}) {
+    super();
+    this.create(options);
+  }
+  
   create(options) {
-    super.create(...arguments);
+    super.create(options);
+
+    if (!this.formElement) {
+      this.formElement = document.createElement('form');
+    }
+
     this.inputHandlerBinded = this.inputHandler.bind(this);
-    this.contentElement.addEventListener('input', this.inputHandlerBinded);
+    this.formElement.addEventListener('input', this.inputHandlerBinded);
+
+    if (this.parent) {
+      this.parent.appendChild(this.formElement);
+      if (this.fields?.length)
+        this.render();
+    }
   }
 
   destroy() {
-    this.contentElement.removeEventListener('input', this.inputHandlerBinded);
-    super.destroy();
+    this.formElement.removeEventListener('input', this.inputHandlerBinded);
   }
 
-  show(options) {
-    if (!this.formDefinition) {
+  render(options) {
+    Object.assign(this, options);
+
+    if (!this.fields) {
       this.showError(_('No form definition available.'));
       return;
     }
 
-    const html = this.formDefinition
+    const html = this.fields
       .map(field => this.getFieldHtml(field))
       .join('');
 
-    super.show({
-      header: options.header || _('Form'),
-      content: `<form class="form">${html}</form>`,
-      ...options,
-      okButton: _('Save'),
-      cancelButton: true,
-      closeButton: false,
-    });
+    if (options.parent)
+      this.parent.appendChild(this.formElement);
+
+    this.formElement.innerHTML = html;
   }
 
   getValue(field) {
+    if (field.get)
+      return field.get();
+
+    if (!this.data)
+      return;
+
+    const name = field.field || field.name;
+    if (!name)
+      return;
+
+    return getValueByPath(this.data, name);
   }
 
   setValue(field, value) {
+    if (field.set)
+      return field.set(value);
+
+    if (!this.data)
+      return;
+
+    if (typeof value === 'undefined') {
+      deletePropertyByPath(this.data, field.name);
+      return;
+    }
+
+    if (field.type === 'number') {
+      setValueByPath(this.data, field.name, value ? parseFloat(value) : null);
+      return;
+    }
+    
+    if (field.type === 'text' && field.name === 'style.dash') {
+      value = value? value
+        .split(/[, ]/)
+        .map(v => parseFloat(v.trim()))
+        .filter(v => !isNaN(v)) : [];
+
+      setValueByPath(this.data, field.name, value);
+    }
+
+    setValueByPath(this.data, field.name, value);
   }
 
   getFieldHtml(field) {
     if (!field.label && field._label)
       field.label = _(field._label);
 
-    field.id ??= field.name ?? crypto.randomUUID();
+    field.id ??= field.name ?? newId();
     field.previousValue = this.getValue(field);
 
     let fieldHtml = '';
@@ -70,7 +124,16 @@ export default class Form extends Dialog {
           ${field.readOnly ? 'readonly' : ''}
           ${field.disabled ? 'disabled="disabled"' : ''} 
         >`;
-      field.options?.forEach(option => {
+      let options;
+      if (Array.isArray(field.options)) {
+        options = field.options;
+      } else if (typeof field.options === 'function') {
+        options = field.options();
+      } else {
+        fieldHtml += `<option selected="selected">${_('Error in options definition')}</option>`;
+      }
+
+      options?.forEach(option => {
         let thisValue, label, attr = '';
         if (typeof option === 'object') {
           thisValue = option.value;
