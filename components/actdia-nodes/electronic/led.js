@@ -30,7 +30,7 @@ export default function create({ Node }) {
       { name: 'i0', type: 'in', x: -1, y: 0, direction: 'left', extends: 'tiny' },
     ];
 
-    fieldsDefinition = [
+    fields = [
       {
         name: 'color',
         type: 'color',

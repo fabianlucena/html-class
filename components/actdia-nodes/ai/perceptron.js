@@ -121,7 +121,7 @@ export default function create({ Node, _ }) {
       name: ({ index }) => `i${index}`,
     };
 
-    fieldsDefinition = [
+    fields = [
       {
         name: 'inputsCount',
         type: 'number',

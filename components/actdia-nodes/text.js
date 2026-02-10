@@ -25,7 +25,7 @@ export default function create({ Node }) {
 
     connectors = [];
 
-    fieldsDefinition = [
+    fields = [
       {
         name: 'text',
         type: 'textarea',

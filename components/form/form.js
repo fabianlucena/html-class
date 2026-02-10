@@ -203,7 +203,7 @@ export default class Form extends Base {
     evt.preventDefault();
 
     const name = evt.target.name;
-    let field = this.fieldsDefinition.find(f => f.name === name);
+    let field = this.fields.find(f => f.name === name);
     let value;
     if (field) {
       value = evt.target.type === 'checkbox' ?
@@ -217,7 +217,7 @@ export default class Form extends Base {
         }
       }
     } else {
-      field = this.fieldsDefinition.find(f => (f.name + '_nullifier') === name);
+      field = this.fields.find(f => (f.name + '_nullifier') === name);
       if (!field) {
         return;
       }
@@ -242,7 +242,7 @@ export default class Form extends Base {
       const optionsElement = optionElement.closest('.options');
       const name = optionsElement?.dataset?.name;
       if (typeof name !== 'undefined') {
-        const field = this.fieldsDefinition.find(f => f.name === name);
+        const field = this.fields.find(f => f.name === name);
         this.setValue(field, value);
         evt.preventDefault();
       }
@@ -254,7 +254,7 @@ export default class Form extends Base {
   okHandler(evt) {
     const formData = new FormData(this.element.querySelector('form'));
     let value;
-    this.fieldsDefinition?.forEach(field => {
+    this.fields?.forEach(field => {
       if (field.disabled || field.readOnly)
         return;
 
@@ -277,7 +277,7 @@ export default class Form extends Base {
     new ConfirmDialog({
       container: this.container,
       onYes: () => {
-        this.fieldsDefinition.forEach(field => this.setValue(field, field.previousValue));
+        this.fields.forEach(field => this.setValue(field, field.previousValue));
         this.forceClose();
       },
       onClosed: () => this.element?.focus(),

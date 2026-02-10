@@ -32,7 +32,7 @@ export default function create({ Node }) {
       extends: 'tiny',
     };
 
-    fieldsDefinition = [
+    fields = [
       {
         name: 'channelWidth',
         type: 'number',

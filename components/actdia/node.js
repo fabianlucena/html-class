@@ -181,7 +181,7 @@ export default class Node extends Item {
   }
 
   saveStatus = false;
-  saveFieldsDefinition = false;
+  saveFields = false;
   get skipExport() {
     const skip = super.skipExport;
     skip.push(
@@ -194,8 +194,8 @@ export default class Node extends Item {
     if (!this.saveStatus)
       skip.push('status');
 
-    if (!this.saveFieldsDefinition)
-      skip.push('fieldsDefinition');
+    if (!this.saveFields)
+      skip.push('fields');
     
     return skip;
   }
