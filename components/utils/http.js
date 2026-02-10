@@ -1,3 +1,5 @@
+import { _ } from '../locale/locale';
+
 export function getStatusText(status) {
   if (status === null)
     return _('null');

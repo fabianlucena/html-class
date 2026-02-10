@@ -59,9 +59,6 @@ export async function loadLanguage(newLang) {
 
     try {
       const importUrl = `${url}/${language}.json`;
-      console.log(`${url}/${language}.json`);
-      
-      
       const table = (await import(/* @vite-ignore */ importUrl)).default;
       Object.assign(translations, table);
     } catch (error) {
