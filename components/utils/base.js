@@ -1,5 +1,6 @@
 export default class Base {
   #element = null;
+  #parent = null;
 
   constructor(options = {}) {
   }
@@ -13,6 +14,17 @@ export default class Base {
       value = document.getElementById(value);
 
     this.#element = value;
+  }
+
+  get parent() {
+    return this.#parent;
+  }
+
+  set parent(value) {
+    if (typeof value === 'string')
+      value = document.getElementById(value);
+
+    this.#parent = value;
   }
 
   create(options = {}) {
