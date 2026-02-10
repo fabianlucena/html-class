@@ -1,8 +1,8 @@
 import { _, _f, dateTimeSmallFormatNoSeconds, onLanguageLoaded } from '../locale/locale';
-import { generateId } from '../utils/id';
+import { newId } from '../utils/id';
 
 export default class Issue {
-  static items = [
+  static fields = [
     {
       field: 'id',
       label: 'ID',
@@ -146,23 +146,22 @@ export default class Issue {
   ];
 
   static updateTranslations() {
-    Issue.items.forEach(item => {
+    Issue.fields.forEach(field => {
+      if (field._label)
+        field.label = _(field._label);
 
-      if (item._label)
-        item.label = _(item._label);
+      if (field._description)
+        field.description = _(field._description);
 
-      if (item._description)
-        item.description = _(item._description);
-
-      if (item._defaultValue)
-        item.defaultValue = _(item._defaultValue);
+      if (field._defaultValue)
+        field.defaultValue = _(field._defaultValue);
     });
   }
 
   constructor(options = {}) {
     Object.assign(this, options);
 
-    this.id ||= generateId();
+    this.id ||= newId();
     this.createdAt ||= new Date();
   }
 }

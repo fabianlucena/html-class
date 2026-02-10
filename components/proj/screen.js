@@ -1,13 +1,14 @@
 import './screen.css';
 import Base from '../utils/base';
 import { _ } from '../locale/locale';
-import { generateId } from '../utils/id';
+import { newId } from '../utils/id';
 
 export default class Screen extends Base {
   #name = '';
   #proj = null;
   #headerElement = null;
   #messageElement = null;
+  #contentElement = null;
 
   get name() {
     return this.#name;
@@ -33,10 +34,14 @@ export default class Screen extends Base {
     return this.#messageElement;
   }
 
+  get contentElement() {
+    return this.#contentElement;
+  }
+
   create(options = {}) {
     super.create(options);
 
-    this.id ||= generateId();
+    this.id ||= newId();
     this.name ||= _('Unnamed');
 
     if (!this.element) {
@@ -57,6 +62,13 @@ export default class Screen extends Base {
     }
 
     this.#messageElement.className = 'proj-screen-message';
+
+    if (!this.contentElement) {
+      this.#contentElement = document.createElement('div');
+      this.element.appendChild(this.contentElement);
+    }
+
+    this.#contentElement.className = 'proj-screen-content';
   }
 
   show(visible = true) {

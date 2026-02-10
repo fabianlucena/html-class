@@ -31,7 +31,9 @@ export default class CardsScreen extends Screen {
     }
 
     this.issuesElement.className = 'cards-screen-issues';
-    this.issuesElement.addEventListener('click', (e) => {
+    this.issuesElement.addEventListener('click', e => {
+      e.stopPropagation();
+      e.preventDefault();
       const button = e.target.closest('button[data-link]');
       if (button) {
         const issueId = button.getAttribute('data-link').split('/')[1];
@@ -54,30 +56,28 @@ export default class CardsScreen extends Screen {
       li.className = 'cards-screen-issue';
 
       let body = '';
-      Issue.items.forEach(({
-        field, label, description, defaultValue, formater, showAlways, type
-      }) => {
-        if (field) {
-          let value = issue[field];
+      Issue.fields.forEach(field => {
+        if (field.field) {
+          let value = issue[field.field];
           if (value) {
-            if (formater) {
-              value = formater(value);
+            if (field.formater) {
+              value = field.formater(value);
             } else if (value instanceof Date) {
               value = value.toLocaleString();
             } else {
               value = String(value);
             }
           } else {
-            if (showAlways === false) {
+            if (field.showAlways === false) {
               return;
             }
 
-            value = defaultValue || '';
+            value = field.defaultValue || '';
           }
 
-          body += `<div class="${field}" title="${description}"><strong>${label}:</strong> ${value}</div>`;
-        } else if (type === 'button') {
-          body += `<button class="edit-issue" data-link="issue/${issue.id}">${label}</button>`;
+          body += `<div class="${field.field}" title="${field.description}"><strong>${field.label}:</strong> ${value}</div>`;
+        } else if (field.type === 'button') {
+          body += `<button class="edit-issue" data-link="issue/${issue.id}">${field.label}</button>`;
         }
       });
       li.innerHTML = body;

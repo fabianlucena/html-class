@@ -8,7 +8,6 @@ import IssueScreen from './issue-screen';
 addUrlTranslationsTable('/translations', ['es-AR'], { file: import.meta.url });
 
 export default class Proj extends Base {
-  #parent = null;
   #navigator = null;
   #body = null;
   #screens = [];
@@ -60,17 +59,6 @@ export default class Proj extends Base {
     }
 
     return false;
-  }
-
-  get parent() {
-    return this.#parent;
-  }
-
-  set parent(value) {
-    if (typeof value === 'string')
-      value = document.getElementById(value);
-
-    this.#parent = value;
   }
 
   get navigator() {
