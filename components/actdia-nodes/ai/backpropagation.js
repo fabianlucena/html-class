@@ -33,20 +33,29 @@ export default function create({ Node }) {
     ];
 
     #clkStatus = 0;
-    #input = null;
+    #inputs = null;
     #clk = null;
+    #learningRate = 0.01;
+
+    get inputs() {
+      return this.#inputs;
+    }
+
+    get clk() {
+      return this.#clk;
+    }
 
     init() {
       super.init(...arguments);
 
       if (this.connectors) {
-        this.#input = this.connectors.find(c => c.name === 'i');
+        this.#inputs = this.connectors.filter(c => c.name === 'i');
         this.#clk = this.connectors.find(c => c.name === 'clk');
       }
     }
 
     updateStatus(options = {}) {
-      if (!this.#input || !this.#clk)
+      if (!this.#inputs || !this.#clk)
         return;
 
       if (this.#clk.status > 0.5) {
@@ -57,13 +66,42 @@ export default function create({ Node }) {
       }
 
       if (this.#clk.status <= 0.5) {
-        if (this.#clkStatus === 0)
+        if (this.#clkStatus === 0) {
           return;
+        }
         
         this.#clkStatus = 0;
       }
+      
+      this.backPropagate(this, null, this.#learningRate, 0);
+    }
 
-      this.setBackStatus(this.#input.status, options);
+    backPropagate(node, costNode, learningRate, delta, level = 0) {
+      let newLevel = level - 1;
+      if (newLevel === 0) {
+        return;
+      }
+      
+      if (node.elementClass === 'Perceptron') {
+        if (costNode && learningRate) {
+          console.log(delta);
+          let sum = node.bias;
+          node.inputs.forEach((i, index) => sum += i.status * node.weights[index]);
+          delta *= node.derivative(sum);
+          node.bias -= learningRate * delta;
+          node.inputs.forEach((i, index) => {
+            node.weights[index] -= learningRate * delta * i.status;
+          });
+        }
+      } else if (node.elementClass === 'Cost') {
+        costNode = node;
+        delta = costNode.derivative(...costNode.inputs.map(i => i.status));
+      } else if (node.elementClass !== 'Backpropagation') {
+        return;
+      }
+
+      let backNodes = node.inputs.map(i => i.connections.map(c => c?.from?.item)).flat();
+      backNodes.forEach(n => this.backPropagate(n, costNode, learningRate, delta, newLevel));
     }
   };
 }

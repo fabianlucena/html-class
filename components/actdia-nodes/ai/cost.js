@@ -1,4 +1,13 @@
-export default function create({ Node }) {
+export default function create({ Node, _ }) {
+  const errorFunctions = {
+    mse: {
+      func: (e, r) => { let d = e - r; return d * d / 2.0; },
+      derivative: (e, r) => (e - r),
+      name: _('MSE'),
+      description: _('Mean Squared Error: E = (1/n) Σ (y_i - r_i)^2'),
+    },
+  };
+
   return class Cost extends Node {
     shape = {
       shapes: [
@@ -45,21 +54,32 @@ export default function create({ Node }) {
     ];
 
     #inputs = [];
-    #output = null;
+    #func = errorFunctions.mse.func;
+    #derivative = errorFunctions.mse.derivative;
+
+    get inputs() {
+      return this.#inputs;
+    }
+
+    get func() {
+      return this.#func;
+    }
+
+    get derivative() {
+      return this.#derivative;
+    }
 
     init() {
       super.init(...arguments);
 
       if (this.connectors) {
         this.#inputs = this.connectors.filter(c => c.type === 'in');
-        this.#output = this.connectors.find(c => c.type === 'out');
       }
     }
 
     updateStatus(options = {}) {
       const inputs = this.#inputs.map(i => i.status);
-      let p = inputs[1] - inputs[0];
-      let status = p * p / 2;
+      let status = this.func(inputs[1], inputs[0]);
 
       this.setStatus(status, options);
     }

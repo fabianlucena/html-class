@@ -62,7 +62,7 @@ export default function create({ Node }) {
 
       while (layer.length) {
         data.push(layer.map(n => [n.bias, ...n.weights]).flat());
-        const newlayer = layer.map(n => n.connectors
+        const newLayer = layer.map(n => n.connectors
             .filter(c => c.type === 'in')
             .map(c => c.connections.map(c => c?.from?.item).flat())
             .flat()
@@ -71,7 +71,7 @@ export default function create({ Node }) {
           .filter(n => n.elementClass === 'Perceptron' && !includedIds.includes(n.id));
 
         layer = [];
-        for (const n of newlayer) {
+        for (const n of newLayer) {
           if (includedIds.includes(n.id))
             continue;
           

@@ -2,79 +2,79 @@ export default function create({ Node, _ }) {
   const activationFunctions = {
     relu: {
       func: x => Math.max(0, x),
-      derived: x => (x > 0 ? 1 : 0),
+      derivative: x => (x > 0 ? 1 : 0),
       name: _('ReLU'),
       description: _('Rectified Linear Unit: f(x) = x for x > 0, else 0'),
     },
     sigmoid: {
       func: x => 1 / (1 + Math.exp(-x)),
-      derived: x => x * (1 - x),
+      derivative: x => x * (1 - x),
       name: _('Sigmoid'),
       description: _('Sigmoid function: f(x) = 1 / (1 + e^(-x))'),
     },
     tanh: {
       func: x => (Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)),
-      derived: x => 1 - x * x,
+      derivative: x => 1 - x * x,
       name: _('Tanh'),
       description: _('Hyperbolic Tangent: f(x) = (e^x - e^(-x)) / (e^x + e^(-x))'),
     },
     identity: {
       func: x => x,
-      derived: x => 1,
+      derivative: x => 1,
       name: _('Identity'),
       description: _('Identity function: f(x) = x'),
     },
     step: {
       func: x => x >= 0 ? 1 : 0,
-      derived: x => 0,
+      derivative: x => 0,
       name: _('Step'),
       description: _('Step function: f(x) = 1 for x >= 0, else 0'),
     },
     softmax: {
       func: x => Math.exp(x) / Math.sum(Math.exp(x)),
-      derived: x => x * (1 - x),
+      derivative: x => x * (1 - x),
       name: _('Softmax'),
       description: _('Softmax function: f(x) = e^(x_i) / Σ e^(x_j) for all j'),
     },
     clamped: {
       func: x => x < 0 ? 0 : x > 1 ? 1 : x,
-      derived: x => (x >= 0 && x <= 1) ? 1 : 0,
+      derivative: x => (x >= 0 && x <= 1) ? 1 : 0,
       name: _('Clamped'),
       description: _('Clamped function: f(x) = 0 for x < 0, f(x) = 1 for x > 1, else f(x) = x'),
     },
     clampedSymmetric: {
       func: x => Math.max(-1, Math.min(1, x)),
-      derived: x => (x > -1 && x < 1) ? 1 : 0,
+      derivative: x => (x > -1 && x < 1) ? 1 : 0,
       name: _('Clamped Symmetric'),
       description: _('Clamped Symmetric function: f(x) = -1 for x < -1, f(x) = 1 for x > 1, else f(x) = x'),
     },
     leakyReLU: {
       func: x => x > 0 ? x : 0.01 * x,
-      derived: x => (x > 0 ? 1 : 0.01),
+      derivative: x => (x > 0 ? 1 : 0.01),
       name: _('Leaky ReLU'),
       description: _('Leaky Rectified Linear Unit: f(x) = x for x > 0, else 0.01 * x'),
     },
     elu: {
       func: x => x >= 0 ? x : (Math.exp(x) - 1),
-      derived: x => (x >= 0 ? 1 : Math.exp(x)),
+      derivative: x => (x >= 0 ? 1 : Math.exp(x)),
       name: _('ELU'),
       description: _('Exponential Linear Unit: f(x) = x for x >= 0, else e^x - 1'),
     },
     selu: {
       func: x => x >= 0 ? 1.0507 * x : 1.0507 * (Math.exp(x) - 1),
-      derived: x => (x >= 0 ? 1.0507 : 1.0507 * Math.exp(x)),
+      derivative: x => (x >= 0 ? 1.0507 : 1.0507 * Math.exp(x)),
       name: _('SELU'),
       description: _('Scaled Exponential Linear Unit: f(x) = 1.0507 * x for x >= 0, else 1.0507 * (e^x - 1)'),
     },
     gelu: {
       func: x => 0.5 * x * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (x + 0.044715 * Math.pow(x, 3)))),
-      derived: x => 0.5 * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (x + 0.044715 * Math.pow(x, 3)))),
+      derivative: x => 0.5 * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (x + 0.044715 * Math.pow(x, 3)))),
       name: _('GELU'),
       description: _('Gaussian Error Linear Unit: f(x) = 0.5 * x * (1 + tanh(√(2/π) * (x + 0.044715 * x³)))'),
     },
     swish: {
       func: x => x / (1 + Math.exp(-x)),
-      derived: x => {
+      derivative: x => {
         const sig = 1 / (1 + Math.exp(-x));
         return sig + x * sig * (1 - sig);
       },
@@ -175,26 +175,42 @@ export default function create({ Node, _ }) {
 
     minInitialValue = -5;
     maxInitialValue = 5;
-    bias = null;
+    bias = 0;
     weights = [];
     #activationFunction = 'relu';
     #func = activationFunctions.relu.func;
     #inputs = [];
     #output = null;
-    #derived = activationFunctions.relu.derived;
+    #derivative = activationFunctions.relu.derivative;
     #learningRate = 0.1;
+
+    get inputs() {
+      return this.#inputs;
+    }
+
+    get output() {
+      return this.#output;
+    }
 
     set activationFunction(funcName) {
       const funcData = activationFunctions[funcName];
       if (funcData) {
         this.#activationFunction = funcName;
         this.#func = funcData.func;
-        this.#derived = funcData.derived;
+        this.#derivative = funcData.derivative;
       }
     }
 
     get activationFunction() {
       return this.#activationFunction;
+    }
+
+    get func() {
+      return this.#func;
+    }
+
+    get derivative() {
+      return this.#derivative;
     }
 
     getData() {
