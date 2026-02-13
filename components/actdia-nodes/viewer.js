@@ -39,7 +39,12 @@ export default function create({ Node }) {
         status = status.map(v => v ? v : 0);
       }
 
-      this.shape.shapes[1].text = JSON.stringify(status);
+      if (Array.isArray(status)) {
+        this.shape.shapes[1].text = JSON.stringify(status);
+      } else {
+        this.shape.shapes[1].text = JSON.stringify(status, null, ' ');
+      }
+
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
     }
   };
