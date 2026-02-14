@@ -84,7 +84,6 @@ export default function create({ Node }) {
       
       if (node.elementClass === 'Perceptron') {
         if (costNode && learningRate) {
-          console.log(delta);
           let sum = node.bias;
           node.inputs.forEach((i, index) => sum += i.status * node.weights[index]);
           delta *= node.derivative(sum);
