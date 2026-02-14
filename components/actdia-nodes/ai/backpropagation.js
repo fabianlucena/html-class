@@ -32,9 +32,9 @@ export default function create({ Node }) {
       { name: 'clk', type: 'in',  x: 0.293, y: 1.707, direction: -135,  extends: 'tiny' },
     ];
 
-    #clkStatus = 0;
     #inputs = null;
     #clk = null;
+    #clkStatus = 0;
     #learningRate = 0.01;
 
     get inputs() {

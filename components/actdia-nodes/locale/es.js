@@ -13,6 +13,7 @@ export default {
   'Linear': 'Lineal',
   'Maximum': 'Máximo',
   'Minimum': 'Mínimo',
+  'Moving average': 'Media móvil',
   'No data': 'Sin datos',
   'Oscillograph': 'Oscilógrafo',
   'Pulse generator': 'Generador de pulsos',
@@ -31,4 +32,5 @@ export default {
   'Variant': 'Variante',
   'Vertical': 'Vertical',
   'Viewer': 'Visor',
+  'Window width': 'Ancho de ventana',
 };

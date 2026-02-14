@@ -5,6 +5,7 @@ export default {
     'bus.js',
     'unbus.js',
     'oscillograph.js',
+    'moving_average.js',
     'pulse_generator.js',
     'single_pulse.js',
     'switch.js',
