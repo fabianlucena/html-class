@@ -24,6 +24,7 @@ export default class FormDialog extends Dialog {
         parent: this.contentElement,
         fields: options.fields,
         data: options.data,
+        afterSetValue: options.afterSetValue,
       });
     }
   }
