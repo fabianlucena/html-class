@@ -1380,7 +1380,7 @@ export default class ActDia {
     const attributePrefix = options.prefix + options.tab;
     const commandsPrefix = attributePrefix + options.tab;
     let d = data.d
-      .trim()
+      ?.trim()
       .replace(/"/g, '\'')
       .replace(/^\s+/g, '')
       .replace(/\s+$/g, '')
