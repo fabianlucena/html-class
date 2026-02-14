@@ -4,6 +4,11 @@ import { _ } from '../locale/locale.js';
 import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
 
 export default class NodeForm extends FormDialog {
+  constructor(options = {}) {
+    super(options);
+    this.form.afterSetValue ??= this.afterSetValue.bind(this);
+  }
+
   showForNode(node, options) {
     if (!isNode(node)) {
       this.node = null;
@@ -97,34 +102,7 @@ export default class NodeForm extends FormDialog {
     ];    
   }
 
-  getValue(field) {
-    if (field.get)
-      return field.get();
-
-    return getValueByPath(this.node, field.name);
-  }
-
-  setValue(field, value) {
-    if (typeof value === 'undefined') {
-      deletePropertyByPath(this.node, field.name);
-      return;
-    }
-
-    if (field.type === 'number') {
-      setValueByPath(this.node, field.name, value ? parseFloat(value) : null);
-      return;
-    }
-    
-    if (field.type === 'text' && field.name === 'style.dash') {
-      value = value? value
-        .split(/[, ]/)
-        .map(v => parseFloat(v.trim()))
-        .filter(v => !isNaN(v)) : [];
-
-      setValueByPath(this.node, field.name, value);
-    }
-
-    setValueByPath(this.node, field.name, value);
+  afterSetValue(field, value, name) {
     this.node.update();
   }
 }
