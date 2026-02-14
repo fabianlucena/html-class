@@ -90,16 +90,16 @@ export default class Form extends Base {
 
       if (typeof value === 'undefined') {
         deletePropertyByPath(this.data, name);
-      } else if (field.type === 'number') {
-        setValueByPath(this.data, name, value ? parseFloat(value) : null);
-      } else if (field.type === 'text' && name === 'style.dash') {
-        value = value? value
-          .split(/[, ]/)
-          .map(v => parseFloat(v.trim()))
-          .filter(v => !isNaN(v)) : [];
-
-        setValueByPath(this.data, name, value);
       } else {
+        if (field.type === 'number' || field.type === 'list' && field.item?.type === 'number') {
+          value = value ? parseFloat(value) : null
+        } else if (field.type === 'text' && name === 'style.dash') {
+          value = value? value
+            .split(/[, ]/)
+            .map(v => parseFloat(v.trim()))
+            .filter(v => !isNaN(v)) : [];
+        }
+
         setValueByPath(this.data, name, value);
       }
     }
