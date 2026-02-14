@@ -78,36 +78,33 @@ export default class Form extends Base {
   }
 
   setValue(field, value, name) {
-    if (field.set)
-      return field.set(value);
+    if (field.set) {
+      field.set(value);
+    } else {
+      if (!this.data)
+        return;
 
-    if (!this.data)
-      return;
+      name ??= field.name;
+      if (!name)
+        return;
 
-    name ??= field.name;
-    if (!name)
-      return;
+      if (typeof value === 'undefined') {
+        deletePropertyByPath(this.data, name);
+      } else if (field.type === 'number') {
+        setValueByPath(this.data, name, value ? parseFloat(value) : null);
+      } else if (field.type === 'text' && name === 'style.dash') {
+        value = value? value
+          .split(/[, ]/)
+          .map(v => parseFloat(v.trim()))
+          .filter(v => !isNaN(v)) : [];
 
-    if (typeof value === 'undefined') {
-      deletePropertyByPath(this.data, name);
-      return;
+        setValueByPath(this.data, name, value);
+      } else {
+        setValueByPath(this.data, name, value);
+      }
     }
 
-    if (field.type === 'number') {
-      setValueByPath(this.data, name, value ? parseFloat(value) : null);
-      return;
-    }
-    
-    if (field.type === 'text' && name === 'style.dash') {
-      value = value? value
-        .split(/[, ]/)
-        .map(v => parseFloat(v.trim()))
-        .filter(v => !isNaN(v)) : [];
-
-      setValueByPath(this.data, name, value);
-    }
-
-    setValueByPath(this.data, name, value);
+    this.afterSetValue?.(field, value, name);
   }
 
   getFieldHtml(field) {
