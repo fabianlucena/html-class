@@ -87,9 +87,21 @@ export default function create({ Node }) {
           let sum = node.bias;
           node.inputs.forEach((i, index) => sum += i.status * node.weights[index]);
           delta *= node.derivative(sum);
-          node.bias -= learningRate * delta;
+
+          const bias = node.bias - learningRate * delta;
+          if (!isNaN(bias) && !isFinite(bias)) {
+            node.bias -= learningRate * delta;
+          } else if (isNaN(node.bias) || isFinite(node.bias)) {
+            node.bias = Math.random() * 2.0 - 1.0;
+          }
+
           node.inputs.forEach((i, index) => {
-            node.weights[index] -= learningRate * delta * i.status;
+            const weight = node.weights[index] - learningRate * delta * i.status;
+            if (!isNaN(weight) && !isFinite(weight)) {
+              node.weights[index] = weight;
+            } else if (isNaN(node.weights[index]) || isFinite(node.weights[index])) {
+              node.weights[index] = Math.random() * 2.0 - 1.0;
+            }
           });
         }
       } else if (node.elementClass === 'Cost') {
