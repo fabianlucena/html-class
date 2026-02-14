@@ -5,7 +5,6 @@ export default function create({ Node, actdia }) {
     const outputs = actdia.items
       .filter(i => i.elementClass === 'LabelOutput' && i.label === label);
 
-    
     const status = actdia.globalData.labeledStatus[label];
     outputs.forEach(item => {
       item.updateStatus(status);
