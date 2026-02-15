@@ -7,6 +7,7 @@ export default {
     'oscillograph.js',
     'moving_average.js',
     'pulse_generator.js',
+    'counter.js',
     'single_pulse.js',
     'switch.js',
     'pushbutton.js',

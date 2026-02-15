@@ -3,6 +3,7 @@ export default {
   'Basic': 'Básico',
   'Bus': 'Canal',
   'Channel width': 'Ancho de canal',
+  'Counter': 'Contador',
   'Cubic': 'Cúbica',
   'Cubic Root': 'Raíz cúbica',
   'Electronic': 'Electrónica',
