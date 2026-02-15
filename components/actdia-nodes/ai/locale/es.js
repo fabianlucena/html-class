@@ -22,6 +22,7 @@ export default {
   'Neural Network': 'Red neuronal',
   'Neural Network Viewer': 'Visor de redes neuronales',
   'Perceptron': 'Perceptrón',
+  'Perceptron Viewer': 'Visor de perceptrón',
   'Rectified Linear Unit: f(x) = x for x > 0, else 0': 'Unidad lineal rectificada: f(x) = x para x > 0, else 0',
   'ReLU': 'ReLU',
   'Scaled Exponential Linear Unit: f(x) = 1.0507 * x for x >= 0, else 1.0507 * (e^x - 1)': 'Unidad lineal exponencial escalada: f(x) = 1.0507 * x para x >= 0, else 1.0507 * (e^x - 1)',

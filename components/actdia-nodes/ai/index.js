@@ -5,6 +5,7 @@ export default {
     'perceptron.js',
     'cost.js',
     'backpropagation.js',
+    'perceptron-viewer.js',
     'nn-viewer.js',
   ],
   examples: [

@@ -37,6 +37,40 @@ export default function create({ Node }) {
           text: '',
           fontSize: .8,
         },
+        {
+          shapes: [
+            {
+              shape: 'circle',
+              x: 0.5,
+              y: 2.8,
+              r: .2,
+            },
+            {
+              shape: 'circle',
+              x: 0.5,
+              y: 3.5,
+              r: .2,
+            },
+            {
+              shape: 'circle',
+              x: 1.2,
+              y: 2.8,
+              r: .2,
+            },
+            {
+              shape: 'circle',
+              x: 1.2,
+              y: 3.5,
+              r: .2,
+            },
+            {
+              shape: 'path',
+              d:  'M 0.2 2.8 H 0.5 L 1.2 3.5 H 1.5'
+                + 'M 0.2 3.5 H 0.5 L 1.2 2.8 H 1.5',
+              fill: false,
+            }
+          ],
+        },
       ],
     };
 
