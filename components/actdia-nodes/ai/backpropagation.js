@@ -4,7 +4,7 @@ export default function create({ Node, _ }) {
       shapes: [
         {
           shape: 'rect',
-          width: 3.5,
+          width: 4,
           height: 2,
           rx: .1,
           ry: .1,
@@ -27,13 +27,14 @@ export default function create({ Node, _ }) {
     box = {
       x: 0,
       y: .5,
-      width: 3.5,
+      width: 4,
       height: 2,
     };
 
     connectors = [
-      { name: 'i',    label: true, type: 'in',  x: 0, y: 1, direction: 'left', extends: 'tiny' },
-      { name: '!clk', label: true, type: 'in',  x: 0, y: 2, direction: 'left', extends: 'tiny' },
+      { name: 'i',    label: true, type: 'in',  x: 0, y: 1, direction: 'left',  extends: 'tiny' },
+      { name: '!clk', label: true, type: 'in',  x: 0, y: 2, direction: 'left',  extends: 'tiny' },
+      { name: '#',    label: true, type: 'out', x: 4, y: 2, direction: 'right', extends: 'tiny' },
     ];
 
     #inputs = null;
@@ -92,6 +93,7 @@ export default function create({ Node, _ }) {
         this.#clkStatus = 0;
       }
       
+      this.setStatus(this.status + 1);
       this.#newNodesWeights = new Map();
       this.backPropagate(this, null, this.learningRate, 0);
       this.deltaWeights();
@@ -135,6 +137,7 @@ export default function create({ Node, _ }) {
     }
 
     resetNN() {
+      this.setStatus(0);
       this.#newNodesWeights = new Map();
       this.backPropagateResetNN(this);
     }
