@@ -1,15 +1,19 @@
-export default function create({ Node }) {
+export default function create({ Node, _ }) {
   return class Backpropagation extends Node {
     shape = {
       shapes: [
         {
-          shape: 'circle',
-          x: 1,
-          y: 1,
-          r: 1,
+          shape: 'rect',
+          width: 3.5,
+          height: 2,
+          rx: .1,
+          ry: .1,
+          y: .5,
         },
         {
           shape: 'path',
+          x: 1.5,
+          y: 0.5,
           d: `M 1,0.5
             A 0.5,0.5 0 1,1 0.5,1
             M 1,0.5 H 0.85
@@ -22,20 +26,35 @@ export default function create({ Node }) {
 
     box = {
       x: 0,
-      y: 0,
-      width: 2,
+      y: .5,
+      width: 3.5,
       height: 2,
     };
 
     connectors = [
-      { name: 'i', type: 'in',  x: 0.293, y: 0.293, direction:  135,  extends: 'tiny' },
-      { name: 'clk', type: 'in',  x: 0.293, y: 1.707, direction: -135,  extends: 'tiny' },
+      { name: 'i',   label: true, type: 'in',  x: 0, y: 1, direction: 'left', extends: 'tiny' },
+      { name: 'clk', label: true, type: 'in',  x: 0, y: 2, direction: 'left', extends: 'tiny' },
     ];
 
     #inputs = null;
     #clk = null;
     #clkStatus = 0;
-    #learningRate = 0.01;
+    learningRate = 0.01;
+    #newNodesWeights = new Map();
+
+    fields = [
+      {
+        name: 'learningRate',
+        _label: 'Learning rate',
+        type: 'number',
+      },
+      {
+        name: 'resetNN',
+        _label: 'Reset NN',
+        type: 'button',
+        onClick: () => this.resetNN(this),
+      }
+    ];
 
     get inputs() {
       return this.#inputs;
@@ -73,7 +92,9 @@ export default function create({ Node }) {
         this.#clkStatus = 0;
       }
       
-      this.backPropagate(this, null, this.#learningRate, 0);
+      this.#newNodesWeights = new Map();
+      this.backPropagate(this, null, this.learningRate, 0);
+      this.setWeights();
     }
 
     backPropagate(node, costNode, learningRate, delta, level = 0) {
@@ -88,21 +109,19 @@ export default function create({ Node }) {
           node.inputs.forEach((i, index) => sum += i.status * node.weights[index]);
           delta *= node.derivative(sum);
 
-          const bias = node.bias - learningRate * delta;
-          if (!isNaN(bias) && !isFinite(bias)) {
-            node.bias -= learningRate * delta;
-          } else if (isNaN(node.bias) || isFinite(node.bias)) {
-            node.bias = Math.random() * 2.0 - 1.0;
+          const dd = [learningRate * delta];
+          node.inputs.forEach((input, index) => 
+            dd.push(learningRate * delta * input.status)
+          );
+
+          if (this.#newNodesWeights.has(node)) {
+            const oldDd = this.#newNodesWeights.get(node);
+            for (let i = 0; i < dd.length; i++) {
+              dd[i] += oldDd[i];
+            }
           }
 
-          node.inputs.forEach((i, index) => {
-            const weight = node.weights[index] - learningRate * delta * i.status;
-            if (!isNaN(weight) && !isFinite(weight)) {
-              node.weights[index] = weight;
-            } else if (isNaN(node.weights[index]) || isFinite(node.weights[index])) {
-              node.weights[index] = Math.random() * 2.0 - 1.0;
-            }
-          });
+          this.#newNodesWeights.set(node, dd);
         }
       } else if (node.elementClass === 'Cost') {
         costNode = node;
@@ -113,6 +132,57 @@ export default function create({ Node }) {
 
       let backNodes = node.inputs.map(i => i.connections.map(c => c?.from?.item)).flat();
       backNodes.forEach(n => this.backPropagate(n, costNode, learningRate, delta, newLevel));
+    }
+
+    resetNN(node, level = 0) {
+      if (!node) {
+        return;
+      }
+
+      let newLevel = level - 1;
+      if (newLevel === 0) {
+        return;
+      }
+      
+      if (node.elementClass === 'Perceptron') {
+        if (!this.#newNodesWeights.has(node)) {
+          const dd = [];
+          for (let i = 0, to = node.inputs.length + 1; i < to; i++) {
+            dd.push(Math.random() * 2.0 - 1.0);
+          }
+          this.#newNodesWeights.set(node, dd);
+        }
+      } else if (node.elementClass !== 'Cost' && node.elementClass !== 'Backpropagation') {
+        return;
+      }
+
+      let backNodes = node.inputs.map(i => i.connections.map(c => c?.from?.item)).flat();
+      backNodes.forEach(n => this.resetNN(n, newLevel));
+    }
+
+    setWeights() {
+      this.#newNodesWeights.forEach((dd, node) => {
+        let bias = node.bias - dd.shift();
+        if (isNaN(bias) || !isFinite(bias)) {
+          console.log(_('Bias reset for: %s: %s', node.name, node.bias));
+          bias = Math.random() * 2.0 - 1.0;
+        }
+        node.bias = bias;
+        
+        for (let i = 0; i < dd.length; i++) {
+          let weight = node.weights[i] - dd[i];
+          if (isNaN(weight) || !isFinite(weight)) {
+            console.log(_('Weight %s reset for: %s: %s', i, node.name, node.weights[i]));
+            weight = Math.random() * 2.0 - 1.0;
+          }
+          if (i > 2) {
+            console.error(_('Too many weights for node: %s', node.name));
+          }
+          node.weights[i] = weight;
+        }
+
+        node.updateStatus();
+      });
     }
   };
 }
