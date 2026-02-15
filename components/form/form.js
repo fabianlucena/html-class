@@ -33,6 +33,7 @@ export default class Form extends Base {
 
     this.inputHandlerBinded = this.inputHandler.bind(this);
     this.element.addEventListener('input', this.inputHandlerBinded);
+    this.element.addEventListener('click', this.clickHandler.bind(this));
 
     if (this.parent) {
       this.parent.appendChild(this.element);
@@ -171,6 +172,14 @@ export default class Form extends Base {
           </li>
         `).join('')}
         </ul>`;
+    } else if (type === 'button') {
+      fieldHtml += `<button
+          id="${field.id}"
+          name="${field.name}"
+          class="field-control field-control-button ${field.className ?? ''}"
+          ${field.readOnly ? 'readonly' : ''}
+          ${field.disabled ? 'disabled="disabled"' : ''} 
+        >${field.label || field._label || field.name}</button>`;
     } else {
       fieldHtml += `<${tag}
           id="${field.id}"
@@ -259,6 +268,15 @@ export default class Form extends Base {
   }
 
   clickHandler(evt) {
+    if (evt.target instanceof HTMLButtonElement) {
+      const field = this.fields.find(f => f.name === evt.target.name);
+      if (field?.type === 'button' && field.onClick) {
+        field.onClick(evt);
+      }
+      
+      return;
+    }
+
     const optionElement = evt.target.closest('.option');
     const value = optionElement?.dataset?.value;
     if (typeof value !== 'undefined') {
@@ -270,8 +288,6 @@ export default class Form extends Base {
         evt.preventDefault();
       }
     }
-
-    super.clickHandler(evt);
   }
 
   okHandler(evt) {
