@@ -46,6 +46,7 @@ export default function create({ Node }) {
     #clkStatus = 0;
     #ma = null;
     #valueMa = null;
+    #sum = 0;
 
     get inputs() {
       return this.#inputs;
@@ -78,13 +79,16 @@ export default function create({ Node }) {
       else
         return;
       
-      this.data.push(this.#inputs[0].status);
+      const newValue = this.#inputs[0].status;
+      this.#sum += newValue;
+      this.data.push(newValue);
 
-      if (this.data.length > this.windowWidth)
-        this.data.shift();
+      if (this.data.length > this.windowWidth) {
+        const removedValue = this.data.shift();
+        this.#sum -= removedValue;
+      }
 
-      const sum = this.data.reduce((a, b) => a + b, 0);
-      const ma = sum / this.data.length;
+      const ma = this.#sum / this.data.length;
 
       this.#ma.setStatus(ma);
       this.#valueMa.setStatus([this.#inputs[0].status, ma]);
