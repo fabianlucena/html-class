@@ -37,6 +37,8 @@ export default function create({ Node }) {
         name: 'windowWidth',
         _label: 'Window width',
         type: 'number',
+        min: 1,
+        step: 1,
       }
     ];
 
