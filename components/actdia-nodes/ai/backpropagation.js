@@ -168,7 +168,7 @@ export default function create({ Node, _ }) {
 
     deltaWeights() {
       this.#newNodesWeights.forEach((dd, node) => {
-        let bias = node.bias + dd.shift();
+        let bias = node.bias - dd.shift();
         if (isNaN(bias) || !isFinite(bias)) {
           console.log(_('Bias reset for: %s: %s', node.name, node.bias));
           bias = Math.random() * 2.0 - 1.0;
@@ -176,7 +176,7 @@ export default function create({ Node, _ }) {
         node.bias = bias;
         
         for (let i = 0; i < dd.length; i++) {
-          let weight = node.weights[i] + dd[i];
+          let weight = node.weights[i] - dd[i];
           if (isNaN(weight) || !isFinite(weight)) {
             console.log(_('Weight %s reset for: %s: %s', i, node.name, node.weights[i]));
             weight = Math.random() * 2.0 - 1.0;
