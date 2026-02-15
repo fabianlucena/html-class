@@ -80,11 +80,11 @@ export default function create({ Node }) {
       else
         return;
       
-      if (this.data.length >= this.windowWidth) {
-        const removedValue = this.data.slice(0, this.windowWidth).shift();
+      while (this.data.length >= this.windowWidth) {
+        const removedValue = this.data.shift();
         this.#sum -= removedValue;
       }
-      
+
       const newValue = this.#inputs[0].status;
       this.#sum += newValue;
       this.data.push(newValue);
