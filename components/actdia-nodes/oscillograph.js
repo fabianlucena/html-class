@@ -1,4 +1,4 @@
-export default function create({ Node }) {
+export default function create({ Node, _ }) {
   return class Oscillograph extends Node {
     shape = {
       shapes: [
@@ -22,10 +22,18 @@ export default function create({ Node }) {
           fill: 'black',
         },
         {
+          shape: 'text',
+          x: 0.5,
+          y: 1.0,
+          text: 'Si',
+          fontSize: .6,
+          textAnchor: 'start',
+        },
+        {
           x: 0.5,
           y: 0.5,
           shapes: [],
-        }
+        },
       ],
     };
 
@@ -107,17 +115,19 @@ export default function create({ Node }) {
         status = [status];
       }
 
-      while (this.shape.shapes[2].shapes.length > status.length) {
-        this.shape.shapes[2].shapes.pop();
+      while (this.shape.shapes[3].shapes.length > status.length) {
+        this.shape.shapes[3].shapes.pop();
       }
 
-      const svgElement = this.svgShape?.children?.[2];
+      let svgElement = this.svgShape?.children?.[3];
       while (svgElement?.children?.length > status.length) {
         svgElement.removeChild(svgElement.children[svgElement.children.length - 1]);
       }
       
       let length = this.#matrix[0]?.length || 0;
       let last = length - 1;
+
+      
 
       for (let i = 0; i < status.length; i++) {
         let value = status[i];
@@ -135,16 +145,44 @@ export default function create({ Node }) {
         this.#max[i] = Math.max(this.#max[i] ?? value, value);
         this.#range[i] = this.#max[i] - this.#min[i];
 
-        let shape = this.shape.shapes[2].shapes[i];
-        if (!shape) {
-          this.shape.shapes[2].shapes[i] = {
-            shape: 'path',
-            fill: false,
-            stroke: 'lime',
-          };
-          shape = this.shape.shapes[2].shapes[i];
-        }
+        this.shape.shapes[2].text = _('Max: %s, min: %s', this.#max[i].toFixed(2), this.#min[i].toFixed(2));
+        this.actdia.tryUpdateShape(
+          this,
+          this.svgShape?.children?.[2],
+          this.shape.shapes[2]
+        );
       }
+    }
+
+    getColors(count) {
+      const colors = [];
+
+      for (let i = 0; i < count; i++) {
+        const hue = Math.floor((360 / count) * (i + .2));
+        const saturation = 80; 
+        const lightness = 60;
+        const color = this.hsl2Hex(hue, saturation, lightness);
+        colors.push(color);
+      }
+
+      return colors;
+    }
+
+    hsl2Hex(h, s, l) {
+      s /= 100;
+      l /= 100;
+
+      const k = n => (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+
+      const f = n => {
+        const color = l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+        return Math.round(255 * color)
+          .toString(16)
+          .padStart(2, "0");
+      };
+
+      return `#${f(0)}${f(8)}${f(4)}`;
     }
 
     draw() {
@@ -153,7 +191,7 @@ export default function create({ Node }) {
       let last = length - 1;
       const sy = (this.#height - 1) / count;
       const ssy = sy * .9;
-      const svgElement = this.svgShape?.children?.[2];
+      const svgElement = this.svgShape?.children?.[3];
 
       if (length === 0) {
         for (let i = 0; i < count; i++) {
@@ -168,15 +206,17 @@ export default function create({ Node }) {
       length++;
       last++;
 
+      let colors;
       for (let i = 0; i < count; i++) {
-        let shape = this.shape.shapes[2].shapes[i];
+        let shape = this.shape.shapes[3].shapes[i];
         if (!shape) {
-          this.shape.shapes[2].shapes[i] = {
+          colors ||= this.getColors(count);
+          this.shape.shapes[3].shapes[i] = {
             shape: 'path',
             fill: false,
-            stroke: 'lime',
+            stroke: colors[i],
           };
-          shape = this.shape.shapes[2].shapes[i];
+          shape = this.shape.shapes[3].shapes[i];
         }
         shape.y = i * sy + .1;
 
