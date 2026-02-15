@@ -996,7 +996,8 @@ export default class ActDia {
       dominantBaseline = 'central';
     }
 
-    typeof style.fontfill !== 'undefined' && style.fontfill !== null && (attributes.fill = style.fontfill);
+    typeof style.fontfill !== 'undefined' && style.fontfill !== null && (styleAttribute.fill = style.fontfill);
+    typeof style.fill !== 'undefined' && style.fill !== null && (styleAttribute.fill = style.fill);
     typeof fontSize !== 'undefined' && fontSize !== null && (attributes['font-size'] = `${fontSize}`);
     typeof style.fontFamily !== 'undefined' && style.fontFamily !== null && (attributes.fontFamily = style.fontFamily);
     typeof textAnchor !== 'undefined' && textAnchor !== null && (styleAttribute['text-anchor'] = textAnchor);
