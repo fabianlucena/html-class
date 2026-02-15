@@ -44,9 +44,9 @@ export default function create({ Node, _ }) {
     };
 
     connectors = [
-      { name: 'i0', type: 'in', x: 0, y: 2, direction: 'left' },
-      { name: 'i1', type: 'in', x: 2, y: 4, direction: 'bottom' },
-      { name: 'o0', type: 'out', x: 4, y: 2, direction: 'right' },
+      { name: 'i0', type: 'in',  x: 0, y: 2, direction: 'left',   extends: 'small' },
+      { name: 'i1', type: 'in',  x: 2, y: 4, direction: 'bottom', extends: 'small' },
+      { name: 'o0', type: 'out', x: 4, y: 2, direction: 'right',  extends: 'small' },
     ];
 
     index = 0;

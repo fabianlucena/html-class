@@ -34,7 +34,7 @@ export default function create({ Node }) {
     };
 
     connectors = [
-      { name: 'o0', type: 'out', x: 12, y: 2, direction: 'right' },
+      { name: 'o0', type: 'out', x: 12, y: 2, direction: 'right', extends: 'small' },
     ];
 
     data = '';

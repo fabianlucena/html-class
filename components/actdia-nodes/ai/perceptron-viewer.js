@@ -52,7 +52,7 @@ export default function create({ Node }) {
     };
 
     connectors = [
-      { name: 'i0', type: 'in', x: 0, y: 2, direction: 'left' },
+      { name: 'i0', type: 'in', x: 0, y: 2, direction: 'left', extends: 'small' },
     ];
 
     updateStatus() {
