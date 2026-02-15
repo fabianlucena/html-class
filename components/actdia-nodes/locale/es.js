@@ -7,6 +7,7 @@ export default {
   'Cubic': 'Cúbica',
   'Cubic Root': 'Raíz cúbica',
   'Electronic': 'Electrónica',
+  'Height': 'Altura',
   'Horizontal': 'Horizontal',
   'Inverted': 'Invertido',
   'Json Data': 'Datos JSON',
@@ -33,5 +34,6 @@ export default {
   'Variant': 'Variante',
   'Vertical': 'Vertical',
   'Viewer': 'Visor',
+  'Width': 'Ancho',
   'Window width': 'Ancho de ventana',
 };
