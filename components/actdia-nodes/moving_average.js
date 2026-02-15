@@ -9,19 +9,20 @@ export default function create({ Node }) {
       shapes: [
         {
           shape: 'rect',
-          x: 0,
-          y: 0,
+          y: 0.5,
           width: 5,
-          height: 3,
+          height: 2,
+          rx: .2,
+          ry: .2,
         }
       ],
     };
 
     box = {
       x: 0,
-      y: 0,
+      y: .5,
       width: 5,
-      height: 3,
+      height: 2,
     };
 
     connectors = [

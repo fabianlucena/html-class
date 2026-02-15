@@ -32,8 +32,8 @@ export default function create({ Node, _ }) {
     };
 
     connectors = [
-      { name: 'i',   label: true, type: 'in',  x: 0, y: 1, direction: 'left', extends: 'tiny' },
-      { name: 'clk', label: true, type: 'in',  x: 0, y: 2, direction: 'left', extends: 'tiny' },
+      { name: 'i',    label: true, type: 'in',  x: 0, y: 1, direction: 'left', extends: 'tiny' },
+      { name: '!clk', label: true, type: 'in',  x: 0, y: 2, direction: 'left', extends: 'tiny' },
     ];
 
     #inputs = null;
@@ -52,7 +52,7 @@ export default function create({ Node, _ }) {
         name: 'resetNN',
         _label: 'Reset NN',
         type: 'button',
-        onClick: () => this.resetNN(this),
+        onClick: () => this.resetNN(),
       }
     ];
 
@@ -69,7 +69,7 @@ export default function create({ Node, _ }) {
 
       if (this.connectors) {
         this.#inputs = this.connectors.filter(c => c.name === 'i');
-        this.#clk = this.connectors.find(c => c.name === 'clk');
+        this.#clk = this.connectors.find(c => c.name === '!clk');
       }
     }
 
@@ -94,7 +94,7 @@ export default function create({ Node, _ }) {
       
       this.#newNodesWeights = new Map();
       this.backPropagate(this, null, this.learningRate, 0);
-      this.setWeights();
+      this.deltaWeights();
     }
 
     backPropagate(node, costNode, learningRate, delta, level = 0) {
@@ -134,7 +134,12 @@ export default function create({ Node, _ }) {
       backNodes.forEach(n => this.backPropagate(n, costNode, learningRate, delta, newLevel));
     }
 
-    resetNN(node, level = 0) {
+    resetNN() {
+      this.#newNodesWeights = new Map();
+      this.backPropagateResetNN(this);
+    }
+
+    backPropagateResetNN(node, level = 0) {
       if (!node) {
         return;
       }
@@ -146,23 +151,24 @@ export default function create({ Node, _ }) {
       
       if (node.elementClass === 'Perceptron') {
         if (!this.#newNodesWeights.has(node)) {
-          const dd = [];
-          for (let i = 0, to = node.inputs.length + 1; i < to; i++) {
-            dd.push(Math.random() * 2.0 - 1.0);
+          node.bias = Math.random() * 2.0 - 1.0;
+          for (let i = 0, to = node.inputs.length; i < to; i++) {
+            node.weights[i] = Math.random() * 2.0 - 1.0;
           }
-          this.#newNodesWeights.set(node, dd);
+          this.#newNodesWeights.set(node, []);
+          node.updateStatus();
         }
       } else if (node.elementClass !== 'Cost' && node.elementClass !== 'Backpropagation') {
         return;
       }
 
       let backNodes = node.inputs.map(i => i.connections.map(c => c?.from?.item)).flat();
-      backNodes.forEach(n => this.resetNN(n, newLevel));
+      backNodes.forEach(n => this.backPropagateResetNN(n, newLevel));
     }
 
-    setWeights() {
+    deltaWeights() {
       this.#newNodesWeights.forEach((dd, node) => {
-        let bias = node.bias - dd.shift();
+        let bias = node.bias + dd.shift();
         if (isNaN(bias) || !isFinite(bias)) {
           console.log(_('Bias reset for: %s: %s', node.name, node.bias));
           bias = Math.random() * 2.0 - 1.0;
@@ -170,14 +176,12 @@ export default function create({ Node, _ }) {
         node.bias = bias;
         
         for (let i = 0; i < dd.length; i++) {
-          let weight = node.weights[i] - dd[i];
+          let weight = node.weights[i] + dd[i];
           if (isNaN(weight) || !isFinite(weight)) {
             console.log(_('Weight %s reset for: %s: %s', i, node.name, node.weights[i]));
             weight = Math.random() * 2.0 - 1.0;
           }
-          if (i > 2) {
-            console.error(_('Too many weights for node: %s', node.name));
-          }
+          
           node.weights[i] = weight;
         }
 
