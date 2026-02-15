@@ -11,7 +11,11 @@ function formatNumber(number) {
   if (isNaN(number) || !isFinite(number))
     return 'NaN';
 
-  return number.toFixed(2);
+  let result = number.toFixed(4);
+  if (number >= 0)
+    result = '  ' + result;
+
+  return result;
 }
   
 export default function create({ Node }) {
@@ -56,9 +60,13 @@ export default function create({ Node }) {
       if (!perceptron || perceptron.elementClass !== 'Perceptron')
         return;
       
-      let data = [perceptron.bias, ...perceptron.weights];
+      let data = [
+        ' b: ' + formatNumber(perceptron.bias),
+        ...perceptron.weights.map((v, i) => `w${i}: ${formatNumber(v)}`),
+        ' o: ' + formatNumber(perceptron.status),
+      ];
       
-      this.shape.shapes[1].text = data.map(v => formatNumber(v)).join('\n');
+      this.shape.shapes[1].text = data.join('\n');
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
     }
   };

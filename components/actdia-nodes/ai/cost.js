@@ -6,6 +6,12 @@ export default function create({ Node, _ }) {
       name: _('MSE'),
       description: _('Mean Squared Error: E = (1/n) Σ (y_i - r_i)^2'),
     },
+    absDiff: {
+      func: (e, r) => Math.abs(e - r),
+      derivative: (e, r) => (e > r ? 1 : e < r ? -1 : 0),
+      name: _('Diff'),
+      description: _('Absolute difference: E = (1/n) Σ |y_i - r_i|'),
+    },
   };
 
   return class Cost extends Node {
