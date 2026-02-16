@@ -39,6 +39,10 @@ export default function create({ Node, _ }) {
 
     learningRate = 0.01;
     #newNodesWeights = new Map();
+    maxRamdomWeight = 0.5;
+    minRandomWeight = -0.5;
+    maxWeightClipping = 10.0;
+    minWeightClipping = -10.0;
 
     fields = [
       {
@@ -51,27 +55,51 @@ export default function create({ Node, _ }) {
         _label: 'Reset NN',
         type: 'button',
         onClick: () => this.resetNN(),
-      }
+      },
+      {
+        name: 'maxRamdomWeight',
+        _label: 'Max random weight',
+        type: 'number',
+      },
+      {
+        name: 'minRandomWeight',
+        _label: 'Min random weight',
+        type: 'number',
+      },
+      {
+        name: 'maxWeightClipping',
+        _label: 'Max weight clipping',
+        type: 'number',
+      },
+      {
+        name: 'minWeightClipping',
+        _label: 'Min weight clipping',
+        type: 'number',
+      },
     ];
 
     updateStatusRSync(options = {}) {
       if (!this.inputs.length)
         return;
       
-      this.setStatus(this.status + 1);
       this.#newNodesWeights = new Map();
       this.backPropagate(this, null, this.learningRate, 0);
-      this.deltaWeights();
+      if (this.#newNodesWeights.size) {
+        this.setStatus(this.status + 1);
+        this.deltaWeights();
+      }
     }
 
-    backPropagate(node, costNode, learningRate, delta, level = 0) {
+    backPropagate(node, costNode, learningRate, delta, level = 0, invalidDeep = 4) {
       let newLevel = level - 1;
       if (newLevel === 0) {
         return;
       }
       
+      let newInvalidDeep = invalidDeep;
+
       if (node.elementClass === 'Perceptron') {
-        if (costNode && learningRate) {
+        if (costNode && learningRate && delta) {
           let sum = node.bias;
           node.inputs.forEach((i, index) => sum += i.status * node.weights[index]);
           delta *= node.derivative(sum);
@@ -93,14 +121,15 @@ export default function create({ Node, _ }) {
       } else if (node.elementClass === 'Cost') {
         costNode = node;
         delta = costNode.derivative(...costNode.inputs.map(i => i.status));
-      } else if (node.elementClass !== 'Backpropagation'
-        && node.elementClass !== 'Buffer'
-      ) {
-        return;
+      } else {
+        newInvalidDeep = invalidDeep - 1;
+        if (newInvalidDeep === 0) {
+          return;
+        }
       }
 
       let backNodes = node.inputs.map(i => i.connections.map(c => c?.from?.item)).flat();
-      backNodes.forEach(n => this.backPropagate(n, costNode, learningRate, delta, newLevel));
+      backNodes.forEach(n => this.backPropagate(n, costNode, learningRate, delta, newLevel, newInvalidDeep));
     }
 
     resetNN() {
@@ -109,7 +138,7 @@ export default function create({ Node, _ }) {
       this.backPropagateResetNN(this);
     }
 
-    backPropagateResetNN(node, level = 0) {
+    backPropagateResetNN(node, level = 0, invalidDeep = 4) {
       if (!node) {
         return;
       }
@@ -119,24 +148,26 @@ export default function create({ Node, _ }) {
         return;
       }
       
+      let newInvalidDeep = invalidDeep;
+
       if (node.elementClass === 'Perceptron') {
         if (!this.#newNodesWeights.has(node)) {
-          node.bias = Math.random() * 2.0 - 1.0;
+          node.bias = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
           for (let i = 0, to = node.inputs.length; i < to; i++) {
-            node.weights[i] = Math.random() * 2.0 - 1.0;
+            node.weights[i] = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
           }
           this.#newNodesWeights.set(node, []);
           node.updateStatus();
         }
-      } else if (node.elementClass !== 'Cost'
-        && node.elementClass !== 'Backpropagation'
-        && node.elementClass !== 'Buffer'
-      ) {
-        return;
+      } else {
+        newInvalidDeep = invalidDeep - 1;
+        if (newInvalidDeep === 0) {
+          return;
+        }
       }
 
       let backNodes = node.inputs.map(i => i.connections.map(c => c?.from?.item)).flat();
-      backNodes.forEach(n => this.backPropagateResetNN(n, newLevel));
+      backNodes.forEach(n => this.backPropagateResetNN(n, newLevel, newInvalidDeep));
     }
 
     deltaWeights() {
@@ -146,8 +177,15 @@ export default function create({ Node, _ }) {
           let bias = node.bias - d;
           if (isNaN(bias) || !isFinite(bias)) {
             console.log(_('Bias reset for: %s: %s - %s', node.name, node.bias, d));
-            bias = Math.random() * 2.0 - 1.0;
+            bias = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
           }
+
+          if (bias > this.maxWeightClipping) {
+            bias = this.maxWeightClipping;
+          } else if (bias < this.minWeightClipping) {
+            bias = this.minWeightClipping;
+          }
+
           node.bias = bias;
         } else {
           console.log(_('Invalid bias delta for: %s: %s', node.name, d));
@@ -163,9 +201,15 @@ export default function create({ Node, _ }) {
           let weight = node.weights[i] - d;
           if (isNaN(weight) || !isFinite(weight)) {
             console.log(_('Weight %s reset for: %s: %s', i, node.name, node.weights[i]));
-            weight = Math.random() * 2.0 - 1.0;
+            weight = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
           }
           
+          if (weight > this.maxWeightClipping) {
+            weight = this.maxWeightClipping;
+          } else if (weight < this.minWeightClipping) {
+            weight = this.minWeightClipping;
+          }
+
           node.weights[i] = weight;
         }
 
