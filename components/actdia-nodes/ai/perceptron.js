@@ -135,8 +135,8 @@ export default function create({ Node, _ }) {
         options: Object.entries(activationFunctions)
           .map(([key, info]) => ({
             value: key,
-            label: info.name || info._name,
-            title: info.description || info._description,
+            label: info.name,
+            title: info.description,
           })),
       },
       {
@@ -153,7 +153,7 @@ export default function create({ Node, _ }) {
           type: 'number',
           step: 'any',
         },
-      }
+      },
     ];
 
     get inputsCount() {
@@ -173,24 +173,13 @@ export default function create({ Node, _ }) {
       }
     }
 
-    minInitialValue = -5;
-    maxInitialValue = 5;
+    minInitialValue = -.5;
+    maxInitialValue = .5;
     bias = 0;
     weights = [];
     #activationFunction = 'relu';
     #func = activationFunctions.relu.func;
-    #inputs = [];
-    #output = null;
     #derivative = activationFunctions.relu.derivative;
-    #learningRate = 0.1;
-
-    get inputs() {
-      return this.#inputs;
-    }
-
-    get output() {
-      return this.#output;
-    }
 
     set activationFunction(funcName) {
       const funcData = activationFunctions[funcName];
@@ -231,10 +220,7 @@ export default function create({ Node, _ }) {
     }
 
     update() {
-      this.#inputs = this.connectors.filter(c => c.type === 'in');
-      this.#output = this.connectors.find(c => c.type === 'out');
-
-      const inputs = this.#inputs,
+      const inputs = this.inputs,
         l = inputs.length - 1,
         z = 15,
         n = l > z ? l : 1 + (z - 1) * Math.pow(l / z, 0.7),
@@ -252,15 +238,11 @@ export default function create({ Node, _ }) {
 
       const range = this.maxInitialValue - this.minInitialValue;
       this.bias ??= Math.random() * range + this.minInitialValue;
-      this.weights ??= [];
-      this.weights = this.weights?.slice(0, inputs.length);
       if (this.weights.length < inputs.length) {
         for (let i = this.weights.length; i < inputs.length; i++) {
           this.weights.push(Math.random() * range + this.minInitialValue);
         }
       }
-
-      this.#inputs = inputs;
 
       super.update();
     }
