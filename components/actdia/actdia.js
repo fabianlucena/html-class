@@ -2329,4 +2329,21 @@ export default class ActDia {
       evt.preventDefault();
     }
   }
+
+  labeledStatusListeners = [];
+  addLabeledStatusListener(listener) {
+    this.labeledStatusListeners.push(listener);
+    return this;
+  }
+
+  removeLabeledStatusListener(listener) {
+    this.labeledStatusListeners = this.labeledStatusListeners.filter(l => l !== listener);
+    return this;
+  }
+
+  labeledStatus = {};
+  fireLabeledStatus(label, status) {
+    this.labeledStatus[label] = status;
+    this.labeledStatusListeners.forEach(l => l(label, status));
+  }
 }
