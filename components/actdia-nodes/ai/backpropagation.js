@@ -93,7 +93,9 @@ export default function create({ Node, _ }) {
       } else if (node.elementClass === 'Cost') {
         costNode = node;
         delta = costNode.derivative(...costNode.inputs.map(i => i.status));
-      } else if (node.elementClass !== 'Backpropagation') {
+      } else if (node.elementClass !== 'Backpropagation'
+        && node.elementClass !== 'Buffer'
+      ) {
         return;
       }
 
@@ -126,7 +128,10 @@ export default function create({ Node, _ }) {
           this.#newNodesWeights.set(node, []);
           node.updateStatus();
         }
-      } else if (node.elementClass !== 'Cost' && node.elementClass !== 'Backpropagation') {
+      } else if (node.elementClass !== 'Cost'
+        && node.elementClass !== 'Backpropagation'
+        && node.elementClass !== 'Buffer'
+      ) {
         return;
       }
 

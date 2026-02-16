@@ -33,6 +33,12 @@ export default function create({ Node }) {
         _label: 'Text',
       },
       {
+        name: 'shape.shapes[1].fill',
+        type: 'color',
+        _label: 'Text color',
+        nullable: true,
+      },
+      {
         name: 'shape.shapes[1].fillOpacity',
         type: 'range',
         _label: 'Text opacity',
