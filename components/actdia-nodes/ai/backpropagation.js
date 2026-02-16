@@ -5,15 +5,15 @@ export default function create({ Node, _ }) {
         {
           shape: 'rect',
           width: 4,
-          height: 2,
+          height: 4,
           rx: .1,
           ry: .1,
           y: .5,
         },
         {
           shape: 'path',
-          x: 1.5,
-          y: 0.5,
+          x: 2,
+          y: 1,
           d: `M 1,0.5
             A 0.5,0.5 0 1,1 0.5,1
             M 1,0.5 H 0.85
@@ -28,13 +28,15 @@ export default function create({ Node, _ }) {
       x: 0,
       y: .5,
       width: 4,
-      height: 2,
+      height: 4,
     };
 
     connectors = [
-      { name: 'i',    label: true, type: 'in',  x: 0, y: 1, direction: 'left',  extends: 'tiny' },
+      { name: 'Δ',    label: true, type: 'in',  x: 0, y: 1, direction: 'left',  extends: 'tiny' },
       { name: '!clk', label: true, type: 'in',  x: 0, y: 2, direction: 'left',  extends: 'tiny' },
-      { name: '#',    label: true, type: 'out', x: 4, y: 2, direction: 'right', extends: 'tiny' },
+      { name: 'en',   label: true, type: 'in',  x: 0, y: 3, direction: 'left',  extends: 'tiny' },
+      { name: 'rst',  label: true, type: 'in',  x: 0, y: 4, direction: 'left',  extends: 'tiny' },
+      { name: '#',    label: true, type: 'out', x: 4, y: 4, direction: 'right', extends: 'tiny' },
     ];
 
     learningRate = 0.01;
@@ -43,6 +45,9 @@ export default function create({ Node, _ }) {
     minRandomWeight = -0.5;
     maxWeightClipping = 10.0;
     minWeightClipping = -10.0;
+    #en = null;
+    #rst = null;
+    #lastRst = null;
 
     fields = [
       {
@@ -83,10 +88,33 @@ export default function create({ Node, _ }) {
       },
     ];
 
+    update(options) {
+      super.update(options);
+
+      this.#en = this.getConnector('en');
+      this.#rst = this.getConnector('rst');
+    }
+
+    updateStatus(options = {}) {
+      const rst = this.#rst.status >= 0.5;
+      if (this.#lastRst !== rst) {
+        this.#lastRst = rst;
+        if (rst) {
+          this.resetNN();
+        }
+      }
+
+      super.updateStatus(options);
+    }
+
     updateStatusRSync(options = {}) {
       if (!this.inputs.length)
         return;
-      
+
+      if (this.#en.connections.length && !this.#en.status) {
+        return;
+      }
+
       this.#newNodesWeights = new Map();
       this.backPropagate(this, null, this.learningRate, 0);
       if (this.#newNodesWeights.size) {
