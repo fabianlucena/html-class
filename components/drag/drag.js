@@ -6,10 +6,15 @@ window.addEventListener('keydown', keyDownHandler, true);
 let draggingElement = null,
   from = { x: 0, y: 0 },
   mouse = { x: 0, y: 0 },
-  initial = { x: 0, y: 0 };
+  initial = { x: 0, y: 0 },
+  skipTags = ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'];
 
 function mouseDownHandler(evt) {
   if (evt.button !== 0) {
+    return;
+  }
+
+  if (skipTags.includes(evt.target.tagName)) {
     return;
   }
 
