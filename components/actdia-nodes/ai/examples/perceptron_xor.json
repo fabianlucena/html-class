@@ -4,12 +4,14 @@
   },
   "imports": [
     "../../components/actdia-nodes/ai/perceptron-viewer.js",
+    "../../components/actdia-nodes/electronic/logic_gates/buffer.js",
     "../../components/actdia-nodes/label_input.js",
     "../../components/actdia-nodes/label_output.js",
     "../../components/actdia-nodes/moving_average.js",
     "../../components/actdia-nodes/oscillograph.js",
     "../../components/actdia-nodes/pushbutton.js",
     "../../components/actdia-nodes/slider.js",
+    "../../components/actdia-nodes/text.js",
     "../../components/actdia-nodes/viewer.js",
     "../actdia-nodes/ai/backpropagation.js",
     "../actdia-nodes/ai/cost.js",
@@ -23,12 +25,164 @@
   ],
   "nodes": [
     {
+      "elementClass": "Text",
+      "url": "../../components/actdia-nodes/text.js",
+      "id": "5573cfae-0423-4a6c-a704-7752a5e9bbf1",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 12,
+        "height": 5
+      },
+      "shape": {
+        "shapes": [
+          {
+            "shape": "rect",
+            "rx": 0.2,
+            "ry": 0.2,
+            "width": 12,
+            "height": 5
+          },
+          {
+            "shape": "text",
+            "text": "Control de entrenamiento",
+            "lineSpacing": 1,
+            "fillOpacity": 1,
+            "margin": 0.35,
+            "textAnchor": "left",
+            "dominantBaseline": "bottom",
+            "width": 12,
+            "height": 5,
+            "fill": "#d5ceaa"
+          }
+        ]
+      },
+      "incrementalPosition": 1,
+      "autoselect": true,
+      "fqcn": "../../components/actdia-nodes/text.js/Text",
+      "x": 31,
+      "y": 29,
+      "name": "Text - d49f3",
+      "style": {
+        "fillOpacity": "0.09",
+        "dash": [
+          0.2
+        ],
+        "fill": "#99a00a"
+      },
+      "autoSize": false,
+      "text": "Control de entrenamiento",
+      "width": 12,
+      "height": 5
+    },
+    {
+      "elementClass": "Text",
+      "url": "../../components/actdia-nodes/text.js",
+      "id": "153a68fa-fbf9-4ef6-b762-9988a6d1f382",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 14,
+        "height": 10
+      },
+      "shape": {
+        "shapes": [
+          {
+            "shape": "rect",
+            "rx": 0.2,
+            "ry": 0.2,
+            "width": 14,
+            "height": 10
+          },
+          {
+            "shape": "text",
+            "text": "Sincronización",
+            "lineSpacing": 1,
+            "fillOpacity": 1,
+            "margin": 0.35,
+            "textAnchor": "center",
+            "dominantBaseline": "top",
+            "width": 14,
+            "height": 10
+          }
+        ]
+      },
+      "incrementalPosition": 1,
+      "autoselect": true,
+      "fqcn": "../../components/actdia-nodes/text.js/Text",
+      "x": 2,
+      "y": 1,
+      "name": "Text - d49f3",
+      "style": {
+        "fillOpacity": "0.07",
+        "dash": [
+          0.2
+        ],
+        "fill": "#0aa015",
+        "stroke": "#92c796"
+      },
+      "autoSize": false,
+      "text": "Sincronización",
+      "width": 14,
+      "height": 10
+    },
+    {
+      "elementClass": "Text",
+      "url": "../../components/actdia-nodes/text.js",
+      "id": "9d49f32c-d44c-4f5e-b4d3-ec2c3cd23026",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 30,
+        "height": 9
+      },
+      "shape": {
+        "shapes": [
+          {
+            "shape": "rect",
+            "rx": 0.2,
+            "ry": 0.2,
+            "width": 30,
+            "height": 9
+          },
+          {
+            "shape": "text",
+            "text": "Bloque de datos",
+            "lineSpacing": 1,
+            "fillOpacity": 1,
+            "margin": 0.35,
+            "textAnchor": "center",
+            "dominantBaseline": "top",
+            "width": 30,
+            "height": 9,
+            "fill": "#9595db"
+          }
+        ]
+      },
+      "fqcn": "../../components/actdia-nodes/text.js/Text",
+      "x": 19,
+      "y": 1,
+      "name": "Text - d49f3",
+      "style": {
+        "fillOpacity": "0.06",
+        "dash": [
+          0.2
+        ],
+        "fill": "#1109a8"
+      },
+      "autoSize": false,
+      "text": "Bloque de datos",
+      "width": 30,
+      "height": 9
+    },
+    {
       "elementClass": "Selector",
       "url": "../actdia-nodes/selector.js",
       "id": "09326d6e-9f0f-4c50-8e7d-20d696d9b471",
+      "index": 2,
       "fqcn": "../actdia-nodes/selector.js/Selector",
-      "x": 32,
-      "y": 3,
+      "x": 34,
+      "y": 4,
       "name": "Selector - 9326d",
       "connectors": [
         {
@@ -50,8 +204,7 @@
       "x": 3,
       "y": 3,
       "name": "Generador de pulsos - 9ef87",
-      "factor": 8.362499999999983,
-      "active": true,
+      "factor": 5.862499999999984,
       "connectors": [
         {
           "id": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008"
@@ -69,14 +222,14 @@
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "3dc6283c-f782-496e-9057-17ac87003827",
-      "bias": -0.21966543397313973,
+      "bias": -0.22370922270257476,
       "weights": [
-        -0.5257322963479087,
-        0.07354717354650697
+        -0.526156153159884,
+        0.07326768537414498
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
       "x": 9,
-      "y": 19,
+      "y": 18,
       "name": "n1",
       "description": "",
       "inputsCount": 2,
@@ -102,8 +255,8 @@
       "id": "cafb6089-dbc1-4775-a33a-20042303e1ef",
       "data": "[[0, 0, 0],\n [0, 1, 1],\n [1, 0, 1],\n [1, 1, 1]]",
       "fqcn": "../actdia-nodes/json_data.js/JsonData",
-      "x": 18,
-      "y": 3,
+      "x": 20,
+      "y": 4,
       "name": "JSON Data - afb60",
       "description": "",
       "connectors": [
@@ -116,13 +269,22 @@
       "elementClass": "Viewer",
       "url": "../actdia-nodes/viewer.js",
       "id": "517c43e0-0371-4bd1-85ca-d1f8ffb7ea60",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 4,
+        "height": 1
+      },
       "fqcn": "../actdia-nodes/viewer.js/Viewer",
-      "x": 38,
-      "y": 3,
+      "x": 40,
+      "y": 4,
       "name": "Viewer - 17c43",
+      "width": 4,
+      "height": 1,
       "connectors": [
         {
-          "id": "a4394d58-1787-4c58-8540-ef63562ac602"
+          "id": "a4394d58-1787-4c58-8540-ef63562ac602",
+          "y": 1
         }
       ]
     },
@@ -137,11 +299,12 @@
         "height": 3
       },
       "fqcn": "../actdia-nodes/unbus.js/Unbus",
-      "x": 38,
-      "y": 7,
+      "x": 40,
+      "y": 5,
       "name": "Descanalizar - e2365",
       "description": "",
       "channelWidth": 3,
+      "height": 3,
       "connectors": [
         {
           "id": "36afe39c-5613-4e50-a277-09e47db44ca6"
@@ -161,13 +324,22 @@
       "elementClass": "Viewer",
       "url": "../actdia-nodes/viewer.js",
       "id": "98037aca-22e1-47ab-b2da-79eaa6a5639c",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 3,
+        "height": 1
+      },
       "fqcn": "../actdia-nodes/viewer.js/Viewer",
       "x": 39,
-      "y": 20,
+      "y": 21,
       "name": "Viewer - 8037a",
+      "width": 3,
+      "height": 1,
       "connectors": [
         {
-          "id": "c8498435-36e4-4216-9ecd-86e3f348f312"
+          "id": "c8498435-36e4-4216-9ecd-86e3f348f312",
+          "y": 1
         }
       ]
     },
@@ -175,13 +347,22 @@
       "elementClass": "Viewer",
       "url": "../actdia-nodes/viewer.js",
       "id": "596171ce-93d8-4a43-9c72-67d5424ae5aa",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 3,
+        "height": 1
+      },
       "fqcn": "../actdia-nodes/viewer.js/Viewer",
       "x": 39,
-      "y": 26,
+      "y": 23,
       "name": "Viewer - 96171",
+      "width": 3,
+      "height": 1,
       "connectors": [
         {
-          "id": "971ce7a5-a611-4cf0-8f9b-5fa9b5235867"
+          "id": "971ce7a5-a611-4cf0-8f9b-5fa9b5235867",
+          "y": 1
         }
       ]
     },
@@ -190,8 +371,8 @@
       "url": "../actdia-nodes/ai/cost.js",
       "id": "ec354e1e-83c9-4968-8b53-8c14cfb11f47",
       "fqcn": "../actdia-nodes/ai/cost.js/Cost",
-      "x": 27,
-      "y": 27,
+      "x": 31,
+      "y": 23,
       "name": "Cost - c354e",
       "connectors": [
         {
@@ -211,8 +392,8 @@
       "id": "370e3ed8-9f44-4142-8f8c-2282d66d640f",
       "counter": 12,
       "fqcn": "../actdia-nodes/ai/backpropagation.js/Backpropagation",
-      "x": 30,
-      "y": 30,
+      "x": 34,
+      "y": 29,
       "name": "Backpropagation - 70e3e",
       "connectors": [
         {
@@ -231,14 +412,14 @@
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "003254f2-dda4-4c17-9a83-174c79244318",
-      "bias": -0.5882200429331815,
+      "bias": -0.6009715622197643,
       "weights": [
-        0.20157438580612336,
-        0.22755054844784836
+        0.2014595713462741,
+        0.22739844030000464
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
       "x": 9,
-      "y": 23,
+      "y": 22,
       "name": "n2",
       "description": "",
       "inputsCount": 2,
@@ -262,14 +443,14 @@
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39",
-      "bias": 0.35060270495203116,
+      "bias": 0.25123958206107194,
       "weights": [
-        0.04441611000354367,
-        1.0476504950978551
+        -0.0017362210586134054,
+        0.997352112836233
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
-      "x": 22,
-      "y": 21,
+      "x": 20,
+      "y": 20,
       "name": "n3",
       "description": "",
       "inputsCount": 2,
@@ -293,14 +474,14 @@
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f",
-      "bias": 0.23242845531188763,
+      "bias": 0.2300406753822516,
       "weights": [
-        -0.6714141839707751,
-        0.2553588508627297
+        -0.6724527422463075,
+        0.25449234556217637
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
       "x": 15,
-      "y": 23,
+      "y": 22,
       "name": "Perceptron - a928d",
       "inputsCount": 2,
       "activationFunction": "sigmoid",
@@ -323,14 +504,14 @@
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "50fd99ed-a374-4574-95cc-6189323fbe9e",
-      "bias": 0.17554469106064416,
+      "bias": 0.19172564705156744,
       "weights": [
-        0.05476791734427646,
-        -0.9876523186565905
+        0.06190515451197429,
+        -0.9818392278235407
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
       "x": 15,
-      "y": 19,
+      "y": 18,
       "name": "Perceptron - 0fd99",
       "inputsCount": 2,
       "activationFunction": "sigmoid",
@@ -361,7 +542,7 @@
       },
       "fqcn": "../../components/actdia-nodes/oscillograph.js/Oscillograph",
       "x": 46,
-      "y": 30,
+      "y": 25,
       "name": "Oscillograph - 0395b",
       "movingAverageWindow": 20,
       "connectors": [
@@ -376,7 +557,7 @@
       "id": "a7e58f6a-a323-4628-86d2-f69f3afb7c49",
       "label": "clk",
       "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
-      "x": 9,
+      "x": 10,
       "y": 4,
       "name": "Label input - 7e58f",
       "connectors": [
@@ -391,8 +572,8 @@
       "id": "da9ccc47-d177-40b7-9082-5057d5395059",
       "label": "i1",
       "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
-      "x": 41,
-      "y": 8,
+      "x": 43,
+      "y": 6,
       "name": "Label input - a9ccc",
       "connectors": [
         {
@@ -406,8 +587,8 @@
       "id": "3f11747a-8d45-4d23-ba64-bce1e488fc1c",
       "label": "i2",
       "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
-      "x": 41,
-      "y": 9,
+      "x": 43,
+      "y": 7,
       "name": "Label input - f1174",
       "connectors": [
         {
@@ -421,8 +602,8 @@
       "id": "b5f32644-bd7b-4462-a57b-bd957b8d4909",
       "label": "o",
       "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
-      "x": 41,
-      "y": 10,
+      "x": 43,
+      "y": 8,
       "name": "Label input - 5f326",
       "connectors": [
         {
@@ -437,7 +618,7 @@
       "label": "i1",
       "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
       "x": 1,
-      "y": 19,
+      "y": 18,
       "name": "Label output - 4779a",
       "connectors": [
         {
@@ -452,7 +633,7 @@
       "label": "i2",
       "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
       "x": 1,
-      "y": 25,
+      "y": 24,
       "name": "Label output - 7b377",
       "connectors": [
         {
@@ -466,8 +647,8 @@
       "id": "2e36f106-3aaf-4565-a69a-1f79c560e842",
       "label": "o",
       "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
-      "x": 21,
-      "y": 30,
+      "x": 25,
+      "y": 25,
       "name": "Label output - e36f1",
       "connectors": [
         {
@@ -480,15 +661,15 @@
       "url": "../../components/actdia-nodes/moving_average.js",
       "id": "4c3fc130-591e-4ae0-a720-cc251ca76e88",
       "data": [
-        0.04170527003676781,
-        0.040253178218325116,
-        0.04022054022544113,
-        0.253063012754326
+        0,
+        0.5,
+        0,
+        0
       ],
       "windowWidth": 4,
       "fqcn": "../../components/actdia-nodes/moving_average.js/MovingAverage",
-      "x": 40,
-      "y": 30,
+      "x": 39,
+      "y": 25,
       "name": "Media móvil - c3fc1",
       "connectors": [
         {
@@ -511,7 +692,7 @@
       "id": "8fe6e9cf-191a-4cd4-b5e3-5c40c65a4457",
       "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
       "x": 12,
-      "y": 14,
+      "y": 13,
       "name": "Visor de perceptrón - fe6e9",
       "connectors": [
         {
@@ -525,7 +706,7 @@
       "id": "32337541-1a6f-459d-87d1-30442b1052aa",
       "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
       "x": 19,
-      "y": 14,
+      "y": 13,
       "name": "Visor de perceptrón - 23375",
       "connectors": [
         {
@@ -539,7 +720,7 @@
       "id": "67c4f4e4-7738-45f2-9db1-7a2485678e06",
       "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
       "x": 26,
-      "y": 17,
+      "y": 16,
       "name": "Visor de perceptrón - 7c4f4",
       "connectors": [
         {
@@ -553,7 +734,7 @@
       "id": "2e6777aa-00fb-418d-ae33-c9d7d237d7c6",
       "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
       "x": 12,
-      "y": 26,
+      "y": 25,
       "name": "Visor de perceptrón - e6777",
       "connectors": [
         {
@@ -567,7 +748,7 @@
       "id": "3d3acf4e-0c3f-4995-99be-57354b0b906d",
       "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
       "x": 19,
-      "y": 25,
+      "y": 24,
       "name": "Visor de perceptrón - d3acf",
       "connectors": [
         {
@@ -579,13 +760,22 @@
       "elementClass": "Viewer",
       "url": "../../components/actdia-nodes/viewer.js",
       "id": "28a687cb-0e85-4339-bb51-adf86f39ba01",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 3,
+        "height": 1
+      },
       "fqcn": "../../components/actdia-nodes/viewer.js/Viewer",
       "x": 39,
-      "y": 16,
+      "y": 19,
       "name": "Viewer - 8a687",
+      "width": 3,
+      "height": 1,
       "connectors": [
         {
-          "id": "in-00"
+          "id": "in-00",
+          "y": 1
         }
       ]
     },
@@ -596,7 +786,7 @@
       "label": "o",
       "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
       "x": 33,
-      "y": 18,
+      "y": 20,
       "name": "Label output - 22b0a",
       "connectors": [
         {
@@ -609,8 +799,8 @@
       "url": "../../components/actdia-nodes/pushbutton.js",
       "id": "1c5714fd-bb9f-47cb-a294-3d82db74910b",
       "fqcn": "../../components/actdia-nodes/pushbutton.js/Pushbutton",
-      "x": 7,
-      "y": 9,
+      "x": 8,
+      "y": 6,
       "name": "Pushbutton - c5714",
       "connectors": [
         {
@@ -624,8 +814,8 @@
       "id": "c8ad80e3-0e74-4708-b1c2-1db1c9c1ac6e",
       "label": "clk",
       "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
-      "x": 9,
-      "y": 9,
+      "x": 10,
+      "y": 6,
       "name": "Label input - 8ad80",
       "connectors": [
         {
@@ -639,16 +829,16 @@
       "id": "de62aa2f-5c5c-4bd0-baa4-04a386e26fa4",
       "max": 100,
       "fqcn": "../../components/actdia-nodes/slider.js/Slider",
-      "x": 4,
-      "y": 14,
+      "x": 12,
+      "y": 9,
       "name": "Slider - e62aa",
-      "rotation": "270",
+      "rotation": "180",
       "connectors": [
         {
           "id": "out-00"
         }
       ],
-      "status": 8.362499999999983,
+      "status": 5.862499999999984,
       "function": "linear",
       "size": 6,
       "min": 0
@@ -664,8 +854,8 @@
         "height": 1
       },
       "fqcn": "../../components/actdia-nodes/viewer.js/Viewer",
-      "x": 35,
-      "y": 31,
+      "x": 39,
+      "y": 30,
       "name": "Viewer - 329ed",
       "width": 3,
       "height": 1,
@@ -673,6 +863,23 @@
         {
           "id": "in-00",
           "y": 1
+        }
+      ]
+    },
+    {
+      "elementClass": "Buffer",
+      "url": "../../components/actdia-nodes/electronic/logic_gates/buffer.js",
+      "id": "40c22b6b-875b-4324-8c8a-4ba0618b4d21",
+      "fqcn": "../../components/actdia-nodes/electronic/logic_gates/buffer.js/Buffer",
+      "x": 24,
+      "y": 21,
+      "name": "Buffer - 0c22b",
+      "connectors": [
+        {
+          "id": "in-00"
+        },
+        {
+          "id": "out-00"
         }
       ]
     }
@@ -741,32 +948,6 @@
       "to": {
         "connector": "17f1aac6-c3a5-483f-a77c-9515050b0776",
         "item": "370e3ed8-9f44-4142-8f8c-2282d66d640f"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "395a673d-b9d8-4ed7-9ca7-a795103f63bc",
-      "from": {
-        "connector": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
-        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
-      },
-      "to": {
-        "connector": "663a9255-ab31-4ae2-a29c-9d1d2a8f16fb",
-        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "e3239f02-c39d-4419-ad79-0a1e32145fdb",
-      "from": {
-        "connector": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
-        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
-      },
-      "to": {
-        "connector": "c8498435-36e4-4216-9ecd-86e3f348f312",
-        "item": "98037aca-22e1-47ab-b2da-79eaa6a5639c"
       }
     },
     {
@@ -1105,6 +1286,45 @@
       "to": {
         "connector": "in-00",
         "item": "a329eded-79c5-403a-bfd0-d90b03772ef9"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "1fb9cb58-1e47-4d5e-bc0c-70514ab7239b",
+      "from": {
+        "connector": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
+        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "40c22b6b-875b-4324-8c8a-4ba0618b4d21"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "6e6622b0-0043-4044-b80c-a990d6d02ac3",
+      "from": {
+        "connector": "out-00",
+        "item": "40c22b6b-875b-4324-8c8a-4ba0618b4d21"
+      },
+      "to": {
+        "connector": "663a9255-ab31-4ae2-a29c-9d1d2a8f16fb",
+        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "3c50a3eb-c604-4d07-a9c5-e204aec4bba7",
+      "from": {
+        "connector": "out-00",
+        "item": "40c22b6b-875b-4324-8c8a-4ba0618b4d21"
+      },
+      "to": {
+        "connector": "c8498435-36e4-4216-9ecd-86e3f348f312",
+        "item": "98037aca-22e1-47ab-b2da-79eaa6a5639c"
       }
     }
   ]
