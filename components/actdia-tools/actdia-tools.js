@@ -89,6 +89,34 @@ export default class ActDiaTools {
     new Item({
       type: 'tool',
       visible: false,
+      name: 'sendToBack',
+      label: _('Send to back'),
+      description: _('Sends the selected item to the back of the diagram.'),
+      position: 'fixed',
+      shape: {
+        shapes: [
+          {
+            shape: 'path',
+            d: `
+              M 0.05 0.10 H 0.72
+              M 0.05 0.36 H 0.72
+              M 0.05 0.63 H 0.72
+              M 0.05 0.90 H 0.95
+              Z`,
+            strokeWidth: .1,
+          },
+        ],
+      },
+      box: null,
+      selectable: false,
+      draggable: false,
+      exportable: false,
+      onClick: () => this.sendToBack(),
+    }),
+
+    new Item({
+      type: 'tool',
+      visible: false,
       name: 'save',
       label: _('Save'),
       description: _('Saves the diagram.'),
@@ -531,7 +559,7 @@ export default class ActDiaTools {
   }
 
   getExportableItems(options) {
-    return this.actdia.getExportableItems(options);
+    return this.actdia.getItems({ onlyExportable: true, selected: true, ...options });
   }
 
   getData(options) {
@@ -706,5 +734,10 @@ export default class ActDiaTools {
       content: '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
       header: _('JSON data'),
     });
+  }
+
+  sendToBack(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    this.actdia.sendToBack(...items);
   }
 }

@@ -369,21 +369,28 @@ export default class ActDia {
     return data;
   }
 
-  getExportableItems({ selected, items, onlySelected } = {}) {
+  getItems({ items, selected, onlySelected, exportable, onlyExportable } = {}) {
     if (items?.length)
       return items;
 
-    const exportable = this.#items.filter(i => i.exportable !== false);
+    items = this.#items;
+
+    if (exportable || onlyExportable) {
+      const exportableItems = items.filter(i => i.exportable !== false);
+      if (onlyExportable || exportableItems.length)
+        items = exportableItems;
+    }
+
     if (selected || onlySelected) {
-      const selected = exportable.filter(i => i.selected
+      const selectedItems = items.filter(i => i.selected
         || isConnection(i) && (i.from.item?.selected && i.to?.item?.selected)
       );
 
-      if (onlySelected || selected.length)
-        return selected;
+      if (onlySelected || selectedItems.length)
+        items = selectedItems;
     }
 
-    return exportable;
+    return items;
   }
 
   clear() {
@@ -520,6 +527,22 @@ export default class ActDia {
     });
 
     return result;
+  }
+
+  sendToBack(...items) {
+    items.forEach(item => {
+      const index = this.#items.indexOf(item);
+      if (index > -1) {
+        this.#items.splice(index, 1);
+        this.#items.unshift(item);
+        if (item.svgElement) {
+          item.svgElement.parentNode.insertBefore(
+            item.svgElement,
+            item.svgElement.parentNode.firstChild
+          );
+        }
+      }
+    });
   }
 
   autoNameForItem(item) {
@@ -874,10 +897,6 @@ export default class ActDia {
 
     if (options?.fillOpacity) {
       style.fillOpacity = options.fillOpacity;
-    }
-
-    if (style.strokeWidth) {
-      style.strokeWidth /= (style.sx + style.sy) / 2;
     }
 
     if (style.className) {

@@ -182,7 +182,7 @@ function keyUpHandler(evt) {
 let incrementalPosition = 0;
 async function copyJSONToClipboard(options) {
   incrementalPosition = 1;
-  const exportable = actdia.getExportableItems({ selected: true, ...options });
+  const exportable = actdia.getItems({ onlyExportable: true, selected: true, ...options });
   const jsonText = JSON.stringify(actdia.getData({ items: exportable }), null, 2);
   const json = new ClipboardItem({ 'text/plain': new Blob([jsonText], { type: 'application/json' })});
   await navigator.clipboard.write([json]);
