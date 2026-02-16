@@ -18,6 +18,7 @@ export default {
     'selector.js',
     'label_input.js',
     'label_output.js',
+    'script.js',
   ],
   categories: [
     { url: 'electronic', _label: 'Electronic' },
