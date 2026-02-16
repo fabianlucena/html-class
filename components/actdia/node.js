@@ -295,6 +295,10 @@ export default class Node extends Item {
     this.removeLasConnectorByType('out');
   }
 
+  getConnector(name) {
+    return this.connectors.find(connector => connector.name === name);
+  }
+
   getConnectorFromId(id) {
     return this.connectors.find(connector => connector.id === id);
   }
