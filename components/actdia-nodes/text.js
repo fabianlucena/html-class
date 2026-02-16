@@ -82,6 +82,9 @@ export default function create({ Node }) {
       left: 0.5,
     };
 
+    canChangeWidth = true;
+    canChangeHeight = true;
+
     get autoSize() {
       return this.#autoSize;
     }
@@ -113,6 +116,18 @@ export default function create({ Node }) {
         this.#padding = value;
         this.update();
       }
+    }
+
+    setWidth(value) {
+      this.shape.shapes[0].width = value;
+      this.#autoSize = false;
+      super.setWidth(value);
+    }
+
+    setHeight(value) {
+      this.#autoSize = false;
+      this.shape.shapes[0].height = value;
+      super.setHeight(value);
     }
 
     update() {

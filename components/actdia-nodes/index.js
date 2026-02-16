@@ -2,6 +2,7 @@ export default {
   _label: 'Basic',
   locale: ['es'],
   nodesClasses: [
+    'text.js',
     'bus.js',
     'unbus.js',
     'oscillograph.js',
