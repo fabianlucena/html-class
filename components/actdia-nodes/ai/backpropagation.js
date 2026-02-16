@@ -37,9 +37,6 @@ export default function create({ Node, _ }) {
       { name: '#',    label: true, type: 'out', x: 4, y: 2, direction: 'right', extends: 'tiny' },
     ];
 
-    #inputs = null;
-    #clk = null;
-    #clkStatus = 0;
     learningRate = 0.01;
     #newNodesWeights = new Map();
 
@@ -57,41 +54,9 @@ export default function create({ Node, _ }) {
       }
     ];
 
-    get inputs() {
-      return this.#inputs;
-    }
-
-    get clk() {
-      return this.#clk;
-    }
-
-    init() {
-      super.init(...arguments);
-
-      if (this.connectors) {
-        this.#inputs = this.connectors.filter(c => c.name === 'i');
-        this.#clk = this.connectors.find(c => c.name === '!clk');
-      }
-    }
-
-    updateStatus(options = {}) {
-      if (!this.#inputs || !this.#clk)
+    updateStatusRSync(options = {}) {
+      if (!this.inputs.length)
         return;
-
-      if (this.#clk.status > 0.5) {
-        if (this.#clkStatus !== 1)
-          this.#clkStatus = 1;
-
-        return;
-      }
-
-      if (this.#clk.status <= 0.5) {
-        if (this.#clkStatus === 0) {
-          return;
-        }
-        
-        this.#clkStatus = 0;
-      }
       
       this.setStatus(this.status + 1);
       this.#newNodesWeights = new Map();

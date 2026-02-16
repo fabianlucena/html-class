@@ -44,14 +44,14 @@ export default function create({ Node, _ }) {
     };
 
     connectors = [
-      { name: 'i0', type: 'in',  x: 0, y: 2, direction: 'left',   extends: 'small' },
-      { name: 'i1', type: 'in',  x: 2, y: 4, direction: 'bottom', extends: 'small' },
-      { name: 'o0', type: 'out', x: 4, y: 2, direction: 'right',  extends: 'small' },
+      { name: 'i0',  type: 'in',  x: 0, y: 2, direction: 'left',   extends: 'small' },
+      { name: 'clk', type: 'in',  x: 2, y: 4, direction: 'bottom', extends: 'small' },
+      { name: 'o0',  type: 'out', x: 4, y: 2, direction: 'right',  extends: 'small' },
     ];
 
     index = 0;
 
-    updateStatus() {
+    updateStatusSync() {
       const data = this.connectors[0].status;
       if (!data || !Array.isArray(data)) {
         this.shape.shapes[1].text = _('No data');

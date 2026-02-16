@@ -44,42 +44,21 @@ export default function create({ Node }) {
 
     data = [];
     windowWidth = 10;
-    #inputs = null;
-    #clk = null;
-    #clkStatus = 0;
     #ma = null;
     #valueMa = null;
     #sum = 0;
-
-    get inputs() {
-      return this.#inputs;
-    }
 
     init() {
       super.init(...arguments);
 
       if (this.connectors) {
-        this.#inputs = this.connectors.filter(c => c.name === 'i');
-        this.#clk = this.connectors.find(c => c.name === 'clk');
         this.#ma = this.connectors.find(c => c.name === 'ma');
         this.#valueMa = this.connectors.find(c => c.name === 'valueMa');
       }
     }
 
-    updateStatus() {
-      if (!this.#inputs || !this.#clk)
-        return;
-
-      if (this.#clk.status <= 0.5) {
-        if (this.#clkStatus !== 0)
-          this.#clkStatus = 0;
-
-        return;
-      }
-
-      if (this.#clkStatus !== 1)
-        this.#clkStatus = 1;
-      else
+    updateStatusSync() {
+      if (!this.inputs.length)
         return;
       
       while (this.data.length >= this.windowWidth) {
@@ -87,14 +66,14 @@ export default function create({ Node }) {
         this.#sum -= removedValue;
       }
 
-      const newValue = this.#inputs[0].status;
+      const newValue = this.inputs[0].status;
       this.#sum += newValue;
       this.data.push(newValue);
 
       const ma = this.#sum / this.data.length;
 
       this.#ma.setStatus(ma);
-      this.#valueMa.setStatus([this.#inputs[0].status, ma]);
+      this.#valueMa.setStatus([this.inputs[0].status, ma]);
     }
   };
 }
