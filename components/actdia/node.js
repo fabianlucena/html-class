@@ -180,6 +180,53 @@ export default class Node extends Item {
     return connectors;
   }
 
+  #inputs = [];
+  #outputs = [];
+  #clk = null;
+
+  get inputs() {
+    return this.#inputs;
+  }
+
+  get outputs() {
+    return this.#outputs;
+  }
+
+  #labeledStatusListener = (label, status) => {
+    if (label !== 'clk')
+      return;
+
+    const nodes = this.actdia.items
+      .filter(i => i?.connectors
+        ?.some(c => (c.name === 'clk' || c.name === '!clk') && !c.connections.length)
+      );
+
+    nodes.forEach(node => {
+      node.connectors
+        .filter(c => c.name === 'clk' || c.name === '!clk')
+        .forEach(c => c.setStatus(status));
+    });
+  };
+  
+  #labeledStatusListenerInstalledIn = false;
+  update() {
+    this.#inputs = this.connectors.filter(c => c.type === 'in');
+    this.#outputs = this.connectors.filter(c => c.type === 'out');
+    this.#clk = this.connectors.find(c => c.name === 'clk')
+      || this.connectors.find(c => c.name === '!clk');
+
+    if (this.#clk) {
+      if (this.#labeledStatusListenerInstalledIn) {
+        this.#labeledStatusListenerInstalledIn.removeLabeledStatusListener(this.#labeledStatusListener);
+      }
+
+      if (this.actdia) {
+        this.actdia.addLabeledStatusListener(this.#labeledStatusListener);
+        this.#labeledStatusListenerInstalledIn = this.actdia;
+      }
+    }
+  }
+
   saveStatus = false;
   saveFields = false;
   get skipExport() {
@@ -209,6 +256,32 @@ export default class Node extends Item {
     
     return data;
   }
+
+  #clkStatus = null;
+  updateStatus(options = {}) {
+    if (this.#clk) {
+      if (this.#clkStatus === null) {
+        this.#clkStatus = this.#clk.status >= 0.5 ? 1 : 0;
+      } else {
+        if (this.#clk.status < 0.5) {
+          if (this.#clkStatus !== 0) {
+            this.#clkStatus = 0;
+            this.updateStatusRSync(options);
+          }
+        } else if (this.#clk.status >= 0.5) {
+          if (this.#clkStatus !== 1) {
+            this.#clkStatus = 1;
+            this.updateStatusSync(options);
+          }
+        }
+      }
+    }
+
+    super.updateStatus(options);
+  }
+
+  updateStatusSync(options = {}) {}
+  updateStatusRSync(options = {}) {}
 
   statusUpdated(options) {
     this.propagate(options);
