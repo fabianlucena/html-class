@@ -77,6 +77,7 @@ export default function create({ Node }) {
       switch (value) {
         case 'horizontal':
           this.rotation = -90;
+          this.shape.x = 0;
           connector.direction = -90;
           connector.x = 0;
           connector.y = 1;
