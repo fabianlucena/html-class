@@ -98,7 +98,7 @@ export default class NodeForm extends FormDialog {
         _label: 'Dash',
         nullable: true,
       },
-      ...this.node.fields || []
+      ...this.node.getFields?.() || []
     ];    
   }
 

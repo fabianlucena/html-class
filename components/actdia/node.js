@@ -35,6 +35,69 @@ export default class Node extends Item {
     { type: 'out', x: 11, y: 2, direction: 'right' },
   ];
 
+  #inputs = [];
+  #outputs = [];
+  #clk = null;
+  #clkStatus = null;
+  
+  #labeledStatusListenerInstalledIn = false;
+  #labeledStatusListener = (label, status) => {
+    if (label !== 'clk')
+      return;
+
+    const nodes = this.actdia.items
+      .filter(i => i?.connectors
+        ?.some(c => (c.name === 'clk' || c.name === '!clk') && !c.connections.length)
+      );
+
+    nodes.forEach(node => {
+      node.connectors
+        .filter(c => c.name === 'clk' || c.name === '!clk')
+        .forEach(c => c.setStatus(status));
+    });
+  };
+
+  nodeFields = [
+    {
+      name: 'width',
+      type: 'number',
+      _label: 'Width',
+      min: 1,
+      condition: () => this.canChangeWidth,
+    },
+    {
+      name: 'height',
+      type: 'number',
+      _label: 'Height',
+      min: 1,
+      condition: () => this.canChangeHeight,
+    },
+  ];
+
+  get inputs() {
+    return this.#inputs;
+  }
+
+  get outputs() {
+    return this.#outputs;
+  }
+
+  get width() {
+    return this.box.width;
+  }
+
+  set width(value) {
+    this.setWidth(value);
+  }
+
+  get height() {
+    return this.box.height;
+  }
+
+  set height(value) {
+    this.setHeight(value);
+  }
+
   init(options) {
     super.init();
 
@@ -180,35 +243,6 @@ export default class Node extends Item {
     return connectors;
   }
 
-  #inputs = [];
-  #outputs = [];
-  #clk = null;
-
-  get inputs() {
-    return this.#inputs;
-  }
-
-  get outputs() {
-    return this.#outputs;
-  }
-
-  #labeledStatusListener = (label, status) => {
-    if (label !== 'clk')
-      return;
-
-    const nodes = this.actdia.items
-      .filter(i => i?.connectors
-        ?.some(c => (c.name === 'clk' || c.name === '!clk') && !c.connections.length)
-      );
-
-    nodes.forEach(node => {
-      node.connectors
-        .filter(c => c.name === 'clk' || c.name === '!clk')
-        .forEach(c => c.setStatus(status));
-    });
-  };
-  
-  #labeledStatusListenerInstalledIn = false;
   update() {
     super.update();
     
@@ -227,6 +261,16 @@ export default class Node extends Item {
         this.#labeledStatusListenerInstalledIn = this.actdia;
       }
     }
+  }
+
+  setWidth(value) {
+    this.box.width = value;
+    this.actdia.tryUpdateShape(this);
+  }
+
+  setHeight(value) {
+    this.box.height = value;
+    this.actdia.tryUpdateShape(this);
   }
 
   saveStatus = false;
@@ -259,7 +303,6 @@ export default class Node extends Item {
     return data;
   }
 
-  #clkStatus = null;
   updateStatus(options = {}) {
     if (this.#clk) {
       if (this.#clkStatus === null) {
@@ -303,5 +346,12 @@ export default class Node extends Item {
     this.connectors
       .filter(c => c.type === 'in')
       .forEach(connector => connector?.setBackStatus(this.backStatus, options));
+  }
+
+  getFields() {
+    return [
+      ...this.nodeFields,
+      ...this.fields || [],
+    ].filter(field => !field.condition || field.condition());
   }
 }
