@@ -12,6 +12,18 @@ export default function create({ Node, _ }) {
       name: _('Diff'),
       description: _('Absolute difference: E = (1/n) Σ |y_i - r_i|'),
     },
+    crossEntropySigmoid: {
+      func: (e, r) => -(r * Math.log(Math.max(e, 1e-12)) + (1 - r) * Math.log(Math.max(1 - e, 1e-12))),
+      derivative: (e, r) => e - r,
+      name: _('Sigmoid Cross-Entropy'),
+      description: _('Cross-Entropy: E = -(1/n) Σ [r_i log(y_i) + (1 - r_i) log(1 - y_i)]'),
+    },
+    crossEntropyTanh: {
+      func: (e, r) => -(r * Math.log(Math.max(e, 1e-12)) + (1 - r) * Math.log(Math.max(1 - e, 1e-12))),
+      derivative: (e, r) => (e - r) * (1 - e * e),
+      name: _('Tanh Cross-Entropy'),
+      description: _('Cross-Entropy: E = -(1/n) Σ [r_i log(y_i) + (1 - r_i) log(1 - y_i)]'),
+    },
   };
 
   return class Cost extends Node {
@@ -59,12 +71,35 @@ export default function create({ Node, _ }) {
       { name: 'o0', type: 'out', x: 2, y: 1, direction: 'right', extends: 'tiny' },
     ];
 
-    #inputs = [];
+    fields = [
+      {
+        name: 'errorFunction',
+        type: 'select',
+        _label: _('Error function'),
+        options: Object.entries(errorFunctions)
+          .map(([key, info]) => ({
+            value: key,
+            label: info.name,
+            title: info.description,
+          })),
+      },
+    ];
+
+    #errorFunction = 'mse';
     #func = errorFunctions.mse.func;
     #derivative = errorFunctions.mse.derivative;
 
-    get inputs() {
-      return this.#inputs;
+    get errorFunction() {
+      return this.#errorFunction;
+    }
+
+    set errorFunction(value) {
+      const funcData = errorFunctions[value];
+      if (funcData) {
+        this.#errorFunction = value;
+        this.#func = funcData.func;
+        this.#derivative = funcData.derivative;
+      }
     }
 
     get func() {
@@ -75,16 +110,8 @@ export default function create({ Node, _ }) {
       return this.#derivative;
     }
 
-    init() {
-      super.init(...arguments);
-
-      if (this.connectors) {
-        this.#inputs = this.connectors.filter(c => c.type === 'in');
-      }
-    }
-
     updateStatus(options = {}) {
-      const inputs = this.#inputs.map(i => i.status);
+      const inputs = this.inputs.map(i => i.status);
       let status = this.func(inputs[1], inputs[0]);
 
       this.setStatus(status, options);
