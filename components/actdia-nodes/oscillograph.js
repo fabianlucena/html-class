@@ -156,15 +156,14 @@ export default function create({ Node, _ }) {
         this.#range[i] = this.#max[i] - this.#min[i];
         this.#range[i] ||= 1;
 
-        this.shape.shapes[2].text = _('Max: %s, min: %s', this.#max[i].toFixed(2), this.#min[i].toFixed(2));
         this.actdia.tryUpdateShape(
           this,
           this.svgShape?.children?.[2],
           this.shape.shapes[2]
         );
 
-        let shape = this.shape.shapes[2].shapes[i];
-        if (!shape) {
+        let textShape = this.shape.shapes[2].shapes[i];
+        if (!textShape) {
           textColors ||= getColors(count, 90, 100, 75);
           this.shape.shapes[2].shapes[i] = {
             shape: 'text',
@@ -174,10 +173,10 @@ export default function create({ Node, _ }) {
             textAnchor: 'start',
             dominantBaseline: 'top',
           };
-          shape = this.shape.shapes[2].shapes[i];
+          textShape = this.shape.shapes[2].shapes[i];
         }
-        shape.y = i * sy + .6;
-        shape.text = _('%s •• %s', this.#max[i].toFixed(2), this.#min[i].toFixed(2));
+        textShape.y = i * sy + .6;
+        textShape.text = _('%s •• %s', this.#max[i].toFixed(2), this.#min[i].toFixed(2));
 
         let drawShape = this.shape.shapes[3].shapes[i];
         if (!drawShape) {
@@ -196,7 +195,7 @@ export default function create({ Node, _ }) {
             this.actdia.tryUpdateShape(
               this,
               svgTextElement?.children?.[i],
-              shape
+              textShape
             );
           } else {
             needUpdate = true;
