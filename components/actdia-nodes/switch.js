@@ -1,6 +1,7 @@
 export default function create({ Node }) {
   return class Switch extends Node {
     shape = {
+      x: .5,
       shapes: [
         {
           shape: 'rect',
@@ -33,14 +34,14 @@ export default function create({ Node }) {
     };
 
     box = {
-      x: -.5,
+      x: 0,
       y: -1,
       width: 1,
       height: 2,
     };
 
     connectors = [
-      { name: 'o0', type: 'out', x: .5, y: 0, direction: 'right', extends: 'tiny' },
+      { name: 'o0', type: 'out', x: 1, y: 0, direction: 'right', extends: 'tiny' },
     ];
 
     fields = [
