@@ -49,6 +49,7 @@ export default function create({ Node, _ }) {
         name: 'learningRate',
         _label: 'Learning rate',
         type: 'number',
+        step: 0.0001,
       },
       {
         name: 'resetNN',
@@ -94,7 +95,7 @@ export default function create({ Node, _ }) {
       }
     }
 
-    backPropagate(node, costNode, learningRate, delta, level = 0, invalidDeep = 4) {
+    backPropagate(node, costNode, learningRate, delta, level = 0, invalidDeep = 5) {
       let newLevel = level - 1;
       if (newLevel === 0) {
         return;
@@ -142,7 +143,7 @@ export default function create({ Node, _ }) {
       this.backPropagateResetNN(this);
     }
 
-    backPropagateResetNN(node, level = 0, invalidDeep = 4) {
+    backPropagateResetNN(node, level = 0, invalidDeep = 5) {
       if (!node) {
         return;
       }

@@ -272,6 +272,8 @@ export default class Form extends Base {
     if (evt.target instanceof HTMLButtonElement) {
       const field = this.fields.find(f => f.name === evt.target.name);
       if (field?.type === 'button' && field.onClick) {
+        evt.stopPropagation();
+        evt.preventDefault();
         field.onClick(evt);
       }
       
