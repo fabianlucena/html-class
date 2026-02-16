@@ -1,15 +1,10 @@
 export default function create({ Node, actdia }) {
-  actdia.globalData ??= {};
-  actdia.globalData.labeledStatus ??= {};
-  actdia.globalData.labeledStatusUpdated ??= label => {
+  actdia.addLabeledStatusListener((label, status) => {
     const outputs = actdia.items
       .filter(i => i.elementClass === 'LabelOutput' && i.label === label);
 
-    const status = actdia.globalData.labeledStatus[label];
-    outputs.forEach(item => {
-      item.updateStatus(status);
-    });
-  };
+    outputs.forEach(item => item.updateStatus(status));
+  });
 
   return class LabelOutput extends Node {
     static label = 'Label output';

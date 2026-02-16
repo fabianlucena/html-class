@@ -1,7 +1,4 @@
-export default function create({ Node, actdia }) {
-  actdia.globalData ??= {};
-  actdia.globalData.labeledStatus ??= {};
-
+export default function create({ Node }) {
   return class LabelInput extends Node {
     static label = 'Label input';
 
@@ -56,8 +53,7 @@ export default function create({ Node, actdia }) {
     statusUpdated() {
       super.statusUpdated();
       this.updateForStatus();
-      actdia.globalData.labeledStatus[this.label] = this.status;
-      actdia.globalData.labeledStatusUpdated?.(this.label);
+      this.actdia.fireLabeledStatus?.(this.label, this.status);
     }
 
     updateForStatus() {
