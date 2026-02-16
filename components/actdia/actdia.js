@@ -872,6 +872,10 @@ export default class ActDia {
     if (options?.sy)
       style.sy = options.sy;
 
+    if (options?.fillOpacity) {
+      style.fillOpacity = options.fillOpacity;
+    }
+
     if (style.strokeWidth) {
       style.strokeWidth /= (style.sx + style.sy) / 2;
     }
@@ -936,6 +940,7 @@ export default class ActDia {
     classList.length && (attributes.className = classList.join(' '));
     ('fill' in style) && (attributes.fill = style.fill);
     style.fill === false && (attributes.fill = 'none');
+    ('fillOpacity' in style) && (attributes['fill-opacity'] = style.fillOpacity);
     ('stroke' in style) && (attributes.stroke = style.stroke);
     style.stroke === false && (attributes.stroke = 'none');
     ('strokeWidth' in style) && (attributes['stroke-width'] = style.strokeWidth);

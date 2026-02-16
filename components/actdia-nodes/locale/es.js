@@ -28,6 +28,7 @@ export default {
   'Size': 'Tamaño',
   'Status': 'Estado',
   'Switch': 'Interruptor',
+  'Text opacity': 'Opacidad del texto',
   'Three halves': 'Tres medios',
   'Two thirds': 'Dos tercios',
   'Unbus': 'Descanalizar',

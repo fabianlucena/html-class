@@ -138,6 +138,16 @@ export default class Node extends Item {
       condition: () => this.canChangeFill,
     },
     {
+      name: 'style.fillOpacity',
+      type: 'range',
+      _label: 'Fill opacity',
+      min: 0,
+      max: 1,
+      step: 0.01,
+      nullable: true,
+      condition: () => this.canChangeFill,
+    },
+    {
       name: 'style.stroke',
       type: 'color',
       _label: 'Stroke color',
@@ -364,6 +374,7 @@ export default class Node extends Item {
   get skipExport() {
     const skip = super.skipExport;
     skip.push(
+      'commonFields',
       'connectors',
       'svgConnectors',
       'items',
