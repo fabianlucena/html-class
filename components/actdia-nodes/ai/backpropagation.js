@@ -60,21 +60,25 @@ export default function create({ Node, _ }) {
         name: 'maxRamdomWeight',
         _label: 'Max random weight',
         type: 'number',
+        step: 0.0001,
       },
       {
         name: 'minRandomWeight',
         _label: 'Min random weight',
         type: 'number',
+        step: 0.0001,
       },
       {
         name: 'maxWeightClipping',
         _label: 'Max weight clipping',
         type: 'number',
+        step: 0.0001,
       },
       {
         name: 'minWeightClipping',
         _label: 'Min weight clipping',
         type: 'number',
+        step: 0.0001,
       },
     ];
 
