@@ -41,6 +41,15 @@ export default class Item extends Element {
       skip.push(...this.constructor.skipExport);
     }
 
+    if (this.includeExport) {
+      this.includeExport.forEach(prop => {
+        const index = skip.indexOf(prop);
+        if (index !== -1) {
+          skip.splice(index, 1);
+        }
+      });
+    }
+
     return skip;
   }
 
