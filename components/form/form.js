@@ -3,6 +3,7 @@ import { _, addLocaleUrl } from '../locale/locale.js';
 import Base from '../utils/base.js';
 import { getValueByPath, setValueByPath, deletePropertyByPath } from '../utils/object.js';
 import { newId } from '../utils/id.js';
+import { sanitizeId } from '../utils/html.js';
 import Dialog from '../dialog/dialog.js';
 
 importCss('./form.css', import.meta.url);
@@ -112,7 +113,7 @@ export default class Form extends Base {
     if (!field.label && field._label)
       field.label = _(field._label);
 
-    field.id ??= field.name ?? newId();
+    field.id ??= sanitizeId(field.name) ?? newId();
     field.previousValue = this.getValue(field);
 
     let fieldHtml = '';
