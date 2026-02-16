@@ -12,7 +12,9 @@ export default function create({ Node }) {
           text: '¡Hola mundo!',
           lineSpacing: 1.0,
           fillOpacity: 1,
-          y: 1,
+          margin: .35,
+          textAnchor: 'center',
+          dominantBaseline: 'top',
         },
       ],
     };
@@ -26,11 +28,35 @@ export default function create({ Node }) {
 
     connectors = [];
 
+    includeExport = [
+      'shape',
+    ];
+
     fields = [
       {
         name: 'text',
         type: 'textarea',
         _label: 'Text',
+      },
+      {
+        name: 'shape.shapes[1].textAnchor',
+        type: 'select',
+        _label: 'Text anchor',
+        options: [
+          { value: 'left', label: 'Left' },
+          { value: 'center', label: 'Center' },
+          { value: 'right', label: 'Right' },
+        ],
+      },
+      {
+        name: 'shape.shapes[1].dominantBaseline',
+        type: 'select',
+        _label: 'Text vertical align',
+        options: [
+          { value: 'top', label: 'Top' },
+          { value: 'middle', label: 'Middle' },
+          { value: 'bottom', label: 'Bottom' },
+        ],
       },
       {
         name: 'shape.shapes[1].fill',
@@ -135,6 +161,7 @@ export default function create({ Node }) {
 
     setWidth(value) {
       this.shape.shapes[0].width = value;
+      this.shape.shapes[1].width = value;
       this.#autoSize = false;
       super.setWidth(value);
     }
@@ -142,6 +169,7 @@ export default function create({ Node }) {
     setHeight(value) {
       this.#autoSize = false;
       this.shape.shapes[0].height = value;
+      this.shape.shapes[1].height = value;
       super.setHeight(value);
     }
 
