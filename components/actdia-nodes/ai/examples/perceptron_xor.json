@@ -3,6 +3,14 @@
     "version": "0.1.0"
   },
   "imports": [
+    "../../components/actdia-nodes/ai/perceptron-viewer.js",
+    "../../components/actdia-nodes/label_input.js",
+    "../../components/actdia-nodes/label_output.js",
+    "../../components/actdia-nodes/moving_average.js",
+    "../../components/actdia-nodes/oscillograph.js",
+    "../../components/actdia-nodes/pushbutton.js",
+    "../../components/actdia-nodes/slider.js",
+    "../../components/actdia-nodes/viewer.js",
     "../actdia-nodes/ai/backpropagation.js",
     "../actdia-nodes/ai/cost.js",
     "../actdia-nodes/ai/perceptron.js",
@@ -13,26 +21,15 @@
     "../actdia-nodes/viewer.js",
     "./connection.js"
   ],
-  "locales": {
-    ".": [
-      "es"
-    ],
-    "../actdia-nodes": [
-      "es"
-    ],
-    "../actdia-nodes/ai": [
-      "es"
-    ]
-  },
   "nodes": [
     {
       "elementClass": "Selector",
       "url": "../actdia-nodes/selector.js",
       "id": "09326d6e-9f0f-4c50-8e7d-20d696d9b471",
-      "index": 2,
       "fqcn": "../actdia-nodes/selector.js/Selector",
-      "x": 18,
+      "x": 32,
       "y": 3,
+      "name": "Selector - 9326d",
       "connectors": [
         {
           "id": "cc49e2f6-737a-427e-b4eb-4efd57105171"
@@ -51,11 +48,20 @@
       "id": "c9ef873f-974e-45cb-9312-3539207b7156",
       "fqcn": "../actdia-nodes/pulse_generator.js/PulseGenerator",
       "x": 3,
-      "y": 12,
+      "y": 3,
+      "name": "Generador de pulsos - 9ef87",
+      "factor": 8.362499999999983,
+      "active": true,
       "connectors": [
         {
-          "id": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008",
-          "backStatus": 0
+          "id": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008"
+        },
+        {
+          "id": "out-01",
+          "textDecoration": "overline"
+        },
+        {
+          "id": "in-00"
         }
       ]
     },
@@ -63,43 +69,42 @@
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "3dc6283c-f782-496e-9057-17ac87003827",
+      "bias": -0.21966543397313973,
       "weights": [
-        55.507921510324564,
-        0.12191235962052005
+        -0.5257322963479087,
+        0.07354717354650697
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
-      "x": 24,
-      "y": 13,
+      "x": 9,
+      "y": 19,
       "name": "n1",
       "description": "",
-      "bias": 105.79370345131112,
+      "inputsCount": 2,
+      "activationFunction": "sigmoid",
       "connectors": [
         {
-          "id": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
-          "backStatus": 10.569370345131112
+          "id": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3"
         },
         {
           "id": "8d4d34b2-76ff-42a6-8577-ee88be1a75a3",
-          "direction": 133.59509870133553,
           "x": 0.3104424071998706,
           "y": 0.2757691485364001,
-          "backStatus": 0
+          "direction": 133.59509870133553
         },
         {
           "id": "c7dd1ac3-e044-4644-956f-8e73824e1c2c"
         }
-      ],
-      "activationFunction": "relu"
+      ]
     },
     {
       "elementClass": "JsonData",
       "url": "../actdia-nodes/json_data.js",
       "id": "cafb6089-dbc1-4775-a33a-20042303e1ef",
-      "data": "[[0, 0, 0],\n [0, 1, 1],\n [1, 0, 1],\n [1, 1, 0]]",
+      "data": "[[0, 0, 0],\n [0, 1, 1],\n [1, 0, 1],\n [1, 1, 1]]",
       "fqcn": "../actdia-nodes/json_data.js/JsonData",
-      "x": 4,
+      "x": 18,
       "y": 3,
-      "name": "",
+      "name": "JSON Data - afb60",
       "description": "",
       "connectors": [
         {
@@ -112,8 +117,9 @@
       "url": "../actdia-nodes/viewer.js",
       "id": "517c43e0-0371-4bd1-85ca-d1f8ffb7ea60",
       "fqcn": "../actdia-nodes/viewer.js/Viewer",
-      "x": 30,
+      "x": 38,
       "y": 3,
+      "name": "Viewer - 17c43",
       "connectors": [
         {
           "id": "a4394d58-1787-4c58-8540-ef63562ac602"
@@ -131,21 +137,20 @@
         "height": 3
       },
       "fqcn": "../actdia-nodes/unbus.js/Unbus",
-      "x": 18,
-      "y": 14,
-      "name": "",
+      "x": 38,
+      "y": 7,
+      "name": "Descanalizar - e2365",
       "description": "",
+      "channelWidth": 3,
       "connectors": [
         {
           "id": "36afe39c-5613-4e50-a277-09e47db44ca6"
         },
         {
-          "id": "9e1ae5c4-3277-490c-bd69-d2aafba082e0",
-          "backStatus": 0
+          "id": "9e1ae5c4-3277-490c-bd69-d2aafba082e0"
         },
         {
-          "id": "ba662475-e313-4720-bbb5-f2fde515678f",
-          "backStatus": 0
+          "id": "ba662475-e313-4720-bbb5-f2fde515678f"
         },
         {
           "id": "6da4cf94-477e-48fa-981a-29c622772628"
@@ -157,8 +162,9 @@
       "url": "../actdia-nodes/viewer.js",
       "id": "98037aca-22e1-47ab-b2da-79eaa6a5639c",
       "fqcn": "../actdia-nodes/viewer.js/Viewer",
-      "x": 41,
-      "y": 9,
+      "x": 39,
+      "y": 20,
+      "name": "Viewer - 8037a",
       "connectors": [
         {
           "id": "c8498435-36e4-4216-9ecd-86e3f348f312"
@@ -171,7 +177,8 @@
       "id": "596171ce-93d8-4a43-9c72-67d5424ae5aa",
       "fqcn": "../actdia-nodes/viewer.js/Viewer",
       "x": 39,
-      "y": 17,
+      "y": 26,
+      "name": "Viewer - 96171",
       "connectors": [
         {
           "id": "971ce7a5-a611-4cf0-8f9b-5fa9b5235867"
@@ -184,18 +191,14 @@
       "id": "ec354e1e-83c9-4968-8b53-8c14cfb11f47",
       "fqcn": "../actdia-nodes/ai/cost.js/Cost",
       "x": 27,
-      "y": 21,
-      "backStatus": -283045511833.46893,
+      "y": 27,
+      "name": "Cost - c354e",
       "connectors": [
         {
-          "id": "663a9255-ab31-4ae2-a29c-9d1d2a8f16fb",
-          "direction": 180,
-          "backStatus": 283045511833.46893
+          "id": "663a9255-ab31-4ae2-a29c-9d1d2a8f16fb"
         },
         {
-          "id": "cdee408f-98ef-4070-ba5c-c7e3afc5a6ce",
-          "direction": 180,
-          "backStatus": 283045511833.46893
+          "id": "cdee408f-98ef-4070-ba5c-c7e3afc5a6ce"
         },
         {
           "id": "d7749f7f-f1c7-4783-a7fb-153dee359f55"
@@ -206,20 +209,21 @@
       "elementClass": "Backpropagation",
       "url": "../actdia-nodes/ai/backpropagation.js",
       "id": "370e3ed8-9f44-4142-8f8c-2282d66d640f",
+      "counter": 12,
       "fqcn": "../actdia-nodes/ai/backpropagation.js/Backpropagation",
-      "x": 34,
-      "y": 24,
-      "backStatus": 236629363623.97275,
+      "x": 30,
+      "y": 30,
+      "name": "Backpropagation - 70e3e",
       "connectors": [
         {
-          "id": "17f1aac6-c3a5-483f-a77c-9515050b0776",
-          "direction": 180,
-          "backStatus": 0
+          "id": "17f1aac6-c3a5-483f-a77c-9515050b0776"
         },
         {
           "id": "0b56c02d-db42-4981-886c-e7a17d8f4747",
-          "direction": 270,
-          "backStatus": 0
+          "textDecoration": "overline"
+        },
+        {
+          "id": "out-00"
         }
       ]
     },
@@ -227,118 +231,448 @@
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "003254f2-dda4-4c17-9a83-174c79244318",
+      "bias": -0.5882200429331815,
       "weights": [
-        -0.7706625195083525,
-        -0.9373632734391233
+        0.20157438580612336,
+        0.22755054844784836
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
-      "x": 24,
-      "y": 17,
+      "x": 9,
+      "y": 23,
       "name": "n2",
       "description": "",
-      "bias": 0,
+      "inputsCount": 2,
+      "activationFunction": "sigmoid",
       "connectors": [
         {
-          "id": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
-          "backStatus": 0
+          "id": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50"
         },
         {
           "id": "2e59ee9b-546f-4800-90b7-a172cb6e0c02",
-          "direction": 133.59509870133553,
           "x": 0.3104424071998706,
           "y": 0.2757691485364001,
-          "backStatus": 0
+          "direction": 133.59509870133553
         },
         {
           "id": "3545343a-8694-4823-915a-79addb8bea2f"
         }
-      ],
-      "activationFunction": "relu"
+      ]
     },
     {
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39",
+      "bias": 0.35060270495203116,
       "weights": [
-        7128.141018291084,
-        -2.140926156686336
+        0.04441611000354367,
+        1.0476504950978551
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
-      "x": 34,
-      "y": 15,
+      "x": 22,
+      "y": 21,
       "name": "n3",
       "description": "",
-      "bias": 107.79999999999815,
+      "inputsCount": 2,
+      "activationFunction": "sigmoid",
       "connectors": [
         {
-          "id": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
-          "backStatus": 283045511833.46893
+          "id": "f1b037d5-700b-4fed-890a-c06de7e2e9b1"
         },
         {
           "id": "0e6ca12c-0e59-41c0-ac9f-5521ac7adc76",
-          "direction": 133.59509870133553,
           "x": 0.3104424071998706,
           "y": 0.2757691485364001,
-          "backStatus": 10.569370345131112
+          "direction": 133.59509870133553
         },
         {
           "id": "4ab38b41-0797-44c6-9573-786ad9e2b907"
         }
-      ],
-      "activationFunction": "relu"
+      ]
     },
     {
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f",
+      "bias": 0.23242845531188763,
       "weights": [
-        4.744366249990687
+        -0.6714141839707751,
+        0.2553588508627297
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
-      "x": 29,
-      "y": 16,
+      "x": 15,
+      "y": 23,
+      "name": "Perceptron - a928d",
+      "inputsCount": 2,
+      "activationFunction": "sigmoid",
       "connectors": [
         {
           "id": "11a6b2c7-46d3-462d-b1a3-11f0001c94a4"
         },
         {
           "id": "81c72e35-bfd9-4a42-8694-f021b5081636",
-          "y": 0.9999999999999999
+          "x": 0.3104424071998706,
+          "y": 0.2757691485364001,
+          "direction": 133.59509870133553
+        },
+        {
+          "id": "in-00"
         }
-      ],
-      "activationFunction": "relu"
+      ]
     },
     {
       "elementClass": "Perceptron",
       "url": "../actdia-nodes/ai/perceptron.js",
       "id": "50fd99ed-a374-4574-95cc-6189323fbe9e",
+      "bias": 0.17554469106064416,
       "weights": [
-        0.5996531367339033
+        0.05476791734427646,
+        -0.9876523186565905
       ],
       "fqcn": "../actdia-nodes/ai/perceptron.js/Perceptron",
-      "x": 29,
-      "y": 13,
+      "x": 15,
+      "y": 19,
+      "name": "Perceptron - 0fd99",
+      "inputsCount": 2,
+      "activationFunction": "sigmoid",
       "connectors": [
         {
           "id": "f5f2e374-b527-4506-bd30-816662b382e7"
         },
         {
           "id": "919cdd3b-7347-497d-8cdc-d6bd96673e61",
-          "y": 0.9999999999999999
+          "x": 0.3104424071998706,
+          "y": 0.2757691485364001,
+          "direction": 133.59509870133553
+        },
+        {
+          "id": "in-00"
         }
+      ]
+    },
+    {
+      "elementClass": "Oscillograph",
+      "url": "../../components/actdia-nodes/oscillograph.js",
+      "id": "60395bf4-1506-4d69-8f73-2be53c8c0cac",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 20,
+        "height": 6
+      },
+      "fqcn": "../../components/actdia-nodes/oscillograph.js/Oscillograph",
+      "x": 46,
+      "y": 30,
+      "name": "Oscillograph - 0395b",
+      "movingAverageWindow": 20,
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../../components/actdia-nodes/label_input.js",
+      "id": "a7e58f6a-a323-4628-86d2-f69f3afb7c49",
+      "label": "clk",
+      "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 4,
+      "name": "Label input - 7e58f",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../../components/actdia-nodes/label_input.js",
+      "id": "da9ccc47-d177-40b7-9082-5057d5395059",
+      "label": "i1",
+      "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
+      "x": 41,
+      "y": 8,
+      "name": "Label input - a9ccc",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../../components/actdia-nodes/label_input.js",
+      "id": "3f11747a-8d45-4d23-ba64-bce1e488fc1c",
+      "label": "i2",
+      "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
+      "x": 41,
+      "y": 9,
+      "name": "Label input - f1174",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../../components/actdia-nodes/label_input.js",
+      "id": "b5f32644-bd7b-4462-a57b-bd957b8d4909",
+      "label": "o",
+      "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
+      "x": 41,
+      "y": 10,
+      "name": "Label input - 5f326",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../../components/actdia-nodes/label_output.js",
+      "id": "24779a94-fae2-4b1d-8936-4de5bc99199e",
+      "label": "i1",
+      "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
+      "x": 1,
+      "y": 19,
+      "name": "Label output - 4779a",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../../components/actdia-nodes/label_output.js",
+      "id": "e7b3776a-e28f-40fd-bfb0-670ff6efb5bd",
+      "label": "i2",
+      "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
+      "x": 1,
+      "y": 25,
+      "name": "Label output - 7b377",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../../components/actdia-nodes/label_output.js",
+      "id": "2e36f106-3aaf-4565-a69a-1f79c560e842",
+      "label": "o",
+      "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
+      "x": 21,
+      "y": 30,
+      "name": "Label output - e36f1",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "MovingAverage",
+      "url": "../../components/actdia-nodes/moving_average.js",
+      "id": "4c3fc130-591e-4ae0-a720-cc251ca76e88",
+      "data": [
+        0.04170527003676781,
+        0.040253178218325116,
+        0.04022054022544113,
+        0.253063012754326
       ],
-      "activationFunction": "relu"
+      "windowWidth": 4,
+      "fqcn": "../../components/actdia-nodes/moving_average.js/MovingAverage",
+      "x": 40,
+      "y": 30,
+      "name": "Media móvil - c3fc1",
+      "connectors": [
+        {
+          "id": "in-00"
+        },
+        {
+          "id": "in-01"
+        },
+        {
+          "id": "out-00"
+        },
+        {
+          "id": "out-01"
+        }
+      ]
+    },
+    {
+      "elementClass": "PerceptronViewer",
+      "url": "../../components/actdia-nodes/ai/perceptron-viewer.js",
+      "id": "8fe6e9cf-191a-4cd4-b5e3-5c40c65a4457",
+      "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
+      "x": 12,
+      "y": 14,
+      "name": "Visor de perceptrón - fe6e9",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "PerceptronViewer",
+      "url": "../../components/actdia-nodes/ai/perceptron-viewer.js",
+      "id": "32337541-1a6f-459d-87d1-30442b1052aa",
+      "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
+      "x": 19,
+      "y": 14,
+      "name": "Visor de perceptrón - 23375",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "PerceptronViewer",
+      "url": "../../components/actdia-nodes/ai/perceptron-viewer.js",
+      "id": "67c4f4e4-7738-45f2-9db1-7a2485678e06",
+      "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
+      "x": 26,
+      "y": 17,
+      "name": "Visor de perceptrón - 7c4f4",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "PerceptronViewer",
+      "url": "../../components/actdia-nodes/ai/perceptron-viewer.js",
+      "id": "2e6777aa-00fb-418d-ae33-c9d7d237d7c6",
+      "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
+      "x": 12,
+      "y": 26,
+      "name": "Visor de perceptrón - e6777",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "PerceptronViewer",
+      "url": "../../components/actdia-nodes/ai/perceptron-viewer.js",
+      "id": "3d3acf4e-0c3f-4995-99be-57354b0b906d",
+      "fqcn": "../../components/actdia-nodes/ai/perceptron-viewer.js/PerceptronViewer",
+      "x": 19,
+      "y": 25,
+      "name": "Visor de perceptrón - d3acf",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
     },
     {
       "elementClass": "Viewer",
-      "url": "../actdia-nodes/viewer.js",
-      "id": "c7c66655-51ba-4b46-8292-6ee8ce3baff5",
-      "fqcn": "../actdia-nodes/viewer.js/Viewer",
+      "url": "../../components/actdia-nodes/viewer.js",
+      "id": "28a687cb-0e85-4339-bb51-adf86f39ba01",
+      "fqcn": "../../components/actdia-nodes/viewer.js/Viewer",
       "x": 39,
-      "y": 28,
+      "y": 16,
+      "name": "Viewer - 8a687",
       "connectors": [
         {
-          "id": "59d8ba5e-b68f-4fff-b115-4a3b85dac98f"
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelOutput",
+      "url": "../../components/actdia-nodes/label_output.js",
+      "id": "722b0a34-ce60-41d8-bd43-7eb0d7c05900",
+      "label": "o",
+      "fqcn": "../../components/actdia-nodes/label_output.js/LabelOutput",
+      "x": 33,
+      "y": 18,
+      "name": "Label output - 22b0a",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "Pushbutton",
+      "url": "../../components/actdia-nodes/pushbutton.js",
+      "id": "1c5714fd-bb9f-47cb-a294-3d82db74910b",
+      "fqcn": "../../components/actdia-nodes/pushbutton.js/Pushbutton",
+      "x": 7,
+      "y": 9,
+      "name": "Pushbutton - c5714",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "LabelInput",
+      "url": "../../components/actdia-nodes/label_input.js",
+      "id": "c8ad80e3-0e74-4708-b1c2-1db1c9c1ac6e",
+      "label": "clk",
+      "fqcn": "../../components/actdia-nodes/label_input.js/LabelInput",
+      "x": 9,
+      "y": 9,
+      "name": "Label input - 8ad80",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "Slider",
+      "url": "../../components/actdia-nodes/slider.js",
+      "id": "de62aa2f-5c5c-4bd0-baa4-04a386e26fa4",
+      "max": 100,
+      "fqcn": "../../components/actdia-nodes/slider.js/Slider",
+      "x": 4,
+      "y": 14,
+      "name": "Slider - e62aa",
+      "rotation": "270",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ],
+      "status": 8.362499999999983,
+      "function": "linear",
+      "size": 6,
+      "min": 0
+    },
+    {
+      "elementClass": "Viewer",
+      "url": "../../components/actdia-nodes/viewer.js",
+      "id": "a329eded-79c5-403a-bfd0-d90b03772ef9",
+      "box": {
+        "x": 0,
+        "y": 0.5,
+        "width": 3,
+        "height": 1
+      },
+      "fqcn": "../../components/actdia-nodes/viewer.js/Viewer",
+      "x": 35,
+      "y": 31,
+      "name": "Viewer - 329ed",
+      "width": 3,
+      "height": 1,
+      "connectors": [
+        {
+          "id": "in-00",
+          "y": 1
         }
       ]
     }
@@ -354,19 +688,6 @@
       },
       "to": {
         "connector": "cc49e2f6-737a-427e-b4eb-4efd57105171",
-        "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "59c44d74-e317-4884-bbc8-7012228faf40",
-      "from": {
-        "connector": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008",
-        "item": "c9ef873f-974e-45cb-9312-3539207b7156"
-      },
-      "to": {
-        "connector": "193d79a5-c38f-4370-b6a4-a036c86dba6d",
         "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
       }
     },
@@ -399,32 +720,6 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "983c8994-15f4-47a5-b155-b0d8c2ebeb9c",
-      "from": {
-        "connector": "ba662475-e313-4720-bbb5-f2fde515678f",
-        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
-      },
-      "to": {
-        "connector": "c7dd1ac3-e044-4644-956f-8e73824e1c2c",
-        "item": "3dc6283c-f782-496e-9057-17ac87003827"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "7842fd01-efb1-4baa-b5b0-0efd3e316c91",
-      "from": {
-        "connector": "9e1ae5c4-3277-490c-bd69-d2aafba082e0",
-        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
-      },
-      "to": {
-        "connector": "8d4d34b2-76ff-42a6-8577-ee88be1a75a3",
-        "item": "3dc6283c-f782-496e-9057-17ac87003827"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
       "id": "bb98c2f4-2b3e-4c17-822b-dbdeeb27b7ff",
       "from": {
         "connector": "d7749f7f-f1c7-4783-a7fb-153dee359f55",
@@ -438,19 +733,6 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "2e9bbcd7-89ee-4802-9ad5-74d68e32c0ea",
-      "from": {
-        "connector": "6da4cf94-477e-48fa-981a-29c622772628",
-        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
-      },
-      "to": {
-        "connector": "cdee408f-98ef-4070-ba5c-c7e3afc5a6ce",
-        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
       "id": "afcf8f98-31a8-41e1-b002-264c8c4e9837",
       "from": {
         "connector": "d7749f7f-f1c7-4783-a7fb-153dee359f55",
@@ -459,45 +741,6 @@
       "to": {
         "connector": "17f1aac6-c3a5-483f-a77c-9515050b0776",
         "item": "370e3ed8-9f44-4142-8f8c-2282d66d640f"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "a12b4c26-915a-472d-ad92-a5333ed0df04",
-      "from": {
-        "connector": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008",
-        "item": "c9ef873f-974e-45cb-9312-3539207b7156"
-      },
-      "to": {
-        "connector": "0b56c02d-db42-4981-886c-e7a17d8f4747",
-        "item": "370e3ed8-9f44-4142-8f8c-2282d66d640f"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "d1197439-9f59-49b0-b64e-91d955351677",
-      "from": {
-        "connector": "9e1ae5c4-3277-490c-bd69-d2aafba082e0",
-        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
-      },
-      "to": {
-        "connector": "2e59ee9b-546f-4800-90b7-a172cb6e0c02",
-        "item": "003254f2-dda4-4c17-9a83-174c79244318"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "6cf69d0b-38e7-4c32-9dcc-0010d70c1cc0",
-      "from": {
-        "connector": "ba662475-e313-4720-bbb5-f2fde515678f",
-        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
-      },
-      "to": {
-        "connector": "3545343a-8694-4823-915a-79addb8bea2f",
-        "item": "003254f2-dda4-4c17-9a83-174c79244318"
       }
     },
     {
@@ -555,32 +798,6 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "45d3bdbe-dd6d-4175-a195-df104ee0b97b",
-      "from": {
-        "connector": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
-        "item": "3dc6283c-f782-496e-9057-17ac87003827"
-      },
-      "to": {
-        "connector": "81c72e35-bfd9-4a42-8694-f021b5081636",
-        "item": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "a006a772-a796-4883-971e-90be3a023096",
-      "from": {
-        "connector": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
-        "item": "003254f2-dda4-4c17-9a83-174c79244318"
-      },
-      "to": {
-        "connector": "919cdd3b-7347-497d-8cdc-d6bd96673e61",
-        "item": "50fd99ed-a374-4574-95cc-6189323fbe9e"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
       "id": "793e1c0b-5e9b-4104-ab88-171dfaad21a2",
       "from": {
         "connector": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
@@ -594,10 +811,23 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "43201781-cc71-4b67-a0aa-da39fa5eea48",
+      "id": "5e4a42e1-190e-4574-ab1a-6c4bdf9c90c9",
       "from": {
         "connector": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
         "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "50fd99ed-a374-4574-95cc-6189323fbe9e"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "eade2e59-f159-4f2c-be3c-77dafc89780c",
+      "from": {
+        "connector": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
       },
       "to": {
         "connector": "81c72e35-bfd9-4a42-8694-f021b5081636",
@@ -607,14 +837,274 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "3740de5c-471b-4ff2-bcbb-3c79c6494339",
+      "id": "e7023233-1ce0-45ca-940d-549de6bf1bd3",
       "from": {
-        "connector": "59d8ba5e-b68f-4fff-b115-4a3b85dac98f",
-        "item": "c7c66655-51ba-4b46-8292-6ee8ce3baff5"
+        "connector": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
       },
       "to": {
-        "connector": "12188454-7119-4709-8935-c5fd0c668a55",
-        "item": "09326d6e-9f0f-4c50-8e7d-20d696d9b471"
+        "connector": "in-00",
+        "item": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "a23585fd-cf75-4c86-94c7-960bbdcc7659",
+      "from": {
+        "connector": "60aacf95-7b8d-4cc3-9f6d-4c38f34fa008",
+        "item": "c9ef873f-974e-45cb-9312-3539207b7156"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "a7e58f6a-a323-4628-86d2-f69f3afb7c49"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "65b01069-af89-40c0-be6a-7d4570df01e2",
+      "from": {
+        "connector": "9e1ae5c4-3277-490c-bd69-d2aafba082e0",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "da9ccc47-d177-40b7-9082-5057d5395059"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "46e704c4-6aa4-438a-a721-333caa990b52",
+      "from": {
+        "connector": "ba662475-e313-4720-bbb5-f2fde515678f",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "3f11747a-8d45-4d23-ba64-bce1e488fc1c"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "7985a471-1a90-430a-9500-ac4048d9ca60",
+      "from": {
+        "connector": "6da4cf94-477e-48fa-981a-29c622772628",
+        "item": "ee236563-cd1d-4202-8956-cca72aae7552"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "b5f32644-bd7b-4462-a57b-bd957b8d4909"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "cae07abb-40c5-4134-850e-b3deaa463c34",
+      "from": {
+        "connector": "out-00",
+        "item": "2e36f106-3aaf-4565-a69a-1f79c560e842"
+      },
+      "to": {
+        "connector": "cdee408f-98ef-4070-ba5c-c7e3afc5a6ce",
+        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "e248c1d2-5c87-4474-8d8a-130ebacaebb8",
+      "from": {
+        "connector": "out-00",
+        "item": "24779a94-fae2-4b1d-8936-4de5bc99199e"
+      },
+      "to": {
+        "connector": "8d4d34b2-76ff-42a6-8577-ee88be1a75a3",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "90ff5d43-9db4-4ee6-a982-3b815b1fb821",
+      "from": {
+        "connector": "out-00",
+        "item": "24779a94-fae2-4b1d-8936-4de5bc99199e"
+      },
+      "to": {
+        "connector": "2e59ee9b-546f-4800-90b7-a172cb6e0c02",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "96b9654d-5ff4-466c-9a0a-bdcba259af85",
+      "from": {
+        "connector": "out-00",
+        "item": "e7b3776a-e28f-40fd-bfb0-670ff6efb5bd"
+      },
+      "to": {
+        "connector": "c7dd1ac3-e044-4644-956f-8e73824e1c2c",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "b10d33c1-c2fb-4da3-afe3-8d5b9e4445f8",
+      "from": {
+        "connector": "out-00",
+        "item": "e7b3776a-e28f-40fd-bfb0-670ff6efb5bd"
+      },
+      "to": {
+        "connector": "3545343a-8694-4823-915a-79addb8bea2f",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "8a0b6c13-6b31-4802-8073-7b101c69df48",
+      "from": {
+        "connector": "d7749f7f-f1c7-4783-a7fb-153dee359f55",
+        "item": "ec354e1e-83c9-4968-8b53-8c14cfb11f47"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "4c3fc130-591e-4ae0-a720-cc251ca76e88"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "33a13639-4db6-4602-9502-a65f23894195",
+      "from": {
+        "connector": "aff913d6-59eb-40c7-aa98-b4c65c3ed6e3",
+        "item": "3dc6283c-f782-496e-9057-17ac87003827"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "8fe6e9cf-191a-4cd4-b5e3-5c40c65a4457"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "5abe5f1b-ba51-4d17-85dd-580789d02c9a",
+      "from": {
+        "connector": "f5f2e374-b527-4506-bd30-816662b382e7",
+        "item": "50fd99ed-a374-4574-95cc-6189323fbe9e"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "32337541-1a6f-459d-87d1-30442b1052aa"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f4e6553e-1a9b-4f40-9a8f-79676955c7d3",
+      "from": {
+        "connector": "f1b037d5-700b-4fed-890a-c06de7e2e9b1",
+        "item": "31d73d3f-1a64-4efb-ac6e-eecd3374fb39"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "67c4f4e4-7738-45f2-9db1-7a2485678e06"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "a06c8be2-62be-4a28-a673-b3919e60b8fd",
+      "from": {
+        "connector": "b6ca8609-e1d4-4f62-9eb1-71657c74ce50",
+        "item": "003254f2-dda4-4c17-9a83-174c79244318"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "2e6777aa-00fb-418d-ae33-c9d7d237d7c6"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "fbcb0ccc-4b4c-425e-88cf-77efa2ba5f0b",
+      "from": {
+        "connector": "11a6b2c7-46d3-462d-b1a3-11f0001c94a4",
+        "item": "4a928d53-7cf4-4877-8d59-c36b58d3eb5f"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "3d3acf4e-0c3f-4995-99be-57354b0b906d"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "f26b1a5a-dd72-4a91-96ca-6577382b2c69",
+      "from": {
+        "connector": "out-01",
+        "item": "4c3fc130-591e-4ae0-a720-cc251ca76e88"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "60395bf4-1506-4d69-8f73-2be53c8c0cac"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9927a77a-89d4-493d-bd22-5582eeced482",
+      "from": {
+        "connector": "out-00",
+        "item": "722b0a34-ce60-41d8-bd43-7eb0d7c05900"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "28a687cb-0e85-4339-bb51-adf86f39ba01"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "c0b63405-7f2b-4f95-a430-39a65e4d6fda",
+      "from": {
+        "connector": "out-00",
+        "item": "1c5714fd-bb9f-47cb-a294-3d82db74910b"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "c8ad80e3-0e74-4708-b1c2-1db1c9c1ac6e"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "0d713422-b5c4-49e0-80f7-ae01abfd2311",
+      "from": {
+        "connector": "out-00",
+        "item": "de62aa2f-5c5c-4bd0-baa4-04a386e26fa4"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "c9ef873f-974e-45cb-9312-3539207b7156"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "7d26a243-2a3c-4c03-977b-d0d0b966a293",
+      "from": {
+        "connector": "out-00",
+        "item": "370e3ed8-9f44-4142-8f8c-2282d66d640f"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "a329eded-79c5-403a-bfd0-d90b03772ef9"
       }
     }
   ]
