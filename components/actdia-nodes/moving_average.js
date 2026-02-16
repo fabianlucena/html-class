@@ -1,4 +1,79 @@
-export default function create({ Node }) {
+export default function create({ Node, _ }) {
+  const windowFunctions = {
+    rect: {
+      func: (n) => Array(n).fill(1),
+      name: _('Rectangular'),
+      description: _('Rectangular window: w_i = 1 for all i'),
+    },
+    bartlett: {
+      func: (n) => {
+        const w = [];
+        for (let i = 0; i < n; i++) {
+          w.push(1 - Math.abs(i - (n - 1) / 2) / ((n - 1) / 2));
+        }
+        return w;
+      },
+      name: _('Bartlett'),
+      description: _('Bartlett window: w_i = 1 - |i - (n-1)/2| / ((n-1)/2)'),
+    },
+    hamming: {
+      func: (n) => {
+        const w = [];
+        const alpha = 0.54;
+        const beta = 0.46;
+        for (let i = 0; i < n; i++) {
+          w.push(alpha - beta * Math.cos(2 * Math.PI * i / (n - 1)));
+        }
+        return w;
+      },
+      name: _('Hamming'),
+      description: _('Hamming window: w_i = α - β cos(2πi/(n-1))'),
+    },
+    blackman: {
+      func: (n) => {
+        const w = [];
+        const alpha = 0.16;
+        const beta = 0.5;
+        const gamma = 0.36;
+        for (let i = 0; i < n; i++) {
+          w.push(alpha - beta * Math.cos(2 * Math.PI * i / (n - 1)) + gamma * Math.cos(4 * Math.PI * i / (n - 1)));
+        }
+        return w;
+      },
+      name: _('Blackman'),
+      description: _('Blackman window: w_i = α - β cos(2πi/(n-1)) + γ cos(4πi/(n-1))'),
+    },
+    blackmanHarris3: {
+      func: (n) => {
+        const w = [];
+        const a0 = 0.42323;
+        const a1 = 0.49755;
+        const a2 = 0.07922;
+        for (let i = 0; i < n; i++) {
+          w.push(a0 - a1 * Math.cos(2 * Math.PI * i / (n - 1)) + a2 * Math.cos(4 * Math.PI * i / (n - 1)));
+        }
+        return w;
+      },
+      name: _('Blackman-Harris 3-term'),
+      description: _('Blackman-Harris 3-term window: w_i = a0 - a1 cos(2πi/(n-1)) + a2 cos(4πi/(n-1))'),
+    },
+    blackmanHarris: {
+      func: (n) => {
+        const w = [];
+        const a0 = 0.35875;
+        const a1 = 0.48829;
+        const a2 = 0.14128;
+        const a3 = 0.01168;
+        for (let i = 0; i < n; i++) {
+          w.push(a0 - a1 * Math.cos(2 * Math.PI * i / (n - 1)) + a2 * Math.cos(4 * Math.PI * i / (n - 1)) - a3 * Math.cos(6 * Math.PI * i / (n - 1)));
+        }
+        return w;
+      },
+      name: _('Blackman-Harris'),
+      description: _('Blackman-Harris window: w_i = a0 - a1 cos(2πi/(n-1)) + a2 cos(4πi/(n-1)) - a3 cos(6πi/(n-1))'),
+    },
+  };
+
   return class MovingAverage extends Node {
     static label = 'Moving average';
 
@@ -39,14 +114,44 @@ export default function create({ Node }) {
         type: 'number',
         min: 1,
         step: 1,
-      }
+      },
+      {
+        name: 'windowFunction',
+        type: 'select',
+        _label: 'Window function',
+        options: Object.entries(windowFunctions)
+          .map(([key, info]) => ({
+            value: key,
+            label: info.name,
+            title: info.description,
+          })),
+      },
     ];
 
-    data = [];
+    #windowFunction = 'bartlett';
+    #windowFunc = windowFunctions.bartlett.func;
+    set windowFunction(funcName) {
+      const funcData = windowFunctions[funcName];
+      if (funcData) {
+        this.#windowFunction = funcName;
+        this.#windowFunc = funcData.func;
+        this.#window = [];
+      }
+    }
+
+    get windowFunction() {
+      return this.#windowFunction;
+    }
+
+    get windowFunc() {
+      return this.#windowFunc;
+    }
+
     windowWidth = 10;
+    #data = [];
+    #window = [];
     #ma = null;
     #valueMa = null;
-    #sum = 0;
 
     init() {
       super.init(...arguments);
@@ -60,20 +165,28 @@ export default function create({ Node }) {
     updateStatusSync() {
       if (!this.inputs.length)
         return;
-      
-      while (this.data.length >= this.windowWidth) {
-        const removedValue = this.data.shift();
-        this.#sum -= removedValue;
+
+      const value = this.inputs[0].status;
+      this.#data.push(value);
+      while (this.#data.length > this.windowWidth) {
+        this.#data.shift();
       }
 
-      const newValue = this.inputs[0].status;
-      this.#sum += newValue;
-      this.data.push(newValue);
+      const n = this.#data.length;
+      if (this.#window.length !== n) {
+        /*for (let i = 0, v = 1; i < n; i++, v++) {
+          this.#window[i] = v / n;
+        }*/
 
-      const ma = this.#sum / this.data.length;
+        this.#window = this.#windowFunc(n);
+        console.log('Window updated:', this.#window);
+      }
+
+      const sum = this.#data.reduce((a, b, i) => a + b * this.#window[i], 0);
+      const ma = sum / n;
 
       this.#ma.setStatus(ma);
-      this.#valueMa.setStatus([this.inputs[0].status, ma]);
+      this.#valueMa.setStatus([value, ma]);
     }
   };
 }
