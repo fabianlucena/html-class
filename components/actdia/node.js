@@ -57,7 +57,41 @@ export default class Node extends Item {
     });
   };
 
-  nodeFields = [
+  canMove = true;
+  canChangeWidth = false;
+  canChangeHeight = false;
+  canRotate = true;
+  canReflect = true;
+  canChangeFill = true;
+  canChengeStroke = true;
+  commonFields = [
+    {
+      name: 'class',
+      _label: 'Class',
+      disabled: true,
+      get: () => this.constructor.name,
+    },
+    {
+      name: 'id',
+      _label: 'ID',
+      disabled: true,
+    },
+    {
+      name: 'name',
+      _label: 'Name',
+    },
+    {
+      name: 'description',
+      _label: 'Description',
+    },
+    {
+      name: 'coords',
+      _label: 'Coordinates',
+      type: 'text',
+      get: () => this.getCoords(),
+      set: (value) => this.setCoords(value),
+      condition: () => this.canMove,
+    },
     {
       name: 'width',
       type: 'number',
@@ -71,6 +105,58 @@ export default class Node extends Item {
       _label: 'Height',
       min: 1,
       condition: () => this.canChangeHeight,
+    },
+    {
+      name: 'rotation',
+      _label: 'Rotation',
+      type: 'select',
+      options: [
+        { value: 0, label: '0°' },
+        { value: 90, label: '90°' },
+        { value: 180, label: '180°' },
+        { value: 270, label: '270°' },
+      ],
+      condition: () => this.canRotate,
+    },
+    {
+      name: 'reflection',
+      _label: 'Reflection',
+      type: 'select',
+      options: [
+        { value: '[ 1,  1]', _label: 'None' },
+        { value: '[ 1, -1]', _label: 'Horizontal' },
+        { value: '[-1,  1]', _label: 'Vertical' },
+        { value: '[-1, -1]', _label: 'Both' },
+      ],
+      condition: () => this.canReflect,
+    },
+    {
+      name: 'style.fill',
+      type: 'color',
+      _label: 'Fill color',
+      nullable: true,
+      condition: () => this.canChangeFill,
+    },
+    {
+      name: 'style.stroke',
+      type: 'color',
+      _label: 'Stroke color',
+      nullable: true,
+      condition: () => this.canChengeStroke,
+    },
+    {
+      name: 'style.strokeWidth',
+      type: 'number',
+      _label: 'Line width',
+      nullable: true,
+      condition: () => this.canChengeStroke,
+    },
+    {
+      name: 'style.dash',
+      type: 'text',
+      _label: 'Dash',
+      nullable: true,
+      condition: () => this.canChengeStroke,
     },
   ];
 
@@ -350,7 +436,7 @@ export default class Node extends Item {
 
   getFields() {
     return [
-      ...this.nodeFields,
+      ...this.commonFields,
       ...this.fields || [],
     ].filter(field => !field.condition || field.condition());
   }
