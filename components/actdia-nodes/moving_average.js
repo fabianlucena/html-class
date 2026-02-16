@@ -7,6 +7,12 @@ export default function create({ Node, _ }) {
     },
     bartlett: {
       func: (n) => {
+        if (n === 1)
+          return [1];
+
+        if (n === 2)
+          return [0.5, 0.5];
+
         const w = [];
         for (let i = 0; i < n; i++) {
           w.push(1 - Math.abs(i - (n - 1) / 2) / ((n - 1) / 2));
@@ -174,16 +180,12 @@ export default function create({ Node, _ }) {
 
       const n = this.#data.length;
       if (this.#window.length !== n) {
-        /*for (let i = 0, v = 1; i < n; i++, v++) {
-          this.#window[i] = v / n;
-        }*/
-
-        this.#window = this.#windowFunc(n);
-        console.log('Window updated:', this.#window);
+        const window = this.#windowFunc(n);
+        const sum = window.reduce((a, b) => a + b, 0);
+        this.#window = window.map(w => w / sum);
       }
 
-      const sum = this.#data.reduce((a, b, i) => a + b * this.#window[i], 0);
-      const ma = sum / n;
+      const ma = this.#data.reduce((a, b, i) => a + b * this.#window[i], 0);
 
       this.#ma.setStatus(ma);
       this.#valueMa.setStatus([value, ma]);
