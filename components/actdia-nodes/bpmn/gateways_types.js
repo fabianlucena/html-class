@@ -27,12 +27,12 @@ export function getGatewaysTypes(_) {
     },
     {
       name: 'event-based',
-      label: _('Event-Based (Exclusive)'),
+      label: _('Event-based (exclusive)'),
       sprite: 'bpmn-gateway-event-based',
     },
     {
       name: 'event-parallel',
-      label: _('Event-Based (Parallel)'),
+      label: _('Event-based (parallel)'),
       sprite: 'bpmn-gateway-event-parallel',
     },
   ];

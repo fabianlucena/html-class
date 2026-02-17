@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <defs>
+    <symbol id="bpmn-task-none" viewBox="0 0 1 1">
+    </symbol>
+
+    <symbol id="bpmn-task-user" viewBox="0 0 1 1">
+      <circle cx="0.25" cy="0.45" r="0.10"
+              fill="none" stroke-width="0.04"/>
+      <path d="M0.15 0.62 Q0.25 0.52 0.35 0.62"
+            fill="none" stroke-width="0.04"/>
+    </symbol>
+
+    <symbol id="bpmn-task-manual" viewBox="0 0 1 1">
+      <path d="M0.18 0.55 L0.3 0.35 L0.4 0.55 L0.5 0.35 L0.6 0.55"
+            fill="none" stroke-width="0.05"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="bpmn-task-service" viewBox="0 0 1 1">
+      <circle cx="0.25" cy="0.5" r="0.12"
+              fill="none" stroke-width="0.04"/>
+      <line x1="0.25" y1="0.38" x2="0.25" y2="0.62"
+            stroke-width="0.04"/>
+      <line x1="0.13" y1="0.5" x2="0.37" y2="0.5"
+            stroke-width="0.04"/>
+    </symbol>
+
+    <symbol id="bpmn-task-script" viewBox="0 0 1 1">
+      <path d="M0.18 0.38 L0.45 0.38
+              M0.18 0.48 L0.45 0.48
+              M0.18 0.58 L0.45 0.58"
+            stroke-width="0.04"/>
+    </symbol>
+
+    <symbol id="bpmn-task-rule" viewBox="0 0 1 1">
+      <rect x="0.15" y="0.35" width="0.3" height="0.3"
+            fill="none" stroke-width="0.04"/>
+      <line x1="0.15" y1="0.45" x2="0.45" y2="0.45"
+            stroke-width="0.03"/>
+      <line x1="0.15" y1="0.55" x2="0.45" y2="0.55"
+            stroke-width="0.03"/>
+    </symbol>
+
+    <symbol id="bpmn-task-send" viewBox="0 0 1 1">
+      <rect x="0.15" y="0.38" width="0.3" height="0.24"
+            fill="none" stroke-width="0.04"/>
+      <polyline points="0.15,0.38 0.3,0.5 0.45,0.38"
+                fill="none" stroke-width="0.04"/>
+    </symbol>
+
+    <symbol id="bpmn-task-receive" viewBox="0 0 1 1">
+      <rect x="0.15" y="0.38" width="0.3" height="0.24"
+            fill="none" stroke-width="0.04"/>
+      <polyline points="0.15,0.62 0.3,0.5 0.45,0.62"
+                fill="none" stroke-width="0.04"/>
+    </symbol>
+
+    <symbol id="bpmn-call-activity" viewBox="0 0 1 1">
+      <rect x="0.05" y="0.15" width="0.9" height="0.7"
+            rx="0.15" ry="0.15"
+            fill="none" stroke-width="0.10"/>
+    </symbol>
+
+    <symbol id="bpmn-subprocess-collapsed" viewBox="0 0 1 1">
+      <rect x="0.05" y="0.15" width="0.9" height="0.7"
+            rx="0.15" ry="0.15"
+            fill="none" stroke-width="0.05"/>
+      <line x1="0.35" y1="0.5" x2="0.65" y2="0.5"
+            stroke-width="0.06"/>
+      <line x1="0.5" y1="0.35" x2="0.5" y2="0.65"
+            stroke-width="0.06"/>
+    </symbol>
+
+    <symbol id="bpmn-subprocess-expanded" viewBox="0 0 1 1">
+      <rect x="0.05" y="0.15" width="0.9" height="0.7"
+            rx="0.15" ry="0.15"
+            fill="none" stroke-width="0.05"/>
+    </symbol>
+
+    <symbol id="bpmn-loop" viewBox="0 0 1 1">
+      <path d="M0.65 0.45 A0.15 0.15 0 1 1 0.5 0.65"
+            fill="none" stroke-width="0.05"/>
+      <polyline points="0.72,0.38 0.62,0.45 0.72,0.52"
+                fill="none" stroke-width="0.05"/>
+    </symbol>
+
+    <symbol id="bpmn-mi-parallel" viewBox="0 0 1 1">
+      <line x1="0.15" y1="0.35" x2="0.45" y2="0.35"
+            stroke-width="0.05"/>
+      <line x1="0.15" y1="0.5" x2="0.45" y2="0.5"
+            stroke-width="0.05"/>
+      <line x1="0.15" y1="0.65" x2="0.45" y2="0.65"
+            stroke-width="0.05"/>
+    </symbol>
+
+    <symbol id="bpmn-mi-sequential" viewBox="0 0 1 1">
+      <line x1="0.25" y1="0.35" x2="0.25" y2="0.65"
+            stroke-width="0.05"/>
+      <line x1="0.35" y1="0.35" x2="0.35" y2="0.65"
+            stroke-width="0.05"/>
+      <line x1="0.45" y1="0.35" x2="0.45" y2="0.65"
+            stroke-width="0.05"/>
+    </symbol>
+  </defs>
+</svg>

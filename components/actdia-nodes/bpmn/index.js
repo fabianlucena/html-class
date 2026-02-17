@@ -6,6 +6,7 @@ export default {
     'intermediate_event.js',
     'end_event.js',
     'gateway.js',
+    'activity.js',
   ],
   examples: [
   ],
