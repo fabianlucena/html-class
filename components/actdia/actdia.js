@@ -1062,6 +1062,19 @@ export default class ActDia {
         data = this.getTextSVGData(shape, item, options);
         break;
 
+      case 'use':
+        data = {
+          tag: 'use',
+          attributes: {
+            href: shape.href,
+            x: shape.x || 0,
+            y: shape.y || 0,
+            width: shape.width || 4,
+            height: shape.height || 4,
+          },
+        };
+        break;
+
       default:
         if (shape.shape !== 'g' && (shape.shape || !shape.shapes)) {
           this.pushNotification(_('Unknown shape: %s in item %s.', shape.shape, item.getElementClass()), 'error');
