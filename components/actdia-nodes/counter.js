@@ -34,33 +34,7 @@ export default function create({ Node }) {
       { name: 'clk', type: 'in', x: 0, y: 1, direction: 'left', extends: 'small' },
     ];
 
-    #clk = null;
-    #clkStatus = 0;
-
-    init() {
-      super.init(...arguments);
-
-      if (this.connectors) {
-        this.#clk = this.connectors.find(c => c.name === 'clk');
-      }
-    }
-
-    updateStatus() {
-      if (!this.#clk)
-        return;
-
-      if (this.#clk.status <= 0.5) {
-        if (this.#clkStatus !== 0)
-          this.#clkStatus = 0;
-
-        return;
-      }
-
-      if (this.#clkStatus !== 1)
-        this.#clkStatus = 1;
-      else
-        return;
-
+    updateStatusSync() {
       this.status = (this.status || 0) + 1;
       this.shape.shapes[1].text = '' + this.status;
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
