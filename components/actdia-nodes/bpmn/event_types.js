@@ -3,7 +3,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'none',
       label: _('None'),
-      sprite: 'bpmn-none',
+      sprite: 'bpmn-event-none',
       forStart: true,
       forIntermediate: true,
       forEnd: true,
@@ -11,7 +11,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'message',
       label: _('Message'),
-      sprite: 'bpmn-message',
+      sprite: 'bpmn-event-message',
       forStart: true,
       forIntermediate: true,
       forEnd: true,
@@ -19,7 +19,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'timer',
       label: _('Timer'),
-      sprite: 'bpmn-timer',
+      sprite: 'bpmn-event-timer',
       forStart: true,
       forIntermediate: true,
       forEnd: false,
@@ -27,7 +27,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'signal',
       label: _('Signal'),
-      sprite: 'bpmn-signal',
+      sprite: 'bpmn-event-signal',
       forStart: true,
       forIntermediate: true,
       forEnd: true,
@@ -35,7 +35,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'conditional',
       label: _('Conditional'),
-      sprite: 'bpmn-conditional',
+      sprite: 'bpmn-event-conditional',
       forStart: true,
       forIntermediate: true,
       forEnd: false,
@@ -43,7 +43,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'error',
       label: _('Error'),
-      sprite: 'bpmn-error',
+      sprite: 'bpmn-event-error',
       forStart: false,
       forIntermediate: false,
       forEnd: true,
@@ -51,7 +51,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'cancel',
       label: _('Cancel'),
-      sprite: 'bpmn-cancel',
+      sprite: 'bpmn-event-cancel',
       forStart: false,
       forIntermediate: false,
       forEnd: true,
@@ -59,7 +59,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'compensation',
       label: _('Compensation'),
-      sprite: 'bpmn-compensation',
+      sprite: 'bpmn-event-compensation',
       forStart: false,
       forIntermediate: true,
       forEnd: true,
@@ -67,7 +67,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'link',
       label: _('Link'),
-      sprite: 'bpmn-link',
+      sprite: 'bpmn-event-link',
       forStart: false,
       forIntermediate: true,
       forEnd: false,
@@ -75,7 +75,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'multiple',
       label: _('Multiple'),
-      sprite: 'bpmn-multiple',
+      sprite: 'bpmn-event-multiple',
       forStart: true,
       forIntermediate: true,
       forEnd: true,
@@ -83,7 +83,7 @@ export function getEventTypes(_, { forStart = false, forIntermediate = false, fo
     {
       name: 'parallel',
       label: _('Parallel'),
-      sprite: 'bpmn-parallel',
+      sprite: 'bpmn-event-parallel',
       forStart: true,
       forIntermediate: true,
       forEnd: false,

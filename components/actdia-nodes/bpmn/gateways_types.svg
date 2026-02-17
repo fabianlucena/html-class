@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <defs>
+    <symbol id="bpmn-event-none" viewBox="0 0 1 1">
+    </symbol>
+    
+    <symbol id="bpmn-gateway-xor" viewBox="0 0 1 1">
+      <path d="M0.32 0.32 L0.68 0.68 M0.68 0.32 L0.32 0.68"
+            stroke-width="0.08" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="bpmn-gateway-parallel" viewBox="0 0 1 1">
+      <line x1="0.3" y1="0.5" x2="0.7" y2="0.5"
+            stroke-width="0.08"/>
+      <line x1="0.5" y1="0.3" x2="0.5" y2="0.7"
+            stroke-width="0.08"/>
+    </symbol>
+
+    <symbol id="bpmn-gateway-inclusive" viewBox="0 0 1 1">
+      <circle cx="0.5" cy="0.5" r="0.22"
+              fill="none" stroke-width="0.08"/>
+    </symbol>
+
+    <symbol id="bpmn-gateway-complex" viewBox="0 0 1 1">
+      <use href="#bpmn-gateway-base"/>
+      <path d="M0.5 0.28 L0.62 0.38 L0.58 0.52 L0.7 0.62 L0.5 0.72 
+              L0.3 0.62 L0.42 0.52 L0.38 0.38 Z"
+            fill="none" stroke-width="0.05"/>
+    </symbol>
+
+    <symbol id="bpmn-gateway-event-based" viewBox="0 0 1 1">
+      <polygon points="0.5,0.28 0.68,0.42 0.62,0.65 0.38,0.65 0.32,0.42"
+              fill="none" stroke-width="0.05"/>
+      <circle cx="0.5" cy="0.5" r="0.12"
+              fill="none" stroke-width="0.05"/>
+    </symbol>
+
+    <symbol id="bpmn-gateway-event-parallel" viewBox="0 0 1 1">
+      <polygon points="0.5,0.28 0.68,0.42 0.62,0.65 0.38,0.65 0.32,0.42"
+              fill="none" stroke-width="0.05"/>
+      <line x1="0.38" y1="0.5" x2="0.62" y2="0.5"
+            stroke-width="0.06"/>
+      <line x1="0.5" y1="0.38" x2="0.5" y2="0.62"
+            stroke-width="0.06"/>
+    </symbol>
+  </defs>
+</svg>

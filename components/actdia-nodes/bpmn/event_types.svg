@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <defs>
-    <symbol id="bpmn-none" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-none" viewBox="0 0 1 1">
     </symbol>
 
-    <symbol id="bpmn-message" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-message" viewBox="0 0 1 1">
       <rect x="0.25" y="0.35" width="0.5" height="0.3"
             fill="none" stroke-width="0.05"/>
       <polyline points="0.25,0.35 0.5,0.52 0.75,0.35"
                 fill="none" stroke-width="0.05"/>
     </symbol>
 
-    <symbol id="bpmn-timer" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-timer" viewBox="0 0 1 1">
       <circle cx="0.5" cy="0.5" r="0.28"
               fill="none" stroke-width="0.05"/>
       <line x1="0.5" y1="0.5" x2="0.5" y2="0.35"
@@ -19,12 +19,12 @@
             stroke-width="0.05" stroke-linecap="round"/>
     </symbol>
 
-    <symbol id="bpmn-signal" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-signal" viewBox="0 0 1 1">
       <polygon points="0.5,0.28 0.72,0.65 0.28,0.65"
               fill="none" stroke-width="0.05"/>
     </symbol>
 
-    <symbol id="bpmn-conditional" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-conditional" viewBox="0 0 1 1">
       <polygon points="0.5,0.28 0.72,0.5 0.5,0.72 0.28,0.5"
               fill="none" stroke-width="0.05"/>
       <rect x="0.38" y="0.42" width="0.24" height="0.16"
@@ -33,34 +33,34 @@
             stroke-width="0.03"/>
     </symbol>
 
-    <symbol id="bpmn-error" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-error" viewBox="0 0 1 1">
       <path d="M0.32 0.32 L0.68 0.68 M0.68 0.32 L0.32 0.68"
             stroke-width="0.08" stroke-linecap="round"/>
     </symbol>
 
-    <symbol id="bpmn-cancel" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-cancel" viewBox="0 0 1 1">
       <circle cx="0.5" cy="0.5" r="0.22"
               fill="none" stroke-width="0.08"/>
     </symbol>
 
-    <symbol id="bpmn-compensation" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-compensation" viewBox="0 0 1 1">
       <polygon points="0.45,0.35 0.3,0.5 0.45,0.65"
               fill="none" stroke-width="0.05"/>
       <polygon points="0.7,0.35 0.55,0.5 0.7,0.65"
               fill="none" stroke-width="0.05"/>
     </symbol>
 
-    <symbol id="bpmn-link" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-link" viewBox="0 0 1 1">
       <polygon points="0.35,0.3 0.7,0.5 0.35,0.7"
               fill="none" stroke-width="0.05"/>
     </symbol>
 
-    <symbol id="bpmn-multiple" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-multiple" viewBox="0 0 1 1">
       <circle cx="0.5" cy="0.5" r="0.28"
               fill="none" stroke-width="0.05" stroke-dasharray="0.05 0.05"/>
     </symbol>
 
-    <symbol id="bpmn-parallel" viewBox="0 0 1 1">
+    <symbol id="bpmn-event-parallel" viewBox="0 0 1 1">
       <line x1="0.35" y1="0.5" x2="0.65" y2="0.5"
             stroke-width="0.08"/>
       <line x1="0.5" y1="0.35" x2="0.5" y2="0.65"
