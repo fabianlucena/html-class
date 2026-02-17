@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">
+  <rect
+    fill="#666"
+    stroke="#333"
+    stroke-width="0.02"
+    x="0.3"
+    y="0.01"
+    width="0.7"
+    height="0.8"
+    rx="0"
+    ry="0"
+  >
+  </rect>
+  <rect
+    fill="#444"
+    stroke="#666"
+    stroke-width="0.02"
+    x="0.1"
+    y="0.19"
+    width="0.7"
+    height="0.8"
+    rx="0"
+    ry="0"
+  >
+  </rect>
+  <text
+    x="1"
+    y="1"
+    fill="#fff"
+    stroke="none"
+    font-size="0.3"
+    style="fill: #fff; text-anchor: end; dominant-baseline: text-after-edge;"
+  >
+    SVG
+  </text>
+</svg>

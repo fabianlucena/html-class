@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">
+  <rect x="0.1" y="0.3" width="0.7" height="0.6" rx="0" ry="0">
+  </rect>
+  <path
+    class="bright"
+    transform="scale(0.5, 0.5) translate(1, 0)"
+    d="M 0.5 0 L 0.612256 0.345492 L 0.975528 0.345492 L 0.681636 0.559016 L 0.793893 0.904508 L 0.5 0.690983 L 0.206107 0.904508 L 0.318364 0.559016 L 0.024472 0.345492 L 0.387744 0.345492 Z">
+  </path>
+</svg>

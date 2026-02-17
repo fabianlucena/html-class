@@ -13,8 +13,8 @@
   justify-content: center;
   cursor: pointer;
   padding: .3em;
-  fill: #8a8a8a;
-  stroke: #dbdbdb;
+  fill: #626262;
+  stroke: #e7e7e7;
   stroke-width: .003em;
 }
 
@@ -23,6 +23,10 @@
 }
 
 .actdia-tool-button.changed .star {
+  fill: #dbdbdb;
+}
+
+.actdia-tool-button .bright {
   fill: #dbdbdb;
 }
 

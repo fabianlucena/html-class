@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1.1 1.1">
+  <line x1="0.2" y1="0.2" x2="0.8" y2="0.5">
+  </line>
+  <line x1="0.2" y1="0.8" x2="0.8" y2="0.5">
+  </line>
+  <circle cx="0.2" cy="0.2" r="0.12">
+  </circle>
+  <circle cx="0.2" cy="0.8" r="0.12">
+  </circle>
+  <circle cx="0.8" cy="0.5" r="0.12">
+  </circle>
+</svg>
