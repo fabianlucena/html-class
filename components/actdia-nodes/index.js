@@ -21,8 +21,9 @@ export default {
     'script.js',
   ],
   categories: [
-    { url: 'electronic', _label: 'Electronic' },
     { url: 'uml', _label: 'UML' },
+    { url: 'bpmn', _label: 'BPMN' },
+    { url: 'electronic', _label: 'Electronic' },
     { url: 'internet', _label: 'Internet' },
     { url: 'ai', _label: 'AI' },
   ],
