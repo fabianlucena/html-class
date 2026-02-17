@@ -34,10 +34,10 @@ export default function create({ Node, _ }) {
     };
 
     connectors = [
-      { name: 'i',  type: 'in',  x: 0, y: 2, direction: 'left',  extends: 'small' },
-      { name: 'o0', type: 'out', x: 4, y: 2, direction: 'right', extends: 'small' },
-      { name: 'o1', type: 'out', x: 2, y: 4, direction: 'down',  extends: 'small' },
-      { name: 'o2', type: 'out', x: 2, y: 0, direction: 'up',    extends: 'small' }
+      { name: 'io0', type: 'io', x: 0, y: 2, direction: 'left',  extends: 'small', ortho: true },
+      { name: 'io1', type: 'io', x: 4, y: 2, direction: 'right', extends: 'small', ortho: true },
+      { name: 'io2', type: 'io', x: 2, y: 4, direction: 'down',  extends: 'small', ortho: true },
+      { name: 'io3', type: 'io', x: 2, y: 0, direction: 'up',    extends: 'small', ortho: true }
     ];
 
     fields = [
