@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   actdia.onPushNotification = pushNotification;
 
-  actdiaTools = new ActDiaTools({ container, actdia });
+  actdiaTools = new ActDiaTools({ actdia });
   actdiaTools.onSave =  () => {
     lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
     actdiaTools.setChanged(false);

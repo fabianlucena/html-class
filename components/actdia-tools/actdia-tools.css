@@ -1,3 +1,94 @@
 .print .actdia-tools {
   display: none;
 }
+
+.actdia-tool-button {
+  width: 1.6em;
+  height: 1.6em;
+  margin: 0;
+  border: .15em solid transparent;
+  border-radius: .2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: .3em;
+  fill: #8a8a8a;
+  stroke: #dbdbdb;
+  stroke-width: .003em;
+}
+
+.actdia-tool-button[data-name="menu"] {
+  position: fixed;
+  top: .1em;
+  left: .2em;
+  border: .1em solid #464646;
+  background-color: #2e2e2e;
+  border-radius: .1em;
+  width: 2.4em;
+  height: 2.4em;
+  z-index: 1;
+}
+
+.actdia-tools {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: .1em solid #979797;
+  background-color: #2e2e2e;
+  border-top: none;
+}
+
+.actdia-tools.hidden {
+  display: none;
+}
+
+.actdia-tools-category-labels {
+  display: flex;
+  flex-direction: row;
+  padding-left: 3.5em;
+  color: #b9b9b9;
+}
+
+.actdia-tools-category-label {
+  border: .1em solid #979797;
+  border-bottom: none;
+  padding: .1em .8em;
+  cursor: pointer;
+}
+
+.actdia-tools-category-label:not(.selected):hover {
+  background-color: #383838;
+  border-color: #555555;
+  box-shadow: 0 0 .2em #ffffffaa;
+}
+
+.actdia-tools-category-label:not(:first-child) {
+  border-left: none;
+}
+
+.actdia-tools-category-label.selected {
+  border-top: none;
+  background-color: #464646;
+}
+
+.actdia-tools-category-tools-container {
+  padding-left: 3.5em;
+  background-color: #464646;
+}
+
+.actdia-tools-category-tools {
+  display: flex;
+  flex-direction: row;
+}
+
+.actdia-tools-category-tools.hidden {
+  display: none;
+}
+
+.actdia-tool-button:hover {
+  background-color: #464646;
+  border-color: #555555;
+  border-style: solid;
+  box-shadow: 0 0 .5em #ffffffaa;
+}

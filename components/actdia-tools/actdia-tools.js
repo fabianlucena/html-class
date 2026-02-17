@@ -8,472 +8,509 @@ import { pushNotification } from '../notistack/notistack.js';
 importCss('./actdia-tools.css', import.meta.url);
 
 export default class ActDiaTools {
-  tools = [
-    new Item({
-      type: 'tool',
-      name: 'menu',
-      label: _('Menu'),
-      position: 'fixed',
-      classList: ['full-filled'],
-      shape: {
-        shapes: [
-          {
-            shape: 'rect',
-            y: .2,
+  menuTool = new Item({
+    type: 'tool',
+    name: 'menu',
+    label: _('Menu'),
+    position: 'fixed',
+    classList: ['full-filled'],
+    shape: {
+      shapes: [
+        {
+          shape: 'rect',
+          y: .2,
+          width: 1,
+          height: .18,
+          rx: .1,
+          ry: .1,
+          stroke: false,
+        },
+        {
+          shape: 'rect',
+          y: .5,
+          width: 1,
+          height: .18,
+          rx: .1,
+          ry: .1,
+          stroke: false,
+        },
+        {
+          shape: 'rect',
+          y: .8,
+          width: 1,
+          height: .18,
+          rx: .1,
+          ry: .1,
+          stroke: false,
+        },
+        {
+          name: 'changed',
+          shape: 'path',
+          rotation: [ 10, .5, .5 ],
+          sx: .66,
+          sy: .66,
+          x: .66,
+          className: 'bright',
+          visible: false,
+          stroke: false,
+          d: `
+            M 0.50,0.00
+            L 0.5765,0.3152
+            L 0.8536,0.1464
+            L 0.6848,0.4235
+            L 1.00,0.50
+            L 0.6848,0.5765
+            L 0.8536,0.8536
+            L 0.5765,0.6848
+            L 0.50,1.00
+            L 0.4235,0.6848
+            L 0.1464,0.8536
+            L 0.3152,0.5765
+            L 0.00,0.50
+            L 0.3152,0.4235
+            L 0.1464,0.1464
+            L 0.4235,0.3152
+            Z`,    
+        },
+      ],
+    },
+    box: null,
+    selectable: false,
+    draggable: false,
+    exportable: false,
+    hideable: false,
+  });
+
+  toolsCategories = [
+    {
+      name: 'file',
+      label: _('File'),
+      title: _('File, export, import, share, and copy operations'),
+      tools: [
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'save',
+          label: _('Save'),
+          description: _('Saves the diagram.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: `
+                  M0 0 H1 V1 H0 Z
+                  M0.15 0 V0.35 H0.85 V0
+                  M0.3 0 V0.2 H0.7 V0
+                  M0.15 0.6 H0.85 V1 H0.15 Z`,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.save(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'new',
+          label: _('New'),
+          description: _('Clears the diagram.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'rect',
+                x: 0.1,
+                y: 0.3,
+                width: 0.8,
+                height: 0.7,
+              },
+              {
+                shape: 'path',
+                x: 1,
+                sx: .5,
+                sy: .5,
+                className: 'bright',
+                d: `M 0.5 0
+                  L 0.612256 0.345492
+                  L 0.975528 0.345492
+                  L 0.681636 0.559016
+                  L 0.793893 0.904508
+                  L 0.5 0.690983
+                  L 0.206107 0.904508
+                  L 0.318364 0.559016
+                  L 0.024472 0.345492
+                  L 0.387744 0.345492
+                  Z`,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.clear(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'copy_json',
+          label: _('Copy JSON to clipboard'),
+          description: _('Copies the diagram data to the clipboard in JSON format.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'rect',
+                x: 0.3,
+                y: 0.1,
+                width: 0.7,
+                height: 0.8,
+                fill: '#666',
+                stroke: '#333',
+                strokeWidth: 0.02,
+              },
+              {
+                shape: 'rect',
+                x: 0.1,
+                y: 0.2,
+                width: 0.7,
+                height: 0.8,
+                fill: '#444',
+                stroke: '#666',
+                strokeWidth: 0.02,
+              },
+              {
+                shape: 'text',
+                text: 'JSON',
+                textAnchor: 'right',
+                dominantBaseline: 'bottom',
+                fill: '#fff',
+                fontSize: 0.3,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.copyJSONToClipboard(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'copy_svg',
+          label: _('Copy SVG to clipboard'),
+          description: _('Copies the diagram image to the clipboard in SVG format.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'rect',
+                x: 0.3,
+                y: 0.1,
+                width: 0.7,
+                height: 0.8,
+                fill: '#666',
+                stroke: '#333',
+                strokeWidth: 0.02,
+              },
+              {
+                shape: 'rect',
+                x: 0.1,
+                y: 0.2,
+                width: 0.7,
+                height: 0.8,
+                fill: '#444',
+                stroke: '#666',
+                strokeWidth: 0.02,
+              },
+              {
+                shape: 'text',
+                text: 'SVG',
+                textAnchor: 'right',
+                dominantBaseline: 'bottom',
+                fill: '#fff',
+                fontSize: 0.3,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.copySVGToClipboard(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'download_json',
+          label: _('Download JSON'),
+          description: _('Download the diagram as a JSON file.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: `M 0.5 0.1 V 0.6
+                  M 0.35 0.45 L 0.5 0.6 L 0.65 0.45
+                  M 0.2 0.75 H 0.8 V 0.85 H 0.2 Z`,
+                fill: false,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.downloadJsonHandler(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'upload',
+          label: _('Upload'),
+          description: _('Upload a diagram as a JSON file.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: `M 0.5 0.6 V 0.1
+                  M 0.35 0.25 L 0.5 0.1 L 0.65 0.25
+                  M 0.2 0.75 H 0.8 V 0.85 H 0.2 Z`,
+                fill: false,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.uploadJson(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'share',
+          label: _('Share'),
+          description: _('Share the diagram as a URL.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'line',
+                x1: 0.2, y1: 0.2,
+                x2: 0.8, y2: 0.5,
+              },
+              {
+                shape: 'line',
+                x1: 0.2, y1: 0.8,
+                x2: 0.8, y2: 0.5,
+              },
+              {
+                shape: 'circle',
+                cx: 0.2, cy: 0.2, r: 0.12,
+              },
+              {
+                shape: 'circle',
+                cx: 0.2, cy: 0.8, r: 0.12,
+              },
+              {
+                shape: 'circle',
+                cx: 0.8, cy: 0.5, r: 0.12,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.share(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'download_svg',
+          label: _('Download SVG'),
+          description: _('Download the diagram as a SVG image.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: 'M0.1 0.1 H0.9 V0.7 H0.1 Z',
+                fill: '#555',
+                stroke: '#333',
+              },
+              {
+                shape: 'circle',
+                cx: 0.2,
+                cy: 0.2,
+                r: 0.1,
+                fill: '#ff0',
+                stroke: false,
+              },
+              {
+                shape: 'path',
+                d: 'M0.15 0.7 L0.4 0.4 L0.6 0.6 L0.85 0.3 L0.9 0.7 Z',
+                fill: '#666',
+              },
+              {
+                shape: 'path',
+                d: `M 0.5 0.4 V .95
+                  M 0.35 0.8 L 0.5 .95 L 0.65 0.8`,
+              },
+            ],
+          },
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.downloadSvgHandler(),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'view',
+          label: _('View'),
+          description: _('View the diagram as a JSON data.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: `
+                  M0.1 0.5 Q0.5 0.1 0.9 0.5 Q0.5 0.9 0.1 0.5 Z
+                  M0.5 0.5 m-0.1 0 a0.1 0.1 0 1 0 0.2 0 a0.1 0.1 0 1 0 -0.2 0`,
+              },
+            ],
+          },
+          box: {
+            x: 0,
+            y: 0,
             width: 1,
-            height: .18,
-            rx: .1,
-            ry: .1,
-            stroke: false,
+            height: 1,
           },
-          {
-            shape: 'rect',
-            y: .5,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.view({ selected: true}),
+        }),
+
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'view_in_console',
+          label: _('View in console'),
+          description: _('View the diagram in the browser\'s console.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: 'M 0.05 0.05 H0.95 V0.95 H0.05 Z',
+                fill: '#222',
+              },
+              {
+                shape: 'path',
+                d: 'M 0.1 0.1 H0.9 V0.6 H0.1 Z',
+                fill: '#111',
+              },
+              {
+                shape: 'path',
+                d: 'M 0.15 0.65 L 0.3 0.8 L 0.15 0.95',
+                stroke: '#0f0',
+              },
+            ],
+          },
+          box: {
+            x: 0,
+            y: 0,
             width: 1,
-            height: .18,
-            rx: .1,
-            ry: .1,
-            stroke: false,
+            height: 1,
           },
-          {
-            shape: 'rect',
-            y: .8,
-            width: 1,
-            height: .18,
-            rx: .1,
-            ry: .1,
-            stroke: false,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.viewInConsole({ selected: true}),
+        }),
+      ],
+    },
+    {
+      name: 'edit',
+      label: _('Edit'),
+      title: _('Edit operations'),
+      tools: [
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'sendToBack',
+          label: _('Send to back'),
+          description: _('Sends the selected item to the back of the diagram.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: `
+                  M 0.05 0.10 H 0.72
+                  M 0.05 0.36 H 0.72
+                  M 0.05 0.63 H 0.72
+                  M 0.05 0.90 H 0.95
+                  Z`,
+                strokeWidth: .1,
+              },
+            ],
           },
-          {
-            name: 'changed',
-            shape: 'path',
-            rotation: [ 10, .5, .5 ],
-            sx: .66,
-            sy: .66,
-            x: .66,
-            className: 'bright',
-            visible: false,
-            d: `
-              M 0.50,0.00
-              L 0.5765,0.3152
-              L 0.8536,0.1464
-              L 0.6848,0.4235
-              L 1.00,0.50
-              L 0.6848,0.5765
-              L 0.8536,0.8536
-              L 0.5765,0.6848
-              L 0.50,1.00
-              L 0.4235,0.6848
-              L 0.1464,0.8536
-              L 0.3152,0.5765
-              L 0.00,0.50
-              L 0.3152,0.4235
-              L 0.1464,0.1464
-              L 0.4235,0.3152
-              Z`,    
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.sendToBack(),
+        }),
+        new Item({
+          type: 'tool',
+          visible: false,
+          name: 'bringToFront',
+          label: _('Bring to front'),
+          description: _('Brings the selected item to the front of the diagram.'),
+          position: 'fixed',
+          shape: {
+            shapes: [
+              {
+                shape: 'path',
+                d: `
+                  M 0.05 0.10 H 0.95
+                  M 0.05 0.36 H 0.72
+                  M 0.05 0.63 H 0.72
+                  M 0.05 0.90 H 0.72
+                  Z`,
+                strokeWidth: .1,
+              },
+            ],
           },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      hideable: false,
-      onClick: () => {
-        this.tools
-          .filter(i => i.type === 'tool' && i.hideable !== false)
-          .forEach(i => i.visible = !i.visible);
-      },
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'sendToBack',
-      label: _('Send to back'),
-      description: _('Sends the selected item to the back of the diagram.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'path',
-            d: `
-              M 0.05 0.10 H 0.72
-              M 0.05 0.36 H 0.72
-              M 0.05 0.63 H 0.72
-              M 0.05 0.90 H 0.95
-              Z`,
-            strokeWidth: .1,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.sendToBack(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'save',
-      label: _('Save'),
-      description: _('Saves the diagram.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'path',
-            d: `
-              M0 0 H1 V1 H0 Z
-              M0.15 0 V0.35 H0.85 V0
-              M0.3 0 V0.2 H0.7 V0
-              M0.15 0.6 H0.85 V1 H0.15 Z`,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.save(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'new',
-      label: _('New'),
-      description: _('Clears the diagram.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'rect',
-            x: 0.1,
-            y: 0.3,
-            width: 0.8,
-            height: 0.7,
-          },
-          {
-            shape: 'path',
-            x: 1,
-            sx: .5,
-            sy: .5,
-            className: 'bright',
-            d: `M 0.5 0
-              L 0.612256 0.345492
-              L 0.975528 0.345492
-              L 0.681636 0.559016
-              L 0.793893 0.904508
-              L 0.5 0.690983
-              L 0.206107 0.904508
-              L 0.318364 0.559016
-              L 0.024472 0.345492
-              L 0.387744 0.345492
-              Z`,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.clear(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'copy_json',
-      label: _('Copy JSON to clipboard'),
-      description: _('Copies the diagram data to the clipboard in JSON format.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'rect',
-            x: 0.3,
-            y: 0.1,
-            width: 0.7,
-            height: 0.8,
-            fill: '#666',
-            stroke: '#333',
-            strokeWidth: 0.02,
-          },
-          {
-            shape: 'rect',
-            x: 0.1,
-            y: 0.2,
-            width: 0.7,
-            height: 0.8,
-            fill: '#444',
-            stroke: '#666',
-            strokeWidth: 0.02,
-          },
-          {
-            shape: 'text',
-            text: 'JSON',
-            textAnchor: 'right',
-            dominantBaseline: 'bottom',
-            fill: '#fff',
-            fontSize: 0.3,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.copyJSONToClipboard(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'copy_svg',
-      label: _('Copy SVG to clipboard'),
-      description: _('Copies the diagram image to the clipboard in SVG format.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'rect',
-            x: 0.3,
-            y: 0.1,
-            width: 0.7,
-            height: 0.8,
-            fill: '#666',
-            stroke: '#333',
-            strokeWidth: 0.02,
-          },
-          {
-            shape: 'rect',
-            x: 0.1,
-            y: 0.2,
-            width: 0.7,
-            height: 0.8,
-            fill: '#444',
-            stroke: '#666',
-            strokeWidth: 0.02,
-          },
-          {
-            shape: 'text',
-            text: 'SVG',
-            textAnchor: 'right',
-            dominantBaseline: 'bottom',
-            fill: '#fff',
-            fontSize: 0.3,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.copySVGToClipboard(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'download_json',
-      label: _('Download JSON'),
-      description: _('Download the diagram as a JSON file.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'path',
-            d: `M 0.5 0.1 V 0.6
-              M 0.35 0.45 L 0.5 0.6 L 0.65 0.45
-              M 0.2 0.75 H 0.8 V 0.85 H 0.2 Z`,
-            fill: false,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.downloadJsonHandler(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'upload',
-      label: _('Upload'),
-      description: _('Upload a diagram as a JSON file.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'path',
-            d: `M 0.5 0.6 V 0.1
-              M 0.35 0.25 L 0.5 0.1 L 0.65 0.25
-              M 0.2 0.75 H 0.8 V 0.85 H 0.2 Z`,
-            fill: false,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.uploadJson(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'share',
-      label: _('Share'),
-      description: _('Share the diagram as a URL.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'line',
-            x1: 0.2, y1: 0.2,
-            x2: 0.8, y2: 0.5,
-          },
-          {
-            shape: 'line',
-            x1: 0.2, y1: 0.8,
-            x2: 0.8, y2: 0.5,
-          },
-          {
-            shape: 'circle',
-            cx: 0.2, cy: 0.2, r: 0.12,
-          },
-          {
-            shape: 'circle',
-            cx: 0.2, cy: 0.8, r: 0.12,
-          },
-          {
-            shape: 'circle',
-            cx: 0.8, cy: 0.5, r: 0.12,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.share(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'download_svg',
-      label: _('Download SVG'),
-      description: _('Download the diagram as a SVG image.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'path',
-            d: 'M0.1 0.1 H0.9 V0.7 H0.1 Z',
-            fill: '#555',
-            stroke: '#333',
-          },
-          {
-            shape: 'circle',
-            cx: 0.2,
-            cy: 0.2,
-            r: 0.1,
-            fill: '#ff0',
-            stroke: false,
-          },
-          {
-            shape: 'path',
-            d: 'M0.15 0.7 L0.4 0.4 L0.6 0.6 L0.85 0.3 L0.9 0.7 Z',
-            fill: '#666',
-          },
-          {
-            shape: 'path',
-            d: `M 0.5 0.4 V .95
-              M 0.35 0.8 L 0.5 .95 L 0.65 0.8`,
-          },
-        ],
-      },
-      box: null,
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.downloadSvgHandler(),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'view',
-      label: _('View'),
-      description: _('View the diagram as a JSON data.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'path',
-            d: `
-              M0.1 0.5 Q0.5 0.1 0.9 0.5 Q0.5 0.9 0.1 0.5 Z
-              M0.5 0.5 m-0.1 0 a0.1 0.1 0 1 0 0.2 0 a0.1 0.1 0 1 0 -0.2 0`,
-          },
-        ],
-      },
-      box: {
-        x: 0,
-        y: 0,
-        width: 1,
-        height: 1,
-      },
-      draggable: false,
-      exportable: false,
-      onClick: () => this.view({ selected: true}),
-    }),
-
-    new Item({
-      type: 'tool',
-      visible: false,
-      name: 'view_in_console',
-      label: _('View in console'),
-      description: _('View the diagram in the browser\'s console.'),
-      position: 'fixed',
-      shape: {
-        shapes: [
-          {
-            shape: 'path',
-            d: 'M 0.05 0.05 H0.95 V0.95 H0.05 Z',
-            fill: '#222',
-          },
-          {
-            shape: 'path',
-            d: 'M 0.1 0.1 H0.9 V0.6 H0.1 Z',
-            fill: '#111',
-          },
-          {
-            shape: 'path',
-            d: 'M 0.15 0.65 L 0.3 0.8 L 0.15 0.95',
-            stroke: '#0f0',
-          },
-        ],
-      },
-      box: {
-        x: 0,
-        y: 0,
-        width: 1,
-        height: 1,
-      },
-      selectable: false,
-      draggable: false,
-      exportable: false,
-      onClick: () => this.viewInConsole({ selected: true}),
-    }),
+          box: null,
+          selectable: false,
+          draggable: false,
+          exportable: false,
+          onClick: () => this.bringToFront(),
+        }),
+      ],
+    },
   ];
 
+  toolOptions = { sx: 18, sy: 18 };
   onSave = null;
 
   constructor({ container, actdia }) {
@@ -483,77 +520,142 @@ export default class ActDiaTools {
   }
 
   create() {
+    this.container ??= document.body;
+    this.element ??= document.querySelector('#actdia-tools');
+    if (!this.element) {
+      this.element = document.createElement('div');
+      this.element.id = 'actdia-tools';
+      this.container.insertBefore(this.element, this.container.firstChild);
+    }
+
+    this.element.classList.add('actdia-tools');
+
+    var menuToolHtml = this.getToolHtml(this.menuTool);
+    this.container.insertAdjacentHTML('afterbegin', menuToolHtml);
+
     this.toolsElement = document.createElement('div');
-    this.toolsElement.classList.add('actdia-tools');
-    this.container.appendChild(this.toolsElement);
+    this.toolsElement.classList.add('actdia-tools-category-tools-container');
+    this.element.appendChild(this.toolsElement);
 
-    const options = { sx: 18, sy: 18 };
-    const svgList = this.tools.map(tool => 
-      '<div'
-        + ` id="${escapeHTML(tool.id)}"`
-        + ' class="button actdia-tool-button"'
-        + ` data-id="${escapeHTML(tool.id)}"`
-        + ` data-name="${escapeHTML(tool.name)}"`
-        + ` title="${tool.description ? (tool.label ?? tool.name) + ':\n' + tool.description : (tool.label ?? tool.name)}"`
-      + '>'
-        + '<svg xmlns="http://www.w3.org/2000/svg"'
-          + ' width="100%"'
-          + ' height="100%"'
-          + ' viewBox="0 0 20 20"'
-        + '>'
-          + this.actdia.getItemSVG(tool, options)
-        + '</svg>'
-      + '</div>'
-    );
+    this.labelsElement = document.createElement('div');
+    this.labelsElement.classList.add('actdia-tools-category-labels');
+    this.element.appendChild(this.labelsElement);
 
-    this.toolsElement.innerHTML = svgList.join('');
+    this.menuTool.element = this.container.querySelector(`#${CSS.escape(this.menuTool.id)}`);
+    this.menuTool.svgElement = this.menuTool.element.querySelector(`#${CSS.escape(this.menuTool.id)} svg`);
+    this.menuTool.divElement = this.menuTool.svgElement.closest('div');
+    this.menuTool.element.addEventListener('click', () => this.element.classList.toggle('hidden'));
 
-    this.tools.forEach(tool => {
-      const toolSVG = this.toolsElement.querySelector(`#${CSS.escape(tool.id)} svg`);
-      tool.svgElement = toolSVG;
-      tool.divElement = toolSVG.closest('div');
+    this.toolsCategories.forEach(category => {
+      const labelElement = document.createElement('div');
+      category.labelElement = labelElement;
+      labelElement.classList.add('actdia-tools-category-label');
+      this.labelsElement.appendChild(labelElement);
+
+      const toolsElement = document.createElement('div');
+      category.toolsElement = toolsElement;
+      toolsElement.classList.add('actdia-tools-category-tools');
+      this.toolsElement.appendChild(toolsElement);
+
+      labelElement.dataset.name = category.name;
+      labelElement.innerHTML = category.label;
+      labelElement.title = category.title;
+
+      toolsElement.innerHTML = category.tools.map(t => this.getToolHtml(t)).join('');
+      category.tools.forEach(tool => {
+        const toolSVG = toolsElement.querySelector(`#${CSS.escape(tool.id)} svg`);
+        tool.svgElement = toolSVG;
+        tool.divElement = toolSVG.closest('div');
+      });
     });
+
+    this.element.addEventListener('click', evt => this.clickHandler(evt));
+
     this.updateTools();
+  }
 
-    this.toolsElement.addEventListener('click', evt => {
-      const id = evt.target?.closest('.actdia-tool-button')?.dataset?.id;
-      if (!id)
-        return;
+  updateTools() {
+    let selected = this.toolsCategories.find(c => c.selected)
+      || this.toolsCategories[0];
 
-      const tool = this.tools.find(t => t.id === id);
+    this.toolsCategories.forEach(category => {
+      const isSelected = category === selected;
+      category.selected = isSelected;
+      if (isSelected) {
+        category.toolsElement.classList.remove('hidden');
+        category.labelElement.classList.add('selected');
+      } else {
+        category.toolsElement.classList.add('hidden');
+        category.labelElement.classList.remove('selected');
+      }
+    });
+  }
+
+  getToolById(id) {
+    for (const category of this.toolsCategories) {
+      const tool = category.tools.find(t => t.id === id);
+      if (tool?.id === id) {
+        return tool;
+      }
+    }
+  }
+
+  getToolHtml(tool) {
+    return '<div'
+      + ` id="${escapeHTML(tool.id)}"`
+      + ' class="button actdia-tool-button"'
+      + ` data-id="${escapeHTML(tool.id)}"`
+      + ` data-name="${escapeHTML(tool.name)}"`
+      + ` title="${tool.description ? (tool.label ?? tool.name) + ':\n' + tool.description : (tool.label ?? tool.name)}"`
+    + '>'
+      + '<svg xmlns="http://www.w3.org/2000/svg"'
+        + ' width="100%"'
+        + ' height="100%"'
+        + ' viewBox="0 0 20 20"'
+      + '>'
+        + this.actdia.getItemSVG(tool, this.toolOptions)
+      + '</svg>'
+    + '</div>';
+  }
+
+  clickHandler(evt) {
+    const id = evt.target?.closest('.actdia-tool-button')?.dataset?.id;
+    if (id) {
+      const tool = this.getToolById(id);
       if (!tool)
         return;
 
       const onClick = tool?.onClick;
       if (onClick) {
         onClick();
-        this.updateTools();
       }
-    });
+
+      return;
+    }
+    
+    const category = evt.target?.closest('.actdia-tools-category-label')?.dataset?.name;
+    if (category) {
+      this.selectCategory(category);
+      return;
+    }
   }
 
-  updateTools() {
-    this.tools.forEach(tool => {
-      tool.divElement.style.display = tool.visible === false ? 'none' : 'block';
-    });
+  selectCategory(name) {
+    this.toolsCategories.forEach(c => c.selected = c.name === name);
+    this.updateTools();
   }
 
   setChanged(changed) {
-    const menuTool = this.tools.find(i => i.type === 'tool' && i.name === 'menu');
-    if (!menuTool) {
-      return;
-    }
-
-    const changedShape = menuTool.shape?.shapes.find(s => s.name === 'changed');
+    const changedShape = this.menuTool.shape?.shapes.find(s => s.name === 'changed');
     if (changedShape) {
       changedShape.visible = !!changed;
-      const path = menuTool.svgElement.querySelector('path[name="changed"]');
+      const path = this.menuTool.svgElement.querySelector('path[name="changed"]');
       if (changedShape.visible) {
         path.style.display = '';
-        menuTool.divElement.title = _('Menu') + ':\n' + _('Diagram modified (unsaved changes).');
+        this.menuTool.element.title = _('Menu') + ':\n' + _('Diagram modified (unsaved changes).');
       } else {
         path.style.display = 'none';
-        menuTool.divElement.title = _('Menu');
+        this.menuTool.element.title = _('Menu');
       }
     }
   }
@@ -734,6 +836,11 @@ export default class ActDiaTools {
       content: '<pre>' + JSON.stringify(data, '', 2) + '</pre>',
       header: _('JSON data'),
     });
+  }
+
+  bringToFront(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    this.actdia.bringToFront(...items);
   }
 
   sendToBack(options) {
