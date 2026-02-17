@@ -122,8 +122,10 @@ export default class Form extends Base {
       fieldHtml = `<input type="checkbox" id="${field.id}_nullifier" name="${field.name}_nullifier" ${this.getValue(field) ? 'checked' : ''} style="flex: 0">`;
 
     const tag = field.tag?.toLowerCase() || 'input',
-      type = field.type?.toLowerCase() || 'text',
       value = this.getValue(field);
+    let type = field.type?.toLowerCase() || 'text';
+    if (type === 'bool' || type === 'boolean')
+      type = 'checkbox';
 
     if (tag === 'textarea' || type === 'textarea') {
       fieldHtml += `<textarea
