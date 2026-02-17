@@ -10,7 +10,7 @@ import { getPath } from '../utils/path.js';
 import { newId } from '../utils/id.js';
 import { _ } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
-import actDiaItemsCss from './actdia-items.css?raw';
+//import actDiaItemsCss from './actdia-items.css?raw';
 
 importCss('./actdia.css', import.meta.url);
 
