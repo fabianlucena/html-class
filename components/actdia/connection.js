@@ -97,7 +97,7 @@ export default class Connection extends Item {
 
   getData() {
     const elementClass = this.constructor.name;
-    return {
+    const data = {
       elementClass,
       url: this.getElementClassUrl(),
       id: this.id,
@@ -110,6 +110,12 @@ export default class Connection extends Item {
         item: this.to.item?.id,
       },
     };
+
+    if (this.ortho) {
+      data.ortho = this.ortho;
+    }
+
+    return data;
   }
 
   update({ mouse } = {}) {
@@ -150,21 +156,55 @@ export default class Connection extends Item {
 
     const
       dx = tx - fx,
-      dy = ty - fy,
-      dd = Math.pow(dx * dx + dy * dy, 1 / 2) / 3,
-      fa = this.from.connector.direction / 180 * Math.PI - Math.atan2(fromCtm.b, fromCtm.a),
-      x1 = fx + dd * Math.cos(fa),
-      y1 = fy - dd * Math.sin(fa);
+      dy = ty - fy;
 
-    let d;
-    if (isMouse) {
-      d = `M ${fx} ${fy} Q ${x1} ${y1} ${tx} ${ty}`;
+    let d = `M ${fx} ${fy} `;
+    if (this.ortho) {
+      const 
+        fromDir = this.from.connector.direction % 360,
+        fromHorizontal = fromDir >= 45 && fromDir < 135 || fromDir >= 225 && fromDir < 315;
+      if (mouse) {
+        if (fromHorizontal) {
+          d += `L ${fx} ${ty} L ${tx} ${ty}`;
+        } else {
+          d += `L ${tx} ${fy} L ${tx} ${ty}`;
+        }
+      } else {
+        const 
+          toDir = this.to.connector.direction % 360,
+          toHorizontal = toDir >= 45 && toDir < 135 || toDir >= 225 && toDir < 315;
+        if (fromHorizontal === toHorizontal) {
+          if (fromHorizontal) {
+             const midY = fy + dy / 2;
+             d += `L ${fx} ${midY} L ${tx} ${midY} L ${tx} ${ty}`;
+          } else {
+            const midX = fx + dx / 2;
+            d += `L ${midX} ${fy} L ${midX} ${ty} L ${tx} ${ty}`;
+          }
+        } else {
+          if (fromHorizontal) {
+            d += `L ${fx} ${ty} L ${tx} ${ty}`;
+          } else {
+            d += `L ${tx} ${fy} L ${tx} ${ty}`;
+          }
+        }
+      }
     } else {
       const
-        ta = (this.to.connector.direction / 180 * Math.PI - Math.atan2(toCtm.b, toCtm.a)),
-        x2 = tx + dd * Math.cos(ta),
-        y2 = ty - dd * Math.sin(ta);
-      d = `M ${fx} ${fy} C ${x1} ${y1} ${x2} ${y2} ${tx} ${ty}`;
+        dd = Math.pow(dx * dx + dy * dy, 1 / 2) / 3,
+        fa = this.from.connector.direction / 180 * Math.PI - Math.atan2(fromCtm.b, fromCtm.a),
+        x1 = fx + dd * Math.cos(fa),
+        y1 = fy - dd * Math.sin(fa);
+
+      if (isMouse) {
+        d += `Q ${x1} ${y1} ${tx} ${ty}`;
+      } else {
+        const
+          ta = (this.to.connector.direction / 180 * Math.PI - Math.atan2(toCtm.b, toCtm.a)),
+          x2 = tx + dd * Math.cos(ta),
+          y2 = ty - dd * Math.sin(ta);
+        d += `C ${x1} ${y1} ${x2} ${y2} ${tx} ${ty}`;
+      }
     }
 
     this.shape = {
