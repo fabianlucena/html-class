@@ -531,6 +531,19 @@ export default class ActDia {
     return result;
   }
 
+  bringToFront(...items) {
+    items.forEach(item => {
+      const index = this.#items.indexOf(item);
+      if (index > -1) {
+        this.#items.splice(index, 1);
+        this.#items.push(item);
+        if (item.svgElement) {
+          item.svgElement.parentNode.appendChild(item.svgElement);
+        }
+      }
+    });
+  }
+
   sendToBack(...items) {
     items.forEach(item => {
       const index = this.#items.indexOf(item);
