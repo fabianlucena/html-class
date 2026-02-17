@@ -10,6 +10,7 @@ import { getPath } from '../utils/path.js';
 import { newId } from '../utils/id.js';
 import { _ } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
+import actDiaItemsCss from './actdia-items.css?raw';
 
 importCss('./actdia.css', import.meta.url);
 
@@ -689,19 +690,13 @@ export default class ActDia {
 
   static itemsCss = null;
   async getSVGStyles(options) {
-    if (ActDia.itemsCss === null) {
-      const url = new URL('/actdia-items.css', import.meta.url);
-      const res = await fetch(url);
-      ActDia.itemsCss = await res.text();
-    }
-
     options ??= {};
     options.prefix ??= '\n';
     options.tab ??= ' ';
 
     const prefix1 = options.prefix + options.tab;
     return options.prefix + '<style>'
-        + prefix1 + ActDia.itemsCss.replace(/\n/g, prefix1)
+        + prefix1 + actDiaItemsCss.replace(/\n/g, prefix1)
       + options.prefix + '</style>';
   }
 
@@ -1469,7 +1464,7 @@ export default class ActDia {
       y += style.margin.top;
     } else {
       height += style.margin.top + style.margin.bottom;
-      y += (height - ((shape.text.split('\n').length ?? 1) - 1) * lineHeight) / 2;
+      y += (height - ((shape.text?.split('\n').length ?? 1) - 1) * lineHeight) / 2;
     }
 
     if (shape.textDecoration)
@@ -1484,7 +1479,7 @@ export default class ActDia {
 
   getTextSVGData(shape, item, options) {
     const { x, y, style } = this.getTextData(shape, item, options?.style, options);
-    const lines = shape.text.split('\n');
+    const lines = shape.text?.split('\n') ?? [];
     const commonAttributes = this.getStyleSVGAttributes(style, options);
     const fontAttibutes = this.getFontStyleSVGAttributes(style);
     const attributes = {
