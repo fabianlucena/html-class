@@ -18,6 +18,14 @@
   stroke-width: .003em;
 }
 
+.actdia-tool-button .star {
+  fill: transparent;
+}
+
+.actdia-tool-button.changed .star {
+  fill: #dbdbdb;
+}
+
 .actdia-tool-button[data-name="menu"] {
   position: fixed;
   top: .1em;
