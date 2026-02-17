@@ -39,8 +39,11 @@ export default function create({ Node, _ }) {
       { name: '#',    label: true, type: 'out', x: 4, y: 4, direction: 'right', extends: 'tiny' },
     ];
 
-    learningRate = 0.01;
+    learningRate = 0.001;
+    momentum = 0.9;
+    clasicMomentum = false;
     #newNodesWeights = new Map();
+    #momentumCache = new Map();
     maxRamdomWeight = 0.5;
     minRandomWeight = -0.5;
     maxWeightClipping = 10.0;
@@ -55,6 +58,17 @@ export default function create({ Node, _ }) {
         _label: 'Learning rate',
         type: 'number',
         step: 0.0001,
+      },
+      {
+        name: 'momentum',
+        _label: 'Momentum',
+        type: 'number',
+        step: 0.0001,
+      },
+      {
+        name: 'clasicMomentum',
+        _label: 'Clasic momentum',
+        type: 'boolean',
       },
       {
         name: 'resetNN',
@@ -204,9 +218,18 @@ export default function create({ Node, _ }) {
     }
 
     deltaWeights() {
+      const m = this.momentum;
+      const n = this.clasicMomentum ? 1 : 1 - m;
+      
       this.#newNodesWeights.forEach((dd, node) => {
         let d = dd.shift();
+        let vv = this.#momentumCache.get(node) ?? {};
+
         if (!isNaN(d) && isFinite(d)) {
+          let v = vv.bias || 0;
+          v = m * v + n * d;
+          vv.bias = v;
+
           let bias = node.bias - d;
           if (isNaN(bias) || !isFinite(bias)) {
             console.log(_('Bias reset for: %s: %s - %s', node.name, node.bias, d));
@@ -231,6 +254,11 @@ export default function create({ Node, _ }) {
             continue;
           }
 
+          vv.weights ??= [];
+          let v = vv.weights[i] || 0;
+          v = m * v + n * d;
+          vv.weights[i] = v;
+
           let weight = node.weights[i] - d;
           if (isNaN(weight) || !isFinite(weight)) {
             console.log(_('Weight %s reset for: %s: %s', i, node.name, node.weights[i]));
@@ -245,6 +273,8 @@ export default function create({ Node, _ }) {
 
           node.weights[i] = weight;
         }
+
+        this.#momentumCache.set(node, vv);
 
         node.updateStatus();
       });
