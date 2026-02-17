@@ -221,7 +221,8 @@ export default class ActDia {
       './node.js',
       './connection.js',
       './connector-in.js',
-      './connector-out.js'
+      './connector-out.js',
+      './connector-io.js',
     );
   }
 
@@ -2223,7 +2224,8 @@ export default class ActDia {
           item,
           connector,
         },
-        to: 'mouse'
+        to: 'mouse',
+        ortho: connector.ortho,
       });
       this.capturedItem.update({
         mouse: {
