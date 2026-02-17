@@ -7,6 +7,7 @@ export default {
     'end_event.js',
     'gateway.js',
     'activity.js',
+    'pool.js',
   ],
   examples: [
   ],

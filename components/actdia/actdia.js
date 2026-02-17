@@ -1753,6 +1753,12 @@ export default class ActDia {
       });
     }
 
+    if (Array.isArray(data.children)) {
+      while (svgElement.children.length > data.children.length) {
+        svgElement.removeChild(svgElement.lastChild);
+      }
+    }
+
     return true;
   }
 

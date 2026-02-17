@@ -58,6 +58,7 @@ export default class Node extends Item {
   };
 
   canMove = true;
+  canChangeSize = false;
   canChangeWidth = false;
   canChangeHeight = false;
   canRotate = true;
@@ -97,14 +98,14 @@ export default class Node extends Item {
       type: 'number',
       _label: 'Width',
       min: 1,
-      condition: () => this.canChangeWidth,
+      condition: () => this.canChangeSize || this.canChangeWidth,
     },
     {
       name: 'height',
       type: 'number',
       _label: 'Height',
       min: 1,
-      condition: () => this.canChangeHeight,
+      condition: () => this.canChangeSize || this.canChangeHeight,
     },
     {
       name: 'rotation',
