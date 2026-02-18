@@ -115,6 +115,10 @@ export default class Connection extends Item {
       data.ortho = this.ortho;
     }
 
+    if (this.style) {
+      data.style = {...this.style};
+    }
+
     return data;
   }
 

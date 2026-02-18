@@ -269,6 +269,64 @@ export default class ActDiaTools {
             });
           },
         },
+        {
+          name: 'style.strokeWidth',
+          label: _('Stroke width'),
+          description: _('Stroke width of the connection.'),
+          type: 'number',
+          min: 0,
+          step: 0.01,
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const values = selectedConnections
+              .map(c => c.style?.strokeWidth)
+              .filter(v => v && !isNaN(v) && isFinite(v));
+            
+            tool.input.value = values.length ? 
+              (values.reduce((a, b) => a + b, 0) / values.length)
+              : '';
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const nodes = this.actdia.getItems({ onlySelected: true });
+            nodes.forEach(node => {
+              node.style ??= {};
+              node.style.strokeWidth = value;
+              node.update();
+            });
+          },
+        },
+        {
+          name: 'style.dash',
+          label: _('Dash'),
+          description: _('Dash of the connection.'),
+          type: 'text',
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const values = selectedConnections
+              .map(c => c.style?.dash)
+              .filter(v => v && !isNaN(v) && isFinite(v));
+            
+            tool.input.value = values.length ? 
+              (values.reduce((a, b) => a + b, 0) / values.length)
+              : '';
+          },
+          onChange: evt => {
+            const value = evt.target.value.split(/[, ]+/).map(s => parseFloat(s.trim()));
+            const nodes = this.actdia.getItems({ onlySelected: true });
+            nodes.forEach(node => {
+              node.style ??= {};
+              node.style.dash = value;
+              node.update();
+            });
+          },
+        },
       ],
     },
     /*{
@@ -778,6 +836,16 @@ export default class ActDiaTools {
       tool.element.classList.toggle('disabled', !selectedNode);
     }
     
+    return false;
+  }
+
+  showForConnectionsOnly({tool, anySelectedConnection}) {
+    if (anySelectedConnection) {
+      tool.element.classList.remove('hidden');
+      return true;
+    }
+    
+    tool.element.classList.add('hidden');
     return false;
   }
 
