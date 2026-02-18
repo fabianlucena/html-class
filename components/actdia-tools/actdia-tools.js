@@ -99,20 +99,50 @@ export default class ActDiaTools {
       title: _('Edit operations'),
       tools: [
         {
+          name: 'undo',
+          label: _('Undo'),
+          description: _('Undo the last action.'),
+          svg: basePath + '/icons/undo.svg',
+          onClick: () => history.back(),
+        },
+        {
+          name: 'redo',
+          label: _('Redo'),
+          description: _('Redo the last undone action.'),
+          svg: basePath + '/icons/redo.svg',
+          onClick: () => history.forward(),
+        },
+        /*{
+          name: 'horizontalFlip',
+          label: _('Horizontal flip'),
+          description: _('Flips the selected item horizontally.'),
+          svg: basePath + '/icons/horizontal-flip.svg',
+          update: this.enableForAnySelected,
+          onClick: () => this.horizontalFlip(),
+        },
+        {
+          name: 'verticalFlip',
+          label: _('Vertical flip'),
+          description: _('Flips the selected item vertically.'),
+          svg: basePath + '/icons/vertical-flip.svg',
+          update: this.enableForAnySelected,
+          onClick: () => this.verticalFlip(),
+        },*/
+        {
           name: 'bringToFront',
           label: _('Bring to front'),
           description: _('Brings the selected item to the front of the diagram.'),
           svg: basePath + '/icons/bring-to-front.svg',
-          onClick: () => this.bringToFront(),
           update: this.enableForAnySelected,
+          onClick: () => this.bringToFront(),
         },
         {
           name: 'sendToBack',
           label: _('Send to back'),
           description: _('Sends the selected item to the back of the diagram.'),
           svg: basePath + '/icons/send-to-back.svg',
-          onClick: () => this.sendToBack(),
           update: this.enableForAnySelected,
+          onClick: () => this.sendToBack(),
         },
       ],
     },
@@ -505,4 +535,5 @@ export default class ActDiaTools {
     tool.disabled = !anySelected;
     tool.element.classList.toggle('disabled', !anySelected);
   }
+
 }

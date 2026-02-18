@@ -69,7 +69,7 @@ export default function create({ Node, _ }) {
       this.shape.shapes[1].text = `${this.index} / ${data.length}`;
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
 
-      this.shape.shapes[3].rotation = [360 * this.index / data.length, 2, 2];
+      this.shape.shapes[3].rotate = [360 * this.index / data.length, 2, 2];
       this.actdia.tryUpdateShape(this, this.svgShape?.children?.[3], this.shape.shapes[3]);
     }
   };

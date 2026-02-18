@@ -2,8 +2,8 @@ export default function create({ Node }) {
   return class PulseGenerator extends Node {
     static label = 'Pulse generator';
 
-    rotationCenterX = 2;
-    rotationCenterY = 2;
+    rotateCenterX = 2;
+    rotateCenterY = 2;
 
     shape = {
       shapes: [

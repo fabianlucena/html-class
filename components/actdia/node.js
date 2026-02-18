@@ -108,8 +108,8 @@ export default class Node extends Item {
       condition: () => this.canChangeSize || this.canChangeHeight,
     },
     {
-      name: 'rotation',
-      _label: 'Rotation',
+      name: 'rotate',
+      _label: 'Rotate',
       type: 'select',
       options: [
         { value: 0, label: '0°' },

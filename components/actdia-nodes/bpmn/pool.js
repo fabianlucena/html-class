@@ -112,7 +112,7 @@ export default function create({ Node, _ }) {
               shape: 'text',
               x: 0,
               y: 0,
-              rotation: -90,
+              rotate: -90,
               fontSize: 1.2,
               text: this.laneHeaders[i],
               anchor: 'center',

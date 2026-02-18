@@ -225,8 +225,8 @@ export default function create({ Node, _ }) {
 
       const pos = isNaN(shape.x)? 0 : (shape.x ?? 0);
 
-      const ux = Math.cos(this.rotation / 180 * Math.PI);
-      const uy = Math.sin(this.rotation / 180 * Math.PI);
+      const ux = Math.cos(this.rotate / 180 * Math.PI);
+      const uy = Math.sin(this.rotate / 180 * Math.PI);
 
       evt.preventDefault();
       this.#draggingKnob = true;
@@ -264,8 +264,8 @@ export default function create({ Node, _ }) {
       const dx = mouse.x - this.#draggingFrom.x;
       const dy = mouse.y - this.#draggingFrom.y;
 
-      const ux = Math.cos(this.rotation / 180 * Math.PI);
-      const uy = Math.sin(this.rotation / 180 * Math.PI);
+      const ux = Math.cos(this.rotate / 180 * Math.PI);
+      const uy = Math.sin(this.rotate / 180 * Math.PI);
 
       let delta = (dx * ux + dy * uy - 0.2) / (this.size - 1);
 

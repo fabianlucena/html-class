@@ -83,8 +83,8 @@ export default function create({ Node, _ }) {
   return class MovingAverage extends Node {
     static label = 'Moving average';
 
-    rotationCenterX = 2;
-    rotationCenterY = 1.5;
+    rotateCenterX = 2;
+    rotateCenterY = 1.5;
 
     shape = {
       shapes: [

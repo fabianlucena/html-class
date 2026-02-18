@@ -76,7 +76,7 @@ export default function create({ Node }) {
       const connector = this.connectors[0];
       switch (value) {
         case 'horizontal':
-          this.rotation = -90;
+          this.rotate = -90;
           this.shape.x = 0;
           connector.direction = -90;
           connector.x = 0;
@@ -84,21 +84,21 @@ export default function create({ Node }) {
           break;
 
         case 'inverted':
-          this.rotation = 180;
+          this.rotate = 180;
           connector.direction = 180;
           connector.x = -.5;
           connector.y = 0;
           break;
 
         case 'rotated':
-          this.rotation = 90;
+          this.rotate = 90;
           connector.direction = 90;
           connector.x = 0;
           connector.y = -1;
           break;
 
         default:
-          this.rotation = 0;
+          this.rotate = 0;
           connector.direction = 0;
           connector.x = .5;
           connector.y = 0;

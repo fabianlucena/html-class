@@ -126,13 +126,13 @@ export default class Item extends Element {
     this.updateTransform();
   }
 
-  #rotation = 0;
-  get rotation() {
-    return this.#rotation || 0;
+  #rotate = 0;
+  get rotate() {
+    return this.#rotate || 0;
   }
 
-  set rotation(value) {
-    this.#rotation = value;
+  set rotate(value) {
+    this.#rotate = value;
     this.updateTransform();
   }
 
@@ -251,14 +251,14 @@ export default class Item extends Element {
   updateTransform() {
     let transform = `translate(${this.x}, ${this.y})`;
 
-    let rotation = this.rotation;
-    if (rotation) {
-      if (Array.isArray(rotation))
-        rotation = rotation.join(' ');
+    let rotate = this.rotate;
+    if (rotate) {
+      if (Array.isArray(rotate))
+        rotate = rotate.join(' ');
       else
-        rotation = `${rotation} ${this.rotationCenterX || 0} ${this.rotationCenterY || 0}`;
+        rotate = `${rotate} ${this.rotateCenterX || 0} ${this.rotateCenterY || 0}`;
 
-      transform += ` rotate(${this.rotation})`;
+      transform += ` rotate(${this.rotate})`;
     }
 
     if ((!isNaN(this.sx) && this.sx) || (!isNaN(this.sy) && this.sy)) {

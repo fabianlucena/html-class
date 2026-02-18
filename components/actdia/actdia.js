@@ -988,14 +988,14 @@ export default class ActDia {
 
     if (!isNaN(style.sx) || !isNaN(style.sy)) transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
     if ((!isNaN(style.x) && style.x) || (!isNaN(style.y) && style.y)) transform += ` translate(${style.x ?? 0}, ${style.y ?? 0})`;
-    if (style.rotation) {
-      let rotation = style.rotation;
-      if (Array.isArray(rotation))
-        rotation = rotation.join(' ');
+    if (style.rotate) {
+      let rotate = style.rotate;
+      if (Array.isArray(rotate))
+        rotate = rotate.join(' ');
       else
-        rotation = `${rotation} ${style.rotationCenterX || 0} ${style.rotationCenterY || 0}`;
+        rotate = `${rotate} ${style.rotateCenterX || 0} ${style.rotateCenterY || 0}`;
 
-      transform += ` rotate(${rotation})`;
+      transform += ` rotate(${rotate})`;
     }
     if (style.skewX) transform += ` skewX(${style.skewX})`;
     if (style.skewY) transform += ` skewY(${style.skewY})`;
@@ -1095,21 +1095,21 @@ export default class ActDia {
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        const { shape: shape1, shapes, x, y, sx, sy, rotation, rotationCenterX, rotationCenterY, skewX, skewY, ...attributes } = shape;
+        const { shape: shape1, shapes, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, ...attributes } = shape;
         attributes.transform = '';
 
         if (!isNaN(x) || !isNaN(y)) {
           attributes.transform += ` translate(${(x ?? 0)}, ${(y ?? 0)})`;
         }
 
-        if (rotation) {
-          let rotate = rotation;
-          if (Array.isArray(rotate))
-            rotate = rotate.join(' ');
+        if (rotate) {
+          let rotateParam = rotate;
+          if (Array.isArray(rotateParam))
+            rotateParam = rotateParam.join(' ');
           else
-            rotate = `${rotate} ${rotationCenterX || 0} ${rotationCenterY || 0}`;
+            rotateParam = `${rotateParam} ${rotateCenterX || 0} ${rotateCenterY || 0}`;
 
-          attributes.transform += ` rotate(${rotate})`;
+          attributes.transform += ` rotate(${rotateParam})`;
         }
 
         if (!isNaN(sx) || !isNaN(sy)) {
@@ -1552,7 +1552,7 @@ export default class ActDia {
   }
 
   getConnectorShapeData(connector, node, options) {
-    const style = this.getStyle({ item: node, shape: { ...connector, rotation: -connector.direction }, type: connector.type || 'connector', options });
+    const style = this.getStyle({ item: node, shape: { ...connector, rotate: -connector.direction }, type: connector.type || 'connector', options });
     let shape = connector.shape ?? style.shape;
 
     if (!shape) {
@@ -1568,7 +1568,7 @@ export default class ActDia {
       x: connector.x,
       y: connector.y,
       id: connector.id,
-      rotation: -connector.direction,
+      rotate: -connector.direction,
       shapes: [...shape.shapes],
     };
 
@@ -1592,7 +1592,7 @@ export default class ActDia {
           sy: 0.7,
           textAnchor: 'middle',
           dominantBaseline: 'middle',
-          rotation: connector.direction,
+          rotate: connector.direction,
         };
 
         if (connector.textDecoration)
