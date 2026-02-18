@@ -86,6 +86,11 @@
   fill: #8080D0;
 }
 
+.actdia-item-connection .marker {
+  fill: #949494;
+  stroke: none;
+}
+
 .print {
   .actdia-item .hi {
     fill: #80D080;

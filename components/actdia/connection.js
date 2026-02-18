@@ -115,12 +115,20 @@ export default class Connection extends Item {
       },
     };
 
+    if (this.style) {
+      data.style = {...this.style};
+    }
+
     if (this.ortho) {
       data.ortho = this.ortho;
     }
 
-    if (this.style) {
-      data.style = {...this.style};
+    if (this.markerStart) {
+      data.markerStart = this.markerStart;
+    }
+
+    if (this.markerEnd) {
+      data.markerEnd = this.markerEnd;
     }
 
     return data;
@@ -231,38 +239,42 @@ export default class Connection extends Item {
   getMarkerShape(marker, x, y) {
     if (marker === 'arrow' || marker === 'rarrow') {
       return {
+        className: 'marker',
         shape: 'path',
-        d: 'M 0 0 L .5 .25 L 0 .5 Z',
-        x: x - .25,
-        y: y - .25,
+        d: 'M 0 0 L .8 .4 L 0 .8 Z',
+        x: x - .4,
+        y: y - .4,
       };
     }
 
     if (marker === 'larrow') {
       return {
+        className: 'marker',
         shape: 'path',
-        d: 'M .5 0 L 0 .25 L .5 .5 Z',
-        x: x - .25,
-        y: y - .25,
+        d: 'M .8 0 L 0 .4 L .8 .8 Z',
+        x: x - .4,
+        y: y - .4,
       };
     }
     
     if (marker === 'circle') {
       return {
+        className: 'marker',
         shape: 'circle',
         cx: x,
         cy: y,
-        r: .5,
+        r: .4,
       };
     }
     
     if (marker === 'square') {
       return {
+        className: 'marker',
         shape: 'rect',
-        x: x - .25,
-        y: y - .25,
-        width: .5,
-        height: .5,
+        x: x - .4,
+        y: y - .4,
+        width: .8,
+        height: .8,
       };
     }
 
