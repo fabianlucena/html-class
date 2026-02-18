@@ -1,4 +1,4 @@
-import { importCss } from '../utils/import-css.js';
+import { importCss, loadTextCss } from '../utils/import-css.js';
 import Element from './element.js';
 import Item from './item.js';
 import Node from './node.js';
@@ -10,7 +10,6 @@ import { getPath } from '../utils/path.js';
 import { newId } from '../utils/id.js';
 import { _ } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
-//import actDiaItemsCss from './actdia-items.css?raw';
 
 importCss('./actdia.css', import.meta.url);
 
@@ -736,9 +735,15 @@ export default class ActDia {
     options.prefix ??= '\n';
     options.tab ??= ' ';
 
+    
+    if (!ActDia.itemsCss) {
+      ActDia.itemsCss = await loadTextCss(getPath(import.meta.url) + '/actdia-items.css');
+      console.log(ActDia.itemsCss);
+    }
+
     const prefix1 = options.prefix + options.tab;
     return options.prefix + '<style>'
-        + prefix1 + actDiaItemsCss.replace(/\n/g, prefix1)
+        + prefix1 + ActDia.itemsCss.replace(/\n/g, prefix1)
       + options.prefix + '</style>';
   }
 
