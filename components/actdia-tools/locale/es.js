@@ -34,6 +34,7 @@ export default {
   'Download the diagram as a SVG image.': 'Descargar el diagrama como una imagen SVG.',
   'Edit': 'Editar',
   'Edit operations': 'Operaciones de edición',
+  'Error executing tool action: %s': 'Error al ejecutar la acción de la herramienta: %s',
   'Error to copy: %s': 'Error al copiar: %s',
   'Example diagram loaded.': 'Diagrama de ejemplo cargado.',
   'Export all': 'Exportar todo',

@@ -496,7 +496,7 @@ export default class ActDiaTools {
     }
   }
 
-  clickHandler(evt) {
+  async clickHandler(evt) {
     const name = evt.target?.closest('.actdia-tool-button')?.dataset?.name;
     if (name) {
       const tool = this.getToolByName(name);
@@ -506,7 +506,12 @@ export default class ActDiaTools {
 
         const onClick = tool?.onClick;
         if (onClick) {
-          onClick();
+          try {
+            await onClick();
+          } catch (err) {
+            pushNotification(_('Error executing tool action: %s', err), 'error');
+            console.error('Error executing tool onClick handler:', err);
+          }
           return;
         }
       }
@@ -660,9 +665,9 @@ export default class ActDiaTools {
       .catch(err => pushNotification(_('Error to copy: %s', err), 'error'));
   }
 
-  downloadSvgHandler(options) {
+  async downloadSvgHandler(options) {
     if (!this.getExportableItems({ onlySelected: true }).length) {
-      this.downloadSvg({ selected: false});
+      await this.downloadSvg({ selected: false});
       return;
     }
 
@@ -673,13 +678,18 @@ export default class ActDiaTools {
         <button id="export-all" class="button">${_('Export all')}</button>
         <button id="export-selected" class="button">${_('Export selected')}</button>`,
 
-      onClick: evt => {
-        if (evt.target.closest('#export-all')) {
-          this.downloadSvg({ selected: false});
-          dialog.close();
-        } else if (evt.target.closest('#export-selected')) {
-          this.downloadSvg({ selected: true});
-          dialog.close();
+      onClick: async evt => {
+        try {
+          if (evt.target.closest('#export-all')) {
+            await this.downloadSvg({ selected: false});
+            dialog.close();
+          } else if (evt.target.closest('#export-selected')) {
+            await this.downloadSvg({ selected: true});
+            dialog.close();
+          }
+        } catch (err) {
+          pushNotification(_('Error executing tool action: %s', err), 'error');
+          console.error('Error executing tool onClick handler:', err);
         }
       }
     });
