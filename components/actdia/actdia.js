@@ -1750,6 +1750,11 @@ export default class ActDia {
     if (!data)
       return;
 
+    if (svgElement && svgElement.tagName.toUpperCase() !== data.tag.toUpperCase()) {
+      svgElement.remove();
+      svgElement = null;
+    }
+
     if (!svgElement) {
       if (!options.parent)
         return;
