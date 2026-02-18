@@ -90,9 +90,11 @@
   background-color: #464646;
 }
 
-.actdia-tools-category-tools-container {
-  padding-left: 3.5em;
+.actdia-tools-tools-container {
+  display: flex;
+  flex-direction: row;
   background-color: #464646;
+  padding-left: 3.5em;
 }
 
 .actdia-tools-category-tools {

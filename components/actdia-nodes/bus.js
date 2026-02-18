@@ -34,32 +34,33 @@ export default function create({ Node }) {
 
     fields = [
       {
-        name: 'channelWidth',
+        name: 'channels',
         type: 'number',
         min: 1,
-        _label: 'Channel width',
+        _label: 'Channels',
+        isTool: true,
       },
     ];
 
-    get channelWidth() {
+    get channels() {
       return this.connectors.filter(c => c.type === 'in').length;
     }
 
-    set channelWidth(value) {
-      const newChannelWidth = this.channelWidth;
-      if (value > newChannelWidth) {
-        for (let i = newChannelWidth; i < value; i++) {
+    set channels(value) {
+      const newChannels = this.channels;
+      if (value > newChannels) {
+        for (let i = newChannels; i < value; i++) {
           this.addConnector();
         }
-      } else if (value < newChannelWidth) {
-        for (let i = value; i < newChannelWidth; i++) {
+      } else if (value < newChannels) {
+        for (let i = value; i < newChannels; i++) {
           this.removeLastInput();
         }
       }
     }
 
     update() {
-      const height = Math.max(this.channelWidth, 1);
+      const height = Math.max(this.channels, 1);
       this.box.height = height;
       this.shape.height = height;
       super.update();
@@ -67,7 +68,7 @@ export default function create({ Node }) {
 
     getNewConnector(connector) {
       connector ??= {};
-      connector.index ??= this.channelWidth;
+      connector.index ??= this.channels;
       connector.type ??= 'in';
       const newConnector = super.getNewConnector(connector);
       newConnector.y ??= newConnector.index + 1;

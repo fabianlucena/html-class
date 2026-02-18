@@ -2,7 +2,7 @@ export default {
   'AI': 'IA',
   'Basic': 'Básico',
   'Bus': 'Canal',
-  'Channel width': 'Ancho de canal',
+  'Channela': 'Canales',
   'Counter': 'Contador',
   'Cubic': 'Cúbica',
   'Cubic Root': 'Raíz cúbica',

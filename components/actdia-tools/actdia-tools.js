@@ -305,9 +305,17 @@ export default class ActDiaTools {
     this.prepareTool(this.menuTool);
     this.container.insertBefore(this.menuTool.element, this.container.firstChild);
 
+    this.toolsContainerElement = document.createElement('div');
+    this.toolsContainerElement.classList.add('actdia-tools-tools-container');
+    this.element.appendChild(this.toolsContainerElement);
+
     this.toolsElement = document.createElement('div');
     this.toolsElement.classList.add('actdia-tools-category-tools-container');
-    this.element.appendChild(this.toolsElement);
+    this.toolsContainerElement.appendChild(this.toolsElement);
+
+    this.dynamicToolsElement = document.createElement('div');
+    this.dynamicToolsElement.classList.add('actdia-tools-dynamic-tools-container');
+    this.toolsContainerElement.appendChild(this.dynamicToolsElement);
 
     this.labelsElement = document.createElement('div');
     this.labelsElement.classList.add('actdia-tools-category-labels');
@@ -355,6 +363,33 @@ export default class ActDiaTools {
     this.toolsCategories.forEach(category => {
       category.tools.forEach(tool => tool.update?.({tool, ...data}));
     });
+
+    if (this.selectedItem !== selected[0]) {
+      this.dynamicToolsElement.innerHTML = '';
+    }
+
+    if (selected.length === 1) {
+      this.selectedItem = selected[0];
+      const item = this.selectedItem;
+      const fields = item.fields?.filter(f => f.isTool);
+      fields.forEach(field => {
+        const tool = {...field};
+        tool.update = ({tool, selected}) => {
+          tool.input.value = item[field.name];
+        };
+        tool.onChange = evt => {
+          const value = field.type === 'number' ? parseFloat(evt.target.value) : evt.target.value;
+          item[field.name] = value;
+        }
+        tool.label ??= _(tool._label);
+        this.prepareTool(tool);
+        this.dynamicToolsElement.appendChild(tool.element);
+        tool.input.value = item[field.name];
+      });
+    } else {
+      this.selectedItem = null;
+      this.dynamicToolsElement.innerHTML = '';
+    }
   }
 
   updateToolsCategories() {
@@ -376,21 +411,6 @@ export default class ActDiaTools {
 
   getSelectedToolCategory() {
     return this.toolsCategories.find(c => c.selected) || this.toolsCategories[0];
-  }
-
-  getToolById(id) {
-    const category = this.getSelectedToolCategory();
-    const tool = category.tools.find(t => t.id === id);
-    if (tool?.id === id) {
-      return tool;
-    }
-    
-    for (const category of this.toolsCategories) {
-      const tool = category.tools.find(t => t.id === id);
-      if (tool?.id === id) {
-        return tool;
-      }
-    }
   }
 
   getToolByName(name) {
