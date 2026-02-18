@@ -96,6 +96,8 @@ export default class Item extends Element {
   set reflection(scale) {
     if (typeof scale === 'string') {
       scale = scale.replace(/\[|\]|\s/g, '').split(',').map(s => parseFloat(s));
+    } else if (scale instanceof Object && !Array.isArray(scale)) {
+      scale = [scale.x, scale.y];
     }
     const [sx, sy] = scale;
 

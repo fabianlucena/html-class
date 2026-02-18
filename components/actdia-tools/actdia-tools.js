@@ -112,7 +112,7 @@ export default class ActDiaTools {
           svg: basePath + '/icons/redo.svg',
           onClick: () => history.forward(),
         },
-        /*{
+        {
           name: 'horizontalFlip',
           label: _('Horizontal flip'),
           description: _('Flips the selected item horizontally.'),
@@ -127,7 +127,7 @@ export default class ActDiaTools {
           svg: basePath + '/icons/vertical-flip.svg',
           update: this.enableForAnySelected,
           onClick: () => this.verticalFlip(),
-        },*/
+        },
         {
           name: 'bringToFront',
           label: _('Bring to front'),
@@ -550,6 +550,17 @@ export default class ActDiaTools {
   enableForAnySelected(tool, {anySelected}) {
     tool.disabled = !anySelected;
     tool.element.classList.toggle('disabled', !anySelected);
+  }
+
+  horizontalFlip(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    items.forEach(item => item.reflection = {x: (item.sx ?? 1) * -1});
+  }
+
+  verticalFlip(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    items.forEach(item => item.reflection = {y: (item.sy ?? 1) * -1});
+
   }
 
   rotateCW(options) {
