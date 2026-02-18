@@ -4,9 +4,13 @@ export default class Connection extends Item {
   draggable = false;
 
   shape = {
-    shape: 'path',
-    d: 'M0 0 L1 1',
-    fill: 'none',
+    shapes: [
+      {
+        shape: 'path',
+        d: 'M0 0 L1 1',
+        fill: 'none',
+      },
+    ],
   };
 
   noSelectionBox = true;
@@ -139,7 +143,7 @@ export default class Connection extends Item {
       fx = ( fromCtm.e + this.from.connector.x * fromCtm.a + this.from.connector.y * fromCtm.c ) / this.actdia.style.sx,
       fy = ( fromCtm.f + this.from.connector.x * fromCtm.b + this.from.connector.y * fromCtm.d ) / this.actdia.style.sx;
     if (isNaN(fx) || isNaN(fy)) {
-      this.shape = {};
+      this.shape.shapes[0] = {};
       return; 
     }
 
@@ -154,7 +158,7 @@ export default class Connection extends Item {
       ty = ( toCtm.f + (this.to.connector.x ?? 0) * toCtm.b + (this.to.connector.y ?? 0) * toCtm.d ) / this.actdia.style.sy;
     }
     if (isNaN(tx) || isNaN(ty)) {
-      this.shape = {};
+      this.shape.shapes[0] = {};
       return; 
     }
 
@@ -211,12 +215,58 @@ export default class Connection extends Item {
       }
     }
 
-    this.shape = {
+    const shapes = [{
       shape: 'path',
       d,
-    };
+    }];
+
+    shapes.push(this.getMarkerShape(this.markerStart, fx, fy));
+    shapes.push(this.getMarkerShape(this.markerEnd, tx, ty));
+
+    this.shape.shapes = shapes.filter(s => s);
 
     this.actdia.tryUpdateShape(this, this.svgElement?.children[0], this.shape);
+  }
+
+  getMarkerShape(marker, x, y) {
+    if (marker === 'arrow' || marker === 'rarrow') {
+      return {
+        shape: 'path',
+        d: 'M 0 0 L .5 .25 L 0 .5 Z',
+        x: x - .25,
+        y: y - .25,
+      };
+    }
+
+    if (marker === 'larrow') {
+      return {
+        shape: 'path',
+        d: 'M .5 0 L 0 .25 L .5 .5 Z',
+        x: x - .25,
+        y: y - .25,
+      };
+    }
+    
+    if (marker === 'circle') {
+      return {
+        shape: 'circle',
+        cx: x,
+        cy: y,
+        r: .5,
+      };
+    }
+    
+    if (marker === 'square') {
+      return {
+        shape: 'rect',
+        x: x - .25,
+        y: y - .25,
+        width: .5,
+        height: .5,
+      };
+    }
+
+    return null;
   }
 
   statusUpdated(options) {

@@ -1,10 +1,11 @@
 import { importCss } from '../utils/import-css.js';
-import { escapeHTML } from '../utils/html.js';
+import { escapeHTML, sanitizeId } from '../utils/html.js';
 import Dialog from '../dialog/dialog.js';
 import { _, _c } from '../locale/locale.js';
 import { pushNotification } from '../notistack/notistack.js';
 import { getPath } from '../utils/path.js';
 import { isConnection, isNode } from '../actdia/type.js';
+import { newId } from '../utils/id.js';
 
 importCss('./actdia-tools.css', import.meta.url);
 const basePath = getPath(import.meta.url);
@@ -351,6 +352,68 @@ export default class ActDiaTools {
             });
           },
         },
+        {
+          name: 'markerStart',
+          label: _('Start'),
+          description: _('Draw the marker start of the connection.'),
+          type: 'select',
+          options: [
+            { value: '', label: '— ' + _('None') },
+            { value: 'larrow', label: '← ' + _('Left arrow') },
+            { value: 'rarrow', label: '→ ' + _('Right arrow') },
+            { value: 'circle', label: ' ● ' + _('Circle') },
+            { value: 'square', label: ' ■ ' + _('Square') },
+          ],
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const connection = selectedConnections
+              .find(c => c.markerStart);
+            
+            tool.input.value = connection?.markerStart || '';
+          },
+          onChange: evt => {
+            const value = evt.target.value;
+            const nodes = this.actdia.getItems({ onlySelected: true });
+            nodes.forEach(node => {
+              node.markerStart = value;
+              node.update();
+            });
+          },
+        },
+        {
+          name: 'markerEnd',
+          label: _('End'),
+          description: _('Draw the marker end of the connection.'),
+          type: 'select',
+          options: [
+            { value: '', label: '— ' + _('None') },
+            { value: 'larrow', label: '← ' + _('Left arrow') },
+            { value: 'rarrow', label: '→ ' + _('Right arrow') },
+            { value: 'circle', label: ' ● ' + _('Circle') },
+            { value: 'square', label: ' ■ ' + _('Square') },
+          ],
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const connection = selectedConnections
+              .find(c => c.markerEnd);
+            
+            tool.input.value = connection?.markerEnd || '';
+          },
+          onChange: evt => {
+            const value = evt.target.value;
+            const nodes = this.actdia.getItems({ onlySelected: true });
+            nodes.forEach(node => {
+              node.markerEnd = value;
+              node.update();
+            });
+          },
+        },
       ],
     },
     /*{
@@ -531,26 +594,48 @@ export default class ActDiaTools {
           .catch(err => console.error('Error loading SVG for tool', tool, err));
       }
 
-      if (tool.type === 'number' || tool.type === 'text' || tool.type === 'checkbox') {
+      if (tool.type === 'number' || tool.type === 'text' || tool.type === 'checkbox' || tool.type === 'select') {
+        const inputId = sanitizeId(newId());
+        
         element.classList.add('actdia-tool-input');
-        tool.labelElement = document.createElement('span');
+        tool.labelElement = document.createElement('label');
         tool.labelElement.textContent = tool.label;
+        tool.labelElement.htmlFor = inputId;
         element.appendChild(tool.labelElement);
 
-        tool.input = document.createElement('input');
-        const input = tool.input;
-        input.classList.add('actdia-tool-input');
-        input.type = tool.type;
-        if (tool.type === 'number') {
-          input.min = tool.min ?? 0;
-          input.max = tool.max ?? '';
-          input.step = tool.step ?? '';
+        let input;
+        if (tool.type === 'number' || tool.type === 'text' || tool.type === 'checkbox') {
+          tool.input = document.createElement('input');
+          input = tool.input;
+          input.id = inputId;
+          input.classList.add('actdia-tool-input');
+          input.type = tool.type;
+          if (tool.type === 'number') {
+            input.min = tool.min ?? 0;
+            input.max = tool.max ?? '';
+            input.step = tool.step ?? '';
+          }
+          input.value = tool.value ?? '';
+          input.addEventListener('input', evt => {
+            tool.onChange?.(evt);
+            tool.nodes?.forEach(n => n.update?.());
+          });
+        } else if (tool.type === 'select') {
+          tool.input = document.createElement('select');
+          input = tool.input;
+          for (const optionData of tool.options) {
+            const option = document.createElement('option');
+            option.value = optionData.value;
+            option.textContent = optionData.label;
+            tool.input.appendChild(option);
+          }
+          input.value = tool.value ?? '';
+          input.addEventListener('change', evt => {
+            tool.onChange?.(evt);
+            tool.nodes?.forEach(n => n.update?.());
+          });
         }
-        input.value = tool.value ?? '';
-        input.addEventListener('input', evt => {
-          tool.onChange?.(evt);
-          tool.nodes?.forEach(n => n.update?.());
-        });
+
         element.appendChild(input);
       }
     }
