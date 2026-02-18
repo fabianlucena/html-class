@@ -137,6 +137,22 @@ export default class ActDiaTools {
           onClick: () => this.bringToFront(),
         },
         {
+          name: 'bringForward',
+          label: _('Bring forward'),
+          description: _('Brings the selected item one level forward in the diagram.'),
+          svg: basePath + '/icons/bring-forward.svg',
+          update: this.enableForAnySelected,
+          onClick: () => this.bringForward(),
+        },
+        {
+          name: 'sendBackward',
+          label: _('Send backward'),
+          description: _('Sends the selected item one level back in the diagram.'),
+          svg: basePath + '/icons/send-backward.svg',
+          update: this.enableForAnySelected,
+          onClick: () => this.sendBackward(),
+        },
+        {
           name: 'sendToBack',
           label: _('Send to back'),
           description: _('Sends the selected item to the back of the diagram.'),
@@ -540,6 +556,16 @@ export default class ActDiaTools {
   bringToFront(options) {
     const items = this.actdia.getItems({ onlySelected: true, ...options });
     this.actdia.bringToFront(...items);
+  }
+
+  bringForward(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    this.actdia.bringForward(...items);
+  }
+
+  sendBackward(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    this.actdia.sendBackward(...items);
   }
 
   sendToBack(options) {

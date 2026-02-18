@@ -544,6 +544,34 @@ export default class ActDia {
     });
   }
 
+  bringForward(...items) {
+    items.forEach(item => {
+      const index = this.#items.indexOf(item);
+      if (index > -1 && index < this.#items.length - 1) {
+        const nextItem = this.#items[index + 1];
+        this.#items[index] = nextItem;
+        this.#items[index + 1] = item;
+        if (item.svgElement) {
+          item.svgElement.parentNode.insertBefore(item.svgElement, nextItem.svgElement);
+        }
+      }
+    });
+  }
+
+  sendToBackackward(...items) {
+    items.forEach(item => {
+      const index = this.#items.indexOf(item);
+      if (index > 0) {
+        const previousItem = this.#items[index - 1];
+        this.#items[index] = previousItem;
+        this.#items[index - 1] = item;
+        if (item.svgElement) {
+          item.svgElement.parentNode.insertBefore(item.svgElement, previousItem.svgElement);
+        }
+      }
+    });
+  }
+
   sendToBack(...items) {
     items.forEach(item => {
       const index = this.#items.indexOf(item);
