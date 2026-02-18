@@ -170,10 +170,10 @@ export default class ActDiaTools {
           update: data => {
             if (!this.enableForAnySelectedNodeHideForConnection(data))
               return;
-
-            const {tool} = data;
-            tool.disabled = !tool.canRotate;
-            tool.element.classList.toggle('disabled', tool.disabled);
+            
+            const canRotate = data.selectedNodes.some(n => n.canRotate);
+            data.tool.disabled = !canRotate;
+            data.tool.element.classList.toggle('disabled', data.tool.disabled);
           },
           onClick: () => this.rotateCW(),
         },
@@ -186,9 +186,9 @@ export default class ActDiaTools {
             if (!this.enableForAnySelectedNodeHideForConnection(data))
               return;
             
-            const {tool} = data;
-            tool.disabled = !tool.canRotate;
-            tool.element.classList.toggle('disabled', tool.disabled);
+            const canRotate = data.selectedNodes.some(n => n.canRotate);
+            data.tool.disabled = !canRotate;
+            data.tool.element.classList.toggle('disabled', data.tool.disabled);
           },
           onClick: () => this.rotateCCW(),
         },
