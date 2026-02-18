@@ -171,9 +171,9 @@ export default class ActDiaTools {
             if (!this.enableForAnySelectedNodeHideForConnection(data))
               return;
             
-            const canRotate = data.selectedNodes.some(n => n.canRotate);
-            data.tool.disabled = !canRotate;
-            data.tool.element.classList.toggle('disabled', data.tool.disabled);
+            const disabled = !data.selectedNodes.some(n => n.canRotate);
+            data.tool.disabled = disabled;
+            data.tool.element.classList.toggle('disabled', disabled);
           },
           onClick: () => this.rotateCW(),
         },
@@ -186,9 +186,9 @@ export default class ActDiaTools {
             if (!this.enableForAnySelectedNodeHideForConnection(data))
               return;
             
-            const canRotate = data.selectedNodes.some(n => n.canRotate);
-            data.tool.disabled = !canRotate;
-            data.tool.element.classList.toggle('disabled', data.tool.disabled);
+            const disabled = !data.selectedNodes.some(n => n.canRotate);
+            data.tool.disabled = disabled;
+            data.tool.element.classList.toggle('disabled', disabled);
           },
           onClick: () => this.rotateCCW(),
         },
@@ -234,9 +234,9 @@ export default class ActDiaTools {
             if (!this.enableForAnySelectedNodeHideForConnection(data))
               return;
 
-            const {tool} = data;
-            tool.disabled = !(tool.canChangeSize || tool.canChangeWidth);
-            tool.element.classList.toggle('disabled', tool.disabled);
+            const disabled = !data.selectedNodes.some(n => n.canChangeSize || n.canChangeWidth);
+            data.tool.disabled = disabled;
+            data.tool.element.classList.toggle('disabled', disabled);
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
@@ -257,9 +257,9 @@ export default class ActDiaTools {
             if (!this.enableForAnySelectedNodeHideForConnection(data))
               return;
 
-            const {tool} = data;
-            tool.disabled = !(tool.canChangeSize || tool.canChangeHeight);
-            tool.element.classList.toggle('disabled', tool.disabled);
+            const disabled = !data.selectedNodes.some(n => n.canChangeSize || n.canChangeHeight);
+            data.tool.disabled = disabled;
+            data.tool.element.classList.toggle('disabled', disabled);
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
