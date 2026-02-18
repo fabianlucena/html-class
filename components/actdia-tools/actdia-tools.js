@@ -165,7 +165,10 @@ export default class ActDiaTools {
           label: _('Rotate clockwise'),
           description: _('Rotates the selected item 90 degrees clockwise.'),
           svg: basePath + '/icons/rotate-cw.svg',
-          update: this.enableForAnySelected,
+          update: ({tool, anySelected}) => {
+            tool.disabled = !anySelected || !tool.canRotate;
+            tool.element.classList.toggle('disabled', !anySelected);
+          },
           onClick: () => this.rotateCW(),
         },
         {
@@ -173,7 +176,10 @@ export default class ActDiaTools {
           label: _('Rotate counterclockwise'),
           description: _('Rotates the selected item 90 degrees counterclockwise.'),
           svg: basePath + '/icons/rotate-ccw.svg',
-          update: this.enableForAnySelected,
+          update: ({tool, anySelected}) => {
+            tool.disabled = !anySelected || !tool.canRotate;
+            tool.element.classList.toggle('disabled', !anySelected);
+          },
           onClick: () => this.rotateCCW(),
         },
         {
@@ -184,8 +190,10 @@ export default class ActDiaTools {
           min: 0,
           update: ({tool, selected}) => {
             if (selected.length === 1) {
+              tool.input.disabled = false;
               tool.input.value = selected[0].x;
             } else {
+              tool.input.disabled = true;
               tool.input.value = '';
             }
           },
@@ -203,10 +211,13 @@ export default class ActDiaTools {
           label: 'Y',
           description: _('Y coord of the item.'),
           type: 'number',
+          min: 0,
           update: ({tool, selected}) => {
             if (selected.length === 1) {
+              tool.input.disabled = false;
               tool.input.value = selected[0].y;
             } else {
+              tool.input.disabled = true;
               tool.input.value = '';
             }
           },
@@ -215,6 +226,54 @@ export default class ActDiaTools {
             const items = this.actdia.getItems({ onlySelected: true });
             items.forEach(item => {
               item.y = value;
+              item.updateTransform();
+            });
+          },
+        },
+        {
+          name: 'width',
+          label: _('Width'),
+          description: _('Width of the item.'),
+          type: 'number',
+          min: 0,
+          update: ({tool, selected}) => {
+            if (selected.length === 1) {
+              tool.input.disabled = !(tool.canChangeSize || tool.canChangeWidth);
+              tool.input.value = selected[0].width;
+            } else {
+              tool.input.disabled = true;
+              tool.input.value = '';
+            }
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const items = this.actdia.getItems({ onlySelected: true });
+            items.forEach(item => {
+              item.width = value;
+              item.updateTransform();
+            });
+          },
+        },
+        {
+          name: 'height',
+          label: _('Height'),
+          description: _('Height of the item.'),
+          type: 'number',
+          min: 0,
+          update: ({tool, selected}) => {
+            if (selected.length === 1) {
+              tool.input.disabled = !(tool.canChangeSize || tool.canChangeHeight);
+              tool.input.value = selected[0].height;
+            } else {
+              tool.input.disabled = true;
+              tool.input.value = '';
+            }
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const items = this.actdia.getItems({ onlySelected: true });
+            items.forEach(item => {
+              item.height = value;
               item.updateTransform();
             });
           },
@@ -364,12 +423,14 @@ export default class ActDiaTools {
       }
 
       if (tool.type === 'number') {
+        element.classList.add('actdia-tool-input');
         tool.labelElement = document.createElement('span');
         tool.labelElement.textContent = tool.label;
         element.appendChild(tool.labelElement);
 
         tool.input = document.createElement('input');
         const input = tool.input;
+        input.classList.add('actdia-tool-input');
         input.type = 'number';
         input.min = tool.min ?? 0;
         input.max = tool.max ?? '';

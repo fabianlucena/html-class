@@ -54,6 +54,7 @@
   border: .1em solid #979797;
   background-color: #2e2e2e;
   border-top: none;
+  color: white;
 }
 
 .actdia-tools.hidden {
@@ -108,4 +109,14 @@
   border-color: #555555;
   border-style: solid;
   box-shadow: 0 0 .5em #ffffffaa;
+}
+
+.actdia-tool-input {
+  padding: .45em .2em;
+}
+
+.actdia-tool-input input {
+  width: 4em;
+  padding: 0;
+  margin: 0 .2em;
 }
