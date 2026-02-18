@@ -44,6 +44,12 @@ export default {
   'Flips the selected item horizontally.': 'Voltea horizontalmente el elemento seleccionado.',
   'Flips the selected item vertically.': 'Voltea verticalmente el elemento seleccionado.',
   'Form': 'Formulario',
+  'H': {
+    'height': 'H',
+    '': 'H',
+  },
+  'Height': 'Altura',
+  'Height of the item.': 'Altura del elemento.',
   'Horizontal': 'Horizontal',
   'Horizontal flip': 'Voltear horizontalmente',
   'ID': 'Id',
@@ -75,6 +81,8 @@ export default {
   'Share': 'Compartir',
   'Share the diagram as a URL.': 'Compartir el diagrama como una URL.',
   'Stroke color': 'Color de trazo',
+  'Style': 'Estilo',
+  'Style options': 'Opciones de estilo',
   'SVG image copied to the clipboard.': 'Imagen SVG copiada al portapapeles.',
   'The diagram was changed.': 'El diagrama fue modificado.',
   'The provided object is not a Node.': 'El objeto proporcionado no es un Nodo.',
@@ -94,4 +102,10 @@ export default {
   'Y': 'Y',
   'Y coord of the item.': 'Coordenada Y del elemento.',
   'Yes': 'Sí',
+  'W': {
+    'width': 'A',
+    '': 'A',
+  },
+  'Width': 'Ancho',
+  'Width of the item.': 'Ancho del elemento.',
 };

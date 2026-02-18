@@ -1,7 +1,7 @@
 import { importCss } from '../utils/import-css.js';
 import { escapeHTML } from '../utils/html.js';
 import Dialog from '../dialog/dialog.js';
-import { _ } from '../locale/locale.js';
+import { _, _c } from '../locale/locale.js';
 import { pushNotification } from '../notistack/notistack.js';
 import { getPath } from '../utils/path.js';
 import { isConnection, isNode } from '../actdia/type.js';
@@ -233,7 +233,7 @@ export default class ActDiaTools {
         },
         {
           name: 'width',
-          label: _('Width'),
+          label: _c('width','W'),
           description: _('Width of the item.'),
           type: 'number',
           min: 0,
@@ -257,7 +257,7 @@ export default class ActDiaTools {
         },
         {
           name: 'height',
-          label: _('Height'),
+          label: _c('height','H'),
           description: _('Height of the item.'),
           type: 'number',
           min: 0,
@@ -281,6 +281,12 @@ export default class ActDiaTools {
         },
       ],
     },
+    /*{
+      name: 'style',
+      label: _('Style'),
+      title: _('Style options'),
+      tools: [],
+    },*/
   ];
 
   toolOptions = { sx: 18, sy: 18 };

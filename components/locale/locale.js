@@ -35,11 +35,22 @@ export function format(text, ...args) {
 }
 
 export function _(text, ...args) {
+  return _c('', text, ...args);
+}
+
+export function _c(context, text, ...args) {
   if (typeof text !== 'string') {
     return text;
   }
   
-  const _format = translations[text] || text;
+  let _format = translations[text] || text;
+  if (typeof _format !== 'string' && typeof _format === 'object') {
+    _format = _format[context] || _format[''] || Object.values(_format)[0];
+    if (typeof _format !== 'string') {
+      _format = text;
+    }
+  }
+
   return format(_format, ...args);
 }
 
