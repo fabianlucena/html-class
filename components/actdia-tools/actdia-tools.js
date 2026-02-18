@@ -176,6 +176,49 @@ export default class ActDiaTools {
           update: this.enableForAnySelected,
           onClick: () => this.rotateCCW(),
         },
+        {
+          name: 'x',
+          label: 'X',
+          description: _('X coord of the item.'),
+          type: 'number',
+          min: 0,
+          update: ({tool, selected}) => {
+            if (selected.length === 1) {
+              tool.input.value = selected[0].x;
+            } else {
+              tool.input.value = '';
+            }
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const items = this.actdia.getItems({ onlySelected: true });
+            items.forEach(item => {
+              item.x = value;
+              item.updateTransform();
+            });
+          },
+        },
+        {
+          name: 'y',
+          label: 'Y',
+          description: _('Y coord of the item.'),
+          type: 'number',
+          update: ({tool, selected}) => {
+            if (selected.length === 1) {
+              tool.input.value = selected[0].y;
+            } else {
+              tool.input.value = '';
+            }
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const items = this.actdia.getItems({ onlySelected: true });
+            items.forEach(item => {
+              item.y = value;
+              item.updateTransform();
+            });
+          },
+        },
       ],
     },
   ];
@@ -230,7 +273,9 @@ export default class ActDiaTools {
 
       category.tools.forEach(tool => {
         this.prepareTool(tool);
-        toolsElement.appendChild(tool.element);
+        if (tool.element) {
+          toolsElement.appendChild(tool.element);
+        }
       });
     });
 
@@ -249,7 +294,7 @@ export default class ActDiaTools {
     };
 
     this.toolsCategories.forEach(category => {
-      category.tools.forEach(tool => tool.update?.(tool, data));
+      category.tools.forEach(tool => tool.update?.({tool, ...data}));
     });
   }
 
@@ -306,15 +351,32 @@ export default class ActDiaTools {
 
   prepareTool(tool) {
     if (!tool.element) {
-      if (tool.svg) {
-        const element = document.createElement('div');
-        tool.element = element;
-        element.classList.add('button', 'actdia-tool-button');
+      const element = document.createElement('div');
+      tool.element = element;
+      element.classList.add('actdia-tool');
 
+      if (tool.svg) {
+        element.classList.add('actdia-tool-button');
         fetch(tool.svg)
           .then(response => response.text())
-          .then(svgText => element.innerHTML = svgText)
+          .then(svgText => element.insertAdjacentHTML('afterbegin', svgText))
           .catch(err => console.error('Error loading SVG for tool', tool, err));
+      }
+
+      if (tool.type === 'number') {
+        tool.labelElement = document.createElement('span');
+        tool.labelElement.textContent = tool.label;
+        element.appendChild(tool.labelElement);
+
+        tool.input = document.createElement('input');
+        const input = tool.input;
+        input.type = 'number';
+        input.min = tool.min ?? 0;
+        input.max = tool.max ?? '';
+        input.step = tool.step ?? '';
+        input.value = tool.value ?? '';
+        input.addEventListener('change', evt => tool.onChange?.(evt));
+        element.appendChild(input);
       }
     }
 
@@ -573,7 +635,7 @@ export default class ActDiaTools {
     this.actdia.sendToBack(...items);
   }
 
-  enableForAnySelected(tool, {anySelected}) {
+  enableForAnySelected({tool, anySelected}) {
     tool.disabled = !anySelected;
     tool.element.classList.toggle('disabled', !anySelected);
   }

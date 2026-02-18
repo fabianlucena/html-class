@@ -89,5 +89,9 @@ export default {
   'View in console': 'Ver en consola',
   'View the diagram as a JSON data.': 'Ver el diagrama como datos JSON.',
   'View the diagram in the browser\'s console.': 'Ver el diagrama en la consola del navegador.',
+  'X': 'X',
+  'X coord of the item.': 'Coordenada X del elemento.',
+  'Y': 'Y',
+  'Y coord of the item.': 'Coordenada Y del elemento.',
   'Yes': 'Sí',
 };
