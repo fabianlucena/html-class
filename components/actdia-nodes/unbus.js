@@ -38,6 +38,7 @@ export default function create({ Node }) {
         type: 'number',
         min: 1,
         _label: 'Channels',
+        isTool: true,
       },
     ];
 

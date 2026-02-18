@@ -4,6 +4,7 @@ import Dialog from '../dialog/dialog.js';
 import { _ } from '../locale/locale.js';
 import { pushNotification } from '../notistack/notistack.js';
 import { getPath } from '../utils/path.js';
+import { isConnection, isNode } from '../actdia/type.js';
 
 importCss('./actdia-tools.css', import.meta.url);
 const basePath = getPath(import.meta.url);
@@ -117,7 +118,7 @@ export default class ActDiaTools {
           label: _('Horizontal flip'),
           description: _('Flips the selected item horizontally.'),
           svg: basePath + '/icons/horizontal-flip.svg',
-          update: this.enableForAnySelected,
+          update: this.enableForAnySelectedNode,
           onClick: () => this.horizontalFlip(),
         },
         {
@@ -125,7 +126,7 @@ export default class ActDiaTools {
           label: _('Vertical flip'),
           description: _('Flips the selected item vertically.'),
           svg: basePath + '/icons/vertical-flip.svg',
-          update: this.enableForAnySelected,
+          update: this.enableForAnySelectedNode,
           onClick: () => this.verticalFlip(),
         },
         {
@@ -133,7 +134,7 @@ export default class ActDiaTools {
           label: _('Bring to front'),
           description: _('Brings the selected item to the front of the diagram.'),
           svg: basePath + '/icons/bring-to-front.svg',
-          update: this.enableForAnySelected,
+          update: this.enableForAnySelectedNode,
           onClick: () => this.bringToFront(),
         },
         {
@@ -141,7 +142,7 @@ export default class ActDiaTools {
           label: _('Bring forward'),
           description: _('Brings the selected item one level forward in the diagram.'),
           svg: basePath + '/icons/bring-forward.svg',
-          update: this.enableForAnySelected,
+          update: this.enableForAnySelectedNode,
           onClick: () => this.bringForward(),
         },
         {
@@ -149,7 +150,7 @@ export default class ActDiaTools {
           label: _('Send backward'),
           description: _('Sends the selected item one level back in the diagram.'),
           svg: basePath + '/icons/send-backward.svg',
-          update: this.enableForAnySelected,
+          update: this.enableForAnySelectedNode,
           onClick: () => this.sendBackward(),
         },
         {
@@ -157,7 +158,7 @@ export default class ActDiaTools {
           label: _('Send to back'),
           description: _('Sends the selected item to the back of the diagram.'),
           svg: basePath + '/icons/send-to-back.svg',
-          update: this.enableForAnySelected,
+          update: this.enableForAnySelectedNode,
           onClick: () => this.sendToBack(),
         },
         {
@@ -165,9 +166,9 @@ export default class ActDiaTools {
           label: _('Rotate clockwise'),
           description: _('Rotates the selected item 90 degrees clockwise.'),
           svg: basePath + '/icons/rotate-cw.svg',
-          update: ({tool, anySelected}) => {
-            tool.disabled = !anySelected || !tool.canRotate;
-            tool.element.classList.toggle('disabled', !anySelected);
+          update: ({tool, anySelectedNode}) => {
+            tool.disabled = !anySelectedNode || !tool.canRotate;
+            tool.element.classList.toggle('disabled', !anySelectedNode);
           },
           onClick: () => this.rotateCW(),
         },
@@ -176,9 +177,9 @@ export default class ActDiaTools {
           label: _('Rotate counterclockwise'),
           description: _('Rotates the selected item 90 degrees counterclockwise.'),
           svg: basePath + '/icons/rotate-ccw.svg',
-          update: ({tool, anySelected}) => {
-            tool.disabled = !anySelected || !tool.canRotate;
-            tool.element.classList.toggle('disabled', !anySelected);
+          update: ({tool, anySelectedNode}) => {
+            tool.disabled = !anySelectedNode || !tool.canRotate;
+            tool.element.classList.toggle('disabled', !anySelectedNode);
           },
           onClick: () => this.rotateCCW(),
         },
@@ -188,10 +189,10 @@ export default class ActDiaTools {
           description: _('X coord of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selected}) => {
-            if (selected.length === 1) {
+          update: ({tool, selectedNode}) => {
+            if (selectedNode) {
               tool.input.disabled = false;
-              tool.input.value = selected[0].x;
+              tool.input.value = selectedNode.x;
             } else {
               tool.input.disabled = true;
               tool.input.value = '';
@@ -199,10 +200,10 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const items = this.actdia.getItems({ onlySelected: true });
-            items.forEach(item => {
-              item.x = value;
-              item.updateTransform();
+            const nodes = this.actdia.getNodes({ onlySelected: true });
+            nodes.forEach(node => {
+              node.x = value;
+              node.updateTransform();
             });
           },
         },
@@ -212,10 +213,10 @@ export default class ActDiaTools {
           description: _('Y coord of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selected}) => {
-            if (selected.length === 1) {
+          update: ({tool, selectedNode}) => {
+            if (selectedNode) {
               tool.input.disabled = false;
-              tool.input.value = selected[0].y;
+              tool.input.value = selectedNode.y;
             } else {
               tool.input.disabled = true;
               tool.input.value = '';
@@ -223,10 +224,10 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const items = this.actdia.getItems({ onlySelected: true });
-            items.forEach(item => {
-              item.y = value;
-              item.updateTransform();
+            const nodes = this.actdia.getNodes({ onlySelected: true });
+            nodes.forEach(node => {
+              node.y = value;
+              node.updateTransform();
             });
           },
         },
@@ -236,10 +237,10 @@ export default class ActDiaTools {
           description: _('Width of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selected}) => {
-            if (selected.length === 1) {
+          update: ({tool, selectedNode}) => {
+            if (selectedNode) {
               tool.input.disabled = !(tool.canChangeSize || tool.canChangeWidth);
-              tool.input.value = selected[0].width;
+              tool.input.value = selectedNode.width;
             } else {
               tool.input.disabled = true;
               tool.input.value = '';
@@ -247,10 +248,10 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const items = this.actdia.getItems({ onlySelected: true });
-            items.forEach(item => {
-              item.width = value;
-              item.updateTransform();
+            const nodes = this.actdia.getNodes({ onlySelected: true });
+            nodes.forEach(node => {
+              node.width = value;
+              node.updateTransform();
             });
           },
         },
@@ -260,10 +261,10 @@ export default class ActDiaTools {
           description: _('Height of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selected}) => {
-            if (selected.length === 1) {
+          update: ({tool, selectedNode}) => {
+            if (selectedNode) {
               tool.input.disabled = !(tool.canChangeSize || tool.canChangeHeight);
-              tool.input.value = selected[0].height;
+              tool.input.value = selectedNode.height;
             } else {
               tool.input.disabled = true;
               tool.input.value = '';
@@ -271,10 +272,10 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const items = this.actdia.getItems({ onlySelected: true });
-            items.forEach(item => {
-              item.height = value;
-              item.updateTransform();
+            const nodes = this.actdia.getNodes({ onlySelected: true });
+            nodes.forEach(node => {
+              node.height = value;
+              node.updateTransform();
             });
           },
         },
@@ -353,42 +354,51 @@ export default class ActDiaTools {
   }
 
   update() {
-    const selected = this.actdia.getItems({ onlySelected: true });
+    const selectedItems = this.actdia.getItems({ onlySelected: true });
+    const selectedNodes = selectedItems.filter(item => isNode(item));
+    const selectedConnections = selectedItems.filter(item => isConnection(item));
+    const selectedNode = selectedNodes.length === 1 ? selectedNodes[0] : null;
+    const selectedConnection = selectedConnections.length === 1 ? selectedConnections[0] : null;
     const data = {
-      selected,
-      selectedCount: selected.length,
-      anySelected: selected.length > 0,
+      selectedItems,
+      selectedItemsCount: selectedItems.length,
+      selectedNode,
+      selectedNodes,
+      selectedNodesCount: selectedNodes.length,
+      anySelectedNode: selectedNodes.length > 0,
+      selectedConnection: selectedConnection,
+      selectedConnections,
+      selectedConnectionsCount: selectedConnections.length,
+      anySelectedConnection: selectedConnections.length > 0,
     };
 
     this.toolsCategories.forEach(category => {
       category.tools.forEach(tool => tool.update?.({tool, ...data}));
     });
 
-    if (this.selectedItem !== selected[0]) {
+    if (this.selectedNode !== selectedNodes[0]) {
+      this.selectedNode = null;
       this.dynamicToolsElement.innerHTML = '';
-    }
 
-    if (selected.length === 1) {
-      this.selectedItem = selected[0];
-      const item = this.selectedItem;
-      const fields = item.fields?.filter(f => f.isTool);
-      fields.forEach(field => {
-        const tool = {...field};
-        tool.update = ({tool, selected}) => {
-          tool.input.value = item[field.name];
-        };
-        tool.onChange = evt => {
-          const value = field.type === 'number' ? parseFloat(evt.target.value) : evt.target.value;
-          item[field.name] = value;
-        }
-        tool.label ??= _(tool._label);
-        this.prepareTool(tool);
-        this.dynamicToolsElement.appendChild(tool.element);
-        tool.input.value = item[field.name];
-      });
-    } else {
-      this.selectedItem = null;
-      this.dynamicToolsElement.innerHTML = '';
+      if (selectedNode) {
+        this.selectedNode = selectedNode;
+        const node = this.selectedNode;
+        const fields = node.fields?.filter(f => f.isTool);
+        fields?.forEach(field => {
+          const tool = {...field};
+          tool.update = ({tool}) => {
+            tool.input.value = node[field.name];
+          };
+          tool.onChange = evt => {
+            const value = field.type === 'number' ? parseFloat(evt.target.value) : evt.target.value;
+            node[field.name] = value;
+          }
+          tool.label ??= _(tool._label);
+          this.prepareTool(tool);
+          this.dynamicToolsElement.appendChild(tool.element);
+          tool.input.value = node[field.name];
+        });
+      }
     }
   }
 
@@ -716,9 +726,9 @@ export default class ActDiaTools {
     this.actdia.sendToBack(...items);
   }
 
-  enableForAnySelected({tool, anySelected}) {
-    tool.disabled = !anySelected;
-    tool.element.classList.toggle('disabled', !anySelected);
+  enableForAnySelectedNode({tool, anySelectedNode}) {
+    tool.disabled = !anySelectedNode;
+    tool.element.classList.toggle('disabled', !anySelectedNode);
   }
 
   horizontalFlip(options) {
