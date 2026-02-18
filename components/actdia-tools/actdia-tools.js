@@ -200,7 +200,7 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const nodes = this.actdia.getNodes({ onlySelected: true });
+            const nodes = this.actdia.getItems({ onlySelected: true });
             nodes.forEach(node => {
               node.x = value;
               node.updateTransform();
@@ -224,7 +224,7 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const nodes = this.actdia.getNodes({ onlySelected: true });
+            const nodes = this.actdia.getItems({ onlySelected: true });
             nodes.forEach(node => {
               node.y = value;
               node.updateTransform();
@@ -248,7 +248,7 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const nodes = this.actdia.getNodes({ onlySelected: true });
+            const nodes = this.actdia.getItems({ onlySelected: true });
             nodes.forEach(node => {
               node.width = value;
               node.updateTransform();
@@ -272,7 +272,7 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
-            const nodes = this.actdia.getNodes({ onlySelected: true });
+            const nodes = this.actdia.getItems({ onlySelected: true });
             nodes.forEach(node => {
               node.height = value;
               node.updateTransform();
@@ -400,6 +400,7 @@ export default class ActDiaTools {
             node[field.name] = value;
           }
           tool.label ??= _(tool._label);
+          tool.nodes = [...selectedNodes];
           this.prepareTool(tool);
           this.dynamicToolsElement.appendChild(tool.element);
           tool.input.value = node[field.name];
@@ -458,7 +459,7 @@ export default class ActDiaTools {
           .catch(err => console.error('Error loading SVG for tool', tool, err));
       }
 
-      if (tool.type === 'number') {
+      if (tool.type === 'number' || tool.type === 'text') {
         element.classList.add('actdia-tool-input');
         tool.labelElement = document.createElement('span');
         tool.labelElement.textContent = tool.label;
@@ -467,12 +468,17 @@ export default class ActDiaTools {
         tool.input = document.createElement('input');
         const input = tool.input;
         input.classList.add('actdia-tool-input');
-        input.type = 'number';
-        input.min = tool.min ?? 0;
-        input.max = tool.max ?? '';
-        input.step = tool.step ?? '';
+        input.type = tool.type;
+        if (tool.type === 'number') {
+          input.min = tool.min ?? 0;
+          input.max = tool.max ?? '';
+          input.step = tool.step ?? '';
+        }
         input.value = tool.value ?? '';
-        input.addEventListener('change', evt => tool.onChange?.(evt));
+        input.addEventListener('input', evt => {
+          tool.onChange?.(evt);
+          tool.nodes?.forEach(n => n.update?.());
+        });
         element.appendChild(input);
       }
     }

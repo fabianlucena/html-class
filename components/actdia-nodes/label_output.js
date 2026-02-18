@@ -45,6 +45,7 @@ export default function create({ Node, actdia }) {
         name: 'label',
         type: 'text',
         _label: 'Label',
+        isTool: true,
       },
     ];
 

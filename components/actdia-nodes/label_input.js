@@ -38,6 +38,7 @@ export default function create({ Node }) {
         name: 'label',
         type: 'text',
         _label: 'Label',
+        isTool: true,
       },
     ];
     
