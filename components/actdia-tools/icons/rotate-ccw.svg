@@ -2,15 +2,11 @@
   <path
     d="M 0.1 0.1 v .8 h .8 M .65 .9 A .55 .55 0 0 0 .1 .35"
     fill="none"
-    stroke-width="0.1"
-    stroke="currentColor"
   />
   <path
     d="M0.35,0.55 L0.55,0.35 L0.75,0.55"
-    transform="rotate(180, 0.55, 0.55) translate(-0.08, -0.13)"
+    transform="rotate(-90, 0.55, 0.55) translate(0.17, -0.2)"
     fill="none"
-    stroke-width="0.1"
-    stroke="currentColor"
   >
   </path>
 </svg>

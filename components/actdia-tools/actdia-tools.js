@@ -144,6 +144,22 @@ export default class ActDiaTools {
           update: this.enableForAnySelected,
           onClick: () => this.sendToBack(),
         },
+        {
+          name: 'rotateCW',
+          label: _('Rotate clockwise'),
+          description: _('Rotates the selected item 90 degrees clockwise.'),
+          svg: basePath + '/icons/rotate-cw.svg',
+          update: this.enableForAnySelected,
+          onClick: () => this.rotateCW(),
+        },
+        {
+          name: 'rotateCCW',
+          label: _('Rotate counterclockwise'),
+          description: _('Rotates the selected item 90 degrees counterclockwise.'),
+          svg: basePath + '/icons/rotate-ccw.svg',
+          update: this.enableForAnySelected,
+          onClick: () => this.rotateCCW(),
+        },
       ],
     },
   ];
@@ -536,4 +552,13 @@ export default class ActDiaTools {
     tool.element.classList.toggle('disabled', !anySelected);
   }
 
+  rotateCW(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    items.forEach(item => item.rotate += 90);
+  }
+
+  rotateCCW(options) {
+    const items = this.actdia.getItems({ onlySelected: true, ...options });
+    items.forEach(item => item.rotate -= 90);
+  }
 }
