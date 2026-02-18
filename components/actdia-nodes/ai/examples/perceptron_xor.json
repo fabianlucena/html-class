@@ -303,7 +303,7 @@
       "y": 5,
       "name": "Descanalizar - e2365",
       "description": "",
-      "channelWidth": 3,
+      "channels": 3,
       "height": 3,
       "connectors": [
         {

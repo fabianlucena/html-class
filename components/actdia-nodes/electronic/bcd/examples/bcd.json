@@ -573,7 +573,7 @@
       "y": 6,
       "name": "Canal - 3a53c",
       "description": "",
-      "channelWidth": 4,
+      "channels": 4,
       "connectors": [
         {
           "id": "ce82da5b-96a7-4021-9b41-af9a501292f7"
