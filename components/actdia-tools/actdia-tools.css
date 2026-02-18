@@ -126,7 +126,7 @@
   padding: .45em .2em;
 }
 
-.actdia-tool-input input {
+.actdia-tool-input input:not([type="checkbox"]) {
   width: 4em;
   padding: 0;
   margin: 0 .2em;

@@ -270,6 +270,30 @@ export default class ActDiaTools {
           },
         },
         {
+          name: 'ortho',
+          label: _('Orthogonal'),
+          description: _('Draw the conection orthonally.'),
+          type: 'checkbox',
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const value = selectedConnections
+              .some(c => c.ortho);
+            
+            tool.input.checked = value;
+          },
+          onChange: evt => {
+            const value = evt.target.checked;
+            const nodes = this.actdia.getItems({ onlySelected: true });
+            nodes.forEach(node => {
+              node.ortho = value;
+              node.update();
+            });
+          },
+        },
+        {
           name: 'style.strokeWidth',
           label: _('Stroke width'),
           description: _('Stroke width of the connection.'),
@@ -507,7 +531,7 @@ export default class ActDiaTools {
           .catch(err => console.error('Error loading SVG for tool', tool, err));
       }
 
-      if (tool.type === 'number' || tool.type === 'text') {
+      if (tool.type === 'number' || tool.type === 'text' || tool.type === 'checkbox') {
         element.classList.add('actdia-tool-input');
         tool.labelElement = document.createElement('span');
         tool.labelElement.textContent = tool.label;
