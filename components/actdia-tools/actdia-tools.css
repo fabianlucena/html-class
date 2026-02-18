@@ -18,6 +18,11 @@
   stroke-width: .003em;
 }
 
+.actdia-tool-button.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .actdia-tool-button .star {
   fill: transparent;
 }
@@ -98,7 +103,7 @@
   display: none;
 }
 
-.actdia-tool-button:hover {
+.actdia-tool-button:not(.disabled):hover {
   background-color: #464646;
   border-color: #555555;
   border-style: solid;

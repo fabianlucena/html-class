@@ -37,6 +37,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   actdiaTools.onSave =  () => {
     lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
     actdiaTools.setChanged(false);
+    actdiaTools.update();
   };
 
   actdia.addEventListener('diagramchanged', diagramChanged);
@@ -44,6 +45,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   actdia.addEventListener('item:dblclick', itemDblClickHandler);
   actdia.addEventListener('keydown', keyDownHandler, true);
   actdia.addEventListener('keyup', keyUpHandler);
+  actdia.addEventListener('item:select', itemSelectHandler);
 
   actdia.pushNotification(_('Welcome to ActDia!'), 'info');
   if (window.location.hash && window.location.hash.startsWith('#diagram-')) {
@@ -58,6 +60,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   lastSavedStatus = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
   pushState();
   actdiaTools.setChanged(false);
+  actdiaTools.update();
 
   window.addEventListener('hashchange', async () => {
     if (window.location.hash.startsWith('#state-')) {
@@ -179,6 +182,10 @@ function keyUpHandler(evt) {
   }
 }
 
+function itemSelectHandler(evt) {
+  actdiaTools.update();
+}
+
 let incrementalPosition = 0;
 async function copyJSONToClipboard(options) {
   incrementalPosition = 1;
@@ -217,4 +224,5 @@ function diagramChanged() {
 function checkForChanges() {
   const status = JSON.stringify(actdia.getData({ noSelectedProperty: true }));
   actdiaTools.setChanged(status !== lastSavedStatus);
+  actdiaTools.update();
 }

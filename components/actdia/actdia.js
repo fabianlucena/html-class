@@ -2183,9 +2183,11 @@ export default class ActDia {
     if (item && item.selectable !== false && evt.button === 0 && item !== this.capturedItem) {
       if (evt.ctrlKey) {
         item.select(!item.selected);
+        this.fireEvent('item:select', { item, selected: item.selected });
         return true;
       } else {
         this.#items.forEach(i => i.select(i === item));
+        this.fireEvent('item:select', { item, selected: item.selected });
       }
     }
   }
@@ -2317,8 +2319,10 @@ export default class ActDia {
       if (evt.defaultPrevented) {
         return;
       }
-    }
+    } {
       this.#items.forEach(i => i.select(false));
+      this.fireEvent('item:select', { selected: false });
+    }
 
     this.startSelectionBox();
   }

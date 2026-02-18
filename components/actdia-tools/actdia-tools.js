@@ -104,6 +104,7 @@ export default class ActDiaTools {
           description: _('Brings the selected item to the front of the diagram.'),
           svg: basePath + '/icons/bring-to-front.svg',
           onClick: () => this.bringToFront(),
+          update: this.enableForAnySelected,
         },
         {
           name: 'sendToBack',
@@ -111,6 +112,7 @@ export default class ActDiaTools {
           description: _('Sends the selected item to the back of the diagram.'),
           svg: basePath + '/icons/send-to-back.svg',
           onClick: () => this.sendToBack(),
+          update: this.enableForAnySelected,
         },
       ],
     },
@@ -172,10 +174,24 @@ export default class ActDiaTools {
 
     this.element.addEventListener('click', evt => this.clickHandler(evt));
 
-    this.updateTools();
+    this.updateToolsCategories();
+    this.selectCategory('edit');
   }
 
-  updateTools() {
+  update() {
+    const selected = this.actdia.getItems({ onlySelected: true });
+    const data = {
+      selected,
+      selectedCount: selected.length,
+      anySelected: selected.length > 0,
+    };
+
+    this.toolsCategories.forEach(category => {
+      category.tools.forEach(tool => tool.update?.(tool, data));
+    });
+  }
+
+  updateToolsCategories() {
     let selected = this.toolsCategories.find(c => c.selected)
       || this.toolsCategories[0];
 
@@ -264,6 +280,9 @@ export default class ActDiaTools {
     if (name) {
       const tool = this.getToolByName(name);
       if (tool) {
+        if (tool.disabled)
+          return;
+
         const onClick = tool?.onClick;
         if (onClick) {
           onClick();
@@ -282,7 +301,7 @@ export default class ActDiaTools {
   selectCategory(name) {
     const select = this.toolsCategories.find(c => c.name === name);
     this.toolsCategories.forEach(c => c.selected = c === select);
-    this.updateTools();
+    this.updateToolsCategories();
   }
 
   setChanged(changed) {
@@ -344,7 +363,7 @@ export default class ActDiaTools {
     const svg = new ClipboardItem({ 'text/plain': new Blob([svgText], { type: 'image/svg+xml' })});
     await navigator.clipboard.write([svg]);
     pushNotification(_('SVG image copied to the clipboard.'), 'success');
- }
+  }
 
   downloadJsonHandler() {
     if (!this.getExportableItems({ onlySelected: true }).length) {
@@ -480,5 +499,10 @@ export default class ActDiaTools {
   sendToBack(options) {
     const items = this.actdia.getItems({ onlySelected: true, ...options });
     this.actdia.sendToBack(...items);
+  }
+
+  enableForAnySelected(tool, {anySelected}) {
+    tool.disabled = !anySelected;
+    tool.element.classList.toggle('disabled', !anySelected);
   }
 }
