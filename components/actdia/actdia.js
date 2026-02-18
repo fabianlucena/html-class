@@ -736,10 +736,7 @@ export default class ActDia {
     options.tab ??= ' ';
 
     
-    if (!ActDia.itemsCss) {
-      ActDia.itemsCss = await loadTextCss(getPath(import.meta.url) + '/actdia-items.css');
-      console.log(ActDia.itemsCss);
-    }
+    ActDia.itemsCss ??= await loadTextCss(getPath(import.meta.url) + '/actdia-items.css');
 
     const prefix1 = options.prefix + options.tab;
     return options.prefix + '<style>'
