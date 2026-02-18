@@ -18,7 +18,11 @@
   stroke-width: .003em;
 }
 
-.actdia-tool-button.disabled {
+.actdia-tool.hidden {
+  display: none;
+}
+
+.actdia-tool.disabled {
   opacity: 0.5;
   cursor: default;
 }

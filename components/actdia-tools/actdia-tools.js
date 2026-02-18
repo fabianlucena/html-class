@@ -118,7 +118,7 @@ export default class ActDiaTools {
           label: _('Horizontal flip'),
           description: _('Flips the selected item horizontally.'),
           svg: basePath + '/icons/horizontal-flip.svg',
-          update: this.enableForAnySelectedNode,
+          update: this.enableForAnySelectedNodeHideForConnection,
           onClick: () => this.horizontalFlip(),
         },
         {
@@ -126,7 +126,7 @@ export default class ActDiaTools {
           label: _('Vertical flip'),
           description: _('Flips the selected item vertically.'),
           svg: basePath + '/icons/vertical-flip.svg',
-          update: this.enableForAnySelectedNode,
+          update: this.enableForAnySelectedNodeHideForConnection,
           onClick: () => this.verticalFlip(),
         },
         {
@@ -134,7 +134,7 @@ export default class ActDiaTools {
           label: _('Bring to front'),
           description: _('Brings the selected item to the front of the diagram.'),
           svg: basePath + '/icons/bring-to-front.svg',
-          update: this.enableForAnySelectedNode,
+          update: this.enableForAnySelectedNodeHideForConnection,
           onClick: () => this.bringToFront(),
         },
         {
@@ -142,7 +142,7 @@ export default class ActDiaTools {
           label: _('Bring forward'),
           description: _('Brings the selected item one level forward in the diagram.'),
           svg: basePath + '/icons/bring-forward.svg',
-          update: this.enableForAnySelectedNode,
+          update: this.enableForAnySelectedNodeHideForConnection,
           onClick: () => this.bringForward(),
         },
         {
@@ -150,7 +150,7 @@ export default class ActDiaTools {
           label: _('Send backward'),
           description: _('Sends the selected item one level back in the diagram.'),
           svg: basePath + '/icons/send-backward.svg',
-          update: this.enableForAnySelectedNode,
+          update: this.enableForAnySelectedNodeHideForConnection,
           onClick: () => this.sendBackward(),
         },
         {
@@ -158,7 +158,7 @@ export default class ActDiaTools {
           label: _('Send to back'),
           description: _('Sends the selected item to the back of the diagram.'),
           svg: basePath + '/icons/send-to-back.svg',
-          update: this.enableForAnySelectedNode,
+          update: this.enableForAnySelectedNodeHideForConnection,
           onClick: () => this.sendToBack(),
         },
         {
@@ -166,9 +166,13 @@ export default class ActDiaTools {
           label: _('Rotate clockwise'),
           description: _('Rotates the selected item 90 degrees clockwise.'),
           svg: basePath + '/icons/rotate-cw.svg',
-          update: ({tool, anySelectedNode}) => {
-            tool.disabled = !anySelectedNode || !tool.canRotate;
-            tool.element.classList.toggle('disabled', !anySelectedNode);
+          update: data => {
+            if (!this.enableForAnySelectedNodeHideForConnection(data))
+              return;
+
+            const {tool} = data;
+            tool.disabled = !tool.canRotate;
+            tool.element.classList.toggle('disabled', tool.disabled);
           },
           onClick: () => this.rotateCW(),
         },
@@ -177,9 +181,13 @@ export default class ActDiaTools {
           label: _('Rotate counterclockwise'),
           description: _('Rotates the selected item 90 degrees counterclockwise.'),
           svg: basePath + '/icons/rotate-ccw.svg',
-          update: ({tool, anySelectedNode}) => {
-            tool.disabled = !anySelectedNode || !tool.canRotate;
-            tool.element.classList.toggle('disabled', !anySelectedNode);
+          update: data => {
+            if (!this.enableForAnySelectedNodeHideForConnection(data))
+              return;
+            
+            const {tool} = data;
+            tool.disabled = !tool.canRotate;
+            tool.element.classList.toggle('disabled', tool.disabled);
           },
           onClick: () => this.rotateCCW(),
         },
@@ -189,15 +197,7 @@ export default class ActDiaTools {
           description: _('X coord of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selectedNode}) => {
-            if (selectedNode) {
-              tool.input.disabled = false;
-              tool.input.value = selectedNode.x;
-            } else {
-              tool.input.disabled = true;
-              tool.input.value = '';
-            }
-          },
+          update: this.enableForAnySelectedNodeHideForConnection,
           onChange: evt => {
             const value = parseFloat(evt.target.value);
             const nodes = this.actdia.getItems({ onlySelected: true });
@@ -213,15 +213,7 @@ export default class ActDiaTools {
           description: _('Y coord of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selectedNode}) => {
-            if (selectedNode) {
-              tool.input.disabled = false;
-              tool.input.value = selectedNode.y;
-            } else {
-              tool.input.disabled = true;
-              tool.input.value = '';
-            }
-          },
+          update: this.enableForAnySelectedNodeHideForConnection,
           onChange: evt => {
             const value = parseFloat(evt.target.value);
             const nodes = this.actdia.getItems({ onlySelected: true });
@@ -237,14 +229,13 @@ export default class ActDiaTools {
           description: _('Width of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selectedNode}) => {
-            if (selectedNode) {
-              tool.input.disabled = !(tool.canChangeSize || tool.canChangeWidth);
-              tool.input.value = selectedNode.width;
-            } else {
-              tool.input.disabled = true;
-              tool.input.value = '';
-            }
+          update: data => {
+            if (!this.enableForAnySelectedNodeHideForConnection(data))
+              return;
+
+            const {tool} = data;
+            tool.disabled = !(tool.canChangeSize || tool.canChangeWidth);
+            tool.element.classList.toggle('disabled', tool.disabled);
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
@@ -261,14 +252,13 @@ export default class ActDiaTools {
           description: _('Height of the item.'),
           type: 'number',
           min: 0,
-          update: ({tool, selectedNode}) => {
-            if (selectedNode) {
-              tool.input.disabled = !(tool.canChangeSize || tool.canChangeHeight);
-              tool.input.value = selectedNode.height;
-            } else {
-              tool.input.disabled = true;
-              tool.input.value = '';
-            }
+          update: data => {
+            if (!this.enableForAnySelectedNodeHideForConnection(data))
+              return;
+
+            const {tool} = data;
+            tool.disabled = !(tool.canChangeSize || tool.canChangeHeight);
+            tool.element.classList.toggle('disabled', tool.disabled);
           },
           onChange: evt => {
             const value = parseFloat(evt.target.value);
@@ -751,6 +741,44 @@ export default class ActDiaTools {
   enableForAnySelectedNode({tool, anySelectedNode}) {
     tool.disabled = !anySelectedNode;
     tool.element.classList.toggle('disabled', !anySelectedNode);
+  }
+
+  enableForAnySelectedNodeHideForConnection({tool, anySelectedNode, anySelectedConnection, selectedNodes}) {
+    if (anySelectedNode) {
+      tool.element.classList.remove('hidden');
+      tool.disabled = false;
+      tool.element.classList.remove('disabled');
+      return true;
+    }
+    
+    if (anySelectedConnection) {
+      tool.element.classList.add('hidden');
+    } else {
+      tool.element.classList.remove('hidden');
+      tool.disabled = !anySelectedNode;
+      tool.element.classList.toggle('disabled', !anySelectedNode);
+    }
+
+    return false;
+  }
+
+  enableForSingleSelectedNodeHideForConnection({tool, selectedNode, anySelectedConnection}) {
+    if (selectedNode) {
+      tool.element.classList.remove('hidden');
+      tool.disabled = false;
+      tool.element.classList.remove('disabled');
+      return true;
+    }
+
+    if (anySelectedConnection) {
+      tool.element.classList.add('hidden');
+    } else {
+      tool.element.classList.remove('hidden');
+      tool.disabled = !selectedNode;
+      tool.element.classList.toggle('disabled', !selectedNode);
+    }
+    
+    return false;
   }
 
   horizontalFlip(options) {
