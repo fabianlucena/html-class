@@ -534,6 +534,33 @@ export default class ActDiaTools {
       label: _('Document'),
       title: _('Document options'),
       tools: [
+        {
+          name: 'documentSX',
+          label: _('Scale'),
+          description: _('Scale of the draw.'),
+          type: 'number',
+          step: .1,
+          min: 0,
+          update: ({tool}) => tool.input.value = this.actdia.style?.sx || '',
+          onChange: evt => {
+            this.actdia.style ??= {};
+            this.actdia.style.sx = parseFloat(evt.target.value);
+            this.actdia.update();
+          },
+        },
+        {
+          name: 'documentSY',
+          label: _(''),
+          type: 'number',
+          step: .1,
+          min: 0,
+          update: ({tool}) => tool.input.value = this.actdia.style?.sy || '',
+          onChange: evt => {
+            this.actdia.style ??= {};
+            this.actdia.style.sy = parseFloat(evt.target.value);
+            this.actdia.update();
+          },
+        },
         { 
           name: 'documentPath',
           label: _('Path'),

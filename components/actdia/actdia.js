@@ -199,7 +199,7 @@ export default class ActDia {
     },
 
     selectedItem: {
-      offset: .5,
+      offset: .2,
     },
   };
 
@@ -317,6 +317,10 @@ export default class ActDia {
     this.svg.addEventListener('mouseup', evt => this.mouseUpHandler(evt));
     window.addEventListener('beforeprint', () => this.container.classList.add('print'));
     window.addEventListener('afterprint', () => this.container.classList.remove('print'));
+  }
+
+  update() {
+    this.mainGroup.setAttribute('transform', `scale(${this.style.sx},${this.style.sy})`);
   }
 
   addEventListener(eventName, handler, bubbles) {
