@@ -283,36 +283,6 @@ export default class ActDiaTools {
           },
         },
         {
-          name: 'gap',
-          label: _('Gap'),
-          description: _('Endpoint offset from the node.'),
-          type: 'number',
-          min: -.01,
-          step: 0.01,
-          update: data => {
-            if (!this.showForConnectionsOnly(data))
-              return;
-
-            const {tool, selectedConnections} = data;
-            const value = selectedConnections
-              .find(c => c.gap)?.gap || 0;
-            
-            tool.input.value = value;
-          },
-          onChange: evt => {
-            const value = parseFloat(evt.target.value);
-            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
-            connections.forEach(connection => {
-              if (value < 0) {
-                delete connection.gap;
-              } else {
-                connection.gap = value;
-              }
-              connection.update();
-            });
-          },
-        },
-        {
           name: 'design',
           label: _('Design'),
           description: _('Path design.'),
@@ -338,6 +308,36 @@ export default class ActDiaTools {
             const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
             connections.forEach(connection => {
               connection.design = value;
+              connection.update();
+            });
+          },
+        },
+        {
+          name: 'gapBoth',
+          label: _('Gap both'),
+          description: _('Endpoint offset from the node.'),
+          type: 'number',
+          min: -.01,
+          step: 0.01,
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const value = selectedConnections
+              .find(c => c.gap)?.gap || 0;
+            
+            tool.input.value = value;
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
+            connections.forEach(connection => {
+              if (value < 0) {
+                delete connection.gap;
+              } else {
+                connection.gap = value;
+              }
               connection.update();
             });
           },
@@ -373,6 +373,36 @@ export default class ActDiaTools {
           },
         },
         {
+          name: 'gapStart',
+          label: _('Gap start'),
+          description: _('Endpoint offset from the node to the start marker.'),
+          type: 'number',
+          min: -.01,
+          step: .01,
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const value = selectedConnections
+              .find(c => c.gapStart)?.gapStart || 0;
+            
+            tool.input.value = value;
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
+            connections.forEach(connection => {
+              if (value < 0) {
+                delete connection.gapStart;
+              } else {
+                connection.gapStart = value;
+              }
+              connection.update();
+            });
+          },
+        },
+        {
           name: 'markerEnd',
           label: _('End'),
           description: _('Draw the marker end of the connection.'),
@@ -398,6 +428,36 @@ export default class ActDiaTools {
                 delete connection.markerEnd;
               }
 
+              connection.update();
+            });
+          },
+        },
+        {
+          name: 'gapEnd',
+          label: _('Gap end'),
+          description: _('Endpoint offset from the node to the end marker.'),
+          type: 'number',
+          min: -.01,
+          step: .01,
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const value = selectedConnections
+              .find(c => c.endGap)?.endGap || 0;
+            
+            tool.input.value = value;
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
+            connections.forEach(connection => {
+              if (value < 0) {
+                delete connection.endGap;
+              } else {
+                connection.endGap = value;
+              }
               connection.update();
             });
           },
@@ -475,7 +535,28 @@ export default class ActDiaTools {
       title: _('Document options'),
       tools: [
         {
-          name: 'markerStart',
+          name: 'documentGapBoth',
+          label: _('Gap both'),
+          description: _('Endpoint offset from the node.'),
+          type: 'number',
+          min: -.01,
+          step: 0.01,
+          update: ({tool}) => tool.input.value = this.actdia.style.connection?.gap || '',
+          onChange: evt => {
+            const value = evt.target.value;
+            if (value >= 0) {
+              this.actdia.style.connection ??= {};
+              this.actdia.style.connection.gap = value;
+            } else {
+              delete this.actdia.style.connection?.gap;
+            }
+            
+            const connections = this.actdia.getItems({ onlyConnections: true });
+            connections.forEach(connection => connection.update());
+          },
+        },
+        {
+          name: 'documentMarkerStart',
           label: _('Start'),
           description: _('Draw the start marker for all connections.'),
           type: 'select',
@@ -495,7 +576,28 @@ export default class ActDiaTools {
           },
         },
         {
-          name: 'markerEnd',
+          name: 'documentGapStart',
+          label: _('Gap start'),
+          description: _('Endpoint offset from the node.'),
+          type: 'number',
+          min: -.01,
+          step: 0.01,
+          update: ({tool}) => tool.input.value = this.actdia.style.connection?.gapStart || '',
+          onChange: evt => {
+            const value = evt.target.value;
+            if (value >= 0) {
+              this.actdia.style.connection ??= {};
+              this.actdia.style.connection.gapStart = value;
+            } else {
+              delete this.actdia.style.connection?.gapStart;
+            }
+            
+            const connections = this.actdia.getItems({ onlyConnections: true });
+            connections.forEach(connection => connection.update());
+          },
+        },
+        {
+          name: 'documentMarkerEnd',
           label: _('End'),
           description: _('Draw the end marker for all connections.'),
           type: 'select',
@@ -503,13 +605,34 @@ export default class ActDiaTools {
           update: ({tool}) => tool.input.value = this.actdia.style.connection?.markerEnd || '',
           onChange: evt => {
             const value = evt.target.value;
-            if (value) {
+            if (value >= 0) {
               this.actdia.style.connection ??= {};
               this.actdia.style.connection.markerEnd = value;
             } else {
               delete this.actdia.style.connection?.markerEnd;
             }
 
+            const connections = this.actdia.getItems({ onlyConnections: true });
+            connections.forEach(connection => connection.update());
+          },
+        },
+        {
+          name: 'documentGapEnd',
+          label: _('Gap end'),
+          description: _('Endpoint offset from the node.'),
+          type: 'number',
+          min: -.01,
+          step: 0.01,
+          update: ({tool}) => tool.input.value = this.actdia.style.connection?.gapEnd || '',
+          onChange: evt => {
+            const value = evt.target.value;
+            if (value) {
+              this.actdia.style.connection ??= {};
+              this.actdia.style.connection.gapEnd = value;
+            } else {
+              delete this.actdia.style.connection?.gapEnd;
+            }
+            
             const connections = this.actdia.getItems({ onlyConnections: true });
             connections.forEach(connection => connection.update());
           },

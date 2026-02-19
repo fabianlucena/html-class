@@ -177,7 +177,8 @@ export default class Connection extends Item {
       dy = ty - fy;
 
     const design = this.design || this.actdia.style.connection.design || 'smooth';
-    const gap = this.gap ?? this.actdia.style.connection.gap ?? 0;
+    const gapStart = this.gapStart ?? this.gap 
+      ?? this.actdia.style.connection.gapStart ?? this.actdia.style.connection.gap ?? 0;
 
     let d = `M ${fx} ${fy} `,
       endD = '',
@@ -185,15 +186,18 @@ export default class Connection extends Item {
       fyd = fy,
       txd = tx,
       tyd = ty;
-    if (gap) {
-      fxd += gap * Math.cos(fa),
-      fyd -= gap * Math.sin(fa);
+    if (gapStart) {
+      fxd += gapStart * Math.cos(fa),
+      fyd -= gapStart * Math.sin(fa);
       d += ` L ${fxd} ${fyd}`;
-
-      if (!isMouse) {
+    }
+    if (!isMouse) {
+      const gapEnd = this.gapEnd ?? this.gap 
+        ?? this.actdia.style.connection.gapEnd ?? this.actdia.style.connection.gap ?? 0;
+      if (gapEnd) {
         endD = ` L ${txd} ${tyd}` + endD;
-        txd += gap * Math.cos(ta);
-        tyd -= gap * Math.sin(ta);
+        txd += gapEnd * Math.cos(ta);
+        tyd -= gapEnd * Math.sin(ta);
       }
     }
 
