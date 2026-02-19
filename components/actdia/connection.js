@@ -174,7 +174,7 @@ export default class Connection extends Item {
       dx = tx - fx,
       dy = ty - fy;
 
-    const design = this.design || this.actdia.style.connection.design;
+    const design = this.design || this.actdia.style.connection.design || 'smooth';
 
     let d = `M ${fx} ${fy} `;
     if (design === 'orthogonal') {
