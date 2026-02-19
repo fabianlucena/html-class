@@ -10,8 +10,6 @@ import { newId } from '../utils/id.js';
 importCss('./actdia-tools.css', import.meta.url);
 const basePath = getPath(import.meta.url);
 
-
-
 export default class ActDiaTools {
   menuTool = {
     name: 'menu',
@@ -21,7 +19,7 @@ export default class ActDiaTools {
 
   markerOptions = [
     { value: '', label: '— ' + _('None') },
-    { value: 'arrow', label: '← ' + _('Arrow') },
+    { value: 'arrow', label: '→ ' + _('Arrow') },
     { value: 'circle', label: ' ● ' + _('Circle') },
     { value: 'square', label: ' ■ ' + _('Square') },
     { value: 'diamond', label: ' ◆ ' + _('Diamond') },
@@ -471,6 +469,53 @@ export default class ActDiaTools {
         },
       ],
     },
+    {
+      name: 'document',
+      label: _('Document'),
+      title: _('Document options'),
+      tools: [
+        {
+          name: 'markerStart',
+          label: _('Start'),
+          description: _('Draw the start marker for all connections.'),
+          type: 'select',
+          options: this.markerOptions,
+          update: ({tool}) => tool.input.value = this.actdia.style.connection?.markerStart || '',
+          onChange: evt => {
+            const value = evt.target.value;
+            if (value) {
+              this.actdia.style.connection ??= {};
+              this.actdia.style.connection.markerStart = value;
+            } else {
+              delete this.actdia.style.connection?.markerStart;
+            }
+            
+            const connections = this.actdia.getItems({ onlyConnections: true });
+            connections.forEach(connection => connection.update());
+          },
+        },
+        {
+          name: 'markerEnd',
+          label: _('End'),
+          description: _('Draw the end marker for all connections.'),
+          type: 'select',
+          options: this.markerOptions,
+          update: ({tool}) => tool.input.value = this.actdia.style.connection?.markerEnd || '',
+          onChange: evt => {
+            const value = evt.target.value;
+            if (value) {
+              this.actdia.style.connection ??= {};
+              this.actdia.style.connection.markerEnd = value;
+            } else {
+              delete this.actdia.style.connection?.markerEnd;
+            }
+
+            const connections = this.actdia.getItems({ onlyConnections: true });
+            connections.forEach(connection => connection.update());
+          },
+        },
+      ],
+    }
   ];
 
   toolOptions = { sx: 18, sy: 18 };

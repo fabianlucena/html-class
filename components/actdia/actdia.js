@@ -192,6 +192,8 @@ export default class ActDia {
     connection: {
       design: 'smooth',
       gap: 0,
+      markerStart: '',
+      markerEnd: '',
       markerSize: .8,
       // markerAspectRatio: .6, // not specified for auto aspect ratio
     },

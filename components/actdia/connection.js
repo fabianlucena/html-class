@@ -251,8 +251,8 @@ export default class Connection extends Item {
       d,
     }];
 
-    shapes.push(this.getMarkerShape(this.markerStart, fx, fy, fa));
-    shapes.push(this.getMarkerShape(this.markerEnd, tx, ty, ta));
+    shapes.push(this.getMarkerShape(this.markerStart ?? this.actdia.style.connection.markerStart, fx, fy, fa));
+    shapes.push(this.getMarkerShape(this.markerEnd ?? this.actdia.style.connection.markerEnd, tx, ty, ta));
 
     this.shape.shapes = shapes.filter(s => s);
 
