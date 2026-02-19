@@ -271,84 +271,32 @@ export default class ActDiaTools {
           },
         },
         {
-          name: 'ortho',
-          label: _('Orthogonal'),
-          description: _('Draw the conection orthonally.'),
-          type: 'checkbox',
+          name: 'design',
+          label: _('Design'),
+          description: _('Path design.'),
+          type: 'select',
+          options: [
+            { value: '', label: ' ' + _('None') },
+            { value: 'smooth', label: ' ∿ ' + _('Smooth') }, 
+            { value: 'orthogonal', label: ' ┘ ' + _('Orthogonal') },
+            { value: 'straight', label: '⟋ ' + _('Straight') },
+          ],
           update: data => {
             if (!this.showForConnectionsOnly(data))
               return;
 
             const {tool, selectedConnections} = data;
             const value = selectedConnections
-              .some(c => c.ortho);
+              .find(c => c.design)?.design || '';
             
-            tool.input.checked = value;
+            tool.input.value = value;
           },
           onChange: evt => {
-            const value = evt.target.checked;
-            const nodes = this.actdia.getItems({ onlySelected: true });
-            nodes.forEach(node => {
-              node.ortho = value;
-              node.update();
-            });
-          },
-        },
-        {
-          name: 'style.strokeWidth',
-          label: _('Stroke width'),
-          description: _('Stroke width of the connection.'),
-          type: 'number',
-          min: 0,
-          step: 0.01,
-          update: data => {
-            if (!this.showForConnectionsOnly(data))
-              return;
-
-            const {tool, selectedConnections} = data;
-            const values = selectedConnections
-              .map(c => c.style?.strokeWidth)
-              .filter(v => v && !isNaN(v) && isFinite(v));
-            
-            tool.input.value = values.length ? 
-              (values.reduce((a, b) => a + b, 0) / values.length)
-              : '';
-          },
-          onChange: evt => {
-            const value = parseFloat(evt.target.value);
-            const nodes = this.actdia.getItems({ onlySelected: true });
-            nodes.forEach(node => {
-              node.style ??= {};
-              node.style.strokeWidth = value;
-              node.update();
-            });
-          },
-        },
-        {
-          name: 'style.dash',
-          label: _('Dash'),
-          description: _('Dash of the connection.'),
-          type: 'text',
-          update: data => {
-            if (!this.showForConnectionsOnly(data))
-              return;
-
-            const {tool, selectedConnections} = data;
-            const values = selectedConnections
-              .map(c => c.style?.dash)
-              .filter(v => v && !isNaN(v) && isFinite(v));
-            
-            tool.input.value = values.length ? 
-              (values.reduce((a, b) => a + b, 0) / values.length)
-              : '';
-          },
-          onChange: evt => {
-            const value = evt.target.value.split(/[, ]+/).map(s => parseFloat(s.trim()));
-            const nodes = this.actdia.getItems({ onlySelected: true });
-            nodes.forEach(node => {
-              node.style ??= {};
-              node.style.dash = value;
-              node.update();
+            const value = evt.target.value;
+            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
+            connections.forEach(connection => {
+              connection.design = value;
+              connection.update();
             });
           },
         },
@@ -359,8 +307,7 @@ export default class ActDiaTools {
           type: 'select',
           options: [
             { value: '', label: '— ' + _('None') },
-            { value: 'larrow', label: '← ' + _('Left arrow') },
-            { value: 'rarrow', label: '→ ' + _('Right arrow') },
+            { value: 'arrow', label: '→ ' + _('Arrow') },
             { value: 'circle', label: ' ● ' + _('Circle') },
             { value: 'square', label: ' ■ ' + _('Square') },
           ],
@@ -376,10 +323,10 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = evt.target.value;
-            const nodes = this.actdia.getItems({ onlySelected: true });
-            nodes.forEach(node => {
-              node.markerStart = value;
-              node.update();
+            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
+            connections.forEach(connection => {
+              connection.markerStart = value;
+              connection.update();
             });
           },
         },
@@ -407,21 +354,80 @@ export default class ActDiaTools {
           },
           onChange: evt => {
             const value = evt.target.value;
-            const nodes = this.actdia.getItems({ onlySelected: true });
-            nodes.forEach(node => {
-              node.markerEnd = value;
-              node.update();
+            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
+            connections.forEach(connection => {
+              connection.markerEnd = value;
+              connection.update();
             });
           },
         },
       ],
     },
-    /*{
+    {
       name: 'style',
       label: _('Style'),
       title: _('Style options'),
-      tools: [],
-    },*/
+      tools: [
+        {
+          name: 'style.strokeWidth',
+          label: _('Stroke width'),
+          description: _('Stroke width of the connection.'),
+          type: 'number',
+          min: 0,
+          step: 0.01,
+          update: data => {
+            if (!this.enableForAnySelectedItem(data))
+              return;
+
+            const {tool, selectedItems} = data;
+            const values = selectedItems
+              .map(c => c.style?.strokeWidth)
+              .filter(v => v && !isNaN(v) && isFinite(v));
+            
+            tool.input.value = values.length ? 
+              (values.reduce((a, b) => a + b, 0) / values.length)
+              : '';
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const items = this.actdia.getItems({ onlySelected: true });
+            items.forEach(item => {
+              item.style ??= {};
+              item.style.strokeWidth = value;
+              item.update();
+            });
+          },
+        },
+        {
+          name: 'style.dash',
+          label: _('Dash'),
+          description: _('Dash of the connection.'),
+          type: 'text',
+          update: data => {
+            if (!this.enableForAnySelectedItem(data))
+              return;
+
+            const {tool, selectedItems} = data;
+            const values = selectedItems
+              .map(c => c.style?.dash)
+              .filter(v => v && !isNaN(v) && isFinite(v));
+            
+            tool.input.value = values.length ? 
+              (values.reduce((a, b) => a + b, 0) / values.length)
+              : '';
+          },
+          onChange: evt => {
+            const value = evt.target.value.split(/[, ]+/).map(s => parseFloat(s.trim()));
+            const items = this.actdia.getItems({ onlySelected: true });
+            items.forEach(item => {
+              item.style ??= {};
+              item.style.dash = value;
+              item.update();
+            });
+          },
+        },
+      ],
+    },
   ];
 
   toolOptions = { sx: 18, sy: 18 };
@@ -503,6 +509,7 @@ export default class ActDiaTools {
     const data = {
       selectedItems,
       selectedItemsCount: selectedItems.length,
+      anySelectedItem: selectedItems.length > 0,
       selectedNode,
       selectedNodes,
       selectedNodesCount: selectedNodes.length,
@@ -903,6 +910,11 @@ export default class ActDiaTools {
   sendToBack(options) {
     const items = this.actdia.getItems({ onlySelected: true, ...options });
     this.actdia.sendToBack(...items);
+  }
+
+  enableForAnySelectedItem({tool, anySelectedItem}) {
+    tool.disabled = !anySelectedItem;
+    tool.element.classList.toggle('disabled', !anySelectedItem);
   }
 
   enableForAnySelectedNode({tool, anySelectedNode}) {
