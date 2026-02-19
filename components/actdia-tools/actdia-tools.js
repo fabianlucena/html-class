@@ -282,9 +282,9 @@ export default class ActDiaTools {
             });
           },
         },
-        {
-          name: 'design',
-          label: _('Design'),
+        { 
+          name: 'path',
+          label: _('Path'),
           description: _('Path design.'),
           type: 'select',
           options: [
@@ -299,7 +299,7 @@ export default class ActDiaTools {
 
             const {tool, selectedConnections} = data;
             const value = selectedConnections
-              .find(c => c.design)?.design || '';
+              .find(c => c.path)?.path || '';
             
             tool.input.value = value;
           },
@@ -307,7 +307,7 @@ export default class ActDiaTools {
             const value = evt.target.value;
             const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
             connections.forEach(connection => {
-              connection.design = value;
+              connection.path = value;
               connection.update();
             });
           },
@@ -534,6 +534,26 @@ export default class ActDiaTools {
       label: _('Document'),
       title: _('Document options'),
       tools: [
+        { 
+          name: 'documentPath',
+          label: _('Path'),
+          description: _('Path design.'),
+          type: 'select',
+          options: [
+            { value: '', label: ' ' + _('None') },
+            { value: 'smooth', label: ' ∿ ' + _('Smooth') }, 
+            { value: 'orthogonal', label: ' ┘ ' + _('Orthogonal') },
+            { value: 'straight', label: '⟋ ' + _('Straight') },
+          ],
+          update: ({tool}) => tool.input.value = this.actdia.style.connection?.path || '',
+          onChange: evt => {
+            this.actdia.style.connection ??= {};
+            this.actdia.style.connection.path = evt.target.value;
+            
+            const connections = this.actdia.getItems({ onlyConnections: true });
+            connections.forEach(connection => connection.update());
+          },
+        },
         {
           name: 'documentGapBoth',
           label: _('Gap both'),
@@ -605,7 +625,7 @@ export default class ActDiaTools {
           update: ({tool}) => tool.input.value = this.actdia.style.connection?.markerEnd || '',
           onChange: evt => {
             const value = evt.target.value;
-            if (value >= 0) {
+            if (value) {
               this.actdia.style.connection ??= {};
               this.actdia.style.connection.markerEnd = value;
             } else {

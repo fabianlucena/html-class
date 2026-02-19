@@ -190,7 +190,7 @@ export default class ActDia {
     },
 
     connection: {
-      design: 'smooth',
+      path: 'smooth',
       gap: 0,
       markerStart: '',
       markerEnd: '',

@@ -119,8 +119,20 @@ export default class Connection extends Item {
       data.style = {...this.style};
     }
 
-    if (this.design) {
-      data.design = this.design;
+    if (this.path) {
+      data.path = this.path;
+    }
+
+    if (this.gap) {
+      data.gap = this.gap;
+    }
+
+    if (this.gapStart) {
+      data.gapStart = this.gapStart;
+    }
+
+    if (this.gapEnd) {
+      data.gapEnd = this.gapEnd;
     }
 
     if (this.markerStart) {
@@ -176,7 +188,7 @@ export default class Connection extends Item {
       dx = tx - fx,
       dy = ty - fy;
 
-    const design = this.design || this.actdia.style.connection.design || 'smooth';
+    const path = this.path || this.actdia.style.connection.path || 'smooth';
     const gapStart = this.gapStart ?? this.gap 
       ?? this.actdia.style.connection.gapStart ?? this.actdia.style.connection.gap ?? 0;
 
@@ -201,7 +213,7 @@ export default class Connection extends Item {
       }
     }
 
-    if (design === 'orthogonal') {
+    if (path === 'orthogonal') {
       const 
         fromDir = this.from.connector.direction % 360,
         fromHorizontal = fromDir >= 45 && fromDir < 135 || fromDir >= 225 && fromDir < 315;
@@ -231,7 +243,7 @@ export default class Connection extends Item {
           }
         }
       }
-    } else if (design === 'straight') {
+    } else if (path === 'straight') {
       d += `L ${txd} ${tyd}`;
     } else {
       const
