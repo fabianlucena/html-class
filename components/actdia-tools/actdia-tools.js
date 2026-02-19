@@ -271,6 +271,36 @@ export default class ActDiaTools {
           },
         },
         {
+          name: 'gap',
+          label: _('Gap'),
+          description: _('Endpoint offset from the node.'),
+          type: 'number',
+          min: -.01,
+          step: 0.01,
+          update: data => {
+            if (!this.showForConnectionsOnly(data))
+              return;
+
+            const {tool, selectedConnections} = data;
+            const value = selectedConnections
+              .find(c => c.gap)?.gap || 0;
+            
+            tool.input.value = value;
+          },
+          onChange: evt => {
+            const value = parseFloat(evt.target.value);
+            const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
+            connections.forEach(connection => {
+              if (value < 0) {
+                delete connection.gap;
+              } else {
+                connection.gap = value;
+              }
+              connection.update();
+            });
+          },
+        },
+        {
           name: 'design',
           label: _('Design'),
           description: _('Path design.'),
@@ -325,7 +355,12 @@ export default class ActDiaTools {
             const value = evt.target.value;
             const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
             connections.forEach(connection => {
-              connection.markerStart = value;
+              if (value) {
+                connection.markerStart = value;
+              } else {
+                delete connection.markerStart;
+              }
+
               connection.update();
             });
           },
@@ -337,8 +372,7 @@ export default class ActDiaTools {
           type: 'select',
           options: [
             { value: '', label: '— ' + _('None') },
-            { value: 'larrow', label: '← ' + _('Left arrow') },
-            { value: 'rarrow', label: '→ ' + _('Right arrow') },
+            { value: 'arrow', label: '← ' + _('Arrow') },
             { value: 'circle', label: ' ● ' + _('Circle') },
             { value: 'square', label: ' ■ ' + _('Square') },
           ],
@@ -356,7 +390,12 @@ export default class ActDiaTools {
             const value = evt.target.value;
             const connections = this.actdia.getItems({ onlySelected: true, onlyConnections: true });
             connections.forEach(connection => {
-              connection.markerEnd = value;
+              if (value) {
+                connection.markerEnd = value;
+              } else {
+                delete connection.markerEnd;
+              }
+
               connection.update();
             });
           },

@@ -171,21 +171,41 @@ export default class Connection extends Item {
     }
 
     const
+      fa = this.from.connector.direction / 180 * Math.PI - Math.atan2(fromCtm.b, fromCtm.a),
+      ta = this.to.connector.direction / 180 * Math.PI - Math.atan2(toCtm.b, toCtm.a),
       dx = tx - fx,
       dy = ty - fy;
 
     const design = this.design || this.actdia.style.connection.design || 'smooth';
+    const gap = this.gap ?? this.actdia.style.connection.gap ?? 0;
 
-    let d = `M ${fx} ${fy} `;
+    let d = `M ${fx} ${fy} `,
+      endD = '',
+      fxd = fx,
+      fyd = fy,
+      txd = tx,
+      tyd = ty;
+    if (gap) {
+      fxd += gap * Math.cos(fa),
+      fyd -= gap * Math.sin(fa);
+      d += ` L ${fxd} ${fyd}`;
+
+      if (!isMouse) {
+        endD = ` L ${txd} ${tyd}` + endD;
+        txd += gap * Math.cos(ta);
+        tyd -= gap * Math.sin(ta);
+      }
+    }
+
     if (design === 'orthogonal') {
       const 
         fromDir = this.from.connector.direction % 360,
         fromHorizontal = fromDir >= 45 && fromDir < 135 || fromDir >= 225 && fromDir < 315;
       if (mouse) {
         if (fromHorizontal) {
-          d += `L ${fx} ${ty} L ${tx} ${ty}`;
+          d += `L ${fxd} ${tyd} L ${txd} ${tyd}`;
         } else {
-          d += `L ${tx} ${fy} L ${tx} ${ty}`;
+          d += `L ${txd} ${fyd} L ${txd} ${tyd}`;
         }
       } else {
         const 
@@ -193,82 +213,91 @@ export default class Connection extends Item {
           toHorizontal = toDir >= 45 && toDir < 135 || toDir >= 225 && toDir < 315;
         if (fromHorizontal === toHorizontal) {
           if (fromHorizontal) {
-             const midY = fy + dy / 2;
-             d += `L ${fx} ${midY} L ${tx} ${midY} L ${tx} ${ty}`;
+             const midY = fyd + dy / 2;
+             d += `L ${fxd} ${midY} L ${txd} ${midY} L ${txd} ${tyd}`;
           } else {
-            const midX = fx + dx / 2;
-            d += `L ${midX} ${fy} L ${midX} ${ty} L ${tx} ${ty}`;
+            const midX = fxd + dx / 2;
+            d += `L ${midX} ${fyd} L ${midX} ${tyd} L ${txd} ${tyd}`;
           }
         } else {
           if (fromHorizontal) {
-            d += `L ${fx} ${ty} L ${tx} ${ty}`;
+            d += `L ${fxd} ${tyd} L ${txd} ${tyd}`;
           } else {
-            d += `L ${tx} ${fy} L ${tx} ${ty}`;
+            d += `L ${txd} ${fyd} L ${txd} ${tyd}`;
           }
         }
       }
     } else if (design === 'straight') {
-      d += `L ${tx} ${ty}`;
+      d += `L ${txd} ${tyd}`;
     } else {
       const
         dd = Math.pow(dx * dx + dy * dy, 1 / 2) / 3,
-        fa = this.from.connector.direction / 180 * Math.PI - Math.atan2(fromCtm.b, fromCtm.a),
-        x1 = fx + dd * Math.cos(fa),
-        y1 = fy - dd * Math.sin(fa);
+        x1 = fxd + dd * Math.cos(fa),
+        y1 = fyd - dd * Math.sin(fa);
 
       if (isMouse) {
-        d += `Q ${x1} ${y1} ${tx} ${ty}`;
+        d += `Q ${x1} ${y1} ${txd} ${tyd}`;
       } else {
         const
-          ta = (this.to.connector.direction / 180 * Math.PI - Math.atan2(toCtm.b, toCtm.a)),
-          x2 = tx + dd * Math.cos(ta),
-          y2 = ty - dd * Math.sin(ta);
-        d += `C ${x1} ${y1} ${x2} ${y2} ${tx} ${ty}`;
+          x2 = txd + dd * Math.cos(ta),
+          y2 = tyd - dd * Math.sin(ta);
+        d += `C ${x1} ${y1} ${x2} ${y2} ${txd} ${tyd}`;
       }
     }
 
+    d += endD;
     const shapes = [{
       shape: 'path',
       d,
     }];
 
-    shapes.push(this.getMarkerShape(this.markerStart, fx, fy));
-    shapes.push(this.getMarkerShape(this.markerEnd, tx, ty));
+    shapes.push(this.getMarkerShape(this.markerStart, fx, fy, fa));
+    shapes.push(this.getMarkerShape(this.markerEnd, tx, ty, ta));
 
     this.shape.shapes = shapes.filter(s => s);
 
     this.actdia.tryUpdateShape(this, this.svgElement?.children[0], this.shape);
   }
 
-  getMarkerShape(marker, x, y) {
+  getMarkerShape(marker, x, y, a) {
+    const mz = this.markerSize || this.actdia.style.connection.markerSize || .8;
+    const ma = this.markerAspectRatio || this.actdia.style.connection.markerAspectRatio;
+
     if (marker === 'arrow') {
+      const mw = mz * (ma ?? .7);
       return {
         className: 'marker',
         shape: 'path',
-        d: 'M 0 0 L .8 .4 L 0 .8 Z',
-        x: x - .4,
-        y: y - .4,
+        d: `M 0 0 l ${mz} ${mw / 2} l 0 -${mw} Z`,
+        x,
+        y,
+        rotate: [(-a * 180 / Math.PI), 0, 0],
       };
     }
     
     if (marker === 'circle') {
+      const mw = mz * (ma ?? 1);
       return {
         className: 'marker',
-        shape: 'circle',
-        cx: x,
+        shape: 'ellipse',
+        cx: x + mz / 2,
         cy: y,
-        r: .4,
+        rx: mz / 2,
+        ry: mw / 2,
+        rotate: [(-a * 180 / Math.PI), x, y],
       };
     }
     
     if (marker === 'square') {
+      const mw = mz * (ma ?? 1);
       return {
         className: 'marker',
         shape: 'rect',
-        x: x - .4,
-        y: y - .4,
-        width: .8,
-        height: .8,
+        x,
+        y: y - mw / 2,
+        width: mz,
+        height: mw,
+        rotate: [(-a * 180 / Math.PI), x, y],
       };
     }
 

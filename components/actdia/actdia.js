@@ -192,6 +192,8 @@ export default class ActDia {
     connection: {
       design: 'smooth',
       gap: 0,
+      markerSize: .8,
+      markerAspectRatio: .6,
     },
 
     selectedItem: {
