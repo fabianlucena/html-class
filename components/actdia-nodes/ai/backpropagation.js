@@ -48,6 +48,7 @@ export default function create({ Node, _ }) {
     minRandomWeight = -0.5;
     maxWeightClipping = 10.0;
     minWeightClipping = -10.0;
+    randomizeOnClip = false;
     #en = null;
     #rst = null;
     #lastRst = null;
@@ -99,6 +100,11 @@ export default function create({ Node, _ }) {
         _label: 'Min weight clipping',
         type: 'number',
         step: 0.0001,
+      },
+      {
+        name: 'randomizeOnClip',
+        _label: 'Randomize on clip',
+        type: 'boolean',
       },
     ];
 
@@ -237,9 +243,19 @@ export default function create({ Node, _ }) {
           }
 
           if (bias > this.maxWeightClipping) {
-            bias = this.maxWeightClipping;
+            if (this.randomizeOnClip) {
+              bias = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
+              vv.bias = 0;
+            } else {
+              bias = this.maxWeightClipping;
+            }
           } else if (bias < this.minWeightClipping) {
-            bias = this.minWeightClipping;
+            if (this.randomizeOnClip) {
+              bias = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
+              vv.bias = 0;
+            } else {
+              bias = this.minWeightClipping;
+            }
           }
 
           node.bias = bias;
@@ -266,9 +282,19 @@ export default function create({ Node, _ }) {
           }
           
           if (weight > this.maxWeightClipping) {
-            weight = this.maxWeightClipping;
+            if (this.randomizeOnClip) {
+              weight = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
+              vv.weights[i] = 0;
+            } else {
+              weight = this.maxWeightClipping;
+            }
           } else if (weight < this.minWeightClipping) {
-            weight = this.minWeightClipping;
+            if (this.randomizeOnClip) {
+              weight = Math.random() * (this.maxRamdomWeight - this.minRandomWeight) + this.minRandomWeight;
+              vv.weights[i] = 0;
+            } else {
+              weight = this.minWeightClipping;
+            }
           }
 
           node.weights[i] = weight;
