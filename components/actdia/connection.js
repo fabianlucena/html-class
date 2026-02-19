@@ -119,8 +119,8 @@ export default class Connection extends Item {
       data.style = {...this.style};
     }
 
-    if (this.ortho) {
-      data.ortho = this.ortho;
+    if (this.design) {
+      data.design = this.design;
     }
 
     if (this.markerStart) {
@@ -174,8 +174,10 @@ export default class Connection extends Item {
       dx = tx - fx,
       dy = ty - fy;
 
+    const design = this.design || this.actdia.style.connection.design;
+
     let d = `M ${fx} ${fy} `;
-    if (this.ortho) {
+    if (design === 'orthogonal') {
       const 
         fromDir = this.from.connector.direction % 360,
         fromHorizontal = fromDir >= 45 && fromDir < 135 || fromDir >= 225 && fromDir < 315;
@@ -205,6 +207,8 @@ export default class Connection extends Item {
           }
         }
       }
+    } else if (design === 'straight') {
+      d += `L ${tx} ${ty}`;
     } else {
       const
         dd = Math.pow(dx * dx + dy * dy, 1 / 2) / 3,
@@ -237,21 +241,11 @@ export default class Connection extends Item {
   }
 
   getMarkerShape(marker, x, y) {
-    if (marker === 'arrow' || marker === 'rarrow') {
+    if (marker === 'arrow') {
       return {
         className: 'marker',
         shape: 'path',
         d: 'M 0 0 L .8 .4 L 0 .8 Z',
-        x: x - .4,
-        y: y - .4,
-      };
-    }
-
-    if (marker === 'larrow') {
-      return {
-        className: 'marker',
-        shape: 'path',
-        d: 'M .8 0 L 0 .4 L .8 .8 Z',
         x: x - .4,
         y: y - .4,
       };

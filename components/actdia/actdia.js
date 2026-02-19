@@ -189,7 +189,10 @@ export default class ActDia {
       },
     },
 
-    connection: {},
+    connection: {
+      design: 'smooth',
+      gap: 0,
+    },
 
     selectedItem: {
       offset: .5,
@@ -370,11 +373,19 @@ export default class ActDia {
     return data;
   }
 
-  getItems({ items, selected, onlySelected, exportable, onlyExportable } = {}) {
+  getItems({ items, selected, onlySelected, exportable, onlyExportable, onlyNodes, onlyConnections } = {}) {
     if (items?.length)
       return items;
 
     items = this.#items;
+
+    if (onlyNodes) {
+      items = items.filter(isNode);
+    }
+
+    if (onlyConnections) {
+      items = items.filter(isConnection);
+    }
 
     if (exportable || onlyExportable) {
       const exportableItems = items.filter(i => i.exportable !== false);
