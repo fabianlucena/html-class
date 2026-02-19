@@ -193,7 +193,7 @@ export default class ActDia {
       design: 'smooth',
       gap: 0,
       markerSize: .8,
-      markerAspectRatio: .6,
+      // markerAspectRatio: .6, // not specified for auto aspect ratio
     },
 
     selectedItem: {

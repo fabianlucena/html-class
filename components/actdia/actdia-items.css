@@ -91,6 +91,13 @@
   stroke: none;
 }
 
+
+.actdia-item-connection .marker.outlined,
+.actdia-item-connection .marker .outlined {
+  fill: none;
+  stroke: #d3d3d3;
+}
+
 .print {
   .actdia-item .hi {
     fill: #80D080;

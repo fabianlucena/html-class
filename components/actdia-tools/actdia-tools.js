@@ -10,12 +10,26 @@ import { newId } from '../utils/id.js';
 importCss('./actdia-tools.css', import.meta.url);
 const basePath = getPath(import.meta.url);
 
+
+
 export default class ActDiaTools {
   menuTool = {
     name: 'menu',
     label: _('Menu'),
     svg: basePath + '/icons/menu.svg',
   };
+
+  markerOptions = [
+    { value: '', label: '— ' + _('None') },
+    { value: 'arrow', label: '← ' + _('Arrow') },
+    { value: 'circle', label: ' ● ' + _('Circle') },
+    { value: 'square', label: ' ■ ' + _('Square') },
+    { value: 'diamond', label: ' ◆ ' + _('Diamond') },
+    { value: 'triangle', label: ' ▶ ' + _('Triangle') },
+    { value: 'circledDot', label: ' ◉ ' + _('Circled dot') },
+    { value: 'slash', label: ' ⟋ ' + _('Slash') },
+    { value: 'x', label: ' ✕ ' + _('X') },
+  ];
 
   toolsCategories = [
     {
@@ -335,12 +349,7 @@ export default class ActDiaTools {
           label: _('Start'),
           description: _('Draw the marker start of the connection.'),
           type: 'select',
-          options: [
-            { value: '', label: '— ' + _('None') },
-            { value: 'arrow', label: '→ ' + _('Arrow') },
-            { value: 'circle', label: ' ● ' + _('Circle') },
-            { value: 'square', label: ' ■ ' + _('Square') },
-          ],
+          options: this.markerOptions,
           update: data => {
             if (!this.showForConnectionsOnly(data))
               return;
@@ -370,12 +379,7 @@ export default class ActDiaTools {
           label: _('End'),
           description: _('Draw the marker end of the connection.'),
           type: 'select',
-          options: [
-            { value: '', label: '— ' + _('None') },
-            { value: 'arrow', label: '← ' + _('Arrow') },
-            { value: 'circle', label: ' ● ' + _('Circle') },
-            { value: 'square', label: ' ■ ' + _('Square') },
-          ],
+          options: this.markerOptions,
           update: data => {
             if (!this.showForConnectionsOnly(data))
               return;

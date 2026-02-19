@@ -301,6 +301,81 @@ export default class Connection extends Item {
       };
     }
 
+    if (marker === 'diamond') {
+      const 
+        mw = mz * (ma ?? 1),
+        mz_2 = mz / 2,
+        mw_2 = mw / 2;
+      return {
+        className: 'marker',
+        shape: 'path',
+        d: `M ${x + mz_2} ${y - mw_2} l ${mz_2} ${mw_2} l -${mz_2} ${mw_2} l -${mz_2} -${mw_2} Z`,
+        rotate: [(-a * 180 / Math.PI), x, y],
+      };
+    }
+
+    if (marker === 'triangle') {
+      const mw = mz * (ma ?? 1);
+      return {
+        className: 'marker',
+        shape: 'path',
+        d: `M 0 0 l ${mz} ${mw / 2} l 0 -${mw} Z`,
+        x,
+        y,
+        rotate: [(-a * 180 / Math.PI), 0, 0],
+      };
+    }
+
+    if (marker === 'circledDot') {
+      const mw = mz * (ma ?? 1);
+      return {
+        className: 'marker',
+        shape: 'g',
+        shapes: [
+          {
+            shape: 'ellipse',
+            cx: x + mz / 2,
+            cy: y,
+            rx: mz / 2,
+            ry: mw / 2,
+            rotate: [(-a * 180 / Math.PI), x, y],
+            className: 'outlined',
+          },
+          {
+            shape: 'ellipse',
+            cx: x + mz / 2,
+            cy: y,
+            rx: mz / 3.8,
+            ry: mw / 3.8,
+            rotate: [(-a * 180 / Math.PI), x, y],
+          },
+        ],
+      };
+    }
+
+    if (marker === 'slash') {
+      const mw = mz * (ma ?? 1);
+      return {
+        className: 'marker outlined',
+        shape: 'line',
+        x1: x,
+        y1: y - mw / 2,
+        x2: x + mz,
+        y2: y + mw / 2,
+        rotate: [(-a * 180 / Math.PI), x, y],
+      };
+    }
+
+    if (marker === 'x') {
+      const mw = mz * (ma ?? 1);
+      return {
+        className: 'marker outlined',
+        shape: 'path',
+        d: `M ${x} ${y - mw / 2} L ${x + mz} ${y + mw / 2} M ${x} ${y + mw / 2} L ${x + mz} ${y - mw / 2}`,
+        rotate: [(-a * 180 / Math.PI), x, y],
+      };
+    }
+
     return null;
   }
 
