@@ -184,7 +184,7 @@ export default class Connection extends Item {
 
     const
       fa = this.from.connector.direction / 180 * Math.PI - Math.atan2(fromCtm.b, fromCtm.a),
-      ta = this.to.connector.direction / 180 * Math.PI - Math.atan2(toCtm.b, toCtm.a),
+      ta = this.to.connector && toCtm ? (this.to.connector.direction / 180 * Math.PI - Math.atan2(toCtm.b, toCtm.a)) : 0,
       dx = tx - fx,
       dy = ty - fy;
 
