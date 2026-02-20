@@ -8,7 +8,7 @@ import { escapeHTML, isHTMLElement } from '../utils/html.js';
 import { getNumber, isNumber } from '../utils/type.js';
 import { getPath } from '../utils/path.js';
 import { newId } from '../utils/id.js';
-import { _ } from '../locale/locale.js';
+import { _, _f } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
 
 importCss('./actdia.css', import.meta.url);
@@ -243,6 +243,7 @@ export default class ActDia {
     return {
       actdia: this,
       _,
+      _f,
       getPath,
       Element,
       Item,
