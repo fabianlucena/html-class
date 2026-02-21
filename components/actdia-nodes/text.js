@@ -12,9 +12,9 @@ export default function create({ Node }) {
           text: '¡Hola mundo!',
           lineSpacing: 1.0,
           fillOpacity: 1,
-          margin: .35,
           textAnchor: 'center',
           dominantBaseline: 'top',
+          editable: true,
         },
       ],
     };
@@ -178,6 +178,7 @@ export default function create({ Node }) {
         const bbox = this.svgShape.children[1].getBBox();
         this.box.width = bbox.width + this.padding.right + this.padding.left;
         this.box.height = bbox.height + this.padding.top + this.padding.bottom;
+        this.shape.shapes[1].y = this.padding.top;
         this.shape.shapes[0].width = this.box.width;
         this.shape.shapes[0].height = this.box.height;
       }
