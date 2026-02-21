@@ -545,9 +545,33 @@ export default class ActDia {
       item.svgSelectionBox = item.svgElement?.querySelector('.actdia-selection-box');
       item.svgConnectors = item.svgElement?.querySelector('.actdia-connectors');
       item.update();
+      this.updateItemShapeAndListeners(item.shape, item.svgShape, item);
     });
 
     return result;
+  }
+
+  updateItemShapeAndListeners(shape, svgShape, item) {
+    if (shape.id !== svgShape.id) {
+      console.error('No cohinciden los ID', shape.id, svgShape.id);
+    }
+
+    shape.item = item;
+    shape.svgElement = svgShape;
+    
+    if (shape.onInput) {
+      svgShape.addEventListener('input', shape.onInput);
+    }
+
+    if (shape.onBlur) {
+      svgShape.addEventListener('blur', shape.onBlur);
+    }
+
+    const svgShapeChildren = [...svgShape.children];
+    shape?.shapes?.forEach((childShape, i) => {
+      const svgChildShape = svgShapeChildren.find(c => c.id === childShape.id);
+      this.updateItemShapeAndListeners(childShape, svgChildShape, item);
+    });
   }
 
   bringToFront(...items) {
@@ -799,6 +823,7 @@ export default class ActDia {
   }
 
   getItemMainShape(item) {
+    item.shape.id ??= newId();
     let shape = { ...item.shape };
     shape.classList ??= [];
     shape.classList.push('actdia-shape');
@@ -1180,11 +1205,19 @@ export default class ActDia {
         };
     }
 
-    shape.id ??= newId();
-
     data.shape = shape;
     data.attributes ??= {};
-    data.attributes.id = shape.id;
+
+    if (!shape.id && data.attributes.id) {
+      shape.id = data.attributes.id;
+    } else if (shape.id && !data.attributes.id) {
+      data.attributes.id = shape.id;
+    } else if (!shape.id && !data.attributes.id) {
+      shape.id = newId();
+      data.attributes.id = shape.id;
+    } else if (shape.id !== data.attributes.id) {
+      console.error('ID mismatch in item %s', item.name);
+    }
 
     if (shape.shapes) {
       data.children = shape.shapes.map(childShape => this.getShapeSVGData(childShape, item, options));
@@ -1756,22 +1789,22 @@ export default class ActDia {
       + options.prefix + '/>';
   }
 
-  tryUpdateShape(item, svgElement, shape) {
+  tryUpdateShape(item, svgElement, shape, options) {
     if (!svgElement) {
       return false;
     }
 
     try {
-      this.updateShape(item, svgElement, shape);
+      this.updateShape(item, svgElement, shape, options);
       return true;
     } catch {}
     
     return false;
   }
 
-  updateShape(item, svgElement, shape) {
+  updateShape(item, svgElement, shape, options) {
     const data = this.getShapeSVGData(shape, item);
-    this.updateSVGElementFromData(svgElement, data, item)
+    this.updateSVGElementFromData(svgElement, data, { parent: item, ...options })
       || (svgElement.outerHTML = this.getShapeSVG(shape, item));
   }
 
@@ -1825,7 +1858,7 @@ export default class ActDia {
         svgElement.textContent = data.cData;
     }
 
-    if (data.children?.length) {
+    if (!options.skipChildren && data.children?.length) {
       data.children.forEach((childData, index) => {
         this.updateSVGElementFromData(svgElement.children[index], childData, { item: options.item, parent: svgElement });
       });
@@ -1843,13 +1876,18 @@ export default class ActDia {
   updateItem(item) {
     this.tryUpdateShape(item, item.svgShape, this.getItemMainShape(item));
     this.tryUpdateConnectors(item);
-    if (item.svgSelectionBox?.setAttribute) {
-      const data = this.getSelectedData(item);
-      item.svgSelectionBox.setAttribute('x', data.x);
-      item.svgSelectionBox.setAttribute('y', data.y);
-      item.svgSelectionBox.setAttribute('width', data.width);
-      item.svgSelectionBox.setAttribute('height', data.height);
-    }
+    this.updateItemSelectionBox(item);
+  }
+
+  updateItemSelectionBox(item) {
+    if (!item.svgSelectionBox?.setAttribute)
+      return;
+
+    const data = this.getSelectedData(item);
+    item.svgSelectionBox.setAttribute('x', data.x);
+    item.svgSelectionBox.setAttribute('y', data.y);
+    item.svgSelectionBox.setAttribute('width', data.width);
+    item.svgSelectionBox.setAttribute('height', data.height);
   }
 
   tryUpdateConnectors(item) {
