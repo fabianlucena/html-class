@@ -1,4 +1,4 @@
-import { multiply } from './matrix_utils.js';
+import { multiply } from '../../matrix/matrix.js';
 
 export default function create({ Node, _, _f }) {
   return class MatrixMultiplication extends Node {

@@ -1,4 +1,4 @@
-import { add } from './matrix_utils.js';
+import { add } from '../../matrix/matrix.js';
 
 export default function create({ Node, _, _f }) {
   return class MatrixAddition extends Node {
