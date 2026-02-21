@@ -124,7 +124,7 @@ export default function create({ Node }) {
         shape.y = 0.3;
       }
 
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
+      this.actdia.tryUpdateShape(this.shape.shapes[2]);
     }
 
     onClick({ evt, item, shape }) {

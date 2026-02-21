@@ -118,8 +118,8 @@ export default function create({ Node }) {
       }
 
       if (this.actdia) {
-        this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
-        this.actdia.tryUpdateShape(this, this.svgShape?.children?.[4], this.shape.shapes[4]);
+        this.actdia.tryUpdateShape(this.shape.shapes[2]);
+        this.actdia.tryUpdateShape(this.shape.shapes[4]);
       }
     }
 

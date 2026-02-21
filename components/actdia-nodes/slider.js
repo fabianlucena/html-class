@@ -192,7 +192,7 @@ export default function create({ Node, _ }) {
       }
 
       shape.x = (this.inv(this.status) - this.min) / this.range * (this.size - 1) + .2;
-      this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[3], shape);
+      this.actdia?.tryUpdateShape(shape);
     }
 
     onClick({ evt, item, shape }) {

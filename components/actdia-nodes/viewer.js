@@ -66,7 +66,7 @@ export default function create({ Node }) {
         this.shape.shapes[1].text = JSON.stringify(status, null, ' ');
       }
 
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+      this.actdia.tryUpdateShape(this.shape.shapes[1]);
     }
   };
 }

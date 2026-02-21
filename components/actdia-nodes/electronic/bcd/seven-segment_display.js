@@ -90,7 +90,7 @@ export default function create({ Node }) {
       s.forEach((v, i) => {
         const shape = this.shape.shapes[1].shapes[i];
         shape.opacity = v * .9 + .1;
-        this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1].children?.[i], shape);
+        this.actdia.tryUpdateShape(shape);
       });
     }
   };

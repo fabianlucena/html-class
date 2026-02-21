@@ -270,9 +270,16 @@ export default class Connection extends Item {
     shapes.push(this.getMarkerShape(this.markerStart ?? this.actdia.style.connection.markerStart, fx, fy, fa));
     shapes.push(this.getMarkerShape(this.markerEnd ?? this.actdia.style.connection.markerEnd, tx, ty, ta));
 
-    this.shape.shapes = shapes.filter(s => s);
+    this.shape.item = this;
+    this.shape.svgElement = this.svgElement?.children[0];
+    this.shape.shapes = shapes
+      .filter(s => s)
+      .map(s => ({
+        item: this,
+        ...s,
+      }));
 
-    this.actdia.tryUpdateShape(this, this.svgElement?.children[0], this.shape);
+    this.actdia.tryUpdateShape(this.shape);
   }
 
   getMarkerShape(marker, x, y, a) {

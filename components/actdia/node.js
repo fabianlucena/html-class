@@ -259,6 +259,7 @@ export default class Node extends Item {
   
   addConnector(connector) {
     const newConnector = this.getNewConnector(connector);
+    newConnector.item = this;
     this.connectors.push(newConnector);
     this.update();
   }
@@ -366,12 +367,14 @@ export default class Node extends Item {
 
   setWidth(value) {
     this.box.width = value;
-    this.actdia.tryUpdateShape(this);
+    if (this.svgShape)
+      this.actdia.tryUpdateShape(this);
   }
 
   setHeight(value) {
     this.box.height = value;
-    this.actdia.tryUpdateShape(this);
+    if (this.svgShape)
+      this.actdia.tryUpdateShape(this);
   }
 
   saveStatus = false;

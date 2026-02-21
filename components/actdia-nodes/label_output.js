@@ -56,7 +56,7 @@ export default function create({ Node, actdia }) {
 
     update() {
       this.shape.shapes[1].text = this.label;
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+      this.actdia.tryUpdateShape(this.shape.shapes[1]);
     }
 
     updateStatus(newStatus, options = {}) {
@@ -75,7 +75,7 @@ export default function create({ Node, actdia }) {
         setTimeout(() => {
           if (shape.className === 'updated') {
             shape.className = '';
-            this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[0], this.shape.shapes[0]);
+            this.actdia?.tryUpdateShape(this.shape.shapes[0]);
           }
         }, 250);
       } else {
@@ -86,7 +86,7 @@ export default function create({ Node, actdia }) {
         }
       }
 
-      this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[0], this.shape.shapes[0]);
+      this.actdia?.tryUpdateShape(this.shape.shapes[0]);
     }
  };
 }

@@ -42,7 +42,7 @@ export default function create({ Node }) {
       if (b > 1 || b === true) b = 1;
 
       this.shape.shapes[0].fill = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[0], this.shape.shapes[0]);
+      this.actdia.tryUpdateShape(this.shape.shapes[0]);
     }
   };
 }

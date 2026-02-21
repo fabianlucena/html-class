@@ -55,7 +55,7 @@ export default function create({ Node, _ }) {
       const data = this.connectors[0].status;
       if (!data || !Array.isArray(data)) {
         this.shape.shapes[1].text = _('No data');
-        this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+        this.actdia.tryUpdateShape(this.shape.shapes[1]);
         return;
       }
 
@@ -67,10 +67,10 @@ export default function create({ Node, _ }) {
       this.setStatus(data[this.index]);
 
       this.shape.shapes[1].text = `${this.index} / ${data.length}`;
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+      this.actdia.tryUpdateShape(this.shape.shapes[1]);
 
       this.shape.shapes[3].rotate = [360 * this.index / data.length, 2, 2];
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[3], this.shape.shapes[3]);
+      this.actdia.tryUpdateShape(this.shape.shapes[3]);
     }
   };
 }

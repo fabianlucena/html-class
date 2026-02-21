@@ -61,7 +61,7 @@ export default function create({ Node }) {
 
     set color(value) {
       this.shape.shapes[1].fill = value;
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+      this.actdia.tryUpdateShape(this.shape.shapes[1]);
     }
 
     get classicColor() {
@@ -83,7 +83,7 @@ export default function create({ Node }) {
       }
 
       this.shape.shapes[1].opacity = status;
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+      this.actdia.tryUpdateShape(this.shape.shapes[1]);
     }
   };
 }

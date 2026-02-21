@@ -114,7 +114,7 @@ export default function create({ Node }) {
         shape.stroke = '#400000';
       }
 
-      this.actdia?.tryUpdateShape(this, this.svgShape?.children?.[3], this.shape.shapes[3]);
+      this.actdia?.tryUpdateShape(this.shape.shapes[3]);
     }
 
     onMouseDown({ evt, item, shape }) {

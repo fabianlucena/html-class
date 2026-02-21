@@ -515,8 +515,6 @@ export default class ActDia {
       item.x += inc;
       item.y += inc;
       item.selected = options.autoselect ? true : item.selected;
-
-      item.update({ skipNotification: true });
       
       result.push(item);
       this.#items.push(item);
@@ -544,8 +542,8 @@ export default class ActDia {
       item.svgShape = item.svgElement?.querySelector('.actdia-shape');
       item.svgSelectionBox = item.svgElement?.querySelector('.actdia-selection-box');
       item.svgConnectors = item.svgElement?.querySelector('.actdia-connectors');
-      item.update();
       this.updateItemShapeAndListeners(item.shape, item.svgShape, item);
+      item.update();
     });
 
     return result;
@@ -1171,6 +1169,8 @@ export default class ActDia {
         }
 
         const { shape: shape1, shapes, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, ...attributes } = shape;
+        delete attributes.item;
+        delete attributes.svgElement;
         attributes.transform = '';
 
         if (!isNaN(x) || !isNaN(y)) {
@@ -1661,7 +1661,7 @@ export default class ActDia {
       y: connector.y,
       id: connector.id,
       rotate: -connector.direction,
-      shapes: [...shape.shapes],
+      shapes: shape.shapes.map(s => ({item: node, ...s})),
     };
 
     if (connector.label) {
@@ -1789,23 +1789,32 @@ export default class ActDia {
       + options.prefix + '/>';
   }
 
-  tryUpdateShape(item, svgElement, shape, options) {
-    if (!svgElement) {
-      return false;
-    }
-
+  tryUpdateShape(shape, options) {
     try {
-      this.updateShape(item, svgElement, shape, options);
+      this.updateShape(shape, options);
       return true;
-    } catch {}
+    } catch (error) {
+      this.pushNotification(error.message || error, 'error');
+    }
     
     return false;
   }
 
-  updateShape(item, svgElement, shape, options) {
+  updateShape(shape, options) {
+    if (!shape)
+      throw new Error(_('Trying to update a non-existent shape.'));
+
+    const item = shape instanceof Item? shape: shape.item;
+    if (!item)
+      throw new Error(_('Trying to update a shape without an associated item.'));
+    
+    const svgElement = shape.svgElement;
     const data = this.getShapeSVGData(shape, item);
-    this.updateSVGElementFromData(svgElement, data, { parent: item, ...options })
-      || (svgElement.outerHTML = this.getShapeSVG(shape, item));
+    if (this.updateSVGElementFromData(svgElement, data, { parent: item.svgElement, ...options }))
+      return;
+
+    if (svgElement)
+      svgElement.outerHTML = this.getShapeSVG(shape, item);
   }
 
   updateSVGElementFromData(svgElement, data, options) {
@@ -1874,7 +1883,7 @@ export default class ActDia {
   }
 
   updateItem(item) {
-    this.tryUpdateShape(item, item.svgShape, this.getItemMainShape(item));
+    this.tryUpdateShape(this.getItemMainShape(item));
     this.tryUpdateConnectors(item);
     this.updateItemSelectionBox(item);
   }
@@ -1898,7 +1907,9 @@ export default class ActDia {
       const svgConnector = item.svgConnectors.querySelector(`g.actdia-connector#${CSS.escape(connector.id)}`);
       const data = this.getConnectorShapeData(connector, item);
       if (svgConnector) {
-        this.updateShape(item, svgConnector, data.shape);
+        data.shape.item = item;
+        data.shape.svgElement = svgConnector;
+        this.updateShape(data.shape);
       } else {
         const svg = this.getShapeSVG(data.shape, item);
         item.svgConnectors.innerHTML += svg;

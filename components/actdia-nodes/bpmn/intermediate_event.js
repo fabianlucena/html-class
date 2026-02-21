@@ -69,7 +69,7 @@ export default function create({ Node, _ }) {
 
         this.#type = value;
         this.shape.shapes[2].href = basePath + '/event_types.svg#' + typeData.sprite;
-        this.actdia.tryUpdateShape(this, this.svgShape?.children?.[2], this.shape.shapes[2]);
+        this.actdia.tryUpdateShape(this.shape.shapes[2]);
       }
     }
   };

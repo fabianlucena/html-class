@@ -156,11 +156,7 @@ export default function create({ Node, _ }) {
         this.#range[i] = this.#max[i] - this.#min[i];
         this.#range[i] ||= 1;
 
-        this.actdia.tryUpdateShape(
-          this,
-          this.svgShape?.children?.[2],
-          this.shape.shapes[2]
-        );
+        this.actdia.tryUpdateShape(this.shape.shapes[2]);
 
         let textShape = this.shape.shapes[2].shapes[i];
         if (!textShape) {
@@ -192,11 +188,7 @@ export default function create({ Node, _ }) {
 
         if (!needUpdate) {
           if (svgTextElement?.children?.[i]) {
-            this.actdia.tryUpdateShape(
-              this,
-              svgTextElement?.children?.[i],
-              textShape
-            );
+            this.actdia.tryUpdateShape(textShape);
           } else {
             needUpdate = true;
           }
@@ -250,11 +242,7 @@ export default function create({ Node, _ }) {
 
         if (!needUpdate) {
           if (svgDrawElement?.children?.[i]) {
-            this.actdia.tryUpdateShape(
-              this,
-              svgDrawElement?.children?.[i],
-              shape
-            );
+            this.actdia.tryUpdateShape(shape);
           } else {
             needUpdate = true;
           }

@@ -28,9 +28,7 @@ export default function create({ Node }) {
 
     connectors = [];
 
-    includeExport = [
-      'shape',
-    ];
+    includeExport = [];
 
     fields = [
       {
@@ -133,7 +131,8 @@ export default function create({ Node }) {
     set autoSize(value) {
       if (this.#autoSize !== value) {
         this.#autoSize = value
-        this.update();
+        if (this.svgShape)
+          this.update();
       }
     }
 
@@ -144,7 +143,8 @@ export default function create({ Node }) {
     set text(value) {
       if (this.shape.shapes[1].text !== value) {
         this.shape.shapes[1].text = value;
-        this.update();
+        if (this.shape.shapes[1].svgElement)
+          this.update();
       }
     }
 

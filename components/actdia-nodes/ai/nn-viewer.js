@@ -115,7 +115,7 @@ export default function create({ Node }) {
       }
       
       this.shape.shapes[1].text = data.map(l => l.map(x => formatNumber(x)).join(' • ')).join('\n');
-      this.actdia.tryUpdateShape(this, this.svgShape?.children?.[1], this.shape.shapes[1]);
+      this.actdia.tryUpdateShape(this.shape.shapes[1]);
     }
   };
 }
