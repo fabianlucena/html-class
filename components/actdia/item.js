@@ -4,7 +4,7 @@ import { getStatusText } from '../utils/http.js';
 import { newId } from '../utils/id.js';
 
 export default class Item extends Element {
-  shapes = [];
+  children = [];
 
   box = {
     x: 0,

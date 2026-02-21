@@ -4,7 +4,7 @@ export default function create({ Node }) {
     static description = 'JK flip-flop (latch) circuit node. The J and K inputs control the state of the output Q when the clock input is high.';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

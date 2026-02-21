@@ -87,7 +87,7 @@ export default function create({ Node, _ }) {
     rotateCenterY = 1.5;
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           y: 0.5,

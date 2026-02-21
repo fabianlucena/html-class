@@ -3,7 +3,7 @@ export default function create({ Node }) {
     static _label = 'Script';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -40,8 +40,8 @@ export default function create({ Node }) {
     canChangeHeight = true;
 
     setWidth(value) {
-      this.shape.shapes[0].width = value;
-      this.shape.shapes[1].width = value;
+      this.shape.children[0].width = value;
+      this.shape.children[1].width = value;
       this.connectors[1].x = value;
 
       super.setWidth(value);
@@ -52,8 +52,8 @@ export default function create({ Node }) {
       this.shape.y = dy;
       this.box.y = dy;
 
-      this.shape.shapes[0].height = value;
-      this.shape.shapes[1].height = value;
+      this.shape.children[0].height = value;
+      this.shape.children[1].height = value;
 
       const cy = value / 2 + dy;
       this.connectors[0].y = cy;

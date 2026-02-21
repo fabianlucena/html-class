@@ -4,7 +4,7 @@ export default function create({ Node }) {
     static description = 'T (Toggle) flip-flop (edge triggered) circuit node. The output Q changes state on the rising edge of the clock input.';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

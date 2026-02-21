@@ -3,7 +3,7 @@ export default function create({ Node }) {
     static label = 'D Flip-Flop (Latch)';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

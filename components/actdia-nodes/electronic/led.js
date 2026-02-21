@@ -3,7 +3,7 @@ export default function create({ Node }) {
     rotateCenterX = -.5;
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'circle',
           r: .4,
@@ -56,12 +56,12 @@ export default function create({ Node }) {
     ];
 
     get color() {
-      return this.shape.shapes[1].fill;
+      return this.shape.children[1].fill;
     }
 
     set color(value) {
-      this.shape.shapes[1].fill = value;
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].fill = value;
+      this.actdia.tryUpdateShape(this.shape.children[1]);
     }
 
     get classicColor() {
@@ -82,8 +82,8 @@ export default function create({ Node }) {
         status = 1;
       }
 
-      this.shape.shapes[1].opacity = status;
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].opacity = status;
+      this.actdia.tryUpdateShape(this.shape.children[1]);
     }
   };
 }

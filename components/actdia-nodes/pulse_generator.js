@@ -6,7 +6,7 @@ export default function create({ Node }) {
     rotateCenterY = 2;
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -110,16 +110,16 @@ export default function create({ Node }) {
 
     updateButtons() {
       if (this.#interval) {
-        this.shape.shapes[2].fill = '#40FF40FF';
-        this.shape.shapes[4].fill = '#80808001';
+        this.shape.children[2].fill = '#40FF40FF';
+        this.shape.children[4].fill = '#80808001';
       } else {
-        this.shape.shapes[2].fill = '#80808001';
-        this.shape.shapes[4].fill = '#800000FF';
+        this.shape.children[2].fill = '#80808001';
+        this.shape.children[4].fill = '#800000FF';
       }
 
       if (this.actdia) {
-        this.actdia.tryUpdateShape(this.shape.shapes[2]);
-        this.actdia.tryUpdateShape(this.shape.shapes[4]);
+        this.actdia.tryUpdateShape(this.shape.children[2]);
+        this.actdia.tryUpdateShape(this.shape.children[4]);
       }
     }
 

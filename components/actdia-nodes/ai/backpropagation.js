@@ -1,7 +1,7 @@
 export default function create({ Node, _ }) {
   return class Backpropagation extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           width: 4,

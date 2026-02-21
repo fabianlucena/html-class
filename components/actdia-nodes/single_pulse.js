@@ -6,7 +6,7 @@ export default function create({ Node }) {
     rotateCenterY = 1.5;
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -105,7 +105,7 @@ export default function create({ Node }) {
     }
 
     updateKnob() {
-      const shape = this.shape.shapes[3] ??= {};
+      const shape = this.shape.children[3] ??= {};
       if (this.status) {
         shape.fill = 'lightgreen';
         shape.stroke = 'darkgreen';
@@ -114,7 +114,7 @@ export default function create({ Node }) {
         shape.stroke = '#400000';
       }
 
-      this.actdia?.tryUpdateShape(this.shape.shapes[3]);
+      this.actdia?.tryUpdateShape(this.shape.children[3]);
     }
 
     onMouseDown({ evt, item, shape }) {

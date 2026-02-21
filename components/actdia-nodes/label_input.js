@@ -3,7 +3,7 @@ export default function create({ Node }) {
     static label = 'Label input';
 
     shape = {
-      shapes: [
+      children: [
         {
           y: -.5,
           shape: 'path',
@@ -43,8 +43,8 @@ export default function create({ Node }) {
     ];
     
     update() {
-      this.shape.shapes[1].text = this.label;
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].text = this.label;
+      this.actdia.tryUpdateShape(this.shape.children[1]);
     }
 
     updateStatus(options = {}) {
@@ -58,13 +58,13 @@ export default function create({ Node }) {
     }
 
     updateForStatus() {
-      const shape = this.shape.shapes[0] ??= {};
+      const shape = this.shape.children[0] ??= {};
       if (isNaN(this.status)) {
         shape.className = 'updated';
         setTimeout(() => {
           if (shape.className === 'updated') {
             shape.className = '';
-            this.actdia?.tryUpdateShape(this.shape.shapes[0]);
+            this.actdia?.tryUpdateShape(this.shape.children[0]);
           }
         }, 250);
       } else {
@@ -75,7 +75,7 @@ export default function create({ Node }) {
         }
       }
 
-      this.actdia?.tryUpdateShape(this.shape.shapes[0]);
+      this.actdia?.tryUpdateShape(this.shape.children[0]);
     }
  };
 }

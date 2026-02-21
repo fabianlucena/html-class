@@ -1,7 +1,7 @@
 export default function create({ Node }) {
   return class Xor extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'path',
           d: `

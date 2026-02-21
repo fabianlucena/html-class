@@ -4,7 +4,7 @@ export default function create({ Node }) {
     static description = 'Seven Segment Display circuit node.';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -19,7 +19,7 @@ export default function create({ Node }) {
           skewX: -10,
           fill: '#C00000',
           stroke: '#400000',
-          shapes: [
+          children: [
             {
               shape: 'polygon',
               points: '0.4,0.4 0.8,0 3.2,0 3.6,0.4 3.2,0.8 0.8,0.8',
@@ -88,7 +88,7 @@ export default function create({ Node }) {
     updateStatus() {
       const s = this.connectors.map(c => Math.min(Math.max(c.status >= 0.5 ? 1 : 0, 0), 1));
       s.forEach((v, i) => {
-        const shape = this.shape.shapes[1].shapes[i];
+        const shape = this.shape.children[1].children[i];
         shape.opacity = v * .9 + .1;
         this.actdia.tryUpdateShape(shape);
       });

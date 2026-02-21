@@ -28,7 +28,7 @@ export default function create({ Node, _ }) {
 
   return class Cost extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'circle',
           x: 1,

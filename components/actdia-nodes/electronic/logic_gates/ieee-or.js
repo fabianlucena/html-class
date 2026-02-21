@@ -4,7 +4,7 @@ export default async function create({ actdia, baseUrl }) {
     static label = 'IEEE Or';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

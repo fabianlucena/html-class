@@ -2,7 +2,7 @@ export default function create({ Node }) {
   return class Switch extends Node {
     shape = {
       x: .5,
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: -.5,
@@ -113,7 +113,7 @@ export default function create({ Node }) {
     }
 
     updateKnob() {
-      const shape = this.shape.shapes[2] ??= {};
+      const shape = this.shape.children[2] ??= {};
       if (this.status) {
         shape.fill = 'lightgreen';
         shape.stroke = 'darkgreen';
@@ -124,7 +124,7 @@ export default function create({ Node }) {
         shape.y = 0.3;
       }
 
-      this.actdia.tryUpdateShape(this.shape.shapes[2]);
+      this.actdia.tryUpdateShape(this.shape.children[2]);
     }
 
     onClick({ evt, item, shape }) {
@@ -133,7 +133,7 @@ export default function create({ Node }) {
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
-        || item.shapes?.some(s => s.connector)
+        || item.children?.some(s => s.connector)
         || shape?.name !== 'knob'
       )
         return;

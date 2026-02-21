@@ -85,7 +85,7 @@ export default function create({ Node, _ }) {
 
   return class Perceptron extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'circle',
           x: 1,

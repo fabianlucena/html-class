@@ -38,7 +38,7 @@ export default class ActDia {
 
     in: {
       shape: {
-        shapes: [
+        children: [
           {
             shape: 'circle',
             cx: 0,
@@ -56,7 +56,7 @@ export default class ActDia {
       styles: {
         small: {
           shape: {
-            shapes: [
+            children: [
               {
                 shape: 'circle',
                 cx: 0,
@@ -74,7 +74,7 @@ export default class ActDia {
         },
         tiny: {
           shape: {
-            shapes: [
+            children: [
               {
                 shape: 'circle',
                 cx: 0,
@@ -95,7 +95,7 @@ export default class ActDia {
 
     out: {
       shape: {
-        shapes: [
+        children: [
           {
             shape: 'circle',
             cx: 0,
@@ -113,7 +113,7 @@ export default class ActDia {
       styles: {
         small: {
           shape: {
-            shapes: [
+            children: [
               {
                 shape: 'circle',
                 cx: 0,
@@ -131,7 +131,7 @@ export default class ActDia {
         },
         tiny: {
           shape: {
-            shapes: [
+            children: [
               {
                 shape: 'circle',
                 cx: 0,
@@ -152,7 +152,7 @@ export default class ActDia {
 
     io: {
       shape: {
-        shapes: [
+        children: [
           {
             shape: 'circle',
             cx: 0,
@@ -170,7 +170,7 @@ export default class ActDia {
       styles: {
         tiny: {
           shape: {
-            shapes: [
+            children: [
               {
                 shape: 'circle',
                 cx: 0,
@@ -566,7 +566,7 @@ export default class ActDia {
     }
 
     const svgShapeChildren = [...svgShape.children];
-    shape?.shapes?.forEach((childShape, i) => {
+    shape?.children?.forEach((childShape, i) => {
       const svgChildShape = svgShapeChildren.find(c => c.id === childShape.id);
       this.updateItemShapeAndListeners(childShape, svgChildShape, item);
     });
@@ -850,7 +850,7 @@ export default class ActDia {
     }
     let shape = { ...item.shape };
     if (shape.shape && shape.shape !== 'g') {
-      shape = { shapes: [ shape ] };
+      shape = { children: [ shape ] };
     }
 
     components.push(this.getShapeSVG(
@@ -1163,12 +1163,12 @@ export default class ActDia {
         break;
 
       default:
-        if (shape.shape !== 'g' && (shape.shape || !shape.shapes)) {
+        if (shape.shape !== 'g' && (shape.shape || !shape.children)) {
           this.pushNotification(_('Unknown shape: %s in item %s.', shape.shape, item.getElementClass()), 'error');
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        const { shape: shape1, shapes, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, ...attributes } = shape;
+        const { shape: shape1, children, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, ...attributes } = shape;
         delete attributes.item;
         delete attributes.svgElement;
         attributes.transform = '';
@@ -1219,8 +1219,8 @@ export default class ActDia {
       console.error('ID mismatch in item %s', item.name);
     }
 
-    if (shape.shapes) {
-      data.children = shape.shapes.map(childShape => this.getShapeSVGData(childShape, item, options));
+    if (shape.children) {
+      data.children = shape.children.map(childShape => this.getShapeSVGData(childShape, item, options));
     }
 
     return data;
@@ -1661,7 +1661,7 @@ export default class ActDia {
       y: connector.y,
       id: connector.id,
       rotate: -connector.direction,
-      shapes: shape.shapes.map(s => ({item: node, ...s})),
+      children: shape.children.map(s => ({item: node, ...s})),
     };
 
     if (connector.label) {
@@ -1708,7 +1708,7 @@ export default class ActDia {
           textShape.margin = { bottom: .4 + (connector.margin || 0) };
         }
 
-        shape.shapes.push(textShape);
+        shape.children.push(textShape);
       }
     }
 
@@ -1745,7 +1745,7 @@ export default class ActDia {
       sy: data.style.sy,
     };
 
-    const shape = { ...data.shape, shapes: [ ...(data.shape.shapes || []) ] };
+    const shape = { ...data.shape, children: [ ...(data.shape.children || []) ] };
     const shapeSVG = this.getShapeSVG(
       shape,
       node,
@@ -2060,13 +2060,13 @@ export default class ActDia {
     });
   }
 
-  getShapeByKeyValue(shapes, key, value) {
-    for (let i = 0; i < shapes.length; i++) {
-      const shape = shapes[i];
+  getShapeByKeyValue(children, key, value) {
+    for (let i = 0; i < children.length; i++) {
+      const shape = children[i];
       if (shape[key] === value) {
         return shape;
-      } else if (shape.shapes?.length) {
-        const found = this.getShapeByKeyValue(shape.shapes, key, value);
+      } else if (shape.children?.length) {
+        const found = this.getShapeByKeyValue(shape.children, key, value);
         if (found) {
           return found;
         }
@@ -2097,8 +2097,8 @@ export default class ActDia {
     if (id) {
       if (item?.shape?.id === id) {
         shape = item.shape;
-      } else if (item.shape.shapes?.length) {
-        shape = this.getShapeByKeyValue(item.shape.shapes, 'id', id);
+      } else if (item.shape.children?.length) {
+        shape = this.getShapeByKeyValue(item.shape.children, 'id', id);
       }
     }
     
@@ -2107,8 +2107,8 @@ export default class ActDia {
       if (name && item?.shape) {
         if (item.shape.name === name) {
           shape = item.shape;
-        } else if (item.shape.shapes?.length) {
-          shape = this.getShapeByKeyValue(item.shape.shapes, 'name', name);
+        } else if (item.shape.children?.length) {
+          shape = this.getShapeByKeyValue(item.shape.children, 'name', name);
         }
       }
     }

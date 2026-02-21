@@ -1,7 +1,7 @@
 export default function create({ Node }) {
   return class Viewer extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -37,8 +37,8 @@ export default function create({ Node }) {
     canChangeHeight = true;
 
     setWidth(value) {
-      this.shape.shapes[0].width = value;
-      this.shape.shapes[1].width = value;
+      this.shape.children[0].width = value;
+      this.shape.children[1].width = value;
       super.setWidth(value);
     }
 
@@ -47,8 +47,8 @@ export default function create({ Node }) {
       this.shape.y = dy;
       this.box.y = dy;
 
-      this.shape.shapes[0].height = value;
-      this.shape.shapes[1].height = value;
+      this.shape.children[0].height = value;
+      this.shape.children[1].height = value;
       this.connectors[0].y = value / 2 + dy;
 
       super.setHeight(value);
@@ -61,12 +61,12 @@ export default function create({ Node }) {
       }
 
       if (Array.isArray(status)) {
-        this.shape.shapes[1].text = JSON.stringify(status);
+        this.shape.children[1].text = JSON.stringify(status);
       } else {
-        this.shape.shapes[1].text = JSON.stringify(status, null, ' ');
+        this.shape.children[1].text = JSON.stringify(status, null, ' ');
       }
 
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.actdia.tryUpdateShape(this.shape.children[1]);
     }
   };
 }

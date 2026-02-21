@@ -23,7 +23,7 @@ export default function create({ Node }) {
     static label = 'Perceptron Viewer';
     
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -66,8 +66,8 @@ export default function create({ Node }) {
         ' o: ' + formatNumber(perceptron.status),
       ];
       
-      this.shape.shapes[1].text = data.join('\n');
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].text = data.join('\n');
+      this.actdia.tryUpdateShape(this.shape.children[1]);
     }
   };
 }

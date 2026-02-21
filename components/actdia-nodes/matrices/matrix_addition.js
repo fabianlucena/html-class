@@ -5,7 +5,7 @@ export default function create({ Node, _, _f }) {
     static _label = _f('Matrix addition');
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           y: .5,

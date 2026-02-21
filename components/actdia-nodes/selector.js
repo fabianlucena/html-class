@@ -1,7 +1,7 @@
 export default function create({ Node, _ }) {
   return class Selector extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -54,8 +54,8 @@ export default function create({ Node, _ }) {
     updateStatusSync() {
       const data = this.connectors[0].status;
       if (!data || !Array.isArray(data)) {
-        this.shape.shapes[1].text = _('No data');
-        this.actdia.tryUpdateShape(this.shape.shapes[1]);
+        this.shape.children[1].text = _('No data');
+        this.actdia.tryUpdateShape(this.shape.children[1]);
         return;
       }
 
@@ -66,11 +66,11 @@ export default function create({ Node, _ }) {
 
       this.setStatus(data[this.index]);
 
-      this.shape.shapes[1].text = `${this.index} / ${data.length}`;
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].text = `${this.index} / ${data.length}`;
+      this.actdia.tryUpdateShape(this.shape.children[1]);
 
-      this.shape.shapes[3].rotate = [360 * this.index / data.length, 2, 2];
-      this.actdia.tryUpdateShape(this.shape.shapes[3]);
+      this.shape.children[3].rotate = [360 * this.index / data.length, 2, 2];
+      this.actdia.tryUpdateShape(this.shape.children[3]);
     }
   };
 }

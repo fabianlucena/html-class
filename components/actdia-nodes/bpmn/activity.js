@@ -10,7 +10,7 @@ export default function create({ Node, _ }) {
     static _label = 'Activity';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           width: 8,
@@ -65,8 +65,8 @@ export default function create({ Node, _ }) {
           return;
 
         this.#type = value;
-        this.shape.shapes[1].href = basePath + '/activities_types.svg#' + typeData.sprite;
-        this.actdia.tryUpdateShape(this.shape.shapes[1]);
+        this.shape.children[1].href = basePath + '/activities_types.svg#' + typeData.sprite;
+        this.actdia.tryUpdateShape(this.shape.children[1]);
       }
     }
   };

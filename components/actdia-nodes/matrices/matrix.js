@@ -3,7 +3,7 @@ export default function create({ Node, _f }) {
     static _label = _f('Matrix');
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           width: 2,
@@ -85,12 +85,12 @@ export default function create({ Node, _f }) {
       this.box.y = -d;
       this.box.width = width;
       this.box.height = height;
-      this.shape.shapes[0].x = -d;
-      this.shape.shapes[0].y = -d;
-      this.shape.shapes[0].width = width;
-      this.shape.shapes[0].height = height;
-      this.shape.shapes[1].x = -d + width / 2;
-      this.shape.shapes[1].y = -d + height / 2;
+      this.shape.children[0].x = -d;
+      this.shape.children[0].y = -d;
+      this.shape.children[0].width = width;
+      this.shape.children[0].height = height;
+      this.shape.children[1].x = -d + width / 2;
+      this.shape.children[1].y = -d + height / 2;
       this.connectors[0].x = width - d;
       this.connectors[0].y = height / 2 - d;
       if (!this.status
@@ -108,7 +108,7 @@ export default function create({ Node, _f }) {
     }
 
     updateStatus() {
-      this.shape.shapes[1].text = this.status
+      this.shape.children[1].text = this.status
         .map(row => row.join(' '))
         .join('\n');
       super.updateStatus();

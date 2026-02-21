@@ -10,7 +10,7 @@ export default function create({ Node, _ }) {
     static _label = 'Gateway';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'polygon',
           points: '2,0 4,2 2,4 0,2',
@@ -62,8 +62,8 @@ export default function create({ Node, _ }) {
           return;
 
         this.#type = value;
-        this.shape.shapes[1].href = basePath + '/gateways_types.svg#' + typeData.sprite;
-        this.actdia.tryUpdateShape(this.shape.shapes[1]);
+        this.shape.children[1].href = basePath + '/gateways_types.svg#' + typeData.sprite;
+        this.actdia.tryUpdateShape(this.shape.children[1]);
       }
     }
   };

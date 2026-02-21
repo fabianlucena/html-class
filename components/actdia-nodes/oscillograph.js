@@ -3,7 +3,7 @@ import { getColors } from '../utils/color.js';
 export default function create({ Node, _ }) {
   return class Oscillograph extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -25,12 +25,12 @@ export default function create({ Node, _ }) {
         },
         {
           x: 0.6,
-          shapes: [],
+          children: [],
         },
         {
           x: 0.5,
           y: 0.5,
-          shapes: [],
+          children: [],
         },
       ],
     };
@@ -90,10 +90,10 @@ export default function create({ Node, _ }) {
       this.box.width = this.#width;
       this.box.height = this.#height;
 
-      this.shape.shapes[0].width = this.#width;
-      this.shape.shapes[0].height = this.#height;
-      this.shape.shapes[1].width = this.#width - 1;
-      this.shape.shapes[1].height = this.#height - 1;
+      this.shape.children[0].width = this.#width;
+      this.shape.children[0].height = this.#height;
+      this.shape.children[1].width = this.#width - 1;
+      this.shape.children[1].height = this.#height - 1;
 
       if (this.#interval) {
         clearInterval(this.#interval);
@@ -113,8 +113,8 @@ export default function create({ Node, _ }) {
         status = [status];
       }
 
-      while (this.shape.shapes[3].shapes.length > status.length) {
-        this.shape.shapes[3].shapes.pop();
+      while (this.shape.children[3].children.length > status.length) {
+        this.shape.children[3].children.pop();
       }
 
       const svgTextElement = this.svgShape?.children?.[2];
@@ -156,12 +156,12 @@ export default function create({ Node, _ }) {
         this.#range[i] = this.#max[i] - this.#min[i];
         this.#range[i] ||= 1;
 
-        this.actdia.tryUpdateShape(this.shape.shapes[2]);
+        this.actdia.tryUpdateShape(this.shape.children[2]);
 
-        let textShape = this.shape.shapes[2].shapes[i];
+        let textShape = this.shape.children[2].children[i];
         if (!textShape) {
           textColors ||= getColors(count, 90, 100, 75);
-          this.shape.shapes[2].shapes[i] = {
+          this.shape.children[2].children[i] = {
             shape: 'text',
             fill: textColors[i],
             text: 'Hola',
@@ -169,20 +169,20 @@ export default function create({ Node, _ }) {
             textAnchor: 'start',
             dominantBaseline: 'top',
           };
-          textShape = this.shape.shapes[2].shapes[i];
+          textShape = this.shape.children[2].children[i];
         }
         textShape.y = i * sy + .6;
         textShape.text = _('%s •• %s', this.#max[i].toFixed(2), this.#min[i].toFixed(2));
 
-        let drawShape = this.shape.shapes[3].shapes[i];
+        let drawShape = this.shape.children[3].children[i];
         if (!drawShape) {
           drawColors ||= getColors(count, 90);
-          this.shape.shapes[3].shapes[i] = {
+          this.shape.children[3].children[i] = {
             shape: 'path',
             fill: false,
             stroke: drawColors[i],
           };
-          drawShape = this.shape.shapes[3].shapes[i];
+          drawShape = this.shape.children[3].children[i];
         }
         drawShape.y = i * sy + .1;
 
@@ -223,7 +223,7 @@ export default function create({ Node, _ }) {
       last++;
 
       for (let i = 0; i < count; i++) {
-        let shape = this.shape.shapes[3].shapes[i];
+        let shape = this.shape.children[3].children[i];
         shape.d = '';
 
         for (let k = 0; k < length; k++) {

@@ -1,7 +1,7 @@
 export default function create({ Node }) {
   return class Xnor extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'path',
           d: `

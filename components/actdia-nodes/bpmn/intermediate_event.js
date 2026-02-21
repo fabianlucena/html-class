@@ -10,7 +10,7 @@ export default function create({ Node, _ }) {
     static _label = 'Intermediate Event';
     
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'circle',
           x: 2,
@@ -68,8 +68,8 @@ export default function create({ Node, _ }) {
           return;
 
         this.#type = value;
-        this.shape.shapes[2].href = basePath + '/event_types.svg#' + typeData.sprite;
-        this.actdia.tryUpdateShape(this.shape.shapes[2]);
+        this.shape.children[2].href = basePath + '/event_types.svg#' + typeData.sprite;
+        this.actdia.tryUpdateShape(this.shape.children[2]);
       }
     }
   };

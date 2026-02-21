@@ -4,7 +4,7 @@ export default function create({ Node }) {
     static description = 'T (Toggle) flip-flop circuit node. On each clock pulse, the output toggles between high and low states.';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

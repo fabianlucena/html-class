@@ -9,7 +9,7 @@ export default class InternetSwitch extends Node {
     stroke: '#8db3dfff',
     skewX: -20,
     sy: .66,
-    shapes: [
+    children: [
       {
         shape: 'rect',
         x: 0,
@@ -20,7 +20,7 @@ export default class InternetSwitch extends Node {
       {
         fill: '#ffffffff',
         stroke: '#00000000',
-        shapes: [
+        children: [
           {
             shape: 'polygon',
             points: '2.2,0.5 3.3,0.5 3.3,0.25 3.8,0.75 3.3,1.25 3.3,1 2.2,1',

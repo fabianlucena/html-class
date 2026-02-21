@@ -4,7 +4,7 @@ export default class Connection extends Item {
   draggable = false;
 
   shape = {
-    shapes: [
+    children: [
       {
         shape: 'path',
         d: 'M0 0 L1 1',
@@ -163,7 +163,7 @@ export default class Connection extends Item {
       fx = ( fromCtm.e + this.from.connector.x * fromCtm.a + this.from.connector.y * fromCtm.c ) / this.actdia.style.sx,
       fy = ( fromCtm.f + this.from.connector.x * fromCtm.b + this.from.connector.y * fromCtm.d ) / this.actdia.style.sx;
     if (isNaN(fx) || isNaN(fy)) {
-      this.shape.shapes[0] = {};
+      this.shape.children[0] = {};
       return; 
     }
 
@@ -178,7 +178,7 @@ export default class Connection extends Item {
       ty = ( toCtm.f + (this.to.connector.x ?? 0) * toCtm.b + (this.to.connector.y ?? 0) * toCtm.d ) / this.actdia.style.sy;
     }
     if (isNaN(tx) || isNaN(ty)) {
-      this.shape.shapes[0] = {};
+      this.shape.children[0] = {};
       return; 
     }
 
@@ -262,17 +262,17 @@ export default class Connection extends Item {
     }
 
     d += endD;
-    const shapes = [{
+    const children = [{
       shape: 'path',
       d,
     }];
 
-    shapes.push(this.getMarkerShape(this.markerStart ?? this.actdia.style.connection.markerStart, fx, fy, fa));
-    shapes.push(this.getMarkerShape(this.markerEnd ?? this.actdia.style.connection.markerEnd, tx, ty, ta));
+    children.push(this.getMarkerShape(this.markerStart ?? this.actdia.style.connection.markerStart, fx, fy, fa));
+    children.push(this.getMarkerShape(this.markerEnd ?? this.actdia.style.connection.markerEnd, tx, ty, ta));
 
     this.shape.item = this;
     this.shape.svgElement = this.svgElement?.children[0];
-    this.shape.shapes = shapes
+    this.shape.children = children
       .filter(s => s)
       .map(s => ({
         item: this,
@@ -354,7 +354,7 @@ export default class Connection extends Item {
       return {
         className: 'marker',
         shape: 'g',
-        shapes: [
+        children: [
           {
             shape: 'ellipse',
             cx: x + mz / 2,

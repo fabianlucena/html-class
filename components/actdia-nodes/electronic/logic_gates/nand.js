@@ -1,7 +1,7 @@
 export default function create({ Node }) {
   return class Nand extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'path',
           d: `

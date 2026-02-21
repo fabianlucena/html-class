@@ -5,7 +5,7 @@ import { _ } from '../locale/locale.js';
 
 export default class Node extends Item {
   shape = {
-    shapes: [
+    children: [
     {
       x: 1,
       shape: 'rect',

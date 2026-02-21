@@ -4,7 +4,7 @@ export default function create({ Node }) {
     static description = 'Binary-Coded Decimal (BCD) to 7-segment display circuit node.';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

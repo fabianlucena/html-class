@@ -3,7 +3,7 @@ export default function create({ Node }) {
     static label = 'RGB LED';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'circle',
           x: 0.5,
@@ -41,8 +41,8 @@ export default function create({ Node }) {
       if (g > 1 || g === true) g = 1;
       if (b > 1 || b === true) b = 1;
 
-      this.shape.shapes[0].fill = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
-      this.actdia.tryUpdateShape(this.shape.shapes[0]);
+      this.shape.children[0].fill = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+      this.actdia.tryUpdateShape(this.shape.children[0]);
     }
   };
 }

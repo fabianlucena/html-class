@@ -12,7 +12,7 @@ export default class InternetRouter extends Node {
     y: -.5,
     fill: '#1b6ac5ff',
     stroke: '#8db3dfff',
-    shapes: [
+    children: [
       {
         shape: 'path',
         d: 'M 0 2 L 0 4 A 2 2 0 0 0 4 4 L 4 2',
@@ -26,7 +26,7 @@ export default class InternetRouter extends Node {
       {
         fill: '#ffffffff',
         stroke: '#00000000',
-        shapes: [
+        children: [
           {
             shape: 'polygon',
             points: '0.4,1.75 1.3,1.75 1.3,1.5 1.8,2 1.3,2.5 1.3,2.25 0.4,2.25',

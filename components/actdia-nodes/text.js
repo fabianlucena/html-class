@@ -1,7 +1,7 @@
 export default function create({ Node }) {
   return class Text extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           rx: .2,
@@ -37,7 +37,7 @@ export default function create({ Node }) {
         _label: 'Text',
       },
       {
-        name: 'shape.shapes[1].textAnchor',
+        name: 'shape.children[1].textAnchor',
         type: 'select',
         _label: 'Text anchor',
         options: [
@@ -47,7 +47,7 @@ export default function create({ Node }) {
         ],
       },
       {
-        name: 'shape.shapes[1].dominantBaseline',
+        name: 'shape.children[1].dominantBaseline',
         type: 'select',
         _label: 'Text vertical align',
         options: [
@@ -57,13 +57,13 @@ export default function create({ Node }) {
         ],
       },
       {
-        name: 'shape.shapes[1].fill',
+        name: 'shape.children[1].fill',
         type: 'color',
         _label: 'Text color',
         nullable: true,
       },
       {
-        name: 'shape.shapes[1].fillOpacity',
+        name: 'shape.children[1].fillOpacity',
         type: 'range',
         _label: 'Text opacity',
         min: 0,
@@ -76,13 +76,13 @@ export default function create({ Node }) {
         _label: 'Auto size',
       },
       {
-        name: 'shape.shapes[0].rx',
+        name: 'shape.children[0].rx',
         type: 'number',
         step: 0.1,
         _label: 'Border radius x',
       },
       {
-        name: 'shape.shapes[0].ry',
+        name: 'shape.children[0].ry',
         type: 'number',
         step: 0.1,
         _label: 'Border radius y',
@@ -137,13 +137,13 @@ export default function create({ Node }) {
     }
 
     get text() {
-      return this.shape.shapes[1].text;
+      return this.shape.children[1].text;
     }
     
     set text(value) {
-      if (this.shape.shapes[1].text !== value) {
-        this.shape.shapes[1].text = value;
-        if (this.shape.shapes[1].svgElement)
+      if (this.shape.children[1].text !== value) {
+        this.shape.children[1].text = value;
+        if (this.shape.children[1].svgElement)
           this.update();
       }
     }
@@ -160,16 +160,16 @@ export default function create({ Node }) {
     }
 
     setWidth(value) {
-      this.shape.shapes[0].width = value;
-      this.shape.shapes[1].width = value;
+      this.shape.children[0].width = value;
+      this.shape.children[1].width = value;
       this.#autoSize = false;
       super.setWidth(value);
     }
 
     setHeight(value) {
       this.#autoSize = false;
-      this.shape.shapes[0].height = value;
-      this.shape.shapes[1].height = value;
+      this.shape.children[0].height = value;
+      this.shape.children[1].height = value;
       super.setHeight(value);
     }
 
@@ -178,9 +178,9 @@ export default function create({ Node }) {
         const bbox = this.svgShape.children[1].getBBox();
         this.box.width = bbox.width + this.padding.right + this.padding.left;
         this.box.height = bbox.height + this.padding.top + this.padding.bottom;
-        this.shape.shapes[1].y = this.padding.top;
-        this.shape.shapes[0].width = this.box.width;
-        this.shape.shapes[0].height = this.box.height;
+        this.shape.children[1].y = this.padding.top;
+        this.shape.children[0].width = this.box.width;
+        this.shape.children[0].height = this.box.height;
       }
       
       super.update();

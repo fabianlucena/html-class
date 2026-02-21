@@ -5,7 +5,7 @@ export default function create({ Node }) {
     autoPropagate = true;
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -50,8 +50,8 @@ export default function create({ Node }) {
     update() {
       this.setStatus(this.data ? JSON.parse(this.data) : null);
 
-      this.shape.shapes[1].text = this.data;
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].text = this.data;
+      this.actdia.tryUpdateShape(this.shape.children[1]);
 
       super.update();
     }

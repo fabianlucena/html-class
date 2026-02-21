@@ -1,7 +1,7 @@
 export default function create({ Node }) {
   return class Counter extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -36,8 +36,8 @@ export default function create({ Node }) {
 
     updateStatusSync() {
       this.status = (this.status || 0) + 1;
-      this.shape.shapes[1].text = '' + this.status;
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].text = '' + this.status;
+      this.actdia.tryUpdateShape(this.shape.children[1]);
     }
   };
 }

@@ -3,7 +3,7 @@ export default function create({ Node }) {
     static label = 'D Flip-Flop (Edge-Triggered)';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

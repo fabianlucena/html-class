@@ -12,7 +12,7 @@ export default function create({ Node, _ }) {
 
   return class Slider extends Node {
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           y: -.5,
@@ -122,8 +122,8 @@ export default function create({ Node, _ }) {
     set size(value) {
       this.#size = value;
       this.box.width = value;
-      this.shape.shapes[0].width = value;
-      this.shape.shapes[1].width = value - 1;
+      this.shape.children[0].width = value;
+      this.shape.children[1].width = value - 1;
       this.connectors[0].x = value;
       this.update();
     }
@@ -169,7 +169,7 @@ export default function create({ Node, _ }) {
     update() {
       super.update();
 
-      const ticksShape = this.shape.shapes.find(s => s.name === 'ticks');
+      const ticksShape = this.shape.children.find(s => s.name === 'ticks');
       if (ticksShape) {
         const size = this.size - 1;
         let path = '';
@@ -184,7 +184,7 @@ export default function create({ Node, _ }) {
     }
 
     updateKnob() {
-      const shape = this.shape.shapes.find(s => s.name === 'knob') ?? {};
+      const shape = this.shape.children.find(s => s.name === 'knob') ?? {};
       if (this.#draggingKnob) {
         shape.fill = '#808080';
       } else {
@@ -201,7 +201,7 @@ export default function create({ Node, _ }) {
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
-        || item.shapes?.some(s => s.connector)
+        || item.children?.some(s => s.connector)
         || shape?.name !== 'knob'
       )
         return;
@@ -215,7 +215,7 @@ export default function create({ Node, _ }) {
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
-        || item.shapes?.some(s => s.connector)
+        || item.children?.some(s => s.connector)
         || shape?.name !== 'knob'
       ) {
         this.#draggingKnob = false;
@@ -252,7 +252,7 @@ export default function create({ Node, _ }) {
         || evt.ctrlKey
         || evt.shiftKey
         || evt.altKey
-        || item.shapes?.some(s => s.connector)
+        || item.children?.some(s => s.connector)
       ) {
         this.#draggingKnob = false;
         this.updateKnob();

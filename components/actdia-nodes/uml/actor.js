@@ -3,7 +3,7 @@ export default function create({ Node }) {
     static _label = 'Actor';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'circle',
           cx: 1.5,

@@ -3,7 +3,7 @@ export default function create({ Node }) {
     static label = 'SR Flip-Flop (Latch)';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,

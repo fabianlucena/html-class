@@ -3,7 +3,7 @@ export default function create({ Node, _ }) {
     static _label = 'Pool';
 
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           width: 30,
@@ -16,10 +16,10 @@ export default function create({ Node, _ }) {
           height: 12,
         },
         {
-          shapes: [],
+          children: [],
         },
         {
-          shapes: [],
+          children: [],
         },
       ],
     };
@@ -63,24 +63,24 @@ export default function create({ Node, _ }) {
     headerWidth = 2;
 
     setWidth(value) {
-      this.shape.shapes[0].width = value;
+      this.shape.children[0].width = value;
       super.setWidth(value);
     }
 
     setHeight(value) {
-      this.shape.shapes[0].height = value;
-      this.shape.shapes[1].height = value;
+      this.shape.children[0].height = value;
+      this.shape.children[1].height = value;
       super.setHeight(value);
     }
 
     init() {
       super.init(...arguments);
-      this.lanesShape = this.shape.shapes[2].shapes;
-      this.laneHeaderShapes = this.shape.shapes[3].shapes;
+      this.lanesShape = this.shape.children[2].children;
+      this.laneHeaderShapes = this.shape.children[3].children;
     }
 
     update() {
-      this.shape.shapes[1].width = this.headerWidth;
+      this.shape.children[1].width = this.headerWidth;
 
       if (this.laneHeaders.length > this.lanes) {
         this.laneHeaders.splice(this.lanes);
@@ -107,7 +107,7 @@ export default function create({ Node, _ }) {
         this.laneHeaderShapes[i] = {
           x: this.headerWidth / 2,
           y: laneHeight * (i + .5),
-          shapes: [
+          children: [
             {
               shape: 'text',
               x: 0,

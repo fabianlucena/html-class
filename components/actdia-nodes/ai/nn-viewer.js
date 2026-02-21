@@ -19,7 +19,7 @@ export default function create({ Node }) {
     static label = 'Neural Network Viewer';
     
     shape = {
-      shapes: [
+      children: [
         {
           shape: 'rect',
           x: 0,
@@ -38,7 +38,7 @@ export default function create({ Node }) {
           fontSize: .8,
         },
         {
-          shapes: [
+          children: [
             {
               shape: 'circle',
               x: 0.5,
@@ -114,8 +114,8 @@ export default function create({ Node }) {
         }
       }
       
-      this.shape.shapes[1].text = data.map(l => l.map(x => formatNumber(x)).join(' • ')).join('\n');
-      this.actdia.tryUpdateShape(this.shape.shapes[1]);
+      this.shape.children[1].text = data.map(l => l.map(x => formatNumber(x)).join(' • ')).join('\n');
+      this.actdia.tryUpdateShape(this.shape.children[1]);
     }
   };
 }
