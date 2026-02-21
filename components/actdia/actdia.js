@@ -1181,6 +1181,8 @@ export default class ActDia {
     }
 
     shape.id ??= newId();
+
+    data.shape = shape;
     data.attributes ??= {};
     data.attributes.id = shape.id;
 
@@ -1825,7 +1827,7 @@ export default class ActDia {
 
     if (data.children?.length) {
       data.children.forEach((childData, index) => {
-        this.updateSVGElementFromData(svgElement.children[index], childData, { parent: svgElement });
+        this.updateSVGElementFromData(svgElement.children[index], childData, { item: options.item, parent: svgElement });
       });
     }
 
