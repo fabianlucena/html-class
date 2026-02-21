@@ -1007,11 +1007,11 @@ export default class ActDia {
 
   getStyleSVGAttributes(style, options) {
     const attributes = {};
-    const classList = [
+    const classList = new Set([
       ...style.classList || [],
       options?.className,
       ...(options?.classList || []),
-    ].filter(c => c);
+    ].filter(c => c));
 
     options?.id && (attributes.id = options.id);
     (style.name || options?.name) && (attributes.name = style.name ?? options.name);
@@ -1180,6 +1180,10 @@ export default class ActDia {
         };
     }
 
+    shape.id ??= newId();
+    data.attributes ??= {};
+    data.attributes.id = shape.id;
+
     if (shape.shapes) {
       data.children = shape.shapes.map(childShape => this.getShapeSVGData(childShape, item, options));
     }
@@ -1212,7 +1216,6 @@ export default class ActDia {
         svgData.attributes.style = Object.entries(svgData.attributes.style)
           .map(([key, value]) => `${key}: ${value};`)
           .join(' ');
-          
       }
     }
 
@@ -1570,6 +1573,10 @@ export default class ActDia {
         ...fontAttibutes.style,
       }
     };
+
+    if (shape.editable) {
+      attributes.editable = true;
+    }
 
     const children = lines.map((line, index) => {
       const dy = index === 0 ? 0 : (style.lineSpacing || style.fontSize || 1.2);
