@@ -6,6 +6,7 @@ export default {
     'square_matrix.js',
     'identity.js',
     'matrix_multiplication.js',
+    'matrix_addition.js',
   ],
   categories: [],
 };

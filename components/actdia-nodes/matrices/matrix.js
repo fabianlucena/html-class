@@ -47,6 +47,8 @@ export default function create({ Node, _f }) {
         setValue: value => this.dimension = [this.dimension[0], value],
       },
     ];
+    
+    autoPropagate = true;
 
     #dimension = [2, 2];
 
@@ -102,13 +104,14 @@ export default function create({ Node, _f }) {
           );
       }
       super.update();
+      this.updateStatus();
     }
 
-    statusUpdated() {
+    updateStatus() {
       this.shape.shapes[1].text = this.status
         .map(row => row.join(' '))
         .join('\n');
-      super.statusUpdated();
+      super.updateStatus();
     }
   };
 }

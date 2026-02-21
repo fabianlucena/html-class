@@ -1,8 +1,8 @@
-import { multiply } from './matrix_utils.js';
+import { add } from './matrix_utils.js';
 
 export default function create({ Node, _, _f }) {
-  return class MatrixMultiplication extends Node {
-    static _label = _f('Matrix multiplication');
+  return class MatrixAddition extends Node {
+    static _label = _f('Matrix addition');
 
     shape = {
       shapes: [
@@ -17,7 +17,7 @@ export default function create({ Node, _, _f }) {
         {
           y: 1.5,
           shape: 'text',
-          text: '×',
+          text: '+',
           fontSize: 1.5,
         },
       ],
@@ -36,11 +36,11 @@ export default function create({ Node, _, _f }) {
     ];
 
     updateStatus() {
-      this.setStatus(this.multiply());
+      this.setStatus(this.add());
       super.updateStatus();
     }
 
-    multiply() {
+    add() {
       const v0 = this.inputs[0]?.status;
       if (!v0 && v0 !== 0) {
         return _('No matrix input');
@@ -52,7 +52,7 @@ export default function create({ Node, _, _f }) {
       }
 
       try {
-        return multiply(v0, v1);
+        return add(v0, v1);
       } catch (error) {
         return error.message;
       }
