@@ -6,6 +6,7 @@ import { pushNotification, container as notificationContainer } from '../notista
 import '../drag/drag.js';
 import ActDiaTools from './actdia-tools.js';
 import { newId } from '../utils/id.js';
+import '../svg/text_editor.js';
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 

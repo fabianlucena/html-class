@@ -15,6 +15,11 @@ export default function create({ Node }) {
           textAnchor: 'center',
           dominantBaseline: 'top',
           editable: true,
+          onInput: evt => {
+            this.isEditing = true;
+            this.text = evt.data;
+          },
+          onBlur: () => this.isEditing = false,
         },
       ],
     };
@@ -27,8 +32,6 @@ export default function create({ Node }) {
     };
 
     connectors = [];
-
-    includeExport = [];
 
     fields = [
       {
@@ -174,15 +177,52 @@ export default function create({ Node }) {
     }
 
     update() {
-      if (this.autoSize && this.svgShape) {
-        const bbox = this.svgShape.children[1].getBBox();
-        this.box.width = bbox.width + this.padding.right + this.padding.left;
-        this.box.height = bbox.height + this.padding.top + this.padding.bottom;
-        this.shape.children[1].y = this.padding.top;
-        this.shape.children[0].width = this.box.width;
-        this.shape.children[0].height = this.box.height;
+      this.autoSize = true;
+      let svgText = this.shape.children[1]?.svgElement;
+      if (svgText) {
+        if (this.autoSize) {
+          const lines = this.text.split('\n');
+          const lastLine = lines[lines.length - 1];
+          const bbox = svgText.getBBox();
+
+          this.box.width = bbox.width + this.padding.right + this.padding.left;
+          this.box.height = bbox.height + this.padding.top + this.padding.bottom;
+          if (lastLine.trim().length <= 0) {
+            bbox.height++;
+          }
+
+          this.shape.children[1].y = this.padding.top;
+          this.shape.children[0].width = this.box.width;
+          this.shape.children[0].height = this.box.height;
+        }
+
+        if (this.isEditing) {
+          let x;
+          if (this.shape.children[1].textAnchor === 'center'
+            || this.shape.children[1].textAnchor === 'middle'
+          ) {
+            x = this.box.width / 2;
+          } else if (this.shape.children[1].textAnchor === 'right'
+            || this.shape.children[1].textAnchor === 'end'
+          ) {
+            x = this.box.width - this.padding.right;
+          }
+
+          if (x) {
+            this.shape.children[1].x = x;
+            [...svgText.children]?.forEach(child => {
+              child.setAttribute('x', x);
+            });
+          }
+
+          this.actdia.tryUpdateShape(this.shape.children[0]);
+          this.actdia.tryUpdateShape(this.shape.children[1], { skipChildren: true });
+          this.actdia.updateItemSelectionBox(this);
+
+          return;
+        }
       }
-      
+
       super.update();
     }
   };

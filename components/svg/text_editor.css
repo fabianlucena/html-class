@@ -1,0 +1,14 @@
+.text-caret {
+  animation: blink 1s steps(1) infinite;
+  stroke: white;
+  stroke-width: .1;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.text-selection {
+  fill: rgba(0, 120, 215, 0.75);
+  stroke: none;
+}
