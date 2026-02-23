@@ -19,6 +19,8 @@ export default {
   'Text': 'Texto',
   'The connector "%s" does not accept connections of type: "%s".': 'El conector "%s" no acepta conexiones del tipo: "%s".',
   'true': 'verdadero',
+  'Trying to update a non-existent shape.': 'Intentando actualizar una forma inexistente.',
+  'Trying to update a shape without an associated item.': 'Intentando actualizar una forma sin un ítem asociado.',
   'undefined': 'indefinido',
   'Unknown shape: %s in item %s.': 'Forma desconocida: %s en el ítem %s.',
 };
