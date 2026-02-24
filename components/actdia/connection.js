@@ -279,7 +279,7 @@ export default class Connection extends Item {
         ...s,
       }));
 
-    this.actdia.tryUpdateShape(this.shape);
+    this.tryUpdateShape(this.shape);
   }
 
   getMarkerShape(marker, x, y, a) {

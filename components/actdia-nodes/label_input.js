@@ -44,7 +44,7 @@ export default function create({ Node }) {
     
     update() {
       this.shape.children[1].text = this.label;
-      this.actdia.tryUpdateShape(this.shape.children[1]);
+      this.tryUpdateShape(this.shape.children[1]);
     }
 
     updateStatus(options = {}) {

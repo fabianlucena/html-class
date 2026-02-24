@@ -195,17 +195,6 @@ export default class Node extends Item {
     this.setHeight(value);
   }
 
-  initShape(shape) {
-    if (!shape)
-      return;
-
-    shape.item = this;
-    if (shape.classList && !(shape.classList instanceof Set)) {
-      shape.classList = new Set(shape.classList);
-    }
-    shape.children?.forEach(child => this.initShape(child));
-  }
-
   init(options) {
     super.init();
 
@@ -387,13 +376,13 @@ export default class Node extends Item {
   setWidth(value) {
     this.box.width = value;
     if (this.svgShape)
-      this.actdia.tryUpdateShape(this);
+      this.tryUpdateShape(this);
   }
 
   setHeight(value) {
     this.box.height = value;
     if (this.svgShape)
-      this.actdia.tryUpdateShape(this);
+      this.tryUpdateShape(this);
   }
 
   saveStatus = false;

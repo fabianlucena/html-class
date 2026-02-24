@@ -66,7 +66,7 @@ export default function create({ Node }) {
         this.shape.children[1].text = JSON.stringify(status, null, ' ');
       }
 
-      this.actdia.tryUpdateShape(this.shape.children[1]);
+      this.tryUpdateShape(this.shape.children[1]);
     }
   };
 }

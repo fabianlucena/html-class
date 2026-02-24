@@ -147,6 +147,27 @@ export default class Item extends Element {
     return new this.constructor(this);
   }
 
+  initShape(shape) {
+    if (!shape)
+      return;
+
+    shape.item = this;
+    if (shape.classList && !(shape.classList instanceof Set)) {
+      shape.classList = new Set(shape.classList);
+    }
+    shape.children?.forEach(child => this.initShape(child));
+  }
+
+  updateShape(shape) {
+    this.initShape(shape);
+    this.actdia.updateShape(shape);
+  }
+
+  tryUpdateShape(shape) {
+    this.initShape(shape);
+    this.actdia.tryUpdateShape(shape);
+  }
+
   getDataPropertyNames(options) {
     let props = [];
     let current = this;

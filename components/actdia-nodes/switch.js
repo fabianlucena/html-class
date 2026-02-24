@@ -124,7 +124,7 @@ export default function create({ Node }) {
         shape.y = 0.3;
       }
 
-      this.actdia.tryUpdateShape(this.shape.children[2]);
+      this.tryUpdateShape(this.shape.children[2]);
     }
 
     onClick({ evt, item, shape }) {

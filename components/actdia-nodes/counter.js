@@ -37,7 +37,7 @@ export default function create({ Node }) {
     updateStatusSync() {
       this.status = (this.status || 0) + 1;
       this.shape.children[1].text = '' + this.status;
-      this.actdia.tryUpdateShape(this.shape.children[1]);
+      this.tryUpdateShape(this.shape.children[1]);
     }
   };
 }

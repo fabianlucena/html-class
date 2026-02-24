@@ -55,7 +55,7 @@ export default function create({ Node, _ }) {
       const data = this.connectors[0].status;
       if (!data || !Array.isArray(data)) {
         this.shape.children[1].text = _('No data');
-        this.actdia.tryUpdateShape(this.shape.children[1]);
+        this.tryUpdateShape(this.shape.children[1]);
         return;
       }
 
@@ -67,10 +67,10 @@ export default function create({ Node, _ }) {
       this.setStatus(data[this.index]);
 
       this.shape.children[1].text = `${this.index} / ${data.length}`;
-      this.actdia.tryUpdateShape(this.shape.children[1]);
+      this.tryUpdateShape(this.shape.children[1]);
 
       this.shape.children[3].rotate = [360 * this.index / data.length, 2, 2];
-      this.actdia.tryUpdateShape(this.shape.children[3]);
+      this.tryUpdateShape(this.shape.children[3]);
     }
   };
 }

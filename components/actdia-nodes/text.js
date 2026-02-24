@@ -215,8 +215,8 @@ export default function create({ Node }) {
             });
           }
 
-          this.actdia.tryUpdateShape(this.shape.children[0]);
-          this.actdia.tryUpdateShape(this.shape.children[1], { skipChildren: true });
+          this.tryUpdateShape(this.shape.children[0]);
+          this.tryUpdateShape(this.shape.children[1], { skipChildren: true });
           this.actdia.updateItemSelectionBox(this);
 
           return;

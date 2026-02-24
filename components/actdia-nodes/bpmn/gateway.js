@@ -63,7 +63,7 @@ export default function create({ Node, _ }) {
 
         this.#type = value;
         this.shape.children[1].href = basePath + '/gateways_types.svg#' + typeData.sprite;
-        this.actdia.tryUpdateShape(this.shape.children[1]);
+        this.tryUpdateShape(this.shape.children[1]);
       }
     }
   };

@@ -51,7 +51,7 @@ export default function create({ Node }) {
       this.setStatus(this.data ? JSON.parse(this.data) : null);
 
       this.shape.children[1].text = this.data;
-      this.actdia.tryUpdateShape(this.shape.children[1]);
+      this.tryUpdateShape(this.shape.children[1]);
 
       super.update();
     }
