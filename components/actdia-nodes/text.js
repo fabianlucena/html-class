@@ -164,13 +164,13 @@ export default function create({ Node }) {
     }
 
     init() {
-      this.skipAutoAutoSize = true;
+      this.canUpdateAutoSize = false;
       super.init(...arguments);
-      this.skipAutoAutoSize = false;
+      this.canUpdateAutoSize = false;
     }
 
     setWidth(value) {
-      if (!this.skipAutoAutoSize)
+      if (this.canUpdateAutoSize)
         this.#autoSize = false;
   
       this.shape.children[0].width = value;
@@ -179,7 +179,7 @@ export default function create({ Node }) {
     }
 
     setHeight(value) {
-      if (!this.skipAutoAutoSize)
+      if (this.canUpdateAutoSize)
         this.#autoSize = false;
   
       this.shape.children[0].height = value;
