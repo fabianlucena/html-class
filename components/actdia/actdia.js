@@ -550,8 +550,8 @@ export default class ActDia {
   }
 
   updateItemShapeAndListeners(shape, svgShape, item) {
-    if (shape.id !== svgShape.id) {
-      console.error('No cohinciden los ID', shape.id, svgShape.id);
+    if (shape.id !== svgShape?.id) {
+      console.error('No cohinciden los ID', shape, svgShape);
     }
 
     shape.item = item;
