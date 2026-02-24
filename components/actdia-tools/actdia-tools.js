@@ -793,17 +793,29 @@ export default class ActDiaTools {
         fields?.forEach(field => {
           const tool = {...field};
           tool.update = ({tool}) => {
-            tool.input.value = node[field.name];
+            tool.input.value = node[tool.name];
           };
           tool.onChange = evt => {
-            const value = field.type === 'number' ? parseFloat(evt.target.value) : evt.target.value;
-            node[field.name] = value;
+            let value;
+            if (tool.type === 'checkbox') {
+              value = tool.input.checked;
+            } else if (tool.type === 'number') {
+              value = parseFloat(evt.target.value);
+            } else {
+              value = evt.target.value;
+            }
+
+            node[tool.name] = value;
           }
           tool.label ??= _(tool._label);
           tool.nodes = [...selectedNodes];
           this.prepareTool(tool);
           this.dynamicToolsElement.appendChild(tool.element);
-          tool.input.value = node[field.name];
+          if (tool.type === 'checkbox') {
+            tool.input.checked = !!node[tool.name];
+          } else {
+            tool.input.value = node[tool.name];
+          }
         });
       }
     }
@@ -880,7 +892,11 @@ export default class ActDiaTools {
             input.max = tool.max ?? '';
             input.step = tool.step ?? '';
           }
-          input.value = tool.value ?? '';
+          if (tool.type === 'number' || tool.type === 'text') {
+            input.value = tool.value ?? '';
+          } else {
+            input.checked = !!tool.value;
+          }
           input.addEventListener('input', evt => {
             tool.onChange?.(evt);
             tool.nodes?.forEach(n => n.update?.());
