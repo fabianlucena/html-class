@@ -144,8 +144,14 @@ export default class Element {
   }
 
   constructor(options) {
-    if (arguments.length) {
-      this.init(...arguments);
+    for (let argument of arguments) {
+      for (let key in argument) {
+        if (key === 'classRef') {
+          continue;
+        }
+        
+        this[key] = argument[key];
+      }
     }
   }
 

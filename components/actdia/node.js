@@ -195,18 +195,37 @@ export default class Node extends Item {
     this.setHeight(value);
   }
 
+  initShape(shape) {
+    if (!shape)
+      return;
+
+    shape.item = this;
+    if (shape.classList && !(shape.classList instanceof Set)) {
+      shape.classList = new Set(shape.classList);
+    }
+    shape.children?.forEach(child => this.initShape(child));
+  }
+
   init(options) {
     super.init();
+
+    this.initShape(this.shape);
 
     let connectorsData = [];
     for (let i = 0; i < arguments.length; i++) {
       if (!arguments[i])
         continue;
       
-      const { connectors, ...arg } = arguments[i];
+      const { connectors, shape, ...arg } = arguments[i];
       if (connectors?.length) {
         connectorsData.push(...connectors);
       }
+
+      if (typeof shape !== 'undefined') {
+        this.shape = shape;
+        this.initShape(this.shape);
+      }
+
       Object.assign(this, arg);
     }
 

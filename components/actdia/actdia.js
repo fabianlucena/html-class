@@ -528,18 +528,19 @@ export default class ActDia {
     this.#items.sort((a, b) => (dict[a.type] ?? 99) - (dict[b.type] ?? 99));
 
     result.forEach(item => {
-      const textSVG = this.getItemSVG(item, { escapeHTML: true });
-      let node;
+      let layer;
       if (isNode(item)) {
-        node = this.nodesLayerSVG;
+        layer = this.nodesLayerSVG;
       } else if (isConnection(item)) {
-        node = this.connectionsLayerSVG;
+        layer = this.connectionsLayerSVG;
       } else {
-        node = this.othersLayerSVG;
+        layer = this.othersLayerSVG;
       }
 
-      item.svgElement = this.appendSVGFragment(node, textSVG)[0];
-      item.svgShape = item.svgElement?.querySelector('.actdia-shape');
+      const textSVG = this.getItemSVG(item, { escapeHTML: true });
+      item.svgElement = this.appendSVGFragment(layer, textSVG)[0];
+      item.svgShape = item.svgElement?.querySelector('.actdia-shape')
+        || item.svgElement?.querySelector('.actdia-item');
       item.svgSelectionBox = item.svgElement?.querySelector('.actdia-selection-box');
       item.svgConnectors = item.svgElement?.querySelector('.actdia-connectors');
       this.updateItemShapeAndListeners(item.shape, item.svgShape, item);
@@ -822,11 +823,10 @@ export default class ActDia {
 
   getItemMainShape(item) {
     item.shape.id ??= newId();
-    let shape = { ...item.shape };
-    shape.classList ??= [];
-    shape.classList.push('actdia-shape');
+    item.shape.classList ??= new Set;
+    item.shape.classList.add('actdia-shape');
 
-    return shape;
+    return item.shape;
   }
 
   getItemSVG(item, options) {
@@ -1031,14 +1031,14 @@ export default class ActDia {
   getStyleSVGAttributes(style, options) {
     const attributes = {};
     const classList = new Set([
-      ...style.classList || [],
+      ...(style.classList || []),
       options?.className,
       ...(options?.classList || []),
     ].filter(c => c));
 
     options?.id && (attributes.id = options.id);
     (style.name || options?.name) && (attributes.name = style.name ?? options.name);
-    classList.length && (attributes.className = classList.join(' '));
+    classList.size && (attributes.className = [...classList].join(' '));
     ('fill' in style) && (attributes.fill = style.fill);
     style.fill === false && (attributes.fill = 'none');
     ('fillOpacity' in style) && (attributes['fill-opacity'] = style.fillOpacity);
@@ -1237,18 +1237,19 @@ export default class ActDia {
     options.prefix ??= '\n';
     options.tab ??= ' ';
 
-    const classList = [];
-    if (svgData.attributes) {
-      svgData.attributes?.class && classList.push(svgData.attributes.class);
-      svgData.attributes?.className && classList.push(svgData.attributes.className);
-      svgData.attributes?.classList && classList.push(...svgData.attributes.classList);
+    const attributes = { ...svgData.attributes };
+    const classList = new Set;
+    if (attributes) {
+      attributes.class && classList.add(attributes.class);
+      attributes.className && classList.add(attributes.className);
+      attributes.classList && classList.add(...attributes.classList);
 
-      delete svgData.attributes.class;
-      delete svgData.attributes.className;
-      delete svgData.attributes.classList;
+      delete attributes.class;
+      delete attributes.className;
+      delete attributes.classList;
 
-      if (svgData.attributes.style) {
-        svgData.attributes.style = Object.entries(svgData.attributes.style)
+      if (attributes.style) {
+        attributes.style = Object.entries(attributes.style)
           .map(([key, value]) => `${key}: ${value};`)
           .join(' ');
       }
@@ -1265,8 +1266,8 @@ export default class ActDia {
       : '';
 
     const svg = options.prefix + `<${svgData.tag}`
-      + (classList.length ? attributePrefix + `class="${classList.join(' ')}"` : '')
-      + (svgData.attributes && Object.entries(svgData.attributes)
+      + (classList.size ? attributePrefix + `class="${[...classList].join(' ')}"` : '')
+      + (attributes && Object.entries(attributes)
         .map(([key, value]) => `${attributePrefix}${key}="${value}"`)
         .join('') || '')
       + options.prefix + '>'
@@ -2094,8 +2095,8 @@ export default class ActDia {
     let shape;
     const attributes = shapeSVG.attributes;
     const id = attributes?.id?.value;
-    if (id) {
-      if (item?.shape?.id === id) {
+    if (id && item?.shape) {
+      if (item.shape.id === id) {
         shape = item.shape;
       } else if (item.shape.children?.length) {
         shape = this.getShapeByKeyValue(item.shape.children, 'id', id);
