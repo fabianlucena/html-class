@@ -1,4 +1,6 @@
-import './text_editor.css';
+import { importCss, loadTextCss } from '../utils/import-css.js';
+
+importCss('./text_editor.css', import.meta.url);
 
 document.addEventListener('DOMContentLoaded', init);
 
