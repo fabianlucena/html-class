@@ -1,4 +1,4 @@
-import { importCss, loadTextCss } from '../utils/import-css.js';
+import { importCss } from '../utils/import-css.js';
 
 importCss('./text_editor.css', import.meta.url);
 
