@@ -177,50 +177,34 @@ export default function create({ Node }) {
     }
 
     update() {
-      this.autoSize = true;
-      let svgText = this.shape.children[1]?.svgElement;
-      if (svgText) {
-        if (this.autoSize) {
-          const lines = this.text.split('\n');
-          const lastLine = lines[lines.length - 1];
-          const bbox = svgText.getBBox();
+      let textShape = this.shape.children[1];
+      if (textShape) {
+        let svgText = textShape?.svgElement;
+        if (svgText) {
+          if (this.autoSize) {
+            const lines = this.text.split('\n');
+            const lastLine = lines[lines.length - 1];
+            const bbox = svgText.getBBox();
 
-          this.box.width = bbox.width + this.padding.right + this.padding.left;
-          this.box.height = bbox.height + this.padding.top + this.padding.bottom;
-          if (lastLine.trim().length <= 0) {
-            bbox.height++;
-          }
+            this.box.width = bbox.width + this.padding.right + this.padding.left;
+            this.box.height = bbox.height + this.padding.top + this.padding.bottom;
+            if (lastLine.trim().length <= 0) {
+              bbox.height++;
+            }
 
-          this.shape.children[1].y = this.padding.top;
-          this.shape.children[0].width = this.box.width;
-          this.shape.children[0].height = this.box.height;
-        }
-
-        if (this.isEditing) {
-          let x;
-          if (this.shape.children[1].textAnchor === 'center'
-            || this.shape.children[1].textAnchor === 'middle'
-          ) {
-            x = this.box.width / 2;
-          } else if (this.shape.children[1].textAnchor === 'right'
-            || this.shape.children[1].textAnchor === 'end'
-          ) {
-            x = this.box.width - this.padding.right;
-          }
-
-          if (x) {
-            this.shape.children[1].x = x;
-            [...svgText.children]?.forEach(child => {
-              child.setAttribute('x', x);
-            });
+            textShape.y = this.padding.top;
+            this.shape.children[0].width = this.box.width;
+            this.shape.children[0].height = this.box.height;
           }
 
           this.tryUpdateShape(this.shape.children[0]);
-          this.tryUpdateShape(this.shape.children[1], { skipChildren: true });
+          this.tryUpdateShape(textShape, { skipChildren: true });
           this.actdia.updateItemSelectionBox(this);
-
-          return;
         }
+      }
+
+      if (this.isEditing) {
+        return;
       }
 
       super.update();
