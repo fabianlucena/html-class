@@ -77,6 +77,7 @@ export default function create({ Node }) {
         name: 'autoSize',
         type: 'checkbox',
         _label: 'Auto size',
+        isTool: true,
       },
       {
         name: 'shape.children[0].rx',
@@ -133,7 +134,7 @@ export default function create({ Node }) {
     
     set autoSize(value) {
       if (this.#autoSize !== value) {
-        this.#autoSize = value
+        this.#autoSize = !!value
         if (this.svgShape)
           this.update();
       }
@@ -162,15 +163,25 @@ export default function create({ Node }) {
       }
     }
 
+    init() {
+      this.skipAutoAutoSize = true;
+      super.init(...arguments);
+      this.skipAutoAutoSize = false;
+    }
+
     setWidth(value) {
+      if (!this.skipAutoAutoSize)
+        this.#autoSize = false;
+  
       this.shape.children[0].width = value;
       this.shape.children[1].width = value;
-      this.#autoSize = false;
       super.setWidth(value);
     }
 
     setHeight(value) {
-      this.#autoSize = false;
+      if (!this.skipAutoAutoSize)
+        this.#autoSize = false;
+  
       this.shape.children[0].height = value;
       this.shape.children[1].height = value;
       super.setHeight(value);
