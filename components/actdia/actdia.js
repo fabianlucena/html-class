@@ -1809,13 +1809,18 @@ export default class ActDia {
     if (!item)
       throw new Error(_('Trying to update a shape without an associated item.'));
     
-    const svgElement = shape.svgElement;
     const data = this.getShapeSVGData(shape, item);
-    if (this.updateSVGElementFromData(svgElement, data, { parent: item.svgElement, ...options }))
+    shape.svgElement = this.updateSVGElementFromData(
+      shape.svgElement,
+      data,
+      {
+        item,
+        parent: shape?.parent?.svgElement ?? item.svgElement,
+        ...options,
+      }
+    );
+    if (shape.svgElement)
       return;
-
-    if (svgElement)
-      svgElement.outerHTML = this.getShapeSVG(shape, item);
   }
 
   updateSVGElementFromData(svgElement, data, options) {
@@ -1833,8 +1838,8 @@ export default class ActDia {
 
       svgElement = document.createElementNS('http://www.w3.org/2000/svg', data.tag);
       options.parent.appendChild(svgElement);
-    } else if (svgElement.tagName.toLowerCase() !== data.tag.toLowerCase()) {
-      return false;
+    } else if (options.parent && !options.parent.contains(svgElement)) {
+      options.parent.appendChild(svgElement);
     }
 
     const classList = [];
@@ -1880,7 +1885,7 @@ export default class ActDia {
       }
     }
 
-    return true;
+    return svgElement;
   }
 
   updateItem(item) {
