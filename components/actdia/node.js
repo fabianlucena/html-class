@@ -204,7 +204,7 @@ export default class Node extends Item {
 
     super.init();
 
-    this.initShape(this.shape);
+    this.normalizeShape(this.shape);
 
     let connectorsData = [];
     for (let i = 0; i < arguments.length; i++) {
@@ -218,7 +218,7 @@ export default class Node extends Item {
 
       if (typeof shape !== 'undefined') {
         this.shape = shape;
-        this.initShape(this.shape);
+        this.normalizeShape(this.shape);
       }
 
       Object.assign(this, arg);

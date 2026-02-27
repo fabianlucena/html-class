@@ -159,24 +159,25 @@ export default class Item extends Element {
     return new this.constructor(this);
   }
 
-  initShape(shape) {
+  normalizeShape(shape) {
     if (!shape)
       return;
 
+    shape.id ??= newId();
     shape.item = this;
     if (shape.classList && !(shape.classList instanceof Set)) {
       shape.classList = new Set(shape.classList);
     }
-    shape.children?.forEach(child => this.initShape(child));
+    shape.children?.forEach(child => this.normalizeShape(child));
   }
 
   updateShape(shape) {
-    this.initShape(shape);
+    this.normalizeShape(shape);
     this.actdia.updateShape(shape);
   }
 
   tryUpdateShape(shape) {
-    this.initShape(shape);
+    this.normalizeShape(shape);
     this.actdia.tryUpdateShape(shape);
   }
 
