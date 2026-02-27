@@ -112,6 +112,10 @@ export default function create({ Node, _ }) {
       if (!Array.isArray(status)) {
         status = [status];
       }
+      
+      while (this.shape.children[2].children.length > status.length) {
+        this.shape.children[2].children.pop();
+      }
 
       while (this.shape.children[3].children.length > status.length) {
         this.shape.children[3].children.pop();
@@ -162,6 +166,7 @@ export default function create({ Node, _ }) {
         if (!textShape) {
           textColors ||= getColors(count, 90, 100, 75);
           this.shape.children[2].children[i] = {
+            parent: this.shape.children[2],
             shape: 'text',
             fill: textColors[i],
             text: 'Hola',
@@ -178,6 +183,7 @@ export default function create({ Node, _ }) {
         if (!drawShape) {
           drawColors ||= getColors(count, 90);
           this.shape.children[3].children[i] = {
+            parent: this.shape.children[3],
             shape: 'path',
             fill: false,
             stroke: drawColors[i],
@@ -186,12 +192,8 @@ export default function create({ Node, _ }) {
         }
         drawShape.y = i * sy + .1;
 
-        if (!needUpdate) {
-          if (svgTextElement?.children?.[i]) {
-            this.tryUpdateShape(textShape);
-          } else {
-            needUpdate = true;
-          }
+        if (!needUpdate && !this.tryUpdateShape(textShape)) {
+          needUpdate = true;
         }
       }
 
@@ -206,7 +208,6 @@ export default function create({ Node, _ }) {
       let last = length - 1;
       const sy = (this.#height - 1) / count;
       const ssy = sy * .9;
-      const svgDrawElement = this.svgShape?.children?.[3];
       let needUpdate = false;
 
       if (length === 0) {
@@ -240,12 +241,8 @@ export default function create({ Node, _ }) {
 
         shape.d = 'M' + shape.d.substring(2);
 
-        if (!needUpdate) {
-          if (svgDrawElement?.children?.[i]) {
-            this.tryUpdateShape(shape);
-          } else {
-            needUpdate = true;
-          }
+        if (!needUpdate && !this.tryUpdateShape(shape)) {
+          needUpdate = true;
         }
       }
 
