@@ -143,6 +143,8 @@ export default class Element {
     return classInfo.defaultItem;
   }
 
+  isInitializing = 0;
+
   constructor(options) {
     for (let argument of arguments) {
       for (let key in argument) {
@@ -156,6 +158,12 @@ export default class Element {
   }
 
   init(options) {
+    if (this.isInitializing <= 0) {
+      this.isInitializing = 1;
+    } else {
+      this.isInitializing++;
+    }
+
     for (let argument of arguments) {
       for (let key in argument) {
         if (key === 'classRef') {
@@ -164,6 +172,12 @@ export default class Element {
         
         this[key] = argument[key];
       }
+    }
+
+    if (this.isInitializing <= 0) {
+      this.isInitializing = 0;
+    } else {
+      this.isInitializing--;
     }
   }
 

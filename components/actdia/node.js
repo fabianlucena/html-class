@@ -196,6 +196,12 @@ export default class Node extends Item {
   }
 
   init(options) {
+    if (this.isInitializing <= 0) {
+      this.isInitializing = 1;
+    } else {
+      this.isInitializing++;
+    }
+
     super.init();
 
     this.initShape(this.shape);
@@ -238,6 +244,12 @@ export default class Node extends Item {
 
     if (this.connectors?.length) {
       this.propagate();
+    }
+
+    if (this.isInitializing <= 0) {
+      this.isInitializing = 0;
+    } else {
+      this.isInitializing--;
     }
   }
 

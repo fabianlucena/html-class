@@ -139,8 +139,20 @@ export default class Item extends Element {
   }
 
   init(options) {
+    if (this.isInitializing <= 0) {
+      this.isInitializing = 1;
+    } else {
+      this.isInitializing++;
+    }
+
     super.init(...arguments);
     this.id ??= newId();
+
+    if (this.isInitializing <= 0) {
+      this.isInitializing = 0;
+    } else {
+      this.isInitializing--;
+    }
   }
 
   clone() {
