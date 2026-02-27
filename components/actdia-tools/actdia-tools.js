@@ -720,7 +720,7 @@ export default class ActDiaTools {
     this.toolsContainerElement.appendChild(this.toolsElement);
 
     this.dynamicToolsElement = document.createElement('div');
-    this.dynamicToolsElement.classList.add('actdia-tools-dynamic-tools-container');
+    this.dynamicToolsElement.classList.add('actdia-tools-dynamic-tools-container', 'actdia-tools-category-tools');
     this.toolsContainerElement.appendChild(this.dynamicToolsElement);
 
     this.labelsElement = document.createElement('div');
