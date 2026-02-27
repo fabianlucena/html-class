@@ -13,6 +13,7 @@ export default {
   'Json Data': 'Datos JSON',
   'Label': 'Etiqueta',
   'Linear': 'Lineal',
+  'Math': 'Matemáticas',
   'Maximum': 'Máximo',
   'Minimum': 'Mínimo',
   'Moving average': 'Media móvil',

@@ -23,7 +23,7 @@ export default {
   categories: [
     { url: 'uml', _label: 'UML' },
     { url: 'bpmn', _label: 'BPMN' },
-    { url: 'matrices', _label: 'Matrices' },
+    { url: 'math', _label: 'Math' },
     { url: 'electronic', _label: 'Electronic' },
     { url: 'internet', _label: 'Internet' },
     { url: 'ai', _label: 'AI' },
