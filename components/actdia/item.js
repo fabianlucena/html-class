@@ -159,16 +159,17 @@ export default class Item extends Element {
     return new this.constructor(this);
   }
 
-  normalizeShape(shape) {
+  normalizeShape(shape, parent) {
     if (!shape)
       return;
 
     shape.id ??= newId();
     shape.item = this;
+    shape.parent ??= parent;
     if (shape.classList && !(shape.classList instanceof Set)) {
       shape.classList = new Set(shape.classList);
     }
-    shape.children?.forEach(child => this.normalizeShape(child));
+    shape.children?.forEach(child => this.normalizeShape(child, shape));
   }
 
   updateShape(shape) {
@@ -178,7 +179,7 @@ export default class Item extends Element {
 
   tryUpdateShape(shape) {
     this.normalizeShape(shape);
-    this.actdia.tryUpdateShape(shape);
+    return this.actdia.tryUpdateShape(shape);
   }
 
   getDataPropertyNames(options) {
