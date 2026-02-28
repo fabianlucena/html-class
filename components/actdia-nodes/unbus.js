@@ -60,6 +60,9 @@ export default function create({ Node }) {
     }
 
     update() {
+      if (this.isInitializing)
+        return;
+      
       const height = Math.max(this.channels, 1);
       this.box.height = height;
       this.shape.height = height;

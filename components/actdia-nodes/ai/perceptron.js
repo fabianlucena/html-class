@@ -220,6 +220,9 @@ export default function create({ Node, _ }) {
     }
 
     update() {
+      if (this.isInitializing)
+        return;
+      
       const inputs = this.inputs,
         l = inputs.length - 1,
         z = 15,

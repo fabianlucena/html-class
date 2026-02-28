@@ -104,7 +104,8 @@ export default function create({ Node }) {
           connector.y = 0;
       }
 
-      this.update();
+      if (!this.isInitializing)
+        this.update();
     }
 
     statusUpdated() {
