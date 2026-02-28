@@ -6,6 +6,7 @@ export default function create({ Node, _f }) {
       children: [
         {
           shape: 'rect',
+          name: 'box',
           width: 2,
           height: 2,
           rx: .2,
@@ -13,6 +14,7 @@ export default function create({ Node, _f }) {
         },
         {
           shape: 'text',
+          name: 'texts',
           text: '',
           fontSize: .6,
         },
@@ -77,6 +79,13 @@ export default function create({ Node, _f }) {
       this.dimension = [value, this.#dimension[1]];
     }
 
+    init() {
+      super.init(...arguments);
+      this.boxShape = this.getShape('box');
+      this.textsShape = this.getShape('texts');
+      this.output = this.connectors[0];
+    }
+
     update() {
       const width = Math.ceil(Math.max(this.columns, 1) * 2);
       const height = Math.ceil(Math.max(this.rows, 1) * .6);
@@ -85,14 +94,14 @@ export default function create({ Node, _f }) {
       this.box.y = -d;
       this.box.width = width;
       this.box.height = height;
-      this.shape.children[0].x = -d;
-      this.shape.children[0].y = -d;
-      this.shape.children[0].width = width;
-      this.shape.children[0].height = height;
-      this.shape.children[1].x = -d + width / 2;
-      this.shape.children[1].y = -d + height / 2;
-      this.connectors[0].x = width - d;
-      this.connectors[0].y = height / 2 - d;
+      this.boxShape.x = -d;
+      this.boxShape.y = -d;
+      this.boxShape.width = width;
+      this.boxShape.height = height;
+      this.textsShape.x = -d + width / 2;
+      this.textsShape.y = -d + height / 2;
+      this.output.x = width - d;
+      this.output.y = height / 2 - d;
       if (!this.status
         || !Array.isArray(this.status)
         || this.status.length !== this.rows
@@ -108,9 +117,10 @@ export default function create({ Node, _f }) {
     }
 
     updateStatus() {
-      this.shape.children[1].text = this.status
+      this.textsShape.text = this.status
         .map(row => row.join(' '))
         .join('\n');
+      this.tryUpdateShape(this.textsShape);
       super.updateStatus();
     }
   };
