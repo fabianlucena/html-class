@@ -204,8 +204,6 @@ export default class Node extends Item {
 
     super.init();
 
-    this.normalizeShape(this.shape);
-
     let connectorsData = [];
     for (let i = 0; i < arguments.length; i++) {
       if (!arguments[i])
@@ -218,11 +216,12 @@ export default class Node extends Item {
 
       if (typeof shape !== 'undefined') {
         this.shape = shape;
-        this.normalizeShape(this.shape);
       }
 
       Object.assign(this, arg);
     }
+
+    this.normalizeShape(this.shape);
 
     this.connectors?.forEach((connector, index) => {
       if (!(connector instanceof Connector)) {
