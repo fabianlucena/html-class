@@ -896,13 +896,17 @@ export default class ActDia {
       (item.selected && 'actdia-selected' || '')
     ].filter(c => c);
 
-    const
+    let
       x = (item.x ?? 0),
       y = (item.y ?? 0);
 
     let transform = '';
     if (!isNaN(sx) || !isNaN(sy)) transform += ` scale(${sx ?? 1}, ${sy ?? 1})`;
-    if ((!isNaN(x) && x) || (!isNaN(y) && y)) transform += ` translate(${x}, ${y})`;
+    if ((!isNaN(x) && x) || (!isNaN(y) && y)) {  
+        if (isNaN(x)) x = 0;
+        if (isNaN(y)) y = 0;
+        transform += ` translate(${x}, ${y})`;
+    }
     if (transform) {
       transform = ` transform="${transform.trim()}"`;
     }
@@ -1060,7 +1064,14 @@ export default class ActDia {
     let transform = '';
 
     if (!isNaN(style.sx) || !isNaN(style.sy)) transform += ` scale(${style.sx ?? 1}, ${style.sy ?? 1})`;
-    if ((!isNaN(style.x) && style.x) || (!isNaN(style.y) && style.y)) transform += ` translate(${style.x ?? 0}, ${style.y ?? 0})`;
+    if ((!isNaN(style.x) && style.x) || (!isNaN(style.y) && style.y)) {
+      let x = style.x;
+      let y = style.y;
+      if (isNaN(x)) x = 0;
+      if (isNaN(y)) y = 0;
+      
+      transform += ` translate(${x ?? 0}, ${y ?? 0})`;
+    }
     if (style.rotate) {
       let rotate = style.rotate;
       if (Array.isArray(rotate))
@@ -1168,13 +1179,15 @@ export default class ActDia {
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        const { shape: shape1, children, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, ...attributes } = shape;
+        let { shape: shape1, children, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, ...attributes } = shape;
         delete attributes.item;
         delete attributes.svgElement;
         attributes.transform = '';
 
-        if (!isNaN(x) || !isNaN(y)) {
-          attributes.transform += ` translate(${(x ?? 0)}, ${(y ?? 0)})`;
+        if ((!isNaN(x) && x) || (!isNaN(y) && y)) {  
+          if (isNaN(x)) x = 0;
+          if (isNaN(y)) y = 0;
+          attributes.transform += ` translate(${x}, ${y})`;
         }
 
         if (rotate) {
