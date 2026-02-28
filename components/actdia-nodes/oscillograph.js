@@ -177,7 +177,7 @@ export default function create({ Node, _ }) {
           textShape = this.shape.children[2].children[i];
         }
         textShape.y = i * sy + .6;
-        textShape.text = _('%s •• %s', this.#min[i].toFixed(2), this.#max[i].toFixed(2));
+        textShape.text = _('[%s •• %s] %s', this.#min[i].toFixed(2), this.#max[i].toFixed(2), value.toFixed(2));
 
         let drawShape = this.shape.children[3].children[i];
         if (!drawShape) {
