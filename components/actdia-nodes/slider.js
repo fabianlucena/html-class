@@ -167,6 +167,9 @@ export default function create({ Node, _ }) {
     inv = x => x;
 
     update() {
+      if (this.isInitializing)
+        return;
+      
       super.update();
 
       const ticksShape = this.shape.children.find(s => s.name === 'ticks');
@@ -192,7 +195,7 @@ export default function create({ Node, _ }) {
       }
 
       shape.x = (this.inv(this.status) - this.min) / this.range * (this.size - 1) + .2;
-      this.actdia?.tryUpdateShape(shape);
+      this.tryUpdateShape(shape);
     }
 
     onClick({ evt, item, shape }) {

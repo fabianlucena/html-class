@@ -75,7 +75,7 @@ export default function create({ Node, actdia }) {
         setTimeout(() => {
           if (shape.className === 'updated') {
             shape.className = '';
-            this.actdia?.tryUpdateShape(this.shape.children[0]);
+            this.tryUpdateShape(this.shape.children[0]);
           }
         }, 250);
       } else {
@@ -86,7 +86,7 @@ export default function create({ Node, actdia }) {
         }
       }
 
-      this.actdia?.tryUpdateShape(this.shape.children[0]);
+      this.tryUpdateShape(this.shape.children[0]);
     }
  };
 }
