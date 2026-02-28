@@ -194,7 +194,7 @@ export default class Item extends Element {
 
   tryUpdateShape(shape) {
     this.normalizeShape(shape);
-    return this.actdia.tryUpdateShape(shape);
+    return this.actdia?.tryUpdateShape(shape);
   }
 
   getDataPropertyNames(options) {
