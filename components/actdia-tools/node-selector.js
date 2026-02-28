@@ -129,6 +129,7 @@ export default class NodeSelector extends Dialog {
       .map(classInfo => {
         const itemOptions = {};
         const item = Item.create(classInfo);
+        item.update();
 
         itemOptions.sx = Math.min(
           (options.width -  options.padding * 2) / item.box.width,
