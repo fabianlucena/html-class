@@ -159,6 +159,21 @@ export default class Item extends Element {
     return new this.constructor(this);
   }
 
+  getShape(name, shape = this.shape) {
+    let founded = shape.children.find(child => child.name === name);
+    if (!founded) {
+      for (const child of shape.children) {
+        if (child.children) {
+          founded = this.getShape(name, child);
+          if (founded) {
+            break;
+          }
+        }
+      }
+    }
+    return founded;
+  }
+
   normalizeShape(shape, parent) {
     if (!shape)
       return;
