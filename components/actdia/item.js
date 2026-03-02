@@ -197,6 +197,10 @@ export default class Item extends Element {
     return this.actdia?.tryUpdateShape(shape);
   }
 
+  tryUpdateConnector(connector) {
+    return this.actdia?.tryUpdateConnector(connector);
+  }
+
   getDataPropertyNames(options) {
     let props = [];
     let current = this;
