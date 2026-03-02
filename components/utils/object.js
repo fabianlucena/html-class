@@ -42,3 +42,19 @@ export function setValueByPath(obj, path, value) {
   }
   current[lastPart] = value;
 }
+
+export function assignDeep(target, ...sources) {
+  for (let source of sources) {
+    for (let key in source) {
+      if (source[key] && typeof source[key] === 'object') {
+        if (!target[key] || typeof target[key] !== 'object') {
+          target[key] = {};
+        }
+        assignDeep(target[key], source[key]);
+      } else {
+        target[key] = source[key];
+      }
+    }
+  }
+  return target;
+}
