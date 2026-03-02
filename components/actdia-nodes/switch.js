@@ -3,7 +3,8 @@ import { assignDeep } from '../utils/object.js';
 export default function create({ Node }) {
   return class Switch extends Node {
     shape = {
-      x: .5,
+      x: -.5,
+      y: -0,
       children: [
         {
           shape: 'rect',
@@ -36,14 +37,14 @@ export default function create({ Node }) {
     };
 
     box = {
-      x: 0,
+      x: -1,
       y: -1,
       width: 1,
       height: 2,
     };
 
     connectors = [
-      { name: 'o', type: 'out', x: 1, y: 0, direction: 'right', extends: 'tiny' },
+      { name: 'o', type: 'out', x: 0, y: 0, direction: 'right', extends: 'tiny' },
     ];
 
     static variants = [
@@ -52,10 +53,16 @@ export default function create({ Node }) {
         _label: 'Vertical',
         data: {
           rotate: 0,
+          shape: {
+            x: -.5,
+            y: -0,
+          },
+          box: {
+            x: -1,
+            y: -1,
+          },
           connector: {
             direction: 0,
-            x: .5,
-            y: 0,
           },
         },
       },
@@ -63,36 +70,17 @@ export default function create({ Node }) {
         name: 'horizontal',
         _label: 'Horizontal',
         data: {
-          rotate: -90,
-          shape: { x: 0 },
-          connector: {
-            direction: -90,
+          rotate: 90,
+          shape: {
             x: 0,
             y: 1,
           },
-        },
-      },
-      {
-        name: 'inverted',
-        _label: 'Inverted',
-        data: {
-          rotate: 180,
-          connector: {
-            direction: 180,
+          box: {
             x: -.5,
             y: 0,
           },
-        },
-      },
-      {
-        name: 'rotated',
-        _label: 'Rotated',
-        data: {
-          rotate: 90,
           connector: {
             direction: 90,
-            x: 0,
-            y: -1,
           },
         },
       },
@@ -109,8 +97,8 @@ export default function create({ Node }) {
     }
 
     update() {
-      super.update();
       assignDeep(this, this.getVariant()?.data);
+      super.update();
       this.updateKnob();
     }
 
