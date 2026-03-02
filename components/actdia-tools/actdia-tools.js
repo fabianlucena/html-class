@@ -789,7 +789,7 @@ export default class ActDiaTools {
       if (selectedNode) {
         this.selectedNode = selectedNode;
         const node = this.selectedNode;
-        const fields = node.fields?.filter(f => f.isTool);
+        const fields = node.getFields()?.filter(f => f.isTool);
         fields?.forEach(field => {
           const tool = {...field};
           tool.update = ({tool}) => {
@@ -805,7 +805,16 @@ export default class ActDiaTools {
               value = evt.target.value;
             }
 
-            node[tool.name] = value;
+            if (tool.set) {
+              tool.set(value);
+            } else {
+              const setter = 'set' + tool.name[0].toUpperCase() + tool.name.slice(1);
+              if (typeof node[setter] === 'function') {
+                node[setter](value);
+              } else {
+                node[tool.name] = value;
+              }
+            }
           }
           tool.label ??= _(tool._label);
           tool.nodes = [...selectedNodes];

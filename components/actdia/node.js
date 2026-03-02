@@ -64,7 +64,7 @@ export default class Node extends Item {
   canRotate = true;
   canReflect = true;
   canChangeFill = true;
-  canChengeStroke = true;
+  canChangeStroke = true;
   commonFields = [
     {
       name: 'class',
@@ -153,21 +153,34 @@ export default class Node extends Item {
       type: 'color',
       _label: 'Stroke color',
       nullable: true,
-      condition: () => this.canChengeStroke,
+      condition: () => this.canChangeStroke,
     },
     {
       name: 'style.strokeWidth',
       type: 'number',
       _label: 'Line width',
       nullable: true,
-      condition: () => this.canChengeStroke,
+      condition: () => this.canChangeStroke,
     },
     {
       name: 'style.dash',
       type: 'text',
       _label: 'Dash',
       nullable: true,
-      condition: () => this.canChengeStroke,
+      condition: () => this.canChangeStroke,
+    },
+    {
+      name: 'variant',
+      type: 'select',
+      _label: 'Variant',
+      options: (this.variants ?? this.constructor.variants )
+        ?.map(v => ({
+          value: v.name,
+          label: _(v._label) || v.label || v.name,
+        })),
+      condition: () => (this.variants ?? this.constructor.variants )?.length,
+      isTool: true,
+      set: value => this.setVariant(value),
     },
   ];
 
@@ -477,5 +490,14 @@ export default class Node extends Item {
       ...this.commonFields,
       ...this.fields || [],
     ].filter(field => !field.condition || field.condition());
+  }
+
+  #variant = null;
+  get variant() {
+    return this.#variant;
+  }
+
+  set variant(value) {
+    this.#variant = (this.variants ?? this.constructor.variants)?.find(v => v.name === value);
   }
 }

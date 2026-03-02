@@ -1,3 +1,5 @@
+import { assignDeep } from '../utils/object.js';
+
 export default function create({ Node }) {
   return class Switch extends Node {
     shape = {
@@ -41,69 +43,79 @@ export default function create({ Node }) {
     };
 
     connectors = [
-      { name: 'o0', type: 'out', x: 1, y: 0, direction: 'right', extends: 'tiny' },
+      { name: 'o', type: 'out', x: 1, y: 0, direction: 'right', extends: 'tiny' },
     ];
 
-    fields = [
+    static variants = [
       {
-        name: 'variant',
-        type: 'select',
-        _label: 'Variant',
-        options: [
-          { value: 'vertical', _label: 'Vertical' },
-          { value: 'horizontal', _label: 'Horizontal' },
-          { value: 'inverted', _label: 'Inverted' },
-          { value: 'rotated', _label: 'Rotated' },
-        ],
+        name: 'vertical',
+        _label: 'Vertical',
+        data: {
+          rotate: 0,
+          connector: {
+            direction: 0,
+            x: .5,
+            y: 0,
+          },
+        },
+      },
+      {
+        name: 'horizontal',
+        _label: 'Horizontal',
+        data: {
+          rotate: -90,
+          shape: { x: 0 },
+          connector: {
+            direction: -90,
+            x: 0,
+            y: 1,
+          },
+        },
+      },
+      {
+        name: 'inverted',
+        _label: 'Inverted',
+        data: {
+          rotate: 180,
+          connector: {
+            direction: 180,
+            x: -.5,
+            y: 0,
+          },
+        },
+      },
+      {
+        name: 'rotated',
+        _label: 'Rotated',
+        data: {
+          rotate: 90,
+          connector: {
+            direction: 90,
+            x: 0,
+            y: -1,
+          },
+        },
       },
     ];
 
     saveStatus = true;
+    #connector = null;
 
-    #variant = 'vertical';
-
-    get variant() {
-      return this.#variant;
+    init() {
+      super.init(...arguments);
+      this.#connector = this.getConnector('o');
+      if (!this.variant)
+        this.variant = 'vertical';
     }
 
-    static allowedVariants = ['vertical', 'horizontal', 'inverted', 'rotated'];
-    set variant(value) {
-      if (!Switch.allowedVariants.includes(value))
-        value = 'vertical';
+    update() {
+      super.update();
+      assignDeep(this, this.variant?.data);
+      this.updateKnob();
+    }
 
-      this.#variant = value;
-
-      const connector = this.connectors[0];
-      switch (value) {
-        case 'horizontal':
-          this.rotate = -90;
-          this.shape.x = 0;
-          connector.direction = -90;
-          connector.x = 0;
-          connector.y = 1;
-          break;
-
-        case 'inverted':
-          this.rotate = 180;
-          connector.direction = 180;
-          connector.x = -.5;
-          connector.y = 0;
-          break;
-
-        case 'rotated':
-          this.rotate = 90;
-          connector.direction = 90;
-          connector.x = 0;
-          connector.y = -1;
-          break;
-
-        default:
-          this.rotate = 0;
-          connector.direction = 0;
-          connector.x = .5;
-          connector.y = 0;
-      }
-
+    setVariant(value) {
+      super.variant = value;
       if (!this.isInitializing)
         this.update();
     }
