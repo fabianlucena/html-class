@@ -1922,18 +1922,7 @@ export default class ActDia {
     if (!(item.svgConnectors instanceof SVGElement))
       return;
 
-    item.connectors.forEach(connector => {
-      const svgConnector = item.svgConnectors.querySelector(`g.actdia-connector#${CSS.escape(connector.id)}`);
-      const data = this.getConnectorShapeData(connector, item);
-      if (svgConnector) {
-        data.shape.item = item;
-        data.shape.svgElement = svgConnector;
-        this.updateShape(data.shape);
-      } else {
-        const svg = this.getShapeSVG(data.shape, item);
-        item.svgConnectors.innerHTML += svg;
-      }
-    });
+    item.connectors.forEach(connector => this.tryUpdateConnector(connector, item));
 
     const svgConnectorsList = item.svgConnectors.querySelectorAll(`g.actdia-connector`);
     [...svgConnectorsList].forEach(svgConnector => {
@@ -1942,6 +1931,19 @@ export default class ActDia {
         svgConnector.remove();
       }
     });
+  }
+
+  tryUpdateConnector(connector) {
+    const svgConnector = connector.item.svgConnectors.querySelector(`g.actdia-connector#${CSS.escape(connector.id)}`);
+    const data = this.getConnectorShapeData(connector, connector.item);
+    if (svgConnector) {
+      data.shape.item = connector.item;
+      data.shape.svgElement = svgConnector;
+      this.updateShape(data.shape);
+    } else {
+      const svg = this.getShapeSVG(data.shape, connector.item);
+      connector.item.svgConnectors.innerHTML += svg;
+    }
   }
 
   showLabel(text) {
