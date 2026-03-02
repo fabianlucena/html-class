@@ -19,9 +19,10 @@ let svgText,
 function init() {
   textarea = document.createElement('textarea');
   textarea.style.position = 'absolute';
-  textarea.style.left = '350px';
-  textarea.style.top = '1px';
-  textarea.style.opacity = '0';
+  textarea.style.left = '35em';
+  textarea.style.top = '2em';
+  textarea.style.opacity = 0;
+  textarea.style.zIndex = -1;
   document.body.appendChild(textarea);
 
   caret = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -33,7 +34,6 @@ function init() {
 
   textarea.addEventListener('input', syncFromTextarea);
   textarea.addEventListener('keyup', syncFromTextarea);
-  textarea.addEventListener('mouseup', syncFromTextarea);
   textarea.addEventListener('select', syncFromTextarea);
   textarea.addEventListener('compositionend', syncFromTextarea);
   textarea.addEventListener('blur', endEditing);
@@ -129,6 +129,9 @@ function syncToTextarea() {
 }
 
 function syncFromTextarea() {
+  if (!svgText)
+    return;
+
   if (value !== textarea.value) {
     value = textarea.value;
     emitInput();
@@ -265,5 +268,5 @@ function emitInput() {
     inputType: 'insertText',
   });
 
-  svgText.dispatchEvent(event);
+  svgText?.dispatchEvent(event);
 }
