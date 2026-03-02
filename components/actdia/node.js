@@ -180,7 +180,6 @@ export default class Node extends Item {
         })),
       condition: () => (this.variants ?? this.constructor.variants )?.length,
       isTool: true,
-      set: value => this.setVariant(value),
     },
   ];
 

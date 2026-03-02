@@ -114,12 +114,6 @@ export default function create({ Node }) {
       this.updateKnob();
     }
 
-    setVariant(value) {
-      super.variant = value;
-      if (!this.isInitializing)
-        this.update();
-    }
-
     statusUpdated() {
       this.updateKnob();
       super.statusUpdated();
