@@ -494,10 +494,14 @@ export default class Node extends Item {
 
   #variant = null;
   get variant() {
-    return this.#variant;
+    return this.#variant?.name;
   }
 
   set variant(value) {
     this.#variant = (this.variants ?? this.constructor.variants)?.find(v => v.name === value);
+  }
+
+  getVariant() {
+    return this.#variant;
   }
 }

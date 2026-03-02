@@ -110,7 +110,7 @@ export default function create({ Node }) {
 
     update() {
       super.update();
-      assignDeep(this, this.variant?.data);
+      assignDeep(this, this.getVariant()?.data);
       this.updateKnob();
     }
 
