@@ -793,7 +793,6 @@ export default class ActDiaTools {
         fields?.forEach(field => {
           const tool = {...field};
           tool.update = ({tool}) => {
-            console.log('update tool', tool.name, node[tool.name]);
             tool.input.value = node[tool.name];
           };
           tool.onChange = evt => {
@@ -824,7 +823,6 @@ export default class ActDiaTools {
           if (tool.type === 'checkbox') {
             tool.input.checked = !!node[tool.name];
           } else {
-            console.log('update tool', tool.name, node[tool.name]);
             tool.input.value = node[tool.name];
           }
         });
