@@ -5,6 +5,7 @@ export default {
   'Incompatible dimensions': 'Dimensiones incompatibles',
   'Matrices': 'Matrices',
   'Matrix': 'Matriz',
+  'Matrix base': 'Base de matriz',
   'Matrix addition': 'Suma de matrices',
   'Matrix multiplication': 'Multiplicación de matrices',
   'Rows': 'Filas',

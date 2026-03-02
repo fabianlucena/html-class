@@ -1,5 +1,6 @@
 export default async function create({ actdia, _f }) {
   const { Matrix } = await actdia.importElementClass(import.meta.url.replace('square_matrix.js', 'matrix.js'));
+  
   return class SquareMatrix extends Matrix {
     static _label = _f('Square matrix');
 
