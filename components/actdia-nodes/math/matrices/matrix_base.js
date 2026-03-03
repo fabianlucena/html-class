@@ -1,4 +1,4 @@
-import { formatFloat } from '../../utils/number.js';
+import { formatFloat } from '../../../utils/number.js';
 
 export default function create({ Node, _f }) {
   return class MatrixBase extends Node {
