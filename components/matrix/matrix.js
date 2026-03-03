@@ -1,3 +1,5 @@
+import { _ } from '../locale/locale.js';
+
 export function isMatrix(m) {
   if (!Array.isArray(m)) {
     return false;
@@ -117,13 +119,7 @@ export function multiplyMatrices(a, b) {
 }
 
 function _multiplyMatrices(a, b) {
-  const
-    aRows = a.length, 
-    bRows = b.length;
-
-  if (aRows !== b[0].length
-    || bRows !== a[0].length
-  ) {
+  if (a[0].length !== b.length) {
     throw new Error(_('Incompatible dimensions'));
   }
 
