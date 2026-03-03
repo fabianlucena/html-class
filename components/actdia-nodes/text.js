@@ -169,7 +169,7 @@ export default function create({ Node }) {
   
       this.shape.children[0].width = value;
       this.shape.children[1].width = value;
-      super.setWidth(value);
+      super.setWidth(...arguments);
     }
 
     setHeight(value) {
@@ -178,7 +178,7 @@ export default function create({ Node }) {
   
       this.shape.children[0].height = value;
       this.shape.children[1].height = value;
-      super.setHeight(value);
+      super.setHeight(...arguments);
     }
 
     update() {

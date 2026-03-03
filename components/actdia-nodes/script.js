@@ -44,7 +44,7 @@ export default function create({ Node }) {
       this.shape.children[1].width = value;
       this.connectors[1].x = value;
 
-      super.setWidth(value);
+      super.setWidth(...arguments);
     }
 
     setHeight(value) {
@@ -59,7 +59,7 @@ export default function create({ Node }) {
       this.connectors[0].y = cy;
       this.connectors[1].y = cy;
 
-      super.setHeight(value);
+      super.setHeight(...arguments);
     }
 
     #script = '';
