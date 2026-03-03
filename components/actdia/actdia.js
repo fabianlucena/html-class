@@ -557,20 +557,29 @@ export default class ActDia {
 
     shape.item = item;
     shape.svgElement = svgShape;
-    
-    if (shape.onInput) {
-      svgShape.addEventListener('input', shape.onInput);
-    }
 
-    if (shape.onBlur) {
-      svgShape.addEventListener('blur', shape.onBlur);
-    }
+    this.updateListeners(svgShape, shape);
 
     const svgShapeChildren = [...svgShape.children];
     shape?.children?.forEach((childShape, i) => {
       const svgChildShape = svgShapeChildren.find(c => c.id === childShape.id);
       this.updateItemShapeAndListeners(childShape, svgChildShape, item);
     });
+  }
+
+  updateListeners(svgElement, shape) {
+    if (!shape)
+      return;
+
+    Object.keys(shape)
+      .filter(listener => listener.startsWith('on'))
+      .forEach(listener => {
+        if (!shape[listener])
+          return;
+
+        const eventName = listener.substring(2).toLowerCase();
+        svgElement.addEventListener(eventName, shape[listener]);
+      });
   }
 
   bringToFront(...items) {
@@ -1851,6 +1860,11 @@ export default class ActDia {
 
       svgElement = document.createElementNS('http://www.w3.org/2000/svg', data.tag);
       options.parent.appendChild(svgElement);
+
+      if (data.shape) {
+        data.shape.svgElement = svgElement;
+        this.updateListeners(svgElement, data.shape);
+      }
     } else if (options.parent && !options.parent.contains(svgElement)) {
       options.parent.appendChild(svgElement);
     }
