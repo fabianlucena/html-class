@@ -34,11 +34,13 @@ export function isEqual(a, b, options = { maxDeep: 10, skip: [], path: '' }) {
 }
 
 function _isEqual(a, b, options) {
-  if (options.maxDeep <= 0)
+  if (a === b) {
     return true;
+  }
 
-  if (a === b)
+  if (options.maxDeep <= 0) {
     return true;
+  }
 
   const path = options.path || '';
   if (options.trace || options.tracePath)
@@ -48,6 +50,13 @@ function _isEqual(a, b, options) {
     return true;
   }
 
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+    if (options.trace)
+      console.log(`Primitive mismatch at ${path}: ${a} vs ${b}`);
+
+    return false;
+  }
+
   if (typeof a !== typeof b) {
     if (options.trace)
       console.log(`Type mismatch at ${path}: ${typeof a} vs ${typeof b}`);
@@ -55,14 +64,45 @@ function _isEqual(a, b, options) {
     return false;
   }
 
-  if (typeof a === 'object') {
-    if (Array.isArray(a) !== Array.isArray(b)) {
-      if (options.trace)
-        console.log(`Array mismatch at ${path}: ${Array.isArray(a)} vs ${Array.isArray(b)}`);
+  if (a.constructor !== b.constructor) {
+    if (options.trace)
+      console.log(`Constructor mismatch at ${path}: ${a.constructor} vs ${b.constructor}`);
 
+    return false;
+  }
+
+  if (a instanceof Date) {
+    if (a.getTime() === b.getTime()) {
+      return true;
+    } else {
+      if (options.trace)
+        console.log(`Date mismatch at ${path}: ${a.getTime()} vs ${b.getTime()}`);
+      
+      return false;
+    }
+  }
+
+  if (a instanceof Array) {
+    if (a.length !== b.length) {
+      if (options.trace)
+        console.log(`Array length mismatch at ${path}: ${a.length} vs ${b.length}`);
+      
       return false;
     }
 
+    for (let i = 0; i < a.length; i++) {
+      if (!_isEqual(a[i], b[i], options)) {
+        if (options.trace)
+          console.log(`Value mismatch at ${path}.${i}: ${JSON.stringify(a[i])} vs ${JSON.stringify(b[i])}`);
+
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  if (a instanceof Object) {
     const keysA = Object.keys(a);
     const keysB = Object.keys(b);
     if (keysA.length !== keysB.length) {

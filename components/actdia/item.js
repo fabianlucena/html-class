@@ -1,8 +1,8 @@
 import Element from './element.js';
-import { isEqual } from '../utils/type.js';
 import { getStatusText } from '../utils/http.js';
 import { newId } from '../utils/id.js';
-import { deepCopy, deepEqual } from '../utils/object.js';
+import { deepCopy } from '../utils/object.js';
+import { isEqual } from '../utils/type.js';
 
 export default class Item extends Element {
   children = [];
@@ -274,7 +274,7 @@ export default class Item extends Element {
   }
 
   setStatus(value, options = {}) {
-    if (deepEqual(this.status, value))
+    if (isEqual(this.status, value))
       return;
 
     this.#status = deepCopy(value);
@@ -282,7 +282,7 @@ export default class Item extends Element {
   }
 
   setBackStatus(backStatus, options = {}) {
-    if (deepEqual(this.backStatus, backStatus))
+    if (isEqual(this.backStatus, backStatus))
       return;
 
     this.backStatus = deepCopy(backStatus);
