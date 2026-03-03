@@ -1,5 +1,5 @@
 import { getPath } from '../utils/path.js';
-import { isNumber } from '../utils/type.js';
+import { isNumber } from '../utils/number.js';
 
 const registry = {};
 

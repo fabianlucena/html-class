@@ -1,23 +1,6 @@
+import { formatFloat } from '../../utils/number.js';
+
 export default function create({ Node, _f }) {
-  function num(value) {
-    if (typeof value === 'string')
-      value = parseFloat(value);
-
-    if (isNaN(value))
-      return 'NAN';
-
-    if (!isFinite(value))
-      return 'INF';
-
-    if (!value)
-      return '0';
-
-    if (value < 0.01 && value > -0.01 || value > 9999 || value < -9999)
-      return value.toExponential(3);
-
-    return value.toFixed(5).replace(/\.?0+$/, '');
-  }
-
   return class MatrixBase extends Node {
     static _label = _f('Matrix base');
 
@@ -69,6 +52,7 @@ export default function create({ Node, _f }) {
     #textsShapes = null;
     #boxShape = null;
     #editable = false;
+    precision = 3;
 
     get dimension() {
       return this.#dimension;
@@ -199,7 +183,7 @@ export default function create({ Node, _f }) {
       for (let r = 0, k = 0; r < this.rows; r++) {
         for (let c = 0; c < this.columns; c++, k++) {
           if (this.textsShapes.children[k]) {
-            this.textsShapes.children[k].text = num(this.status[r]?.[c]);
+            this.textsShapes.children[k].text = formatFloat(this.status[r]?.[c], this.precision);
             this.tryUpdateShape(this.textsShapes.children[k]);
           }
         }

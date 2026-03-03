@@ -5,7 +5,7 @@ import Node from './node.js';
 import Connection from './node.js';
 import { isItem, isNode, isConnection } from './type.js';
 import { escapeHTML, isHTMLElement } from '../utils/html.js';
-import { getNumber, isNumber } from '../utils/type.js';
+import { getNumber, isNumber } from '../utils/number.js';
 import { getPath } from '../utils/path.js';
 import { newId } from '../utils/id.js';
 import { _, _f } from '../locale/locale.js';
