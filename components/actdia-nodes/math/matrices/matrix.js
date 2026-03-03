@@ -5,7 +5,7 @@ export default async function create({ actdia, _f }) {
     static _label = _f('Matrix');
 
     connectors = [
-      { name: 'o', type: 'out', x: 2, y: 1, direction: 'right', extends: 'tiny' },
+      { name: 'output', type: 'out', x: 2, y: 1, direction: 'right', extends: 'tiny' },
     ];
 
     #output = null;
@@ -13,7 +13,7 @@ export default async function create({ actdia, _f }) {
     init() {
       this.editable = true;
       super.init(...arguments);
-      this.#output = this.connectors[0];
+      this.#output = this.getConnector('output');
     }
 
     update() {
