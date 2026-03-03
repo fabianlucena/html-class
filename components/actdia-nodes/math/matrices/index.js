@@ -6,8 +6,10 @@ export default {
     'matrix_viewer.js',
     'square_matrix.js',
     'identity_matrix.js',
+    'determinant.js',
     'matrix_multiplication.js',
     'matrix_addition.js',
+    'plu_decomposition.js',
   ],
   categories: [],
 };

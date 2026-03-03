@@ -10,6 +10,7 @@ export default {
   'Matrix addition': 'Suma de matrices',
   'Matrix multiplication': 'Multiplicación de matrices',
   'Matrix viewer': 'Visor de matrices',
+  'PLU Decomposition': 'Descomposición PLU',
   'Rows': 'Filas',
   'Square matrix': 'Matriz cuadrada',
 };
