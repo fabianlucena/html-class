@@ -2,6 +2,7 @@ import Element from './element.js';
 import { isEqual } from '../utils/type.js';
 import { getStatusText } from '../utils/http.js';
 import { newId } from '../utils/id.js';
+import { deepCopy, deepEqual } from '../utils/object.js';
 
 export default class Item extends Element {
   children = [];
@@ -273,18 +274,18 @@ export default class Item extends Element {
   }
 
   setStatus(value, options = {}) {
-    if (JSON.stringify(this.status) === JSON.stringify(value))
+    if (deepEqual(this.status, value))
       return;
 
-    this.#status = value;
+    this.#status = deepCopy(value);
     this.statusUpdated(options);
   }
 
   setBackStatus(backStatus, options = {}) {
-    if (JSON.stringify(this.backStatus) === JSON.stringify(backStatus))
+    if (deepEqual(this.backStatus, backStatus))
       return;
 
-    this.backStatus = backStatus;
+    this.backStatus = deepCopy(backStatus);
     this.backStatusUpdated(options);
   }
 

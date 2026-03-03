@@ -58,3 +58,76 @@ export function assignDeep(target, ...sources) {
   }
   return target;
 }
+
+export function deepCopy(obj) {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (obj instanceof Date) {
+    return new Date(obj);
+  }
+
+  if (obj instanceof Array) {
+    return obj.map(deepCopy);
+  }
+
+  if (obj instanceof Object) {
+    const copiedObj = {};
+    for (let key in obj) {
+      copiedObj[key] = deepCopy(obj[key]);
+    }
+    return copiedObj;
+  }
+}
+
+export function deepEqual(a, b) {
+  if (a === b) {
+    return true;
+  }
+
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+    return false;
+  }
+
+  if (a.constructor !== b.constructor) {
+    return false;
+  }
+
+  if (a instanceof Date) {
+    return a.getTime() === b.getTime();
+  }
+
+  if (a instanceof Array) {
+    if (a.length !== b.length) {
+      return false;
+    }
+
+    for (let i = 0; i < a.length; i++) {
+      if (!deepEqual(a[i], b[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  if (a instanceof Object) {
+    const keysA = Object.keys(a);
+    const keysB = Object.keys(b);
+
+    if (keysA.length !== keysB.length) {
+      return false;
+    }
+
+    for (let key of keysA) {
+      if (!deepEqual(a[key], b[key])) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+  
+  return false;
+}
