@@ -3,6 +3,7 @@ import { _ } from '../locale/locale.js';
 import { doesExtend } from '../utils/type.js';
 import { getStatusText } from '../utils/http.js';
 import { newId } from '../utils/id.js';
+import { deepCopy } from '../utils/object.js';
 
 export const DIRECTIONS = {
   RIGHT: 0,
@@ -100,7 +101,7 @@ export default class Connector extends Element {
   }
 
   setStatus(status, options = {}) {
-    this.status = status;
+    this.status = deepCopy(status);
     if (this.type === 'in' && this.item)
       this.item.updateStatus(options);
 
@@ -112,7 +113,7 @@ export default class Connector extends Element {
   }
 
   setBackStatus(backStatus, options = {}) {
-    this.backStatus = backStatus;
+    this.backStatus = deepCopy(backStatus);
     if (this.type === 'out' && this.item)
       this.item.updateBackStatus(options);
 
