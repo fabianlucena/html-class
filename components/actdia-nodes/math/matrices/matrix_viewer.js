@@ -5,14 +5,14 @@ export default async function create({ actdia, _f }) {
     static _label = _f('Matrix viewer');
 
     connectors = [
-      { name: 'i', type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
+      { name: 'input', type: 'in', x: 0, y: 1, direction: 'left', extends: 'tiny' },
     ];
 
     #input = null;
     
     init() {
       super.init(...arguments);
-      this.#input = this.connectors[0];
+      this.#input = this.getConnector('input');
     }
 
     update() {
