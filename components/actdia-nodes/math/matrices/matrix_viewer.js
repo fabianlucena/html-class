@@ -21,5 +21,10 @@ export default async function create({ actdia, _f }) {
       this.#input.y = this.box.height / 2 - this.box.y;
       this.tryUpdateConnector(this.#input);
     }
+
+    updateStatus() {
+      this.status = this.#input.status;
+      super.updateStatus();
+    }
   };
 }
