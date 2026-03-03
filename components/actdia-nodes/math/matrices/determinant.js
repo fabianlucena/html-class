@@ -23,6 +23,8 @@ export default function create({ Node, _, _f }) {
     };
 
     box = {
+      x: 0,
+      y: 0,
       width: 2,
       height: 2,
     };

@@ -25,6 +25,7 @@ export default function create({ Node, _, _f }) {
     };
 
     box = {
+      x: 0,
       y: .5,
       width: 3,
       height: 3,

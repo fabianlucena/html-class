@@ -1,6 +1,6 @@
 export default async function create({ actdia, _f }) {
   const { SquareMatrix } = await actdia.importElementClass(import.meta.url.replace('rotation_matrix_2d.js', 'square_matrix.js'));
-  
+
   return class RotationMatrix2D extends SquareMatrix {
     static _label = _f('Rotation matrix 2D');
 

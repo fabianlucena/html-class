@@ -1,4 +1,14 @@
 export default function create({ Node, _f }) {
+  function num(value) {
+    if (!value)
+      return 0;
+
+    if (value < 0.01 && value > -0.01 || value > 9999 || value < -9999)
+      return value.toExponential(2);
+
+    return value.toFixed(3);
+  }
+
   return class MatrixBase extends Node {
     static _label = _f('Matrix base');
 
@@ -176,7 +186,7 @@ export default function create({ Node, _f }) {
       for (let r = 0, k = 0; r < this.rows; r++) {
         for (let c = 0; c < this.columns; c++, k++) {
           if (this.textsShapes.children[k]) {
-            this.textsShapes.children[k].text = this.status[r]?.[c]?.toFixed(3);
+            this.textsShapes.children[k].text = num(this.status[r]?.[c]);
             this.tryUpdateShape(this.textsShapes.children[k]);
           }
         }
