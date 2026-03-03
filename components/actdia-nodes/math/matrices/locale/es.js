@@ -8,6 +8,7 @@ export default {
   'Matrix base': 'Base de matriz',
   'Matrix addition': 'Suma de matrices',
   'Matrix multiplication': 'Multiplicación de matrices',
+  'Matrix viewer': 'Visor de matrices',
   'Rows': 'Filas',
   'Square matrix': 'Matriz cuadrada',
 };

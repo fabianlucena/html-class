@@ -13,10 +13,8 @@ export default function create({ Node, _f }) {
           ry: .2,
         },
         {
-          shape: 'text',
           name: 'texts',
-          text: '',
-          fontSize: .6,
+          children: [],
         },
       ],
     };
@@ -49,7 +47,7 @@ export default function create({ Node, _f }) {
     autoPropagate = true;
 
     #dimension = [2, 2];
-    #textsShape = null;
+    #textsShapes = null;
     #boxShape = null;
 
     get dimension() {
@@ -81,14 +79,14 @@ export default function create({ Node, _f }) {
       return this.#boxShape;
     }
 
-    get textsShape() {
-      return this.#textsShape;
+    get textsShapes() {
+      return this.#textsShapes;
     }
 
     init() {
       super.init(...arguments);
       this.#boxShape = this.getShape('box');
-      this.#textsShape = this.getShape('texts');
+      this.#textsShapes = this.getShape('texts');
     }
 
     update() {
@@ -103,8 +101,36 @@ export default function create({ Node, _f }) {
       this.boxShape.y = -d;
       this.boxShape.width = width;
       this.boxShape.height = height;
-      this.textsShape.x = -d + width / 2;
-      this.textsShape.y = -d + height / 2;
+
+      let dx = width / this.columns,
+        dy = height / this.rows,
+        xi = -dx / 2,
+        x,
+        y = -dy / 2;
+      for (let r = 0, k = 0; r < this.rows; r++) {
+        x = xi;
+        y += dy;
+        for (let c = 0; c < this.columns; c++, k++) {
+          let textShape = this.textsShapes.children[k];
+          if (!textShape) {
+            textShape = {
+              parent: this.#textsShapes,
+              shape: 'text',
+              text: '',
+              fontSize: .6,
+              textAnchor: 'middle',
+              editable: true,
+            };
+
+            this.#textsShapes.children[k] = textShape;
+          }
+
+          x += dx;
+          textShape.x = x;
+          textShape.y = y;
+        }
+      }
+
       if (!this.status
         || !Array.isArray(this.status)
         || this.status.length !== this.rows
@@ -115,15 +141,19 @@ export default function create({ Node, _f }) {
             .map((_, j) => 0)
           );
       }
+
       super.update();
       this.updateStatus();
     }
 
     updateStatus() {
-      this.textsShape.text = this.status
-        .map(row => row.join(' '))
-        .join('\n');
-      this.tryUpdateShape(this.textsShape);
+      for (let r = 0, k = 0; r < this.rows; r++) {
+        for (let c = 0; c < this.columns; c++, k++) {
+          this.textsShapes.children[k].text = this.status[r][c].toString();
+          this.tryUpdateShape(this.textsShapes.children[k]);
+        }
+      }
+
       super.updateStatus();
     }
   };

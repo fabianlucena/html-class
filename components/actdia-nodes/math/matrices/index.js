@@ -3,6 +3,7 @@ export default {
   locale: ['es'],
   nodesClasses: [
     'matrix.js',
+    'matrix_viewer.js',
     'square_matrix.js',
     'identity.js',
     'matrix_multiplication.js',
