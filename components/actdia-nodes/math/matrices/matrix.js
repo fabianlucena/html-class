@@ -11,6 +11,7 @@ export default async function create({ actdia, _f }) {
     #output = null;
     
     init() {
+      this.editable = true;
       super.init(...arguments);
       this.#output = this.connectors[0];
     }

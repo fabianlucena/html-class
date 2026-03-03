@@ -49,6 +49,7 @@ export default function create({ Node, _f }) {
     #dimension = [2, 2];
     #textsShapes = null;
     #boxShape = null;
+    #editable = false;
 
     get dimension() {
       return this.#dimension;
@@ -83,6 +84,17 @@ export default function create({ Node, _f }) {
       return this.#textsShapes;
     }
 
+    get editable() {
+      return this.#editable;
+    }
+
+    set editable(value) {
+      this.#editable = value;
+      if (!value) {
+        this.textsShapes.children.forEach(textShape => textShape.editable = false);
+      }
+    }
+
     init() {
       super.init(...arguments);
       this.#boxShape = this.getShape('box');
@@ -102,7 +114,8 @@ export default function create({ Node, _f }) {
       this.boxShape.width = width;
       this.boxShape.height = height;
 
-      let dx = width / this.columns,
+      let editable = this.editable,
+        dx = width / this.columns,
         dy = height / this.rows,
         xi = -dx / 2,
         x,
@@ -119,7 +132,7 @@ export default function create({ Node, _f }) {
               text: '',
               fontSize: .6,
               textAnchor: 'middle',
-              editable: true,
+              editable,
             };
 
             this.#textsShapes.children[k] = textShape;
