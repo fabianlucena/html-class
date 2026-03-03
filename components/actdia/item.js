@@ -305,6 +305,16 @@ export default class Item extends Element {
     this.updateTransform();
   }
 
+  moveXTo(x) {
+    this.x = x;
+    this.updateTransform();
+  }
+
+  moveYTo(y) {
+    this.y = y;
+    this.updateTransform();
+  }
+
   updateTransform() {
     let transform = `translate(${this.x}, ${this.y})`;
 
