@@ -59,24 +59,24 @@ export default function create({ Node, _f }) {
     }
 
     set dimension(value) {
-      this.#dimension = value;
+      this.#dimension = [...value];
       this.update();
     }
 
     get rows() {
-      return this.#dimension[1];
-    }
-
-    get columns() {
       return this.#dimension[0];
     }
 
     set rows(value) {
-      this.dimension = [this.#dimension[0], value];
+      this.dimension = [value, this.#dimension[1]];
+    }
+
+    get columns() {
+      return this.#dimension[1];
     }
 
     set columns(value) {
-      this.dimension = [value, this.#dimension[1]];
+      this.dimension = [this.#dimension[0], value];
     }
 
     get boxShape() {
@@ -134,6 +134,7 @@ export default function create({ Node, _f }) {
         xi = -dx / 2,
         y =  -dy / 2 - dh,
         k = 0;
+
       for (let r = 0; r < this.rows; r++) {
         let row = this.status[r];
         if (!row
@@ -179,7 +180,7 @@ export default function create({ Node, _f }) {
     }
 
     updateStatus() {
-      if (!this.status)
+      if (!this.status || !this.textsShapes)
         return;
 
       for (let r = 0, k = 0; r < this.rows; r++) {
