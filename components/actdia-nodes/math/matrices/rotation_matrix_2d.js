@@ -54,15 +54,15 @@ export default async function create({ actdia, _f }) {
 
     updateStatus() {
       this.#angle = this.#input?.status ?? 0;
-      if (this.status) {
-        let ca = Math.cos(this.#angle * Math.PI / 180);
-        let sa = Math.sin(this.#angle * Math.PI / 180);
-        this.status[0][0] =  ca;
-        this.status[0][1] = -sa;
-        this.status[1][0] =  sa;
-        this.status[1][1] =  ca;
-      }
+      let status = [[],[]];
+      let ca = Math.cos(this.#angle * Math.PI / 180);
+      let sa = Math.sin(this.#angle * Math.PI / 180);
+      status[0][0] =  ca;
+      status[0][1] = -sa;
+      status[1][0] =  sa;
+      status[1][1] =  ca;
 
+      this.setStatus(status);
       super.updateStatus();
     }
   };
