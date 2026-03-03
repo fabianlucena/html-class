@@ -155,6 +155,8 @@ export default function create({ Node, _f }) {
               fontSize: .6,
               textAnchor: 'middle',
               editable,
+              singleLine: true,
+              numerical: true,
               onInput: evt => {
                 this.status[r][c] = parseFloat(evt.data);
                 this.statusUpdated();

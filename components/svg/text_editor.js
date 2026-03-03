@@ -5,6 +5,8 @@ importCss('./text_editor.css', import.meta.url);
 document.addEventListener('DOMContentLoaded', init);
 
 let svgText,
+  singleLine,
+  numerical,
   textarea,
   caret,
   selectionBox,
@@ -55,6 +57,8 @@ function clickHandler(evt) {
 
 function beginEditing(textElement) {
   svgText = textElement;
+  singleLine = svgText.getAttribute('single-line') !== null;
+  numerical = svgText.getAttribute('numerical') !== null;
   svgText.parentNode.appendChild(caret);
   svgText.parentNode.insertBefore(selectionBox, svgText);
   let currentText = '';
@@ -135,6 +139,11 @@ function syncToTextarea() {
 
 function keydownHandler(evt) {
   if (evt.key === 'Enter') {
+    if (singleLine) {
+      evt.preventDefault();
+      return;
+    }
+
     if (evt.shiftKey) {
       evt.preventDefault();
       const start = textarea.selectionStart;
@@ -165,6 +174,37 @@ function keydownHandler(evt) {
     }
 
     return;
+  }
+
+  if (numerical) {
+    if (evt.key.length === 1 && !/[0-9.\-+eE]/.test(evt.key)) {
+      evt.preventDefault();
+      return;
+    }
+    
+    if (evt.key === '-' || evt.key === '+') {
+      if (textarea.selectionStart !== 0 && textarea.value[textarea.selectionStart - 1] !== 'e' && textarea.value[textarea.selectionStart - 1] !== 'E') {
+        evt.preventDefault();
+        return;
+      }
+    }
+
+    if (evt.key === '.' && textarea.value.includes('.')) {
+      evt.preventDefault();
+      return;
+    }
+
+    if (evt.key.toLowerCase() === 'e') {
+      if (textarea.value.toLowerCase().includes('e')) {
+        evt.preventDefault();
+        return;
+      }
+
+      if (textarea.selectionStart === 0) {
+        evt.preventDefault();
+        return;
+      }
+    }
   }
 }
 

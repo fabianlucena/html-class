@@ -1643,6 +1643,14 @@ export default class ActDia {
       attributes.editable = true;
     }
 
+    if (shape.singleLine) {
+      attributes['single-line'] = true;
+    }
+
+    if (shape.numerical) {
+      attributes['numerical'] = true;
+    }
+
     const children = lines.map((line, index) => {
       const dy = index === 0 ? 0 : (style.lineSpacing || style.fontSize || 1.2);
       return {
