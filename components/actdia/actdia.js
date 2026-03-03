@@ -1609,7 +1609,7 @@ export default class ActDia {
       y += style.margin.top;
     } else {
       height += style.margin.top + style.margin.bottom;
-      y += (height - ((shape.text?.split('\n').length ?? 1) - 1) * lineHeight) / 2;
+      y += (height - ((shape.text?.split?.('\n').length ?? 1) - 1) * lineHeight) / 2;
     }
 
     if (shape.textDecoration)
@@ -1624,7 +1624,7 @@ export default class ActDia {
 
   getTextSVGData(shape, item, options) {
     const { x, y, style } = this.getTextData(shape, item, options?.style, options);
-    const lines = shape.text?.split('\n') ?? [];
+    const lines = shape.text?.split?.('\n') ?? [];
     const commonAttributes = this.getStyleSVGAttributes(style, options);
     const fontAttibutes = this.getFontStyleSVGAttributes(style);
     const attributes = {
