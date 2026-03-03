@@ -84,12 +84,14 @@ export default function create({ Node, _ }) {
           type: 'number',
           _label: 'Minimum',
           step: 0,
+          isTool: true,
         },
         {
           name: 'max',
           type: 'number',
           _label: 'Maximum',
           step: 0,
+          isTool: true,
         },
         {
           name: 'status',
@@ -104,6 +106,7 @@ export default function create({ Node, _ }) {
           type: 'select',
           _label: 'Function',
           options: functions,
+          isTool: true,
         },
       ];
     }
