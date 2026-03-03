@@ -102,6 +102,9 @@ export default function create({ Node, _f }) {
     }
 
     update() {
+      if (this.isInitializing)
+        return;
+      
       const width = Math.ceil(Math.max(this.columns, 1) * 2);
       const height = Math.ceil(Math.max(this.rows, 1) * .6);
       const d = (Math.max(width, height) % 2) / 2;
@@ -167,10 +170,13 @@ export default function create({ Node, _f }) {
     }
 
     updateStatus() {
+      if (!this.status)
+        return;
+
       for (let r = 0, k = 0; r < this.rows; r++) {
         for (let c = 0; c < this.columns; c++, k++) {
           if (this.textsShapes.children[k]) {
-            this.textsShapes.children[k].text = this.status[r][c].toString();
+            this.textsShapes.children[k].text = this.status[r]?.[c]?.toString();
             this.tryUpdateShape(this.textsShapes.children[k]);
           }
         }

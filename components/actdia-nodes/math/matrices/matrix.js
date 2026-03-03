@@ -17,6 +17,9 @@ export default async function create({ actdia, _f }) {
     }
 
     update() {
+      if (this.isInitializing)
+        return;
+      
       super.update();
       this.#output.x = this.box.width - this.box.x;
       this.#output.y = this.box.height / 2 - this.box.y;
