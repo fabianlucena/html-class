@@ -4,6 +4,7 @@ export default async function create({ actdia, _f }) {
   return class IdentityMatrix extends SquareMatrix {
     static _label = _f('Identity matrix');
 
+    saveStatus = false;
     editable = false;
 
     update() {
