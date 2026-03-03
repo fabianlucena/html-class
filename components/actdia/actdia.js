@@ -2234,8 +2234,11 @@ export default class ActDia {
 
   updateSelected() {
     const selectedItems = this.getItems({ onlyNodes: true, onlySelected: true });
-    if (!selectedItems.length && this.selectedBox?.svg) {
-      this.selectedBox.svg.setAttribute('display', 'none');
+    if (!selectedItems.length) {
+      if (this.selectedBox?.svg) {
+        this.selectedBox.svg.setAttribute('display', 'none');
+      }
+
       this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', 'none'));
       return;
     }
