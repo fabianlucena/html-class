@@ -2191,6 +2191,8 @@ export default class ActDia {
       this.selectionBox.svg.remove();
       this.selectionBox = null;
     }
+
+    this.updateSelected();
   }
 
   updateSelectionBox() {
