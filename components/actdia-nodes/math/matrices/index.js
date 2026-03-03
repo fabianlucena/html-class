@@ -10,6 +10,7 @@ export default {
     'matrix_multiplication.js',
     'matrix_addition.js',
     'plu_decomposition.js',
+    'rotation_matrix_2d.js',
   ],
   categories: [],
 };

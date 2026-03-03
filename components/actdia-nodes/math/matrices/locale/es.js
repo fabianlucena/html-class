@@ -1,4 +1,5 @@
 export default {
+  'Angle (degrees)': 'Ángulo (grados)',
   'Columns': 'Columnas',
   'Determinant': 'Determinante',
   'Dimension': 'Dimensión',
@@ -11,6 +12,7 @@ export default {
   'Matrix multiplication': 'Multiplicación de matrices',
   'Matrix viewer': 'Visor de matrices',
   'PLU Decomposition': 'Descomposición PLU',
+  'Rotation matrix 2D': 'Matriz de rotación 2D',
   'Rows': 'Filas',
   'Square matrix': 'Matriz cuadrada',
 };

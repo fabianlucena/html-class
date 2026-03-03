@@ -176,7 +176,7 @@ export default function create({ Node, _f }) {
       for (let r = 0, k = 0; r < this.rows; r++) {
         for (let c = 0; c < this.columns; c++, k++) {
           if (this.textsShapes.children[k]) {
-            this.textsShapes.children[k].text = this.status[r]?.[c]?.toString();
+            this.textsShapes.children[k].text = this.status[r]?.[c]?.toFixed(3);
             this.tryUpdateShape(this.textsShapes.children[k]);
           }
         }
