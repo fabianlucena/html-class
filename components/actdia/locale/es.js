@@ -5,6 +5,7 @@ export default {
   'Check this out...': '¡Mira esto...!',
   'Circular propagation detected, stopping.': 'Detección de propagación circular, deteniendo.',
   'Connector: %s<br>Status: %s<br>Click to connect': 'Conector: %s<br>Estado: %s<br>Haga clic para conectar',
+  'Error importing element class from URL:': 'Error al importar la clase de elemento desde URL:',
   'false': 'falso',
   'Fill opacity': 'Opacidad de relleno',
   'No Connector class registered for type: %s.': 'No hay clase de Conector registrada para el tipo: %s.',

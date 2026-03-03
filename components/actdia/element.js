@@ -35,6 +35,12 @@ export default class Element {
   }
 
   static async importSingleAsync(creationData, url) {
+    this.importedUrls ??= new Set();
+    if (this.importedUrls.has(url)) {
+      return;
+    }
+    this.importedUrls.add(url);
+    
     const module = await import(/* @vite-ignore */ url);
     const items = Object.values(module);
     return (await Promise.all(items.map(item => this.registerModuleItem(creationData, url, item))))

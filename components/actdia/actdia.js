@@ -257,11 +257,18 @@ export default class ActDia {
   }
 
   async importElementClass(url) {
-    const classesInfo = await this.importElements(url);
-    return classesInfo.reduce((map, ci) => {
-      map[ci.elementClass] = ci.classRef;
-      return map;
-    }, {});
+    try {
+      const classesInfo = await this.importElements(url);
+      return classesInfo.reduce((map, ci) => {
+        if (ci?.classRef) {
+          map[ci.elementClass] = ci.classRef;
+        }
+
+        return map;
+      }, {});
+    } catch (error) {
+      this.pushNotification(_('Error importing element class from URL:') + ` ${url}\n` + error, 'error');
+    }
   }
 
   create(options) {
