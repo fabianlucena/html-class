@@ -1,3 +1,5 @@
+import { isMatrix } from '../../../matrix/matrix.js';
+
 export default async function create({ actdia, _f }) {
   const { MatrixBase } = await actdia.importElementClass(import.meta.url.replace('matrix_viewer.js', 'matrix_base.js'));
   
@@ -17,13 +19,20 @@ export default async function create({ actdia, _f }) {
 
     update() {
       super.update();
-      this.#input.x = this.box.x;
-      this.#input.y = this.box.height / 2 - this.box.y;
-      this.tryUpdateConnector(this.#input);
+      if (this.#input) {
+        this.#input.x = this.box.x;
+        this.#input.y = this.box.height / 2 - this.box.y;
+        this.tryUpdateConnector(this.#input);
+      }
     }
 
     updateStatus() {
       this.status = this.#input.status;
+      let dimension = isMatrix(this.status);
+      if (dimension) {
+        this.dimension = dimension;
+      }
+
       super.updateStatus();
     }
   };
