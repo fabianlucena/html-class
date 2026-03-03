@@ -1,7 +1,7 @@
 export default function create({ Node, _f }) {
   function num(value) {
     if (!value)
-      return 0;
+      return '0';
 
     if (value < 0.01 && value > -0.01 || value > 9999 || value < -9999)
       return value.toExponential(3);
@@ -117,13 +117,14 @@ export default function create({ Node, _f }) {
       
       const width = Math.ceil(Math.max(this.columns, 1) * 3);
       const height = Math.ceil(Math.max(this.rows, 1) * .6);
-      const d = (Math.max(width, height) % 2) / 2;
-      this.box.x = -d;
-      this.box.y = -d;
+      const dw = (width % 2) / 2;
+      const dh = (height % 2) / 2;
+      this.box.x = -dw;
+      this.box.y = -dh;
       this.box.width = width;
       this.box.height = height;
-      this.boxShape.x = -d;
-      this.boxShape.y = -d;
+      this.boxShape.x = -dw;
+      this.boxShape.y = -dh;
       this.boxShape.width = width;
       this.boxShape.height = height;
 
@@ -138,7 +139,7 @@ export default function create({ Node, _f }) {
         dx = width / this.columns,
         dy = height / this.rows,
         xi = -dx / 2,
-        y = -dy / 2;
+        y =  -dy / 2 - dh;
       for (let r = 0, k = 0; r < this.rows; r++) {
         let row = this.status[r];
         if (!row
