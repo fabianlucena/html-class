@@ -15,6 +15,18 @@
   stroke-dasharray: .2 .2;
 }
 
+.actdia .selected-box {
+  fill: #80808022;
+  stroke: #c0c0c0aa;
+  stroke-dasharray: .05 .05;
+}
+
+.actdia .selected-box-hot-place {
+  fill: #80808080;
+  stroke: none;
+  stroke-width: .1;
+}
+
 .actdia-item {
   fill: #313131;
   stroke: #d6d6d6;

@@ -10,6 +10,7 @@ import { getPath } from '../utils/path.js';
 import { newId } from '../utils/id.js';
 import { _, _f } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
+import { deepCopy } from '../utils/object.js';
 
 importCss('./actdia.css', import.meta.url);
 
@@ -426,6 +427,30 @@ export default class ActDia {
     this.nodesLayerSVG.innerHTML = '';
     this.connectionsLayerSVG.innerHTML = '';
     this.othersLayerSVG.innerHTML = '';
+
+    this.hotPlaces = [
+      { cursor: 'nwse-resize' },
+      { cursor: 'ns-resize' },
+      { cursor: 'nesw-resize' },
+      {
+        cursor: 'ew-resize',
+        func: dd => ({ w: 1 + dd.x / this.selectedBox.width, h: 1 }),
+      },
+      { cursor: 'nwse-resize' },
+      { cursor: 'ns-resize' },
+      { cursor: 'nesw-resize' },
+      { cursor: 'ew-resize' },
+    ];
+
+    for (let hotPlace of this.hotPlaces) {
+      hotPlace.svg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      hotPlace.svg.classList.add('selected-box-hot-place');
+      this.othersLayerSVG.appendChild(hotPlace.svg);
+      hotPlace.svg.setAttribute('width', .5);
+      hotPlace.svg.setAttribute('height', .5);
+      hotPlace.svg.setAttribute('cursor', hotPlace.cursor);
+      hotPlace.svg.setAttribute('display', 'none');
+    }
   }
 
   async load(data, options = {}) {
@@ -2110,6 +2135,55 @@ export default class ActDia {
     });
   }
 
+  updateSelected() {
+    const selectedItems = this.getItems({ onlyNodes: true, onlySelected: true });
+    if (!selectedItems.length && this.selectedBox?.svg) {
+      this.selectedBox.svg.setAttribute('display', 'none');
+      this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', 'none'));
+      return;
+    }
+
+    const x1 = Math.min(...selectedItems.map(i => i.x)) - .5,
+      y1 = Math.min(...selectedItems.map(i => i.y)) - .5,
+      x2 = Math.max(...selectedItems.map(i => i.x + i.box.width)) + .5,
+      y2 = Math.max(...selectedItems.map(i => i.y + i.box.height)) + .5;
+
+    this.selectedBox ??= {};
+    if (!this.selectedBox.svg) {
+      this.selectedBox.svg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      this.selectedBox.svg.classList.add('selected-box');
+      this.othersLayerSVG.appendChild(this.selectedBox.svg);
+    }
+
+    this.selectedBox.x = x1;
+    this.selectedBox.y = y1;
+    this.selectedBox.width = x2 - x1;
+    this.selectedBox.height = y2 - y1;
+    this.selectedBox.svg.setAttribute('x', x1);
+    this.selectedBox.svg.setAttribute('y', y1);
+    this.selectedBox.svg.setAttribute('width',  this.selectedBox.width);
+    this.selectedBox.svg.setAttribute('height', this.selectedBox.height);    
+    this.selectedBox.svg.setAttribute('display', '');
+
+    this.hotPlaces[0].svg.setAttribute('x', x1 - .25);
+    this.hotPlaces[0].svg.setAttribute('y', y1 - .25);
+    this.hotPlaces[1].svg.setAttribute('x', x1 + (x2 - x1) / 2 - .25);
+    this.hotPlaces[1].svg.setAttribute('y', y1 - .25);
+    this.hotPlaces[2].svg.setAttribute('x', x2 - .25);
+    this.hotPlaces[2].svg.setAttribute('y', y1 - .25);
+    this.hotPlaces[3].svg.setAttribute('x', x2 - .25);
+    this.hotPlaces[3].svg.setAttribute('y', y1 + (y2 - y1) / 2 - .25);
+    this.hotPlaces[4].svg.setAttribute('x', x2 - .25);
+    this.hotPlaces[4].svg.setAttribute('y', y2 - .25);
+    this.hotPlaces[5].svg.setAttribute('x', x1 + (x2 - x1) / 2 - .25);
+    this.hotPlaces[5].svg.setAttribute('y', y2 - .25);
+    this.hotPlaces[6].svg.setAttribute('x', x1 - .25);
+    this.hotPlaces[6].svg.setAttribute('y', y2 - .25);
+    this.hotPlaces[7].svg.setAttribute('x', x1 - .25);
+    this.hotPlaces[7].svg.setAttribute('y', y1 + (y2 - y1) / 2 - .25);
+    this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', ''));
+  }
+
   getShapeByKeyValue(children, key, value) {
     for (let i = 0; i < children.length; i++) {
       const shape = children[i];
@@ -2217,6 +2291,24 @@ export default class ActDia {
     this.mouse.x = evt.clientX - rect.left;
     this.mouse.y = evt.clientY - rect.top;
     this.updateLabelPosition();
+
+    const hotPlace = this.hotPlaces?.find(hp => hp.dragging);
+    if (hotPlace) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      let
+        ix = this.mouse.x - hotPlace.dragging.start.x,
+        iy = this.mouse.y - hotPlace.dragging.start.y;
+      let dd = this.getUntransformedPosition({ x: ix, y: iy });
+      dd = hotPlace.func?.(dd) ?? dd;
+      /*const items = this.getItems({ onlyNodes: true, onlySelected: true });
+      items.forEach(item => {
+        console.log(item.width, item.width * dd.w);
+        item.setWidth(item.width * dd.w);
+      });*/
+
+      return;
+    }
 
     if (this.dragging?.items?.length) {
       evt.preventDefault();
@@ -2346,10 +2438,12 @@ export default class ActDia {
     if (item && item.selectable !== false && evt.button === 0 && item !== this.capturedItem) {
       if (evt.ctrlKey) {
         item.select(!item.selected);
+        this.updateSelected();
         this.fireEvent('item:select', { item, selected: item.selected });
         return true;
       } else {
         this.#items.forEach(i => i.select(i === item));
+        this.updateSelected();
         this.fireEvent('item:select', { item, selected: item.selected });
       }
     }
@@ -2470,6 +2564,18 @@ export default class ActDia {
       this.cancelDrag();
     }
 
+    this.hotPlaces.forEach(hotPlace => hotPlace.dragging = false);
+
+    if (evt.button === 0) {
+      const hotPlace = this.hotPlaces?.find(hp => hp?.svg === evt.target);
+      if (hotPlace) {
+        hotPlace.dragging = {
+          start: deepCopy(this.mouse),
+        };
+        return;
+      }
+    }
+
     if (evt.button !== 0) {
       if (this.capturedItem) {
         this.cancelCaptureItem();
@@ -2482,11 +2588,12 @@ export default class ActDia {
       if (evt.defaultPrevented) {
         return;
       }
-    } {
-      this.#items.forEach(i => i.select(false));
-      this.fireEvent('item:select', { selected: false });
     }
 
+    this.#items.forEach(i => i.select(false));
+    this.updateSelected();
+    this.fireEvent('item:select', { selected: false });
+  
     this.startSelectionBox();
   }
 
@@ -2528,6 +2635,7 @@ export default class ActDia {
   }
 
   mouseUpHandler(evt) {
+    this.hotPlaces.forEach(hotPlace => hotPlace.dragging = false);
     this.endSelectionBox();
 
     const { item, shape } = this.getEventItem(evt);

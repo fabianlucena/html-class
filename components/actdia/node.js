@@ -399,13 +399,13 @@ export default class Node extends Item {
   setWidth(value) {
     this.box.width = value;
     if (this.svgShape)
-      this.tryUpdateShape(this);
+      this.update();
   }
 
   setHeight(value) {
     this.box.height = value;
     if (this.svgShape)
-      this.tryUpdateShape(this);
+      this.update(this);
   }
 
   saveStatus = false;
