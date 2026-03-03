@@ -165,3 +165,91 @@ function _multiplyVectors(v1, v2) {
 
   return v1.reduce((s, x, i) => s + x * v2[i], 0);
 }
+
+export function isSquareMatrix(m) {
+  const dim = isMatrix(m);
+  return dim && dim[0] === dim[1];
+}
+
+export function determinant(m) {
+  if (!isSquareMatrix(m)) {
+    throw new Error(_('Not a square matrix'));
+  }
+
+  if (m.length === 1) {
+    return m[0][0];
+  }
+
+  if (m.length === 2) {
+    return m[0][0] * m[1][1] - m[0][1] * m[1][0];
+  }
+
+  if (m.length === 3) {
+    return m[0][0] * m[1][1] * m[2][2]
+         + m[0][1] * m[1][2] * m[2][0]
+         + m[0][2] * m[1][0] * m[2][1]
+         - m[0][2] * m[1][1] * m[2][0]
+         - m[0][0] * m[1][2] * m[2][1]
+         - m[0][1] * m[1][0] * m[2][2];
+  }
+
+  const {p, u, sign} = _pluDecomposition(m);
+  let det = 1;
+  for (let i = 0; i < p.length; i++) {
+    det *= u[i][i];
+  }
+  return det * sign;
+}
+
+export function pluDecomposition(m) {
+  if (!isSquareMatrix(m)) {
+    throw new Error(_('Not a square matrix'));
+  }
+
+  return _pluDecomposition(m);
+}
+
+function _pluDecomposition(m) {
+  const n = m.length;
+  const p = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (_, j) => (i === j ? 1 : 0)));
+  const l = Array.from({ length: n }, () => Array.from({ length: n }, () => 0));
+  const u = m.map(row => row.slice());
+  let swaps = 0; // contador de intercambios
+
+  for (let k = 0; k < n; k++) {
+    // 1. Buscar pivote
+    let pivot = k;
+    for (let i = k + 1; i < n; i++) {
+      if (Math.abs(u[i][k]) > Math.abs(u[pivot][k])) {
+        pivot = i;
+      }
+    }
+
+    // 2. Intercambiar filas en U, P y L
+    if (pivot !== k) {
+      [u[k], u[pivot]] = [u[pivot], u[k]];
+      [p[k], p[pivot]] = [p[pivot], p[k]];
+      swaps++;
+      for (let j = 0; j < k; j++) {
+        [l[k][j], l[pivot][j]] = [l[pivot][j], l[k][j]];
+      }
+    }
+
+    // 3. Eliminar debajo del pivote
+    for (let i = k + 1; i < n; i++) {
+      l[i][k] = u[i][k] / u[k][k];
+      for (let j = k; j < n; j++) {
+        u[i][j] -= l[i][k] * u[k][j];
+      }
+    }
+  }
+
+  // Completar diagonal de L
+  for (let i = 0; i < n; i++)
+    l[i][i] = 1;
+
+  // signo de la permutación
+  const sign = (swaps % 2 === 0) ? 1 : -1;
+
+  return { p, l, u, swaps, sign };
+}
