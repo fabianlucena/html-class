@@ -33,6 +33,7 @@ function init() {
   selectionBox.classList.add('text-selection');
 
   textarea.addEventListener('input', syncFromTextarea);
+  textarea.addEventListener('keydown', keydownHandler);
   textarea.addEventListener('keyup', syncFromTextarea);
   textarea.addEventListener('select', syncFromTextarea);
   textarea.addEventListener('compositionend', syncFromTextarea);
@@ -130,6 +131,41 @@ function syncToTextarea() {
   }
   
   textarea.value = currentText;
+}
+
+function keydownHandler(evt) {
+  if (evt.key === 'Enter') {
+    if (evt.shiftKey) {
+      evt.preventDefault();
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      textarea.value = textarea.value.substring(0, start) + '\n' + textarea.value.substring(end);
+      textarea.selectionStart = textarea.selectionEnd = start + 1;
+      syncFromTextarea();
+    }
+
+    return;
+  }
+  
+  if (evt.key === 'Tab') {
+    evt.preventDefault();
+    const currentSvgElement = svgText;
+    endEditing();
+    if (currentSvgElement) {
+      let nextElement = currentSvgElement.nextElementSibling
+        || currentSvgElement.parentNode.firstElementChild;
+      while (nextElement && nextElement !== currentSvgElement && !(nextElement.tagName === 'text' && nextElement.getAttribute('editable'))) {
+        nextElement = nextElement.nextElementSibling
+          || currentSvgElement.parentNode.firstElementChild;
+      }
+
+      if (nextElement) {
+        beginEditing(nextElement);
+      }
+    }
+
+    return;
+  }
 }
 
 function syncFromTextarea() {
