@@ -5,7 +5,7 @@ export default {
     'matrix.js',
     'matrix_viewer.js',
     'square_matrix.js',
-    'identity.js',
+    'identity_matrix.js',
     'matrix_multiplication.js',
     'matrix_addition.js',
   ],
