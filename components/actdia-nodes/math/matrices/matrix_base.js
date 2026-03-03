@@ -114,25 +114,43 @@ export default function create({ Node, _f }) {
       this.boxShape.width = width;
       this.boxShape.height = height;
 
+      if (!this.status
+        || !Array.isArray(this.status)
+      )
+        this.status = [];
+
+      this.status.splice(this.rows);
+
       let editable = this.editable,
         dx = width / this.columns,
         dy = height / this.rows,
         xi = -dx / 2,
-        x,
         y = -dy / 2;
       for (let r = 0, k = 0; r < this.rows; r++) {
-        x = xi;
+        let row = this.status[r];
+        if (!row
+          || !Array.isArray(row)
+        )
+          row = this.status[r] = [];
+        row.splice(this.columns);
+
+        let x = xi;
         y += dy;
         for (let c = 0; c < this.columns; c++, k++) {
+          row[c] ??= 0;
           let textShape = this.textsShapes.children[k];
           if (!textShape) {
             textShape = {
               parent: this.#textsShapes,
               shape: 'text',
-              text: '',
+              text: row[c].toString(),
               fontSize: .6,
               textAnchor: 'middle',
               editable,
+              onInput: evt => {
+                this.status[r][c] = parseFloat(evt.data);
+                this.statusUpdated();
+              },
             };
 
             this.#textsShapes.children[k] = textShape;
@@ -144,30 +162,21 @@ export default function create({ Node, _f }) {
         }
       }
 
-      if (!this.status
-        || !Array.isArray(this.status)
-        || this.status.length !== this.rows
-        || this.status.some(row => !Array.isArray(row) || row.length !== this.columns)
-      ) {
-        this.status = [...Array(this.rows)]
-          .map((_, i) => [...Array(this.columns)]
-            .map((_, j) => 0)
-          );
-      }
-
       super.update();
-      this.updateStatus();
+      this.statusUpdated();
     }
 
-    updateStatus() {
+    statusUpdated() {
       for (let r = 0, k = 0; r < this.rows; r++) {
         for (let c = 0; c < this.columns; c++, k++) {
-          this.textsShapes.children[k].text = this.status[r][c].toString();
-          this.tryUpdateShape(this.textsShapes.children[k]);
+          if (this.textsShapes.children[k]) {
+            this.textsShapes.children[k].text = this.status[r][c].toString();
+            this.tryUpdateShape(this.textsShapes.children[k]);
+          }
         }
       }
 
-      super.updateStatus();
+      super.statusUpdated();
     }
   };
 }
