@@ -1,4 +1,5 @@
 import { getPath } from '../utils/path.js';
+import { isNumber } from '../utils/type.js';
 
 const registry = {};
 
@@ -35,17 +36,29 @@ export default class Element {
   }
 
   static async importSingleAsync(creationData, url) {
-    this.importedUrls ??= new Set();
+    let items;
+
+    this.importedUrls ??= new Map();
     if (this.importedUrls.has(url)) {
-      return;
+      items = this.importedUrls.get(url);
+      if (!isNumber(items)) {
+        return this.importedUrls.get(url);
+      }
     }
-    this.importedUrls.add(url);
-    
+    if (isNumber(items) && items > 10) {
+      throw new Error(`Too many import attempts for ${url}`);
+    }
+
+    this.importedUrls.set(url, (items ?? 0) + 1);
+
     const module = await import(/* @vite-ignore */ url);
-    const items = Object.values(module);
-    return (await Promise.all(items.map(item => this.registerModuleItem(creationData, url, item))))
+    items = Object.values(module);
+    items = (await Promise.all(items.map(item => this.registerModuleItem(creationData, url, item))))
       .flat()
       .filter(item => item);
+    
+    this.importedUrls.set(url, items);
+    return items;
   }
 
   static async registerModuleItem(creationData, url, classRef) {
