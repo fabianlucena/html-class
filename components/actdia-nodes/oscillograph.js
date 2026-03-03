@@ -38,16 +38,38 @@ export default function create({ Node, _ }) {
     box = {
       x: 0,
       y: 0,
-      width: 12,
-      height: 12,
+      width: 20,
+      height: 6,
     };
 
     connectors = [
       { name: 'i0', type: 'in', x: 0, y: 2, direction: 'left' },
     ];
 
-    #height = 6;
-    #width = 20;
+    canChangeSize = true;
+
+    fields = [
+      {
+        name: 'scaleX',
+        label: _('Scale X'),
+        type: 'number',
+        value: .1,
+        step: .01,
+        isTool: true,
+      },
+      {
+        name: 'mode',
+        label: _('Mode'),
+        type: 'select',
+        options: [
+          { value: 'separated',  label: _('Separated') },
+          { value: 'overlapped', label: _('Overlapped') },
+        ],
+        isTool: true,
+      },
+    ];
+
+    #mode = 'separated';
     #scaleX = .1;
     #matrix = [];
     #min = [];
@@ -55,22 +77,13 @@ export default function create({ Node, _ }) {
     #range = [];
     #interval = null;
 
-    get height() {
-      return this.#height;
+    get mode() {
+      return this.#mode;
     }
 
-    set height(value) {
-      this.#height = value;
-      this.update();
-    }
-
-    get width() {
-      return this.#width;
-    }
-
-    set width(value) {
-      this.#width = value;
-      this.update();
+    set mode(value) {
+      this.#mode = value;
+      this.updateStatus();
     }
 
     get scaleX() {
@@ -87,13 +100,13 @@ export default function create({ Node, _ }) {
     }
 
     update() {
-      this.box.width = this.#width;
-      this.box.height = this.#height;
+      this.box.width = this.width;
+      this.box.height = this.height;
 
-      this.shape.children[0].width = this.#width;
-      this.shape.children[0].height = this.#height;
-      this.shape.children[1].width = this.#width - 1;
-      this.shape.children[1].height = this.#height - 1;
+      this.shape.children[0].width = this.width;
+      this.shape.children[0].height = this.height;
+      this.shape.children[1].width = this.width - 1;
+      this.shape.children[1].height = this.height - 1;
 
       if (this.#interval) {
         clearInterval(this.#interval);
@@ -137,7 +150,7 @@ export default function create({ Node, _ }) {
       let drawColors, textColors;
       let needUpdate = false;
       const count = status.length;
-      const sy = (this.#height - 1) / count;
+      const sy = (this.height - 1) / count;
 
       for (let i = 0; i < count; i++) {
         let value = status[i];
@@ -169,7 +182,7 @@ export default function create({ Node, _ }) {
             parent: this.shape.children[2],
             shape: 'text',
             fill: textColors[i],
-            text: 'Hola',
+            text: '',
             fontSize: .6,
             textAnchor: 'start',
             dominantBaseline: 'top',
@@ -190,7 +203,11 @@ export default function create({ Node, _ }) {
           };
           drawShape = this.shape.children[3].children[i];
         }
-        drawShape.y = i * sy + .1;
+        if (this.mode === 'overlapped') {
+          drawShape.y = .1;
+        } else {
+          drawShape.y = i * sy + .1;
+        }
 
         if (!needUpdate && !this.tryUpdateShape(textShape)) {
           needUpdate = true;
@@ -206,7 +223,7 @@ export default function create({ Node, _ }) {
       const count = this.#matrix.length;
       let length = this.#matrix[0]?.length || 0;
       let last = length - 1;
-      const sy = (this.#height - 1) / count;
+      const sy = this.mode === 'overlapped' ? (this.height - 1) : (this.height - 1) / count;
       const ssy = sy * .9;
       let needUpdate = false;
 
@@ -231,7 +248,7 @@ export default function create({ Node, _ }) {
           let value = this.#matrix[i][k];
           let x = k * this.scaleX;
           let y = (1 - (value - this.#min[i]) / this.#range[i]) * ssy;
-          if (x > this.#width - 1) {
+          if (x > this.width - 1) {
             this.#matrix[i].shift();
             break;
           }
