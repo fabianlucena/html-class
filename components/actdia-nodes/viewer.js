@@ -30,11 +30,18 @@ export default function create({ Node }) {
     };
 
     connectors = [
-      { name: 'i0', type: 'in', x: 0, y: 2, direction: 'left', extends: 'small' },
+      { name: 'input', type: 'in', x: 0, y: 2, direction: 'left', extends: 'small' },
     ];
 
     canChangeWidth = true;
     canChangeHeight = true;
+
+    #input = null;
+    
+    init() {
+      super.init(...arguments);
+      this.#input = this.getConnector('input');
+    }
 
     setWidth(value) {
       this.shape.children[0].width = value;
@@ -55,7 +62,7 @@ export default function create({ Node }) {
     }
 
     updateStatus() {
-      let status = this.connectors[0].status;
+      let status = this.#input.status;
       if (Array.isArray(status)) {
         status = status.map(v => v ? v : 0);
       }
