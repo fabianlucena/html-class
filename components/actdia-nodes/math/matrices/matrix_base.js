@@ -139,8 +139,9 @@ export default function create({ Node, _f }) {
         dx = width / this.columns,
         dy = height / this.rows,
         xi = -dx / 2,
-        y =  -dy / 2 - dh;
-      for (let r = 0, k = 0; r < this.rows; r++) {
+        y =  -dy / 2 - dh,
+        k = 0;
+      for (let r = 0; r < this.rows; r++) {
         let row = this.status[r];
         if (!row
           || !Array.isArray(row)
@@ -175,6 +176,8 @@ export default function create({ Node, _f }) {
           textShape.y = y;
         }
       }
+
+      this.textsShapes.children.splice(k);
 
       super.update();
       this.statusUpdated();

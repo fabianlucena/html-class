@@ -8,12 +8,14 @@ export default async function create({ actdia, _f }) {
     editable = false;
 
     update() {
+      super.update();
       this.setStatus([...Array(this.size)]
         .map((_, i) => [...Array(this.size)]
           .map((_, j) => +(i === j))
         )
       );
-      super.update();
+      if (!this.isInitializing)
+        this.updateStatus();
     }
   };
 }
