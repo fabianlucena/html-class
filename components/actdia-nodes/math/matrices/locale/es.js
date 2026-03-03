@@ -1,5 +1,6 @@
 export default {
   'Columns': 'Columnas',
+  'Determinant': 'Determinante',
   'Dimension': 'Dimensión',
   'Identity matrix': 'Matriz identidad',
   'Incompatible dimensions': 'Dimensiones incompatibles',
