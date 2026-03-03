@@ -1,4 +1,5 @@
 import { _ } from '../locale/locale.js';
+import { isNumber, formatFloat } from './number.js';
 
 export function getStatusText(status) {
   if (status === null)
@@ -15,6 +16,9 @@ export function getStatusText(status) {
 
   if (typeof status === 'object')
     return JSON.stringify(status);
+
+  if (isNumber(status))
+    return formatFloat(status);
   
   return String(status);
 }
