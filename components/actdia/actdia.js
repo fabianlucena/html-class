@@ -838,6 +838,8 @@ export default class ActDia {
       item.removeReferences();
       this.svg.querySelector(`#${CSS.escape(item.id)}`)?.remove();
     });
+
+    this.updateSelected();
   }
 
   adjustSize() {
