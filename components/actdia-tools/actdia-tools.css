@@ -1,3 +1,7 @@
+body {
+  overflow: auto;
+}
+
 .print .actdia-tools {
   display: none;
 }
