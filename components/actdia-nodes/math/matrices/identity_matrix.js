@@ -1,5 +1,5 @@
 export default async function create({ actdia, _f }) {
-  const { SquareMatrix } = await actdia.importElementClass(import.meta.url.replace('identity.js', 'square_matrix.js'));
+  const { SquareMatrix } = await actdia.importElementClass(import.meta.url.replace('identity_matrix.js', 'square_matrix.js'));
   
   return class IdentityMatrix extends SquareMatrix {
     static _label = _f('Identity matrix');
@@ -13,7 +13,6 @@ export default async function create({ actdia, _f }) {
         )
       );
       super.update();
-      this.propagate();
     }
   };
 }
