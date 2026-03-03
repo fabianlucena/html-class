@@ -422,6 +422,22 @@ export default class ActDia {
     return items;
   }
 
+  getDeltaForHotPlace(hotPlace, sx, sy) {
+    let
+      start = hotPlace.dragging.start,
+      x = sx * (this.mouse.x - start.x),
+      y = sy * (this.mouse.y - start.y),
+      dd = this.getUntransformedPosition({ x, y });
+    return {
+      x: dd.x,
+      y: dd.y,
+      dx: dd.x,
+      dy: dd.y,
+      width: dd.x / start.width,
+      height: dd.y / start.height,
+    };
+  }
+
   clear() {
     this.#items = [];
     this.nodesLayerSVG.innerHTML = '';
@@ -429,17 +445,94 @@ export default class ActDia {
     this.othersLayerSVG.innerHTML = '';
 
     this.hotPlaces = [
-      { cursor: 'nwse-resize' },
-      { cursor: 'ns-resize' },
-      { cursor: 'nesw-resize' },
+      {
+        cursor: 'nwse-resize',
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, -1, -1),
+          };
+        },
+      },
+      {
+        cursor: 'ns-resize',
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, 1, -1),
+            dx: 0,
+            width: 0,
+          };
+        },
+      },
+      {
+        cursor: 'nesw-resize',
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, 1, -1),
+            dx: 0,
+          };
+        },
+      },
       {
         cursor: 'ew-resize',
-        func: dd => ({ w: 1 + dd.x / this.selectedBox.width, h: 1 }),
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, -1, 1),
+            dy: 0,
+            y: 0,
+            height: 0,
+          };
+        },
       },
-      { cursor: 'nwse-resize' },
-      { cursor: 'ns-resize' },
-      { cursor: 'nesw-resize' },
-      { cursor: 'ew-resize' },
+      {
+        cursor: 'ew-resize',
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, 1, 1),
+            dx: 0,
+            dy: 0,
+            y: 0,
+            height: 0,
+          };
+        },
+      },
+      { cursor: 'nesw-resize',
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, -1, 1),
+            dy: 0,
+          };
+        },
+      },
+      {
+        cursor: 'ns-resize',
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, 1, 1),
+            dx: 0,
+            dy: 0,
+            x: 0,
+            width: 0,
+          };
+        },
+      },
+      {
+        cursor: 'nwse-resize',
+        parent: () => this,
+        getDelta() {
+          return {
+            ...this.parent().getDeltaForHotPlace(this, 1, 1),
+            dx: 0,
+            dy: 0,
+          };
+        },
+      },
     ];
 
     for (let hotPlace of this.hotPlaces) {
@@ -1959,6 +2052,8 @@ export default class ActDia {
     this.tryUpdateShape(this.getItemMainShape(item));
     this.tryUpdateConnectors(item);
     this.updateItemSelectionBox(item);
+    if (item.selected)
+      this.updateSelected();
   }
 
   updateItemSelectionBox(item) {
@@ -2143,10 +2238,11 @@ export default class ActDia {
       return;
     }
 
-    const x1 = Math.min(...selectedItems.map(i => i.x)) - .5,
-      y1 = Math.min(...selectedItems.map(i => i.y)) - .5,
-      x2 = Math.max(...selectedItems.map(i => i.x + i.box.width)) + .5,
-      y2 = Math.max(...selectedItems.map(i => i.y + i.box.height)) + .5;
+    let
+      x1 = Math.min(...selectedItems.map(i => i.x)),
+      y1 = Math.min(...selectedItems.map(i => i.y)),
+      x2 = Math.max(...selectedItems.map(i => i.x + i.box.width)),
+      y2 = Math.max(...selectedItems.map(i => i.y + i.box.height));
 
     this.selectedBox ??= {};
     if (!this.selectedBox.svg) {
@@ -2159,28 +2255,30 @@ export default class ActDia {
     this.selectedBox.y = y1;
     this.selectedBox.width = x2 - x1;
     this.selectedBox.height = y2 - y1;
-    this.selectedBox.svg.setAttribute('x', x1);
-    this.selectedBox.svg.setAttribute('y', y1);
-    this.selectedBox.svg.setAttribute('width',  this.selectedBox.width);
-    this.selectedBox.svg.setAttribute('height', this.selectedBox.height);    
+    this.selectedBox.svg.setAttribute('x', x1 - .5);
+    this.selectedBox.svg.setAttribute('y', y1 - .5);
+    this.selectedBox.svg.setAttribute('width',  this.selectedBox.width + 1);
+    this.selectedBox.svg.setAttribute('height', this.selectedBox.height + 1);    
     this.selectedBox.svg.setAttribute('display', '');
 
-    this.hotPlaces[0].svg.setAttribute('x', x1 - .25);
-    this.hotPlaces[0].svg.setAttribute('y', y1 - .25);
-    this.hotPlaces[1].svg.setAttribute('x', x1 + (x2 - x1) / 2 - .25);
-    this.hotPlaces[1].svg.setAttribute('y', y1 - .25);
-    this.hotPlaces[2].svg.setAttribute('x', x2 - .25);
-    this.hotPlaces[2].svg.setAttribute('y', y1 - .25);
-    this.hotPlaces[3].svg.setAttribute('x', x2 - .25);
-    this.hotPlaces[3].svg.setAttribute('y', y1 + (y2 - y1) / 2 - .25);
-    this.hotPlaces[4].svg.setAttribute('x', x2 - .25);
-    this.hotPlaces[4].svg.setAttribute('y', y2 - .25);
-    this.hotPlaces[5].svg.setAttribute('x', x1 + (x2 - x1) / 2 - .25);
-    this.hotPlaces[5].svg.setAttribute('y', y2 - .25);
-    this.hotPlaces[6].svg.setAttribute('x', x1 - .25);
-    this.hotPlaces[6].svg.setAttribute('y', y2 - .25);
-    this.hotPlaces[7].svg.setAttribute('x', x1 - .25);
-    this.hotPlaces[7].svg.setAttribute('y', y1 + (y2 - y1) / 2 - .25);
+    let mx = x1 + (x2 - x1) / 2,
+      my = y1 + (y2 - y1) / 2;
+    this.hotPlaces[0].svg.setAttribute('x', x1 - .75);
+    this.hotPlaces[0].svg.setAttribute('y', y1 - .75);
+    this.hotPlaces[1].svg.setAttribute('x', mx - .25);
+    this.hotPlaces[1].svg.setAttribute('y', y1 - .75);
+    this.hotPlaces[2].svg.setAttribute('x', x2 + .25);
+    this.hotPlaces[2].svg.setAttribute('y', y1 - .75);
+    this.hotPlaces[3].svg.setAttribute('x', x1 - .75);
+    this.hotPlaces[3].svg.setAttribute('y', my - .25);
+    this.hotPlaces[4].svg.setAttribute('x', x2 + .25);
+    this.hotPlaces[4].svg.setAttribute('y', my - .25);
+    this.hotPlaces[5].svg.setAttribute('x', x1 - .75);
+    this.hotPlaces[5].svg.setAttribute('y', y2 + .25);
+    this.hotPlaces[6].svg.setAttribute('x', mx - .25);
+    this.hotPlaces[6].svg.setAttribute('y', y2 + .25);
+    this.hotPlaces[7].svg.setAttribute('x', x2 + .25);
+    this.hotPlaces[7].svg.setAttribute('y', y2 + .25);
     this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', ''));
   }
 
@@ -2296,16 +2394,26 @@ export default class ActDia {
     if (hotPlace) {
       evt.stopPropagation();
       evt.preventDefault();
-      let
-        ix = this.mouse.x - hotPlace.dragging.start.x,
-        iy = this.mouse.y - hotPlace.dragging.start.y;
-      let dd = this.getUntransformedPosition({ x: ix, y: iy });
-      dd = hotPlace.func?.(dd) ?? dd;
-      /*const items = this.getItems({ onlyNodes: true, onlySelected: true });
-      items.forEach(item => {
-        console.log(item.width, item.width * dd.w);
-        item.setWidth(item.width * dd.w);
-      });*/
+      if (hotPlace.dragging.items.size) {
+        let delta = hotPlace.getDelta();
+        for (let [item, data] of hotPlace.dragging.items) {
+          if (item.canChangeSize || item.canChangeWidth) {
+            item.x = data.x - delta.dx;
+            item.setWidth(data.width * (1 + delta.width), false);
+          } else {
+            item.x = data.x + delta.x - delta.dx;
+          }
+
+          if (item.canChangeSize || item.canChangeHeight) {
+            item.y = data.y - delta.dy;
+            item.setHeight(data.height * (1 + delta.height), false);
+          } else {
+            item.y = data.y + delta.y - delta.dy;
+          }
+
+          item.update();
+        }
+      }
 
       return;
     }
@@ -2569,9 +2677,17 @@ export default class ActDia {
     if (evt.button === 0) {
       const hotPlace = this.hotPlaces?.find(hp => hp?.svg === evt.target);
       if (hotPlace) {
-        hotPlace.dragging = {
-          start: deepCopy(this.mouse),
-        };
+        const items = this.getItems({ onlyNodes: true, onlySelected: true });
+        if (items.length) {
+          hotPlace.dragging = {
+            start: {
+              ...deepCopy(this.mouse),
+              width: this.selectedBox.width,
+              height: this.selectedBox.height,
+            },
+            items: new Map(items.map(item => [item, { x: item.x, y: item.y, width: item.box.width, height: item.box.height }])),
+          };
+        }
         return;
       }
     }
