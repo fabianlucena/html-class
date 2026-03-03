@@ -253,3 +253,62 @@ function _pluDecomposition(m) {
 
   return { p, l, u, swaps, sign };
 }
+
+export function transposeMatrix(m) {
+  if (!isMatrix(m)) {
+    throw new Error(_('Not a matrix'));
+  }
+
+  return _transposeMatrix(m);
+}
+
+function _transposeMatrix(m) {
+  return m[0].map((_, j) => m.map(row => row[j]));
+}
+
+export function invertMatrix(m) {
+  if (!isSquareMatrix(m)) {
+    throw new Error(_('Not a square matrix'));
+  }
+
+  return _invertMatrix(m);
+}
+
+function _invertMatrix(m) {
+  const n = m.length;
+  const { p, l, u } = pluDecomposition(m);
+
+  // Aplicar P a la identidad
+  const I = Array.from({ length: n }, (_, i) =>
+    Array.from({ length: n }, (_, j) => (i === j ? 1 : 0))
+  );
+  const B = p.map((row, i) => {
+    const idx = row.indexOf(1);
+    return I[idx].slice();
+  });
+
+  // Resolver L y luego U para cada columna
+  const x = Array.from({ length: n }, () => Array(n).fill(0));
+
+  for (let col = 0; col < n; col++) {
+    // forward substitution: L y = B[:,col]
+    const y = Array(n).fill(0);
+    for (let i = 0; i < n; i++) {
+      let sum = B[i][col];
+      for (let j = 0; j < i; j++) sum -= l[i][j] * y[j];
+      y[i] = sum;
+    }
+
+    // backward substitution: U x = y
+    const x = Array(n).fill(0);
+    for (let i = n - 1; i >= 0; i--) {
+      let sum = y[i];
+      for (let j = i + 1; j < n; j++) sum -= u[i][j] * x[j];
+      x[i] = sum / u[i][i];
+    }
+
+    for (let i = 0; i < n; i++) x[i][col] = x[i];
+  }
+
+  return x;
+}

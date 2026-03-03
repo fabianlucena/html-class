@@ -1,5 +1,14 @@
 export default function create({ Node, _f }) {
   function num(value) {
+    if (typeof value === 'string')
+      value = parseFloat(value);
+
+    if (isNaN(value))
+      return 'NAN';
+
+    if (!isFinite(value))
+      return 'INF';
+
     if (!value)
       return '0';
 

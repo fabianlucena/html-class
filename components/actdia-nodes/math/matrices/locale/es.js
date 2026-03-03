@@ -11,6 +11,7 @@ export default {
   'Matrix addition': 'Suma de matrices',
   'Matrix multiplication': 'Multiplicación de matrices',
   'Matrix viewer': 'Visor de matrices',
+  'Transpose matrix': 'Matriz transpuesta',
   'PLU Decomposition': 'Descomposición PLU',
   'Rotation matrix 2D': 'Matriz de rotación 2D',
   'Rows': 'Filas',
