@@ -4,9 +4,9 @@ export default function create({ Node, _f }) {
       return 0;
 
     if (value < 0.01 && value > -0.01 || value > 9999 || value < -9999)
-      return value.toExponential(2);
+      return value.toExponential(3);
 
-    return value.toFixed(3);
+    return value.toFixed(5).replace(/\.?0+$/, '');
   }
 
   return class MatrixBase extends Node {
@@ -115,7 +115,7 @@ export default function create({ Node, _f }) {
       if (this.isInitializing)
         return;
       
-      const width = Math.ceil(Math.max(this.columns, 1) * 2);
+      const width = Math.ceil(Math.max(this.columns, 1) * 3);
       const height = Math.ceil(Math.max(this.rows, 1) * .6);
       const d = (Math.max(width, height) % 2) / 2;
       this.box.x = -d;
