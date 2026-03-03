@@ -8,10 +8,10 @@ export default async function create({ actdia, _f }) {
       { name: 'output', type: 'out', x: 2, y: 1, direction: 'right', extends: 'tiny' },
     ];
 
+    editable = true;
     #output = null;
     
     init() {
-      this.editable = true;
       super.init(...arguments);
       this.#output = this.getConnector('output');
     }
