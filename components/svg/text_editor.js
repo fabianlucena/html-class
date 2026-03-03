@@ -86,6 +86,10 @@ function beginEditing(textElement) {
   } else {
     currentText = svgText.textContent;
   }
+
+  if (currentText.endsWith('\n')) {
+    currentText = currentText.substring(0, currentText.length - 1);
+  }
   
   textarea.value = currentText;
   textarea.focus();
