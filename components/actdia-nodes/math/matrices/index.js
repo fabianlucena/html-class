@@ -14,4 +14,11 @@ export default {
     'rotation_matrix_2d.js',
   ],
   categories: [],
+  examples: [
+    {
+      _label: 'Matrix',
+      url: './examples/matrices.json',
+      image: './examples/matrices.svg',
+    },
+  ],
 };
