@@ -257,9 +257,23 @@ export default class ActDia {
     return Element.importAsync(this.getElementCreationData(), ...urls);
   }
 
-  async importElementClass(url) {
+  async importElementClassForMeta(url, meta) {
+    return await this.importElementClass(url, { pathFromUrl: meta.url });
+  }
+
+  async importElementClass(url, options) {
+    let path = '';
+    if (options) {
+      if (options.pathFromUrl) {
+        path = getPath(options.pathFromUrl);
+        if (!path.endsWith('/')) {
+          path += '/';
+        }
+      }
+    }
+    
     try {
-      const classesInfo = await this.importElements(url);
+      const classesInfo = await this.importElements(path + url);
       return classesInfo.reduce((map, ci) => {
         if (ci?.classRef) {
           map[ci.elementClass] = ci.classRef;
