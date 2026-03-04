@@ -278,7 +278,9 @@ export default class Item extends Element {
       return;
 
     this.#status = deepCopy(value);
-    this.statusUpdated(options);
+    if (options.propagate !== false) {
+      this.statusUpdated(options);
+    }
   }
 
   setBackStatus(backStatus, options = {}) {

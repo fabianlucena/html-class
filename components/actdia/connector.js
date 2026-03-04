@@ -103,7 +103,7 @@ export default class Connector extends Element {
   setStatus(status, options = {}) {
     this.status = deepCopy(status);
     if (this.type === 'in' && this.item)
-      this.item.updateStatus(options);
+      this.item.updateStatus({ ...options, connector: this });
 
     this.propagate(options);
   }
@@ -115,7 +115,7 @@ export default class Connector extends Element {
   setBackStatus(backStatus, options = {}) {
     this.backStatus = deepCopy(backStatus);
     if (this.type === 'out' && this.item)
-      this.item.updateBackStatus(options);
+      this.item.updateBackStatus({ ...options, connector: this });
 
     this.backpropagate(options);
   }
