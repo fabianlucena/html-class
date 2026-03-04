@@ -518,7 +518,8 @@ export default class ActDia {
           };
         },
       },
-      { cursor: 'nesw-resize',
+      {
+        cursor: 'nesw-resize',
         parent: () => this,
         getDelta() {
           return {
