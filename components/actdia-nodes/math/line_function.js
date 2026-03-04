@@ -31,8 +31,8 @@ export default function create({ Node, _ }) {
     connectors = [
       { name: 'x', type: 'in',  x: 0, y: 1, direction: 'left',   extends: 'small' },
       { name: 'y', type: 'out', x: 6, y: 1, direction: 'right',  extends: 'small' },
-      { name: 'a', type: 'in',  x: 4, y: 2, direction: 'bottom', extends: 'small' },
-      { name: 'b', type: 'in',  x: 5, y: 2, direction: 'bottom', extends: 'small' },
+      { name: 'a', type: 'in',  x: 1, y: 2, direction: 'bottom', extends: 'small' },
+      { name: 'b', type: 'in',  x: 2, y: 2, direction: 'bottom', extends: 'small' },
     ];
 
     fields = [
