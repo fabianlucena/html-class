@@ -447,12 +447,12 @@ export default class ActDia {
       y = sy * (this.mouse.y - start.y),
       dd = this.getUntransformedPosition({ x, y });
     return {
-      x: dd.x,
-      y: dd.y,
-      dx: dd.x,
-      dy: dd.y,
-      mx: 0,
-      my: 0,
+      x: dd.x,  // adjust the movement in x for fixed size objects
+      y: dd.y,  // adjust the movement in y for fixed size objects
+      dx: dd.x, // move x to compense the width changing from the opposite side
+      dy: dd.y, // move y to compense the height changing from the opposite side
+      mx: 0, // move x by units
+      my: 0, // move y by units
       width: dd.x / start.width,
       height: dd.y / start.height,
     };
@@ -562,14 +562,14 @@ export default class ActDia {
             ...this.parent().getDeltaForHotPlace(this, 1, 1),
             width: 0,
             height: 0,
-            dx: 0,
-            dy: 0,
           };
 
           delta.mx = delta.x;
           delta.my = delta.y;
           delta.x = 0;
           delta.y = 0;
+          delta.dx = 0;
+          delta.dy = 0;
 
           return delta;
         },
