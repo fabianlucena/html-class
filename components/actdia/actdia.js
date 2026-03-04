@@ -1209,6 +1209,12 @@ export default class ActDia {
     if (style.visible || style.visible === false) {
       attributes.style ??= {};
       attributes.style.display = style.visible ? 'block' : 'none';
+    } else if (style.display || style.display === false) {
+      attributes.style ??= {};
+      attributes.style.display = style.display ? 'block' : 'none';
+    } else if (style.hidden) {
+      attributes.style ??= {};
+      attributes.style.display = 'none';
     }
 
     let transform = '';
