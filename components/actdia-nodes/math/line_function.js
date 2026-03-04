@@ -1,6 +1,6 @@
 export default function create({ Node, _ }) {
   return class LineFunction extends Node {
-    static _ = _('Line function');
+    static label = _('Line function');
     shape = {
       children: [
         {
