@@ -4,6 +4,7 @@ export default {
   nodesClasses: [
     'cartesian_plane.js',
     'screen.js',
+    'domain.js',
   ],
   categories: [
     { url: 'matrices', _label: 'Matrices' },

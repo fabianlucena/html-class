@@ -1,7 +1,8 @@
-export default async function create({ actdia }) {
+export default async function create({ actdia, _ }) {
   const { Screen } = await actdia.importElementClassForMeta('screen.js', import.meta);
 
   return class CartesianPlane extends Screen {
+    static label = _('Cartesian plane');
     init() {
       this.setDrawScale([1, -1], false);
       this.setAutoOffset(true, false);
