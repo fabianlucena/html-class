@@ -1,7 +1,10 @@
 export default {
   _label: 'Math',
   locale: ['es'],
-  nodesClasses: [],
+  nodesClasses: [
+    'cartesian_plane.js',
+    'screen.js',
+  ],
   categories: [
     { url: 'matrices', _label: 'Matrices' },
   ],
