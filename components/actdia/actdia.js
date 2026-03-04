@@ -552,16 +552,25 @@ export default class ActDia {
           };
         },
       },
+      {
+        cursor: 'move',
+      },
     ];
 
     for (let hotPlace of this.hotPlaces) {
-      hotPlace.svg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      hotPlace.svg.classList.add('selected-box-hot-place');
+      const shape = hotPlace.shape || {
+        shape: 'rect',
+        className: 'selected-box-hot-place',
+        width: 0.5,
+        height: 0.5,
+        cursor: hotPlace.cursor || 'move',
+        display: false,
+      };
+
+      const data = this.getShapeSVGData(shape);
+      hotPlace.svg = document.createElementNS('http://www.w3.org/2000/svg', data.tag);
+      this.updateSVGElementFromData(hotPlace.svg, data);
       this.othersLayerSVG.appendChild(hotPlace.svg);
-      hotPlace.svg.setAttribute('width', .5);
-      hotPlace.svg.setAttribute('height', .5);
-      hotPlace.svg.setAttribute('cursor', hotPlace.cursor);
-      hotPlace.svg.setAttribute('display', 'none');
     }
   }
 
@@ -933,7 +942,6 @@ export default class ActDia {
     options.prefix ??= '\n';
     options.tab ??= ' ';
 
-    
     ActDia.itemsCss ??= await loadTextCss(getPath(import.meta.url) + '/actdia-items.css');
 
     const prefix1 = options.prefix + options.tab;
@@ -1084,6 +1092,7 @@ export default class ActDia {
   }
 
   getStyle({ style, className, classList, item, shape, type, options, ...styles }) {
+    item ??= {};
     style = {
       ...style,
       ...this.style.item,
@@ -1209,17 +1218,16 @@ export default class ActDia {
     style.lineJoin && (attributes['stroke-linejoin'] = style.lineJoin);
     style.miter && (attributes['stroke-miterlimit'] = style.miter);
     (style.opacity || style.opacity === 0) && (attributes.opacity = style.opacity);
-    (options.style?.display) && (attributes.style = { ...attributes.style, display: options.style.display });
+    style.cursor && (attributes.cursor = style.cursor);
 
     if (style.visible || style.visible === false) {
-      attributes.style ??= {};
-      attributes.style.display = style.visible ? 'block' : 'none';
+      attributes.display = style.visible ? '' : 'none';
     } else if (style.display || style.display === false) {
-      attributes.style ??= {};
-      attributes.style.display = style.display ? 'block' : 'none';
+      attributes.display = style.display ? '' : 'none';
     } else if (style.hidden) {
-      attributes.style ??= {};
-      attributes.style.display = 'none';
+      attributes.display = 'none';
+    } else if (options.style?.display || options.style?.display === false) {
+      attributes.display = options.style.display ? '' : 'none';
     }
 
     let transform = '';
@@ -2014,6 +2022,7 @@ export default class ActDia {
       svgElement = null;
     }
 
+    options ??= {};
     if (!svgElement) {
       if (!options.parent)
         return;
