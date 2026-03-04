@@ -72,7 +72,7 @@ export default function create({ Node, _ }) {
       });
 
       this.setStatus(pairs, { propagate: false });
-      this.#output.setStatus(pairs.map(pair => pair[0]));
+      this.#output.setStatus(pairs.map(pair => pair[1]));
       this.#compoundOutput.setStatus(pairs);
     }
   };
