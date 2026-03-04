@@ -115,7 +115,7 @@ export default function create({ Node, _ }) {
       this.#cConnector = this.getConnector('c');
     }
 
-    updateStatus({ connector }) {
+    updateStatus({ connector } = {}) {
       if (connector === this.#aConnector) {
         this.setA(this.#aConnector.status, false);
       } else if (connector === this.#bConnector) {
@@ -123,6 +123,9 @@ export default function create({ Node, _ }) {
       } else if (connector === this.#cConnector) {
         this.setC(this.#cConnector.status, false);
       }
+
+      if (!this.#xConnector)
+        return;
       
       const
         x = this.#xConnector.status,

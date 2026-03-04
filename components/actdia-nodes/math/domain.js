@@ -36,16 +36,16 @@ export default function create({ Node, _ }) {
     ];
 
     fields = [
-      { name: 'from', label: _('From'), type: 'number', value: -5, step: 0.1, isTool: true },
-      { name: 'to',   label: _('To'),   type: 'number', value:  5, step: 0.1, isTool: true },
-      { name: 'step', label: _('Step'), type: 'number', value:  1, step: 0.1, isTool: true },
+      { name: 'from', label: _('From'), type: 'number', value: -5, min: -10000, step: 0.01, isTool: true },
+      { name: 'to',   label: _('To'),   type: 'number', value:  5, min: -10000, step: 0.01, isTool: true },
+      { name: 'step', label: _('Step'), type: 'number', value:  1, min: 0.0001, step: 0.1, isTool: true },
     ];
 
     autoPropagate = true;
     #output = null;
-    #from = -5;
-    #to = 5;
-    #step = 1;
+    #from = -10;
+    #to = 10;
+    #step = .1;
     #fromConnector = null;
     #toConnector = null;
     #stepConnector = null;
@@ -119,7 +119,7 @@ export default function create({ Node, _ }) {
       const
         from = this.#from,
         to = this.#to, 
-        step = this.#step;
+        step = Math.max(this.#step, .01);
 
       let size = (to - from + step) / step;
       if (size < 0)

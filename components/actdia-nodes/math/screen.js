@@ -1,5 +1,3 @@
-import { getColors } from '../../utils/color.js';
-
 export default function create({ Node }) {
   return class Screen extends Node {
     shape = {
@@ -51,7 +49,7 @@ export default function create({ Node }) {
           x: 0.5,
           y: 0.5,
           d: 'M 0 0',
-          stroke: '#00FF00',
+          stroke: '#ffd152',
           fill: false,
         },
         {
@@ -84,6 +82,7 @@ export default function create({ Node }) {
     #autoOffset = false;
     #connectThePoints = true;
     #closePath = true;
+    #color = '#ffd152';
 
     get input() {
       return this.#input;
@@ -229,19 +228,19 @@ export default function create({ Node }) {
       let dotsShape = this.getShape('dots');
       let pathShape = this.getShape('path');
 
-      let colors = getColors(status.length);
-
       const
         ox = this.drawOffset.x,
         oy = this.drawOffset.y,
         sx = this.drawScale.x,
-        sy = this.drawScale.y;
+        sy = this.drawScale.y,
+        maxX = this.width - 1,
+        maxY = this.height - 1;
 
       const values = status
         .filter(v => v && (typeof v.x === 'number' || typeof v[0] === 'number') && (typeof v.y === 'number' || typeof v[1] === 'number'))
         .map(v => [v.x ?? v[0], v.y ?? v[1]])
         .map(v => [v[0] * sx + ox, v[1] * sy + oy])
-        .filter(v => v[0] >= 0 && v[0] <= this.width && v[1] >= 0 && v[1] <= this.height);
+        .filter(v => v[0] >= 0 && v[0] <= maxX && v[1] >= 0 && v[1] <= maxY);
 
       if (this.connectThePoints) {
         pathShape.d = 'M ' + values
@@ -260,8 +259,8 @@ export default function create({ Node }) {
           shape: 'circle',
           x: v[0],
           y: v[1],
-          r: .2,
-          fill: colors[i],
+          r: .1,
+          fill: this.#color,
           stroke: false,
         }));
 
