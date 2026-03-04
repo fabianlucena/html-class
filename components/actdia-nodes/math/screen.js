@@ -237,8 +237,17 @@ export default function create({ Node }) {
         sx = this.drawScale.x,
         sy = this.drawScale.y;
 
+      const values = status
+        .filter(v => v && (typeof v.x === 'number' || typeof v[0] === 'number') && (typeof v.y === 'number' || typeof v[1] === 'number'))
+        .map(v => [v.x ?? v[0], v.y ?? v[1]])
+        .map(v => [v[0] * sx + ox, v[1] * sy + oy])
+        .filter(v => v[0] >= 0 && v[0] <= this.width && v[1] >= 0 && v[1] <= this.height);
+
       if (this.connectThePoints) {
-        pathShape.d = 'M ' + status.map(v => `${(v?.x ?? v?.[0] ?? 0)* sx + ox} ${(v?.y ?? v?.[1] ?? 0) * sy + oy}`).join(' L ');
+        pathShape.d = 'M ' + values
+          .map(v => {
+            return `${v[0]} ${v[1]}`;
+          }).join(' L ');
         if (this.closePath) {
           pathShape.d += ' Z';
         }
@@ -246,14 +255,15 @@ export default function create({ Node }) {
         pathShape.display = false;
       }
 
-      dotsShape.children = status.map((v, i) => ({
-        shape: 'circle',
-        x: (v?.x ?? v?.[0] ?? 0)* sx + ox,
-        y: (v?.y ?? v?.[1] ?? 0) * sy + oy,
-        r: .2,
-        fill: colors[i],
-        stroke: false,
-      }));
+      dotsShape.children = values
+        .map((v, i) => ({
+          shape: 'circle',
+          x: v[0],
+          y: v[1],
+          r: .2,
+          fill: colors[i],
+          stroke: false,
+        }));
 
       this.updateShape(dotsShape);
       this.updateShape(pathShape);
