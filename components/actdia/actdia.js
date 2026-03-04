@@ -451,6 +451,8 @@ export default class ActDia {
       y: dd.y,
       dx: dd.x,
       dy: dd.y,
+      mx: 0,
+      my: 0,
       width: dd.x / start.width,
       height: dd.y / start.height,
     };
@@ -554,6 +556,23 @@ export default class ActDia {
       },
       {
         cursor: 'move',
+        parent: () => this,
+        getDelta() {
+          const delta = {
+            ...this.parent().getDeltaForHotPlace(this, 1, 1),
+            width: 0,
+            height: 0,
+            dx: 0,
+            dy: 0,
+          };
+
+          delta.mx = delta.x;
+          delta.my = delta.y;
+          delta.x = 0;
+          delta.y = 0;
+
+          return delta;
+        },
       },
     ];
 
@@ -2320,6 +2339,8 @@ export default class ActDia {
     this.hotPlaces[6].svg.setAttribute('y', y2 + .25);
     this.hotPlaces[7].svg.setAttribute('x', x2 + .25);
     this.hotPlaces[7].svg.setAttribute('y', y2 + .25);
+    this.hotPlaces[8].svg.setAttribute('x', x2 + 1.5);
+    this.hotPlaces[8].svg.setAttribute('y', y1 + .5);
     this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', ''));
   }
 
@@ -2439,17 +2460,17 @@ export default class ActDia {
         let delta = hotPlace.getDelta();
         for (let [item, data] of hotPlace.dragging.items) {
           if (item.canChangeSize || item.canChangeWidth) {
-            item.x = data.x - delta.dx;
+            item.x = data.x - delta.dx + delta.mx;
             item.setWidth(data.width * (1 + delta.width), false);
           } else {
-            item.x = data.x + delta.x - delta.dx;
+            item.x = data.x + delta.x - delta.dx + delta.mx;
           }
 
           if (item.canChangeSize || item.canChangeHeight) {
-            item.y = data.y - delta.dy;
+            item.y = data.y - delta.dy + delta.my;
             item.setHeight(data.height * (1 + delta.height), false);
           } else {
-            item.y = data.y + delta.y - delta.dy;
+            item.y = data.y + delta.y - delta.dy + delta.my;
           }
 
           item.update();
