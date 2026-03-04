@@ -6,16 +6,17 @@ export default function create({ Node, _ }) {
           shape: 'rect',
           x: 0,
           y: 0,
-          width: 2,
+          width: 4,
           height: 2,
           rx: .2,
           ry: .2,
         },
         {
           shape: 'text',
-          x: 1,
+          x: 2,
           y: 1,
-          text: 'R',
+          text: _('Domain'),
+          fontSize: .8,
         },
       ],
     };
@@ -23,12 +24,15 @@ export default function create({ Node, _ }) {
     box = {
       x: 0,
       y: 0,
-      width: 2,
+      width: 4,
       height: 2,
     };
 
     connectors = [
-      { name: 'output', type: 'out', x: 2, y: 1, direction: 'right', extends: 'small' },
+      { name: 'output', type: 'out', x: 4, y: 1, direction: 'right',  extends: 'small' },
+      { name: 'from',   type: 'in',  x: 1, y: 2, direction: 'bottom', extends: 'small' },
+      { name: 'to',     type: 'in',  x: 2, y: 2, direction: 'bottom', extends: 'small' },
+      { name: 'step',   type: 'in',  x: 3, y: 2, direction: 'bottom', extends: 'small' },
     ];
 
     fields = [
@@ -37,10 +41,14 @@ export default function create({ Node, _ }) {
       { name: 'step', label: _('Step'), type: 'number', value:  1, step: 0.1, isTool: true },
     ];
 
+    autoPropagate = true;
     #output = null;
     #from = -5;
     #to = 5;
     #step = 1;
+    #fromConnector = null;
+    #toConnector = null;
+    #stepConnector = null;
 
     get output() {
       return this.#output;
@@ -73,6 +81,9 @@ export default function create({ Node, _ }) {
     init() {
       super.init(...arguments);
       this.#output = this.getConnector('output');
+      this.#fromConnector = this.getConnector('from');
+      this.#toConnector = this.getConnector('to');
+      this.#stepConnector = this.getConnector('step');
     }
 
     setFrom(value, update = true) {
@@ -96,11 +107,19 @@ export default function create({ Node, _ }) {
       }
     }
 
-    updateStatus() {
+    updateStatus({ connector } = {}) {
+      if (connector === this.#fromConnector) {
+        this.setFrom(this.#fromConnector.status, false);
+      } else if (connector === this.#toConnector) {
+        this.setTo(this.#toConnector.status, false);
+      } else if (connector === this.#stepConnector) {
+        this.setStep(this.#stepConnector.status, false);
+      }
+
       const
-        from = this.from,
-        to = this.to, 
-        step = this.step;
+        from = this.#from,
+        to = this.#to, 
+        step = this.#step;
 
       let size = (to - from + step) / step;
       if (size < 0)

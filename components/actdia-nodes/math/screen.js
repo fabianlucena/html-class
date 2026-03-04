@@ -238,7 +238,7 @@ export default function create({ Node }) {
         sy = this.drawScale.y;
 
       if (this.connectThePoints) {
-        pathShape.d = 'M ' + status.map(v => `${v.x ?? v[0] * sx + ox} ${v.y ?? v[1] * sy + oy}`).join(' L ');
+        pathShape.d = 'M ' + status.map(v => `${(v?.x ?? v?.[0] ?? 0)* sx + ox} ${(v?.y ?? v?.[1] ?? 0) * sy + oy}`).join(' L ');
         if (this.closePath) {
           pathShape.d += ' Z';
         }
@@ -248,8 +248,8 @@ export default function create({ Node }) {
 
       dotsShape.children = status.map((v, i) => ({
         shape: 'circle',
-        x: v.x ?? v[0] * sx + ox,
-        y: v.y ?? v[1] * sy + oy,
+        x: (v?.x ?? v?.[0] ?? 0)* sx + ox,
+        y: (v?.y ?? v?.[1] ?? 0) * sy + oy,
         r: .2,
         fill: colors[i],
         stroke: false,
