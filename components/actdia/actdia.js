@@ -305,6 +305,10 @@ export default class ActDia {
     this.canvasLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.canvasLayerSVG.classList.add('actdia-canvas-layer');
     this.mainGroup.appendChild(this.canvasLayerSVG);
+    
+    this.selectedLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    this.selectedLayerSVG.classList.add('actdia-selected-layer');
+    this.mainGroup.appendChild(this.selectedLayerSVG);
 
     this.connectionsLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.connectionsLayerSVG.classList.add('actdia-connections-layer');
@@ -2275,7 +2279,7 @@ export default class ActDia {
     if (!this.selectedBox.svg) {
       this.selectedBox.svg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       this.selectedBox.svg.classList.add('selected-box');
-      this.othersLayerSVG.appendChild(this.selectedBox.svg);
+      this.selectedLayerSVG.appendChild(this.selectedBox.svg);
     }
 
     this.selectedBox.x = x1;
@@ -2468,6 +2472,8 @@ export default class ActDia {
           this.pushNotification(_('Check this out...'), 'debug');
         }
       });
+
+      this.updateSelected();
 
       return;
     }
