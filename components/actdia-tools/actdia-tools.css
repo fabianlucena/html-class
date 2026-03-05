@@ -1,5 +1,11 @@
 body {
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.actdia {
+  flex: 1;
 }
 
 .print .actdia-tools {
@@ -56,7 +62,6 @@ body {
 }
 
 .actdia-tools {
-  width: 100%;
   display: flex;
   flex-direction: column;
   border: .1em solid #979797;
