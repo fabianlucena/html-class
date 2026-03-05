@@ -4,11 +4,18 @@ importCss('./text_editor.css', import.meta.url);
 
 document.addEventListener('DOMContentLoaded', init);
 
-let svgText,
+const
+  highlightColor = '#4060FF',
+  highlightBias = .15;
+let
+  svg,
+  svgText,
   singleLine,
   numerical,
   textarea,
+  defs,
   caret,
+  highlightBox,
   selectionBox,
   value,
   selStart,
@@ -31,8 +38,24 @@ function init() {
   caret.classList.add('text-caret');
   caret.setAttribute('d', 'M 0 0 L 0 1');
 
+  highlightBox = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  highlightBox.style.filter = 'url(#shadow)';
+  highlightBox.setAttribute('fill', 'none');
+  highlightBox.setAttribute('stroke', highlightColor);
+
   selectionBox = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   selectionBox.classList.add('text-selection');
+
+  defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  defs.innerHTML = `<filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow
+        dx="0" dy="0"
+        stdDeviation=".1" 
+        flood-color="${highlightColor}" 
+        flood-opacity="1" 
+        filterUnits="userSpaceOnUse"
+      />
+    </filter>`;
 
   textarea.addEventListener('input', syncFromTextarea);
   textarea.addEventListener('keydown', keydownHandler);
@@ -59,8 +82,12 @@ function beginEditing(textElement) {
   svgText = textElement;
   singleLine = svgText.getAttribute('single-line') !== null;
   numerical = svgText.getAttribute('numerical') !== null;
+  svg = svgText.closest('svg');
+
+  svg.insertBefore(defs, svg.firstChild);
   svgText.parentNode.appendChild(caret);
   svgText.parentNode.insertBefore(selectionBox, svgText);
+  svgText.parentNode.insertBefore(highlightBox, svgText);
   let currentText = '';
   lineHeight = 0;
   if (svgText.children.length) {
@@ -108,6 +135,8 @@ function endEditing() {
   svgText = null;
   caret.remove();
   selectionBox.remove();
+  highlightBox.remove();
+  defs.remove();
 }
 
 function getIsPreservingWhitespaceForElement(el) {
@@ -242,6 +271,11 @@ function renderSVG() {
     tspan.textContent = lines[i];
   }
 
+  const box = svgText.getBBox();
+  highlightBox.setAttribute('transform', `translate(${box.x - highlightBias}, ${box.y - highlightBias})`);
+  highlightBox.setAttribute('width', box.width + highlightBias * 2);
+  highlightBox.setAttribute('height', box.height + highlightBias * 2);
+
   if (selStart !== selEnd) {
     const startPos = getPosCoordinates(selStart);
     const endPos = getPosCoordinates(selEnd);
@@ -288,6 +322,7 @@ function renderSVG() {
 
   const pos = getPosCoordinates(caretPos);
   caret.setAttribute('transform', `translate(${pos.x}, ${pos.y})`);
+  caret.setAttribute('d', `M 0 0 L 0 ${pos.tspan.getBBox().height}`);
 }
 
 function getPosCoordinates(pos) {
