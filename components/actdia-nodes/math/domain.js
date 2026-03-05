@@ -6,17 +6,16 @@ export default function create({ Node, _ }) {
           shape: 'rect',
           x: 0,
           y: 0,
-          width: 4,
+          width: 5,
           height: 2,
           rx: .2,
           ry: .2,
         },
         {
           shape: 'text',
-          x: 2,
+          x: 2.5,
           y: 1,
           text: _('Domain'),
-          fontSize: .8,
         },
       ],
     };
@@ -24,12 +23,12 @@ export default function create({ Node, _ }) {
     box = {
       x: 0,
       y: 0,
-      width: 4,
+      width: 5,
       height: 2,
     };
 
     connectors = [
-      { name: 'output', type: 'out', x: 4, y: 1, direction: 'right',  extends: 'small' },
+      { name: 'output', type: 'out', x: 5, y: 1, direction: 'right',  extends: 'small' },
       { name: 'from',   type: 'in',  x: 1, y: 2, direction: 'bottom', extends: 'small' },
       { name: 'to',     type: 'in',  x: 2, y: 2, direction: 'bottom', extends: 'small' },
       { name: 'step',   type: 'in',  x: 3, y: 2, direction: 'bottom', extends: 'small' },
