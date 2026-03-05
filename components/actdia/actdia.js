@@ -210,6 +210,8 @@ export default class ActDia {
     down: null,
   };
 
+  clickTimeThreshold = 300; // milliseconds
+  clickPositionThresold = { x: 5, y: 5 }; // pixels
   #items = [];
   dragging = null;
   selectedConnections = [];
@@ -2452,6 +2454,14 @@ export default class ActDia {
     this.mouse.y = evt.clientY - rect.top;
     this.updateLabelPosition();
 
+    if (this.mouse.down
+      && !this.mouse.cancelClick
+      && (Math.abs(this.mouse.x - this.mouse.down.x) > this.dragThreshold
+        || Math.abs(this.mouse.y - this.mouse.down.y) > this.dragThreshold
+    )) {
+      this.mouse.cancelClick = true;
+    }
+
     const hotPlace = this.hotPlaces?.find(hp => hp.dragging);
     if (hotPlace) {
       evt.stopPropagation();
@@ -2573,6 +2583,12 @@ export default class ActDia {
   }
 
   clickHandler(evt) {
+    if (this.mouse.cancelClick) {
+      this.mouse.cancelClick = false;
+      this.mouse.cancelDblClick = true;
+      return;
+    }
+
     if (!this.editable)
       return;
 
@@ -2686,6 +2702,11 @@ export default class ActDia {
   }
 
   dblClickHandler(evt) {
+    if (this.mouse.cancelDblClick) {
+      this.mouse.cancelDblClick = false;
+      return;
+    }
+
     const { item } = this.getEventItem(evt);
     if (item) {
       const event = new CustomEvent(
@@ -2730,6 +2751,8 @@ export default class ActDia {
       y: this.mouse.y,
       button: evt.button,
       time: Date.now(),
+      cancelClick: false,
+      cancelDblClick: false,
     };
 
     if (this.dragging) {
@@ -2818,6 +2841,22 @@ export default class ActDia {
     this.hotPlaces.forEach(hotPlace => hotPlace.dragging = false);
     this.endSelectionBox();
 
+    if (this.dragging) {
+      if (!this.mouse.cancelClick) {
+        const time = Date.now() - this.mouse.down?.time;
+        if (time > this.clickTimeThreshold) {
+          this.mouse.cancelClick = true;
+        }
+      }
+
+      this.mouse.down = null;
+      this.endDrag();
+
+      evt.stopPropagation();
+      evt.preventDefault();
+      return;
+    }
+
     const { item, shape } = this.getEventItem(evt);
     item?.onMouseUp?.({
       evt,
@@ -2828,14 +2867,6 @@ export default class ActDia {
 
     if (evt.defaultPrevented)
       return false;
-
-    if (this.dragging) {
-      this.mouse.down = null;
-      this.endDrag();
-
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
   }
 
   labeledStatusListeners = [];
