@@ -21,7 +21,7 @@
   stroke-dasharray: .05 .05;
 }
 
-.actdia .selected-box-hot-place {
+.actdia .hot-place {
   fill: #80808080;
   stroke: none;
   stroke-width: .1;

@@ -579,7 +579,7 @@ export default class ActDia {
     for (let hotPlace of this.hotPlaces) {
       const shape = hotPlace.shape || {
         shape: 'rect',
-        className: 'selected-box-hot-place',
+        className: 'hot-place',
         width: 0.5,
         height: 0.5,
         cursor: hotPlace.cursor || 'move',
@@ -2299,10 +2299,10 @@ export default class ActDia {
     }
 
     let
-      x1 = Math.min(...selectedItems.map(i => i.x)),
-      y1 = Math.min(...selectedItems.map(i => i.y)),
-      x2 = Math.max(...selectedItems.map(i => i.x + i.box.width)),
-      y2 = Math.max(...selectedItems.map(i => i.y + i.box.height));
+      x1 = Math.min(...selectedItems.map(i => i.x + i.box.x)),
+      y1 = Math.min(...selectedItems.map(i => i.y + i.box.y)),
+      x2 = Math.max(...selectedItems.map(i => i.x + i.box.x + i.box.width)),
+      y2 = Math.max(...selectedItems.map(i => i.y + i.box.y + i.box.height));
 
     this.selectedBox ??= {};
     if (!this.selectedBox.svg) {
