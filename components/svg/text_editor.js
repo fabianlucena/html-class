@@ -50,7 +50,7 @@ function init() {
   defs.innerHTML = `<filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow
         dx="0" dy="0"
-        stdDeviation=".1" 
+        stdDeviation=".15" 
         flood-color="${highlightColor}" 
         flood-opacity="1" 
         filterUnits="userSpaceOnUse"
@@ -78,6 +78,15 @@ function clickHandler(evt) {
   }
 }
 
+function getEffectiveFill(el) {
+  const cs = getComputedStyle(el);
+  if (cs.fill === 'none' || cs.fill === 'transparent') {
+    return getEffectiveFill(el.parentNode);
+  }
+
+  return cs.fill;
+}
+
 function beginEditing(textElement) {
   svgText = textElement;
   singleLine = svgText.getAttribute('single-line') !== null;
@@ -85,9 +94,12 @@ function beginEditing(textElement) {
   svg = svgText.closest('svg');
 
   svg.insertBefore(defs, svg.firstChild);
-  svgText.parentNode.appendChild(caret);
-  svgText.parentNode.insertBefore(selectionBox, svgText);
   svgText.parentNode.insertBefore(highlightBox, svgText);
+  svgText.parentNode.insertBefore(selectionBox, svgText);
+  svgText.parentNode.appendChild(caret);
+
+  highlightBox.setAttribute('fill', getEffectiveFill(svgText.parentNode));
+
   let currentText = '';
   lineHeight = 0;
   if (svgText.children.length) {
