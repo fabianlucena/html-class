@@ -75,7 +75,7 @@ export default function create({ Node, _ }) {
     }
 
     set step(value) {
-      this.setStep();
+      this.setStep(value);
     }
 
     init() {
@@ -125,7 +125,9 @@ export default function create({ Node, _ }) {
       if (size < 0)
         size = -size;
       
-      this.setStatus(Array.from({ length: size }, (_, i) => from + step * i));
+      const status = Array.from({ length: size }, (_, i) => from + step * i);
+      
+      this.setStatus(status);
     }
   };
 }
