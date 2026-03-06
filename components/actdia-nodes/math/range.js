@@ -50,31 +50,34 @@ export default function create({ Node, _ }) {
       this.#funInput = this.getConnector('funInput');
     }
 
+    #calculating = false;
     updateStatus({ connector, force } = {}) {
-      if (!this.#funInput.connections.length
+      if (false
+        || !this.#funInput.connections.length
         || !this.#funOutput.connections.length
         || !this.#input.connections.length
-        || !force && connector === this.#funInput
+        || this.#calculating && connector === this.#funInput && !force
       ) {
         return;
       }
 
       let domain = this.#input.status;
       if (!Array.isArray(domain)) {
-        const pairs = [domain];
-        this.#funOutput.setStatus(domain);
-        pairs.push(this.#funInput.status);
-        this.setStatus(pairs, { propagate: false });
-        this.#output.setStatus(pairs[0]);
-        this.#compoundOutput.setStatus(pairs);
-        return;
+        domain = [domain];
       }
       
       let pairs = [];
-      domain.forEach((v, i) => {
-        this.#funOutput.setStatus(v);
-        pairs.push([v, this.#funInput.status]);
-      });
+      try {
+        this.#calculating = true;
+        domain.forEach((v, i) => {
+          this.#funOutput.setStatus(v);
+          pairs.push([v, this.#funInput.status]);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+      this.#calculating = false;
 
       this.setStatus(pairs, { propagate: false });
       this.#output.setStatus(pairs.map(pair => pair[1]));
