@@ -377,43 +377,35 @@ export default function create({ Node }) {
         .map(v => [v[0] * sx + ox, v[1] * sy + oy]);
 
       if (this.connectThePoints) {
-        const connectedPoints = [];
-        let aux1, aux2, clipped;
-        for (const value of values) {
-          if (value[0] <= 0 || value[0] >= maxX || value[1] <= 0 || value[1] >= maxY) {
-            if (aux2) {
-              const clipped = this.clipSegment(value, aux2, maxX, maxY);
-              if (clipped) {
-                connectedPoints.push(clipped[0]);
-              }
-
-              aux2 = null;
-            }
-
-            aux1 = value;
-            clipped = true;
-          } else {
-            if (aux1) {
-              const clipped = this.clipSegment(aux1, value, maxX, maxY);
-              if (clipped) {
-                connectedPoints.push(clipped[0]);
-              }
-              
-              aux1 = null;
-            }
-
-            connectedPoints.push(value);
-            aux2 = value;
-          }
+        const pathValues = [...values];
+        if (this.closePath) {
+          pathValues.push(values[0]);
         }
 
-        if (!connectedPoints.length) {
-          for (let i = 0, j = 1, e = values.length; j < e; i++, j++) {
-            const clipped = this.clipSegment(values[i], values[j], maxX, maxY);
-            if (clipped) {
-              connectedPoints.push(...clipped);
+        let aux, auxOuther, valueOuther;
+        const connectedPoints = [];
+        for (const value of pathValues) {
+          valueOuther = value[0] <= 0 || value[0] >= maxX || value[1] <= 0 || value[1] >= maxY;
+          if (aux) {
+            if (auxOuther) {
+              const clipped = this.clipSegment(aux, value, maxX, maxY);
+              if (clipped) {
+                connectedPoints.push(...clipped);
+              }
+            } else {
+              if (valueOuther) {
+                const clipped = this.clipSegment(aux, value, maxX, maxY);
+                if (clipped) {
+                  connectedPoints.push(...clipped);
+                }
+              } else {
+                connectedPoints.push(value);
+              }
             }
           }
+
+          aux = value;
+          auxOuther = valueOuther;
         }
 
         pathShape.d = 'M ' + connectedPoints
@@ -421,7 +413,7 @@ export default function create({ Node }) {
           .map(v => {
             return `${v[0]} ${v[1]}`;
           }).join(' L ');
-        if (this.closePath && !clipped) {
+        if (this.closePath) {
           pathShape.d += ' Z';
         }
       } else {
