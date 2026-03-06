@@ -23,7 +23,7 @@ export default async function create({ actdia, _f }) {
           { value: '2d', _label: _f('2D') },
           { value: 'x',  _label: _f('X-axis') },
           { value: 'y',  _label: _f('Y-axis') },
-          { value: 'z',  _label: _f('Z-axis') }
+          { value: 'z',  _label: _f('Z-axis') },
         ],
         isTool: true,
       },
@@ -117,18 +117,18 @@ export default async function create({ actdia, _f }) {
       if (this.#type === '2d') {
         if (this.#augmented) {
           this.size = 3;
-          newStatus = [[],[], []];
+          newStatus = [[], [], []];
         } else {
           this.size = 2;
-          newStatus = [[],[]];
+          newStatus = [[], []];
         }
       } else {
         if (this.#augmented) {
           this.size = 4;
-          newStatus = [[],[], [], []];
+          newStatus = [[], [], [], []];
         } else {
           this.size = 3;
-          newStatus = [[],[], []];
+          newStatus = [[], [], []];
         }
       }
 
