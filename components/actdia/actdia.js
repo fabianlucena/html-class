@@ -638,7 +638,7 @@ export default class ActDia {
 
     this.#items.forEach(item => {
       if (isNode(item) && item.autoPropagate) {
-        item.propagate();
+        item.propagate({ force: true });
       }
     });
   }

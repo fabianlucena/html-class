@@ -274,7 +274,7 @@ export default class Item extends Element {
   }
 
   setStatus(value, options = {}) {
-    if (isEqual(this.status, value))
+    if (!options.force && isEqual(this.status, value))
       return;
 
     this.#status = deepCopy(value);
@@ -284,7 +284,7 @@ export default class Item extends Element {
   }
 
   setBackStatus(backStatus, options = {}) {
-    if (isEqual(this.backStatus, backStatus))
+    if (!options.force && isEqual(this.backStatus, backStatus))
       return;
 
     this.backStatus = deepCopy(backStatus);
