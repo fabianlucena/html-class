@@ -13,7 +13,7 @@ export default {
   'Matrix viewer': 'Visor de matrices',
   'Transpose matrix': 'Matriz transpuesta',
   'PLU Decomposition': 'Descomposición PLU',
-  'Rotation matrix 2D': 'Matriz de rotación 2D',
+  'Rotation matrix': 'Matriz de rotación',
   'Rows': 'Filas',
   'Square matrix': 'Matriz cuadrada',
 };
