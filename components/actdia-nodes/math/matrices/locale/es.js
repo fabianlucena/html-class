@@ -19,6 +19,7 @@ export default {
   'Rows': 'Filas',
   'Square matrix': 'Matriz cuadrada',
   'Translation matrix': 'Matriz de traslación',
+  'Type': 'Tipo',
   'X-axis': 'Eje x',
   'Y-axis': 'Eje y',
   'Z-axis': 'Eje z',

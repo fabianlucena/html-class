@@ -33,6 +33,7 @@ export default async function create({ actdia, _f }) {
       {
         name: 'type',
         type: 'select',
+        _label: _f('Type'),
         options: [
           { value: '2d', _label: _f('2D') },
           { value: '3d', _label: _f('3D') },
