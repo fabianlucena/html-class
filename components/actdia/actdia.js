@@ -1789,15 +1789,26 @@ export default class ActDia {
     if (shape.textDecoration)
       style.textDecoration = shape.textDecoration;
 
+    const attributes = {};
+    if (shape.box) {
+      let box = shape.box;
+      if (typeof box !== 'string') {
+        box = JSON.stringify(box);
+      }
+
+      attributes.box = box;
+    }
+
     return {
       x, y, width, height,
       lineSpacing,
       style: { ...style, x: undefined, y: undefined },
+      attributes,
     };
   }
 
   getTextSVGData(shape, item, options) {
-    const { x, y, style } = this.getTextData(shape, item, options?.style, options);
+    const { x, y, style, attributes: textAttributes } = this.getTextData(shape, item, options?.style, options);
     const lines = shape.text?.split?.('\n') ?? [];
     const commonAttributes = this.getStyleSVGAttributes(style, options);
     const fontAttibutes = this.getFontStyleSVGAttributes(style);
@@ -1807,10 +1818,12 @@ export default class ActDia {
       y,
       ...commonAttributes,
       ...fontAttibutes,
+      ...textAttributes,
       style: {
         ...commonAttributes.style,
         ...fontAttibutes.style,
-      }
+        ...textAttributes?.style,
+      },
     };
 
     if (shape.editable) {
