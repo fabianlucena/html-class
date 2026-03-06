@@ -101,9 +101,16 @@ export default class Connector extends Element {
   }
 
   setStatus(status, options = {}) {
-    this.status = deepCopy(status);
-    if (this.type === 'in' && this.item)
+    status = deepCopy(status)
+    this.status = status;
+
+    if (this.onUpdate) {
+      this.onUpdate({ status });
+    }
+
+    if (this.type === 'in' && this.item) {
       this.item.updateStatus({ ...options, connector: this });
+    }
 
     this.propagate(options);
   }
