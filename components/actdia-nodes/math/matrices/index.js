@@ -13,6 +13,7 @@ export default {
     'plu_decomposition.js',
     'rotation_matrix.js',
     'translation_matrix.js',
+    'scale_matrix.js',
   ],
   categories: [],
   examples: [
