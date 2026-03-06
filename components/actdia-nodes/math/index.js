@@ -12,4 +12,11 @@ export default {
   categories: [
     { url: 'matrices', _label: 'Matrices' },
   ],
+  examples: [
+    {
+      _label: 'Quadratic function',
+      url: './examples/quadratic_function.json',
+      image: './examples/quadratic_function.svg',
+    },
+  ],
 };

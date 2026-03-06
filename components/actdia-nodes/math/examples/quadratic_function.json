@@ -1,0 +1,289 @@
+{
+  "actdia": {
+    "version": "0.1.0"
+  },
+  "imports": [
+    "../../components/actdia-nodes/math/cartesian_plane.js",
+    "../../components/actdia-nodes/math/domain.js",
+    "../../components/actdia-nodes/math/quadratic_function.js",
+    "../../components/actdia-nodes/math/range.js",
+    "../../components/actdia-nodes/math/screen.js",
+    "../../components/actdia-nodes/slider.js",
+    "./connection.js"
+  ],
+  "nodes": [
+    {
+      "elementClass": "CartesianPlane",
+      "url": "../../components/actdia-nodes/math/cartesian_plane.js",
+      "id": "81f95a6a-897d-43d1-912e-85ce6ce0f5e4",
+      "fqcn": "../../components/actdia-nodes/math/cartesian_plane.js/CartesianPlane",
+      "x": 32,
+      "y": 5,
+      "name": "CartesianPlane - 1f95a",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "Screen",
+      "url": "../../components/actdia-nodes/math/screen.js",
+      "id": "e10b333b-5d4d-479e-899d-ac04e01855ff",
+      "fqcn": "../../components/actdia-nodes/math/screen.js/Screen",
+      "x": 54,
+      "y": 1,
+      "name": "Screen - 10b33",
+      "connectors": [
+        {
+          "id": "in-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "Domain",
+      "url": "../../components/actdia-nodes/math/domain.js",
+      "id": "9948f6b8-24d4-4940-963d-d60295d30449",
+      "fqcn": "../../components/actdia-nodes/math/domain.js/Domain",
+      "x": 3,
+      "y": 2,
+      "name": "Domain - 948f6",
+      "from": -15,
+      "to": 28,
+      "step": 0.3001,
+      "connectors": [
+        {
+          "id": "in-00"
+        },
+        {
+          "id": "in-01"
+        },
+        {
+          "id": "in-02"
+        },
+        {
+          "id": "out-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "Range",
+      "url": "../../components/actdia-nodes/math/range.js",
+      "id": "c302a556-d667-4367-bc63-2453027f77f5",
+      "fqcn": "../../components/actdia-nodes/math/range.js/Range",
+      "x": 10,
+      "y": 2,
+      "name": "Range - 302a5",
+      "connectors": [
+        {
+          "id": "in-00"
+        },
+        {
+          "id": "out-00"
+        },
+        {
+          "id": "out-01"
+        },
+        {
+          "id": "out-02"
+        },
+        {
+          "id": "in-01"
+        }
+      ]
+    },
+    {
+      "elementClass": "QuadraticFunction",
+      "url": "../../components/actdia-nodes/math/quadratic_function.js",
+      "id": "f00f2f53-af2d-42f1-80ce-d153b53bf1b0",
+      "fqcn": "../../components/actdia-nodes/math/quadratic_function.js/QuadraticFunction",
+      "x": 10,
+      "y": 8,
+      "name": "Función cuadrática - 00f2f",
+      "a": 0.15705379539064168,
+      "b": -1.7499999999999991,
+      "c": 6,
+      "connectors": [
+        {
+          "id": "in-00"
+        },
+        {
+          "id": "out-00"
+        },
+        {
+          "id": "in-01"
+        },
+        {
+          "id": "in-02"
+        },
+        {
+          "id": "in-03"
+        }
+      ]
+    },
+    {
+      "elementClass": "Slider",
+      "url": "../../components/actdia-nodes/slider.js",
+      "id": "ce4b9ae4-29b8-4259-8747-83e4999bce75",
+      "min": -5,
+      "max": 5,
+      "fqcn": "../../components/actdia-nodes/slider.js/Slider",
+      "x": 2,
+      "y": 12,
+      "name": "Slider - e4b9a",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ],
+      "status": 0.15705379539064168,
+      "function": "linear",
+      "size": 6
+    },
+    {
+      "elementClass": "Slider",
+      "url": "../../components/actdia-nodes/slider.js",
+      "id": "9a1f9aa3-47b6-49e2-9088-3e0a316b08a1",
+      "min": -5,
+      "max": 5,
+      "fqcn": "../../components/actdia-nodes/slider.js/Slider",
+      "x": 2,
+      "y": 14,
+      "name": "Slider - a1f9a",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ],
+      "status": -1.7499999999999991,
+      "function": "linear",
+      "size": 6
+    },
+    {
+      "elementClass": "Slider",
+      "url": "../../components/actdia-nodes/slider.js",
+      "id": "b9cdaeb7-4a59-484f-be0c-5378d7558535",
+      "min": -5,
+      "max": 15,
+      "fqcn": "../../components/actdia-nodes/slider.js/Slider",
+      "x": 2,
+      "y": 16,
+      "name": "Slider - 9cdae",
+      "connectors": [
+        {
+          "id": "out-00"
+        }
+      ],
+      "status": 6,
+      "function": "linear",
+      "size": 6
+    }
+  ],
+  "connections": [
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "14483d2b-6337-433d-bd23-98588b8648f3",
+      "from": {
+        "connector": "in-00",
+        "item": "9948f6b8-24d4-4940-963d-d60295d30449"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "c302a556-d667-4367-bc63-2453027f77f5"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "82e60d21-8592-4d3b-b3ab-a20a75e057cd",
+      "from": {
+        "connector": "out-01",
+        "item": "c302a556-d667-4367-bc63-2453027f77f5"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "81f95a6a-897d-43d1-912e-85ce6ce0f5e4"
+      },
+      "path": "smooth"
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "a472caeb-41dc-4db0-b8b9-fa7abfb41c3b",
+      "from": {
+        "connector": "out-01",
+        "item": "c302a556-d667-4367-bc63-2453027f77f5"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "e10b333b-5d4d-479e-899d-ac04e01855ff"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "466648ee-63c3-4a2b-9bf5-12fa6b4c554f",
+      "from": {
+        "connector": "out-02",
+        "item": "c302a556-d667-4367-bc63-2453027f77f5"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "f00f2f53-af2d-42f1-80ce-d153b53bf1b0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "da8c4ee8-559a-423f-9c95-07e89e2d4089",
+      "from": {
+        "connector": "in-01",
+        "item": "c302a556-d667-4367-bc63-2453027f77f5"
+      },
+      "to": {
+        "connector": "out-00",
+        "item": "f00f2f53-af2d-42f1-80ce-d153b53bf1b0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "e611b782-8901-4c54-a812-4dd054b06ac4",
+      "from": {
+        "connector": "out-00",
+        "item": "ce4b9ae4-29b8-4259-8747-83e4999bce75"
+      },
+      "to": {
+        "connector": "in-01",
+        "item": "f00f2f53-af2d-42f1-80ce-d153b53bf1b0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "90d10f4d-0604-4014-87fc-ff2202a408b1",
+      "from": {
+        "connector": "out-00",
+        "item": "9a1f9aa3-47b6-49e2-9088-3e0a316b08a1"
+      },
+      "to": {
+        "connector": "in-02",
+        "item": "f00f2f53-af2d-42f1-80ce-d153b53bf1b0"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "6a194ad0-334e-4c76-b0da-2cd4a8631a62",
+      "from": {
+        "connector": "out-00",
+        "item": "b9cdaeb7-4a59-484f-be0c-5378d7558535"
+      },
+      "to": {
+        "connector": "in-03",
+        "item": "f00f2f53-af2d-42f1-80ce-d153b53bf1b0"
+      }
+    }
+  ]
+}
