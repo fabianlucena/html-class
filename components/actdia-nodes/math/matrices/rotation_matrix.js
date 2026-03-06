@@ -20,10 +20,10 @@ export default async function create({ actdia, _f }) {
         name: 'type',
         type: 'select',
         options: [
-          { value: '2d', label: '2D' },
-          { value: 'x',  label: 'X-axis' },
-          { value: 'y',  label: 'Y-axis' },
-          { value: 'z',  label: 'Z-axis' }
+          { value: '2d', _label: _f('2D') },
+          { value: 'x',  _label: _f('X-axis') },
+          { value: 'y',  _label: _f('Y-axis') },
+          { value: 'z',  _label: _f('Z-axis') }
         ],
         isTool: true,
       },

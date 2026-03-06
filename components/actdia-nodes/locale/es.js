@@ -7,6 +7,7 @@ export default {
   'Cubic': 'Cúbica',
   'Cubic Root': 'Raíz cúbica',
   'Electronic': 'Electrónica',
+  'Function': 'Función',
   'Height': 'Altura',
   'Horizontal': 'Horizontal',
   'Inverted': 'Invertido',
