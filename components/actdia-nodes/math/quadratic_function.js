@@ -38,9 +38,9 @@ export default function create({ Node, _ }) {
     ];
 
     fields = [
-      { name: 'a', label: _('a'), type: 'number', value: 1.2, step: 0.01, isTool: true },
-      { name: 'b', label: _('b'), type: 'number', value: -5,  step: 0.01, isTool: true },
-      { name: 'c', label: _('c'), type: 'number', value:  2,  step: 0.01, isTool: true },
+      { name: 'a', label: _('a'), type: 'number', value: 1.2, isTool: true },
+      { name: 'b', label: _('b'), type: 'number', value: -5,  isTool: true },
+      { name: 'c', label: _('c'), type: 'number', value:  2,  isTool: true },
     ];
 
     #xConnector = null;
