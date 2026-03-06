@@ -20,7 +20,9 @@ export default async function create({ actdia, _f }) {
     }
 
     set size(value) {
-      this.dimension = [value, value];
+      if (value !== this.size) {
+        this.dimension = [value, value];
+      }
     }
   };
 }
