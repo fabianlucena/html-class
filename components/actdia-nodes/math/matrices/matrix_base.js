@@ -133,7 +133,9 @@ export default function create({ Node, _f }) {
         dy = height / this.rows,
         xi = -dx / 2,
         y =  -dy / 2 - dh,
-        k = 0;
+        k = 0,
+        dx_2 = dx / 2,
+        dy_2 = dy / 2;
 
       for (let r = 0; r < this.rows; r++) {
         let row = this.status[r];
@@ -170,6 +172,12 @@ export default function create({ Node, _f }) {
           x += dx;
           textShape.x = x;
           textShape.y = y;
+          textShape.box = {
+            x: x - dx_2,
+            y: y - dy_2,
+            width: dx,
+            height: dy,
+          };
         }
       }
 
