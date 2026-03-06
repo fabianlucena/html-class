@@ -192,7 +192,7 @@ export default class Form extends Base {
           ${(type === 'checkbox' && value) ? 'checked="checked"' : ''}
           ${typeof field.min !== 'undefined' ? `min="${field.min}"` : ''}
           ${typeof field.max !== 'undefined' ? `max="${field.max}"` : ''}
-          ${typeof field.step !== 'undefined' ? `step="${field.step}"` : ''}
+          ${typeof field.step !== 'undefined' ? `step="${field.step}"` : 'any'}
           ${field.readOnly ? 'readonly' : ''}
           ${field.disabled ? 'disabled="disabled"' : ''} 
           value="${value || ''}"
