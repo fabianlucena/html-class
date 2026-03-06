@@ -1,13 +1,17 @@
+import { loadLocaleForMeta } from '../locale/locale.js';
+
+loadLocaleForMeta(import.meta);
+
 export default function create({ Node, _ }) {
   const functions =  [
-    { value: 'linear', label: _('Linear'), func: x => x, inverse: x => x },
-    { value: 'threeHalves', label: _('Three halves'), func: x => Math.pow(x, 3 / 2), inverse: x => Math.pow(x, 2 / 3) },
-    { value: 'quadratic', label: _('Quadratic'), func: x => x * x, inverse: x => Math.sqrt(x) },
-    { value: 'cubic', label: _('Cubic'), func: x => x * x * x, inverse: x => Math.pow(x, 1 / 3) },
-    { value: 'twoThirds', label: _('Two thirds'), func: x => Math.pow(x, 2 / 3), inverse: x => Math.pow(x, 3 / 2) },
-    { value: 'quadraticRoot', label: _('Quadratic Root'), func: x => Math.sqrt(x), inverse: x => x * x },
-    { value: 'cubicRoot', label: _('Cubic Root'), func: x => Math.pow(x, 1 / 3), inverse: x => x * x * x },
-    { value: 'sinusoidal', label: _('Sinusoidal'), func: x => (Math.sin((x - 0.5) * Math.PI) + 1) / 2, inverse: x => (Math.asin((x * 2) - 1) / Math.PI) + 0.5 },
+    { value: 'linear', _label: _('Linear'), func: x => x, inverse: x => x },
+    { value: 'threeHalves', _label: _('Three halves'), func: x => Math.pow(x, 3 / 2), inverse: x => Math.pow(x, 2 / 3) },
+    { value: 'quadratic', _label: _('Quadratic'), func: x => x * x, inverse: x => Math.sqrt(x) },
+    { value: 'cubic', _label: _('Cubic'), func: x => x * x * x, inverse: x => Math.pow(x, 1 / 3) },
+    { value: 'twoThirds', _label: _('Two thirds'), func: x => Math.pow(x, 2 / 3), inverse: x => Math.pow(x, 3 / 2) },
+    { value: 'quadraticRoot', _label: _('Quadratic Root'), func: x => Math.sqrt(x), inverse: x => x * x },
+    { value: 'cubicRoot', _label: _('Cubic Root'), func: x => Math.pow(x, 1 / 3), inverse: x => x * x * x },
+    { value: 'sinusoidal', _label: _('Sinusoidal'), func: x => (Math.sin((x - 0.5) * Math.PI) + 1) / 2, inverse: x => (Math.asin((x * 2) - 1) / Math.PI) + 0.5 },
   ];
 
   return class Slider extends Node {
