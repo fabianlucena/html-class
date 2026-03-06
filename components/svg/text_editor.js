@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', init);
 
 const
   highlightColor = '#4060FF',
-  highlightBias = .15;
+  highlightBias = 0;
 let
   svg,
   svgText,
@@ -283,7 +283,7 @@ function renderSVG() {
     tspan.textContent = lines[i];
   }
 
-  const box = svgText.getBBox();
+  let box = JSON.parse(svgText.getAttribute('box') ?? '') || svgText.getBBox();
   highlightBox.setAttribute('transform', `translate(${box.x - highlightBias}, ${box.y - highlightBias})`);
   highlightBox.setAttribute('width', box.width + highlightBias * 2);
   highlightBox.setAttribute('height', box.height + highlightBias * 2);
