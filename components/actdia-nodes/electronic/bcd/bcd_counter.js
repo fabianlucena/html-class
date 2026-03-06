@@ -44,11 +44,11 @@ export default function create({ Node }) {
 
     previousClockStatus = 0;
 
-    updateStatus() {
+    updateStatus(options) {
       let reset = this.connectors.find(c => c.name === 'rst').status >= 0.5;
       if (reset) {
         this.status = 0;
-        this.propagate();
+        this.propagate(options);
         return;
       }
 
@@ -78,7 +78,7 @@ export default function create({ Node }) {
         this.connectors.find(c => c.name === 'carry').setStatus(true);
       }
 
-      this.propagate();
+      this.propagate(options);
     }
 
     propagate(options = {}) {
