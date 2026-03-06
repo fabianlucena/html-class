@@ -210,6 +210,10 @@ export default class ActDia {
     down: null,
   };
 
+  properties = {
+    angleScale: 1,
+  };
+
   clickTimeThreshold = 300; // milliseconds
   clickPositionThresold = { x: 5, y: 5 }; // pixels
   #items = [];
