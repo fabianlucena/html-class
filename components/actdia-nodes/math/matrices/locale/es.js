@@ -18,6 +18,7 @@ export default {
   'Rotation matrix': 'Matriz de rotación',
   'Rows': 'Filas',
   'Square matrix': 'Matriz cuadrada',
+  'Translation matrix': 'Matriz de traslación',
   'X-axis': 'Eje x',
   'Y-axis': 'Eje y',
   'Z-axis': 'Eje z',

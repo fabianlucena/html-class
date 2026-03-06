@@ -12,6 +12,7 @@ export default {
     'matrix_addition.js',
     'plu_decomposition.js',
     'rotation_matrix.js',
+    'translation_matrix.js',
   ],
   categories: [],
   examples: [
