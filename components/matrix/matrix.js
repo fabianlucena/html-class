@@ -114,15 +114,15 @@ export function multiplyMatrices(a, b) {
   if (!isMatrix(b)) {
     throw new Error(_('Second operand is not a matrix'));
   }
+  
+  if (a[0].length !== b.length) {
+    throw new Error(_('Incompatible dimensions'));
+  }
 
   return _multiplyMatrices(a, b);
 }
 
 function _multiplyMatrices(a, b) {
-  if (a[0].length !== b.length) {
-    throw new Error(_('Incompatible dimensions'));
-  }
-
   return a.map((rowA, i) =>
     b[0].map((_, j) =>
       rowA.reduce((sum, v, k) => sum + v * b[k][j], 0)
