@@ -50,9 +50,14 @@ export default function create({ Node, _ }) {
       this.#funInput = this.getConnector('funInput');
     }
 
-    updateStatus({ connector }) {
-      if (connector === this.#funInput)
+    updateStatus({ connector, force } = {}) {
+      if (!this.#funInput.connections.length
+        || !this.#funOutput.connections.length
+        || !this.#input.connections.length
+        || !force && connector === this.#funInput
+      ) {
         return;
+      }
 
       let domain = this.#input.status;
       if (!Array.isArray(domain)) {
