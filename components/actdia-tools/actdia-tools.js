@@ -916,7 +916,11 @@ export default class ActDiaTools {
           for (const optionData of tool.options) {
             const option = document.createElement('option');
             option.value = optionData.value;
-            option.textContent = optionData.label;
+            if (optionData._label) {
+              option.textContent = _(optionData._label);
+            } else {
+              option.textContent = optionData.label;
+            }
             tool.input.appendChild(option);
           }
           input.value = tool.value ?? '';
