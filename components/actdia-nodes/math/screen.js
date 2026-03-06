@@ -22,13 +22,27 @@ export default function create({ Node }) {
           fill: 'black',
         },
         {
+          name: 'xGrid',
+          shape: 'path',
+          stroke: '#80FF8060',
+          fill: false,
+          display: false,
+        },
+        {
+          name: 'yGrid',
+          shape: 'path',
+          stroke: '#8080FF60',
+          fill: false,
+          display: false,
+        },
+        {
           name: 'xAxis',
           shape: 'line',
           x1: 0.5,
           y1: 0.5,
           x2: 19.5,
           y2: 0.5,
-          stroke: '#80FF80',
+          stroke: '#80FF80A0',
           fill: false,
           display: false,
         },
@@ -39,7 +53,7 @@ export default function create({ Node }) {
           y1: 0.5,
           x2: 0.5,
           y2: 19.5,
-          stroke: '#8080FF',
+          stroke: '#8080FFA0',
           fill: false,
           display: false,
         },
@@ -76,13 +90,19 @@ export default function create({ Node }) {
     canChangeHeight = true;
 
     #input = null;
+    #borderWidth = .5;
     #drawOffset = { x: 0, y: 0 };
     #drawScale = { x: 1, y: 1 };
     #axis = { x: false, y: false };
+    #grid = { x: false, y: false };
     #autoOffset = false;
     #connectThePoints = true;
     #closePath = true;
     #color = '#ffd152';
+    #xAxisShape = null;
+    #yAxisShape = null
+    #xGridShape = null;
+    #yGridShape = null;
 
     get input() {
       return this.#input;
@@ -139,6 +159,10 @@ export default function create({ Node }) {
     init() {
       super.init(...arguments);
       this.#input = this.getConnector('input');
+      this.#xAxisShape = this.getShape('xAxis');
+      this.#yAxisShape = this.getShape('yAxis');
+      this.#xGridShape = this.getShape('xGrid');
+      this.#yGridShape = this.getShape('yGrid');
     }
 
     setWidth(value) {
@@ -168,23 +192,50 @@ export default function create({ Node }) {
     }
 
     setAxis(value, update = true) {
+      this.#xAxisShape ??= this.getShape('xAxis');
+      this.#yAxisShape ??= this.getShape('yAxis');  
+      if (!this.#xAxisShape || !this.#yAxisShape) {
+        return;
+      }
+
       this.#axis.x = value.x ?? value[0] ?? !!value;
       this.#axis.y = value.y ?? value[1] ?? !!value;
 
-      const xAxisShape = this.getShape('xAxis');
-      const yAxisShape = this.getShape('yAxis');
-
-      xAxisShape.display = value.x;
-      yAxisShape.display = value.y;
+      this.#xAxisShape.display = value.x;
+      this.#yAxisShape.display = value.y;
       if (update) {
-        if (!this.#axis.x)
-          this.updateShape(xAxisShape);
-
-        if (!this.#axis.y)
-          this.updateShape(yAxisShape);
-
         if (this.#axis.x || this.#axis.y)
           this.updateStatus();
+
+        if (!this.#axis.x)
+          this.updateShape(this.#xAxisShape);
+
+        if (!this.#axis.y)
+          this.updateShape(this.#yAxisShape);
+      }
+    }
+
+    setGrid(value, update = true) {
+      this.#xGridShape ??= this.getShape('xGrid');
+      this.#yGridShape ??= this.getShape('yGrid');
+      if (!this.#xGridShape || !this.#yGridShape) {
+        return;
+      }
+
+      this.#grid.x = value.x ?? value[0] ?? !!value;
+      this.#grid.y = value.y ?? value[1] ?? !!value;
+
+      this.#xGridShape.display = value.x;
+      this.#yGridShape.display = value.y;
+      if (update) {
+        if (this.#grid.x || this.#grid.y)
+          this.updateStatus();
+
+        if (!this.#grid.x)
+          this.updateShape(this.#xGridShape);
+
+        if (!this.#grid.y)
+          this.updateShape(this.#yGridShape);
       }
     }
 
@@ -262,6 +313,44 @@ export default function create({ Node }) {
     }
 
     updateStatus() {
+      if (this.#xAxisShape.display) {
+        this.#xAxisShape.x1 = this.#borderWidth;
+        this.#xAxisShape.y1 = this.drawOffset.y + this.#borderWidth;
+        this.#xAxisShape.x2 = this.width - this.#borderWidth;
+        this.#xAxisShape.y2 = this.drawOffset.y + this.#borderWidth;
+        this.updateShape(this.#xAxisShape);
+      }
+
+      if (this.#yAxisShape.display) {
+        this.#yAxisShape.x1 = this.drawOffset.x + this.#borderWidth;
+        this.#yAxisShape.y1 = this.#borderWidth;
+        this.#yAxisShape.x2 = this.drawOffset.x + this.#borderWidth;
+        this.#yAxisShape.y2 = this.height - this.#borderWidth;
+        this.updateShape(this.#yAxisShape);
+      }
+
+      if (this.#xGridShape.display) {
+        this.#xGridShape.d = '';
+        const
+          from = this.#borderWidth, 
+          to = this.width - this.#borderWidth;
+        for (let y = this.#borderWidth, yf = this.height - this.#borderWidth; y < yf; y++) {
+          this.#xGridShape.d += `M ${from} ${y} L ${to} ${y} `;
+        } 
+        this.updateShape(this.#xGridShape);
+      }
+
+      if (this.#yGridShape.display) {
+        this.#yGridShape.d = '';
+        const
+          from = this.#borderWidth, 
+          to = this.height - this.#borderWidth;
+        for (let x = this.#borderWidth, xf = this.width - this.#borderWidth; x < xf; x++) {
+          this.#yGridShape.d += `M ${x} ${from} L ${x} ${to} `;
+        }
+        this.updateShape(this.#yGridShape);
+      }
+
       if (!this.#input) {
         return;
       }
