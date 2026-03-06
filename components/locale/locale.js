@@ -72,17 +72,32 @@ export async function loadLanguage(newLang) {
 
 export async function loadLocale(url, options = {}) {
   const lang = options.lang || language;
-  if (!options.languages.includes(lang)) {
+  if (options.languages && !options.languages.includes(lang)) {
+    console.warn(`Language ${lang} not supported for ${url}`);
     return;
   }
+
+  let path = '';
+  if (options) {
+    if (options.pathFromUrl) {
+      path = getPath(options.pathFromUrl);
+      if (!path.endsWith('/')) {
+        path += '/';
+      }
+    }
+  }
   
-  const importUrl = `${url}/${lang}.js`;
+  const importUrl = `${path}${url}/${lang}.js`;
   try {
     const table = (await import(/* @vite-ignore */ importUrl)).default;
     Object.assign(translations, table);
   } catch (error) {
     console.error(`Error loading translations from ${importUrl}:`, error);
   }
+}
+
+export async function loadLocaleForMeta(meta, options) {
+  await loadLocale('locale', { ...options, pathFromUrl: meta.url });
 }
 
 export function dateTimeSmallFormatNoSeconds(date) {
