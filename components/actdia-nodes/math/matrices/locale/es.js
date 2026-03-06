@@ -1,5 +1,7 @@
 export default {
-  'Angle (degrees)': 'Ángulo (grados)',
+  '2D': '2D',
+  'Angle': 'Ángulo',
+  'Augmented': 'Aumentada',
   'Columns': 'Columnas',
   'Determinant': 'Determinante',
   'Dimension': 'Dimensión',
@@ -16,4 +18,7 @@ export default {
   'Rotation matrix': 'Matriz de rotación',
   'Rows': 'Filas',
   'Square matrix': 'Matriz cuadrada',
+  'X-axis': 'Eje x',
+  'Y-axis': 'Eje y',
+  'Z-axis': 'Eje z',
 };

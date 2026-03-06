@@ -1,3 +1,7 @@
+import { loadLocaleForMeta } from '../../../locale/locale.js';
+
+loadLocaleForMeta(import.meta);
+
 export default async function create({ actdia, _f }) {
   const { SquareMatrix } = await actdia.importElementClassForMeta('square_matrix.js', import.meta);
 
@@ -9,7 +13,18 @@ export default async function create({ actdia, _f }) {
         name: 'angle',
         type: 'number',
         step: .01,
-        _label: _f('Angle (degrees)'),
+        _label: _f('Angle'),
+        isTool: true,
+      },
+      {
+        name: 'type',
+        type: 'select',
+        options: [
+          { value: '2d', label: '2D' },
+          { value: 'x',  label: 'X-axis' },
+          { value: 'y',  label: 'Y-axis' },
+          { value: 'z',  label: 'Z-axis' }
+        ],
         isTool: true,
       },
       {
@@ -24,6 +39,7 @@ export default async function create({ actdia, _f }) {
     #output = null;
     #input = null;
     #angle = 0;
+    #type = '2d';
     #augmented = false;
 
     connectors = [
@@ -37,6 +53,14 @@ export default async function create({ actdia, _f }) {
 
     set angle(value) {
       this.setAngle(value);
+    }
+
+    get type() {
+      return this.#type;
+    }
+
+    set type(value) {
+      this.setType(value);
     }
 
     get augmented() {
@@ -60,10 +84,17 @@ export default async function create({ actdia, _f }) {
       }
     }
 
+    setType(value, update = true) {
+      this.#type = value;
+      if (update) {
+        this.update();
+      }
+    }
+
     setAugmented(value, update = true) {
       this.#augmented = value;
       if (update) {
-        this.updateStatus();
+        this.update();
       }
     }
 
@@ -73,37 +104,94 @@ export default async function create({ actdia, _f }) {
       
       super.update();
       this.#input.x = this.box.x;
-      this.#input.y = this.box.height / 2 - this.box.y;
-      this.#output.x = this.box.width - this.box.x;
-      this.#output.y = this.box.height / 2 - this.box.y;
+      this.#input.y = this.box.height / 2 + this.box.y;
+      this.#output.x = this.box.width + this.box.x;
+      this.#output.y = this.box.height / 2 + this.box.y;
+      this.tryUpdateConnector(this.#input);
       this.tryUpdateConnector(this.#output);
       this.updateStatus();
     }
 
     updateStatus() {
       let newStatus;
-      if (this.#augmented) {
-        this.size = 3;
-        newStatus = [[],[], []];
+      if (this.#type === '2d') {
+        if (this.#augmented) {
+          this.size = 3;
+          newStatus = [[],[], []];
+        } else {
+          this.size = 2;
+          newStatus = [[],[]];
+        }
       } else {
-        this.size = 2;
-        newStatus = [[],[]];
+        if (this.#augmented) {
+          this.size = 4;
+          newStatus = [[],[], [], []];
+        } else {
+          this.size = 3;
+          newStatus = [[],[], []];
+        }
       }
 
-      const angleScale = this.actdia.properties.angleScale;
+      const angleScale = this.actdia?.properties.angleScale || 1;
       this.#angle = this.#input?.status ?? 0;
       let ca = Math.cos(this.#angle * angleScale);
       let sa = Math.sin(this.#angle * angleScale);
-      newStatus[0][0] =  ca;
-      newStatus[0][1] = -sa;
-      newStatus[1][0] =  sa;
-      newStatus[1][1] =  ca;
-      if (this.#augmented) {
-        newStatus[0][2] = 0;
-        newStatus[1][2] = 0;
-        newStatus[2][0] = 0;
-        newStatus[2][1] = 0;
-        newStatus[2][2] = 1;
+      if (this.#type === '2d') {
+        newStatus[0][0] =  ca;
+        newStatus[0][1] = -sa;
+        newStatus[1][0] =  sa;
+        newStatus[1][1] =  ca;
+        if (this.#augmented) {
+          newStatus[0][2] = 0;
+          newStatus[1][2] = 0;
+          newStatus[2][0] = 0;
+          newStatus[2][1] = 0;
+          newStatus[2][2] = 1;
+        }
+      } else {
+        if (this.#type === 'x') {
+          newStatus[0][0] =  1;
+          newStatus[0][1] =  0;
+          newStatus[0][2] =  0;
+          newStatus[1][0] =  0;
+          newStatus[1][1] =  ca;
+          newStatus[1][2] = -sa;
+          newStatus[2][0] =  0;
+          newStatus[2][1] =  sa;
+          newStatus[2][2] =  ca;
+        } else if (this.#type === 'y') {
+          newStatus[0][0] =  ca;
+          newStatus[0][1] =  0;
+          newStatus[0][2] =  sa;
+          newStatus[1][0] =  0;
+          newStatus[1][1] =  1;
+          newStatus[1][2] =  0;
+          newStatus[2][0] = -sa;
+          newStatus[2][1] =  0;
+          newStatus[2][2] =  ca;
+        } else if (this.#type === 'z') {
+          newStatus[0][0] =  ca;
+          newStatus[0][1] = -sa;
+          newStatus[0][2] =  0;
+          newStatus[1][0] =  sa;
+          newStatus[1][1] =  ca;
+          newStatus[1][2] =  0;
+          newStatus[2][0] =  0;
+          newStatus[2][1] =  0;
+          newStatus[2][2] =  1;
+        } else {
+          throw new Error('Unknown type for matrix rotation');
+        }
+
+        if (this.#augmented) {
+          newStatus[0][3] = 0;
+          newStatus[1][3] = 0;
+          newStatus[2][3] = 0;
+          newStatus[3][0] = 0;
+          newStatus[3][1] = 0;
+          newStatus[3][2] = 0;
+          newStatus[3][3] = 1;
+        }
       }
 
       this.setStatus(newStatus);
