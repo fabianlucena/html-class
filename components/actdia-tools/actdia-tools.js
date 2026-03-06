@@ -897,9 +897,9 @@ export default class ActDiaTools {
           input.classList.add('actdia-tool-input');
           input.type = tool.type;
           if (tool.type === 'number') {
-            input.min = tool.min ?? 0;
+            input.min = tool.min ?? '';
             input.max = tool.max ?? '';
-            input.step = tool.step ?? '';
+            input.step = tool.step ?? 'any';
           }
           if (tool.type === 'number' || tool.type === 'text') {
             input.value = tool.value ?? '';
