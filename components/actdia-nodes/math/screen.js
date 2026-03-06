@@ -215,6 +215,52 @@ export default function create({ Node }) {
         this.updateStatus();
     }
 
+    clipSegment(p1, p2, maxX, maxY) {
+      let [x1, y1] = p1;
+      let [x2, y2] = p2;
+
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+
+      let t0 = 0;
+      let t1 = 1;
+
+      function clip(p, q) {
+        if (p === 0) {
+          return q >= 0;
+        }
+        
+        const r = q / p;
+        if (p < 0) {
+          if (r > t1) return false;
+          if (r > t0) t0 = r;
+        } else {
+          if (r < t0) return false;
+          if (r < t1) t1 = r;
+        }
+        return true;
+      }
+
+      if (
+        clip(-dx, x1) &&          // x >= 0
+        clip(dx, maxX - x1) &&    // x <= maxX
+        clip(-dy, y1) &&          // y >= 0
+        clip(dy, maxY - y1)       // y <= maxY
+      ) {
+        const start = [
+          x1 + t0 * dx,
+          y1 + t0 * dy
+        ];
+        const end = [
+          x1 + t1 * dx,
+          y1 + t1 * dy
+        ];
+        return [ start, end ];
+      }
+
+      return null;
+    }
+
     updateStatus() {
       if (!this.#input) {
         return;
@@ -239,15 +285,54 @@ export default function create({ Node }) {
       const values = status
         .filter(v => v && (typeof v.x === 'number' || typeof v[0] === 'number') && (typeof v.y === 'number' || typeof v[1] === 'number'))
         .map(v => [v.x ?? v[0], v.y ?? v[1]])
-        .map(v => [v[0] * sx + ox, v[1] * sy + oy])
-        .filter(v => v[0] >= 0 && v[0] <= maxX && v[1] >= 0 && v[1] <= maxY);
+        .map(v => [v[0] * sx + ox, v[1] * sy + oy]);
 
       if (this.connectThePoints) {
-        pathShape.d = 'M ' + values
+        const connectedPoints = [];
+        let aux1, aux2, clipped;
+        for (const value of values) {
+          if (value[0] <= 0 || value[0] >= maxX || value[1] <= 0 || value[1] >= maxY) {
+            if (aux2) {
+              const clipped = this.clipSegment(value, aux2, maxX, maxY);
+              if (clipped) {
+                connectedPoints.push(clipped[0]);
+              }
+
+              aux2 = null;
+            }
+
+            aux1 = value;
+            clipped = true;
+          } else {
+            if (aux1) {
+              const clipped = this.clipSegment(aux1, value, maxX, maxY);
+              if (clipped) {
+                connectedPoints.push(clipped[0]);
+              }
+              
+              aux1 = null;
+            }
+
+            connectedPoints.push(value);
+            aux2 = value;
+          }
+        }
+
+        if (!connectedPoints.length) {
+          for (let i = 0, j = 1, e = values.length; j < e; i++, j++) {
+            const clipped = this.clipSegment(values[i], values[j], maxX, maxY);
+            if (clipped) {
+              connectedPoints.push(...clipped);
+            }
+          }
+        }
+
+        pathShape.d = 'M ' + connectedPoints
+          .filter(v => v)
           .map(v => {
             return `${v[0]} ${v[1]}`;
           }).join(' L ');
-        if (this.closePath) {
+        if (this.closePath && !clipped) {
           pathShape.d += ' Z';
         }
       } else {
@@ -255,6 +340,7 @@ export default function create({ Node }) {
       }
 
       dotsShape.children = values
+        .filter(v => v[0] >= 0 && v[0] <= maxX && v[1] >= 0 && v[1] <= maxY)
         .map((v, i) => ({
           shape: 'circle',
           x: v[0],
