@@ -266,7 +266,9 @@ export default function create({ Node }) {
         this.updateStatus();
     }
 
-    clipSegment(p1, p2, maxX, maxY) {
+    #maxX = 0;
+    #maxY = 0;
+    clipSegment(p1, p2) {
       let [x1, y1] = p1;
       let [x2, y2] = p2;
 
@@ -293,10 +295,10 @@ export default function create({ Node }) {
       }
 
       if (
-        clip(-dx, x1) &&          // x >= 0
-        clip(dx, maxX - x1) &&    // x <= maxX
-        clip(-dy, y1) &&          // y >= 0
-        clip(dy, maxY - y1)       // y <= maxY
+        clip(-dx, x1) &&
+        clip(dx, this.#maxX - x1) &&
+        clip(-dy, y1) &&
+        clip(dy, this.#maxY - y1)
       ) {
         const start = [
           x1 + t0 * dx,
@@ -310,6 +312,87 @@ export default function create({ Node }) {
       }
 
       return null;
+    }
+
+    clampToRect(point) {
+      return [
+        Math.max(0, Math.min(this.#maxX, point[0])),
+        Math.max(0, Math.min(this.#maxY, point[1])),
+      ];
+    }
+
+    getEdge(point) {
+      const [x, y] = point;
+      if (y === 0) return 'top';
+      if (x === this.#maxX) return 'right';
+      if (y === this.#maxY) return 'bottom';
+      if (x === 0) return 'left';
+      return null;
+    }
+
+    borderPosition([x, y]) {
+      if (y === 0) return x; // top
+      if (x === this.#maxX) return this.#maxX + y; // right
+      if (y === this.#maxY) return this.#maxX + this.#maxY + (this.#maxX - x); // bottom
+      if (x === 0) return 2 * this.#maxX + this.#maxY + (this.#maxY - y); // left
+      return null;
+    }
+
+    pointFromBorderPosition(t) {
+      const p = 2 * (this.#maxX + this.#maxY);
+      t = ((t % p) + p) % p;
+
+      if (t <= this.#maxX) return [t, 0];
+      t -= this.#maxX;
+
+      if (t <= this.#maxY) return [this.#maxX, t];
+      t -= this.#maxY;
+
+      if (t <= this.#maxX) return [this.#maxX - t, this.#maxY];
+      t -= this.#maxX;
+
+      return [0, this.#maxY - t];
+    }
+
+    getCornerPositions() {
+      return [
+        0,
+        this.#maxX,
+        this.#maxX + this.#maxY,
+        2 * this.#maxX + this.#maxY,
+      ];
+    }
+
+    borderPathBetween(a, b, clockwise = true) {
+      const p = 2 * (this.#maxX + this.#maxY);
+      const ta = this.borderPosition(a);
+      const tb = this.borderPosition(b);
+
+      if (ta == null || tb == null) return [];
+
+      let start = ta;
+      let end = tb;
+
+      if (clockwise) {
+        if (end < start) end += p;
+      } else {
+        if (start < end) start += p;
+        [start, end] = [end, start];
+      }
+
+      const corners = this.getCornerPositions();
+      const points = [a];
+
+      for (const c of corners) {
+        let cc = c;
+        if (cc <= start) cc += p;
+        if (cc > start && cc < end) {
+          points.push(this.pointFromBorderPosition(cc));
+        }
+      }
+
+      points.push(b);
+      return points;
     }
 
     updateStatus() {
@@ -367,9 +450,9 @@ export default function create({ Node }) {
         ox = this.drawOffset.x,
         oy = this.drawOffset.y,
         sx = this.drawScale.x,
-        sy = this.drawScale.y,
-        maxX = this.width - 1,
-        maxY = this.height - 1;
+        sy = this.drawScale.y;
+      this.#maxX = this.width - 1;
+      this.#maxY = this.height - 1;
 
       const values = status
         .filter(v => v && (typeof v.x === 'number' || typeof v[0] === 'number') && (typeof v.y === 'number' || typeof v[1] === 'number'))
@@ -382,26 +465,39 @@ export default function create({ Node }) {
           pathValues.push(values[0]);
         }
 
-        let aux, auxOuther, valueOuther;
         const connectedPoints = [];
-        for (const value of pathValues) {
-          valueOuther = value[0] <= 0 || value[0] >= maxX || value[1] <= 0 || value[1] >= maxY;
-          if (aux) {
-            if (auxOuther) {
-              const clipped = this.clipSegment(aux, value, maxX, maxY);
-              if (clipped) {
-                connectedPoints.push(...clipped);
-              }
+        let i = 0,
+          l = pathValues.length,
+          aux = pathValues[i++],
+          auxOuther = aux[0] < 0 || aux[0] > this.#maxX || aux[1] < 0 || aux[1] > this.#maxY,
+          value,
+          valueOuther;
+        while (i < l) {
+          value = pathValues[i++];
+          valueOuther = value[0] < 0 || value[0] > this.#maxX || value[1] < 0 || value[1] > this.#maxY;
+
+          if (auxOuther || valueOuther) {
+            const clipped = this.clipSegment(aux, value);
+            if (clipped) {
+              connectedPoints.push(...clipped);
             } else {
-              if (valueOuther) {
-                const clipped = this.clipSegment(aux, value, maxX, maxY);
-                if (clipped) {
-                  connectedPoints.push(...clipped);
+              const aux1 = this.clampToRect(aux);
+              const value1 = this.clampToRect(value);
+
+              const borderPoints = this.borderPathBetween(aux1, value1, true);
+
+              for (const point of borderPoints) {
+                if (
+                  connectedPoints.length === 0 ||
+                  connectedPoints[connectedPoints.length - 1][0] !== point[0] ||
+                  connectedPoints[connectedPoints.length - 1][1] !== point[1]
+                ) {
+                  connectedPoints.push(point);
                 }
-              } else {
-                connectedPoints.push(value);
               }
             }
+          } else {
+            connectedPoints.push(value);
           }
 
           aux = value;
@@ -421,7 +517,7 @@ export default function create({ Node }) {
       }
 
       dotsShape.children = values
-        .filter(v => v[0] >= 0 && v[0] <= maxX && v[1] >= 0 && v[1] <= maxY)
+        .filter(v => v[0] >= 0 && v[0] <= this.#maxX && v[1] >= 0 && v[1] <= this.#maxY)
         .map((v, i) => ({
           shape: 'circle',
           x: v[0],
