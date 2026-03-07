@@ -25,10 +25,10 @@
         "y": 0
       },
       "fqcn": "../../components/actdia-nodes/math/matrices/rotation_matrix.js/RotationMatrix",
-      "x": 18,
+      "x": 12,
       "y": 13,
       "name": "Matriz de rotación - 4268c",
-      "angle": 2.042039999999999,
+      "angle": 3.769919999999999,
       "augmented": true,
       "size": 3,
       "dimension": [
@@ -40,13 +40,13 @@
       "width": 9,
       "status": [
         [
-          -0.4539947544389954,
-          -0.8910043562979231,
+          -0.809011812609619,
+          0.5877923843144779,
           0
         ],
         [
-          0.8910043562979231,
-          -0.4539947544389954,
+          -0.5877923843144779,
+          -0.809011812609619,
           0
         ],
         [
@@ -72,7 +72,7 @@
       "id": "1bf31866-3deb-47d2-8096-01c10ed5830f",
       "max": 6.2832,
       "fqcn": "../../components/actdia-nodes/slider.js/Slider",
-      "x": 10,
+      "x": 3,
       "y": 17,
       "name": "Slider - bf318",
       "connectors": [
@@ -80,7 +80,7 @@
           "id": "out-00"
         }
       ],
-      "status": 2.042039999999999,
+      "status": 3.769919999999999,
       "function": "linear",
       "size": 6,
       "min": 0
@@ -90,7 +90,7 @@
       "url": "../../components/actdia-nodes/math/screen.js",
       "id": "eff83687-4cc4-4921-940a-0416a2c58fb8",
       "fqcn": "../../components/actdia-nodes/math/screen.js/Screen",
-      "x": 65,
+      "x": 54,
       "y": 6,
       "name": "Screen - ff836",
       "connectors": [
@@ -110,7 +110,7 @@
         "y": -0.5
       },
       "fqcn": "../../components/actdia-nodes/math/matrices/matrix.js/Matrix",
-      "x": 47,
+      "x": 36,
       "y": 2,
       "name": "Matriz - 29828",
       "dimension": [
@@ -155,7 +155,7 @@
       "url": "../../components/actdia-nodes/math/matrices/matrix_multiplication.js",
       "id": "27116ae4-6282-4a8d-8692-0f8f43c5248c",
       "fqcn": "../../components/actdia-nodes/math/matrices/matrix_multiplication.js/MatrixMultiplication",
-      "x": 28,
+      "x": 22,
       "y": 7,
       "name": "Multiplicación de matrices - 7116a",
       "connectors": [
@@ -175,7 +175,7 @@
       "url": "../../components/actdia-nodes/math/matrices/matrix_multiplication.js",
       "id": "f318edf0-b0f9-48f4-9308-fa423a03fd3d",
       "fqcn": "../../components/actdia-nodes/math/matrices/matrix_multiplication.js/MatrixMultiplication",
-      "x": 37,
+      "x": 31,
       "y": 7,
       "name": "Multiplicación de matrices - 318ed",
       "connectors": [
@@ -201,7 +201,7 @@
         "y": 0
       },
       "fqcn": "../../components/actdia-nodes/math/matrices/matrix_viewer.js/MatrixViewer",
-      "x": 31,
+      "x": 25,
       "y": 4,
       "name": "Visor de matrices - 6c2c6",
       "dimension": [
@@ -229,7 +229,7 @@
         "y": 0
       },
       "fqcn": "../../components/actdia-nodes/math/matrices/matrix_viewer.js/MatrixViewer",
-      "x": 42,
+      "x": 36,
       "y": 10,
       "name": "Visor de matrices - 73c4a",
       "dimension": [
@@ -258,11 +258,11 @@
       },
       "fqcn": "../../components/actdia-nodes/math/matrices/translation_matrix.js/TranslationMatrix",
       "name": "Matriz de traslación - a2f15",
-      "x": 23.000000000000043,
+      "x": 17.000000000000043,
       "y": 17.000000000000046,
       "translation": {
-        "x": 5.750000000000039,
-        "y": 12.250000000000039,
+        "x": 7.999999999999997,
+        "y": 8.749999999999996,
         "z": 21.000000000000046
       },
       "size": 3,
@@ -285,8 +285,8 @@
           0
         ],
         [
-          5.750000000000039,
-          12.250000000000039,
+          7.999999999999997,
+          8.749999999999996,
           1
         ]
       ],
@@ -315,7 +315,7 @@
       "id": "009e82f8-7ae4-405e-b754-1bee8ec4008b",
       "max": 20,
       "fqcn": "../../components/actdia-nodes/slider.js/Slider",
-      "x": 15,
+      "x": 9,
       "y": 21,
       "name": "Slider - 09e82",
       "connectors": [
@@ -323,7 +323,7 @@
           "id": "out-00"
         }
       ],
-      "status": 5.750000000000039,
+      "status": 7.999999999999997,
       "function": "linear",
       "size": 6,
       "min": 0
@@ -334,7 +334,7 @@
       "id": "1deee9a9-ea92-4bb6-8c34-d8d9733ca510",
       "max": 20,
       "fqcn": "../../components/actdia-nodes/slider.js/Slider",
-      "x": 15,
+      "x": 9,
       "y": 23,
       "name": "Slider - deee9",
       "connectors": [
@@ -342,7 +342,7 @@
           "id": "out-00"
         }
       ],
-      "status": 12.250000000000039,
+      "status": 8.749999999999996,
       "function": "linear",
       "size": 6,
       "min": 0
@@ -358,12 +358,12 @@
         "y": 0
       },
       "fqcn": "../../components/actdia-nodes/math/matrices/scale_matrix.js/ScaleMatrix",
-      "x": 16,
+      "x": 10,
       "y": 7,
       "name": "Matriz de escala - d8294",
       "scale": {
-        "x": 0.9900000000000028,
-        "y": 3.960000000000003,
+        "x": 5.05,
+        "y": 3.688749999999999,
         "z": 1
       },
       "augmented": true,
@@ -377,13 +377,13 @@
       "width": 9,
       "status": [
         [
-          0.9900000000000028,
+          5.05,
           0,
           0
         ],
         [
           0,
-          3.960000000000003,
+          3.688749999999999,
           0
         ],
         [
@@ -418,7 +418,7 @@
       "min": 0.1,
       "max": 10,
       "fqcn": "../../components/actdia-nodes/slider.js/Slider",
-      "x": 10,
+      "x": 4,
       "y": 11,
       "name": "Slider - 52d98",
       "connectors": [
@@ -426,7 +426,7 @@
           "id": "out-00"
         }
       ],
-      "status": 0.9900000000000028,
+      "status": 5.05,
       "function": "linear",
       "size": 6
     },
@@ -437,7 +437,7 @@
       "min": 0.1,
       "max": 10,
       "fqcn": "../../components/actdia-nodes/slider.js/Slider",
-      "x": 9,
+      "x": 4,
       "y": 13,
       "name": "Slider - 4614e",
       "connectors": [
@@ -445,7 +445,7 @@
           "id": "out-00"
         }
       ],
-      "status": 3.960000000000003,
+      "status": 3.688749999999999,
       "function": "linear",
       "size": 6
     },
@@ -460,7 +460,7 @@
         "y": -0.5
       },
       "fqcn": "../../components/actdia-nodes/math/matrices/matrix_viewer.js/MatrixViewer",
-      "x": 61,
+      "x": 50,
       "y": 2,
       "name": "Visor de matrices - 78e00",
       "dimension": [
@@ -484,7 +484,7 @@
       "url": "../../components/actdia-nodes/math/matrices/matrix_multiplication.js",
       "id": "988ae82b-b00e-41cf-996c-878246e23acd",
       "fqcn": "../../components/actdia-nodes/math/matrices/matrix_multiplication.js/MatrixMultiplication",
-      "x": 57,
+      "x": 46,
       "y": 6,
       "name": "Multiplicación de matrices - 88ae8",
       "connectors": [
@@ -512,19 +512,6 @@
       "to": {
         "connector": "in-00",
         "item": "44268c24-45a8-47ac-bea0-f70f2fa6ba9b"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "bdac38ef-1bbe-46f5-8364-81e51d0cd46e",
-      "from": {
-        "connector": "out-00",
-        "item": "44268c24-45a8-47ac-bea0-f70f2fa6ba9b"
-      },
-      "to": {
-        "connector": "in-01",
-        "item": "27116ae4-6282-4a8d-8692-0f8f43c5248c"
       }
     },
     {
@@ -582,19 +569,6 @@
     {
       "elementClass": "Connection",
       "url": "./connection.js",
-      "id": "116384a5-eb64-41f0-8c42-1d2adf00659c",
-      "from": {
-        "connector": "in-01",
-        "item": "f318edf0-b0f9-48f4-9308-fa423a03fd3d"
-      },
-      "to": {
-        "connector": "out-00",
-        "item": "8a2f159a-5b9d-41e4-8241-e37fb29eae87"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
       "id": "fd2457ba-7681-466f-827f-b5295ebea583",
       "from": {
         "connector": "out-00",
@@ -616,32 +590,6 @@
       "to": {
         "connector": "in-01",
         "item": "8d82948e-b7f6-475f-9150-37f8a5b412b6"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "1698f5a7-dd82-47d0-a113-801cac9acd16",
-      "from": {
-        "connector": "out-00",
-        "item": "27116ae4-6282-4a8d-8692-0f8f43c5248c"
-      },
-      "to": {
-        "connector": "in-00",
-        "item": "f318edf0-b0f9-48f4-9308-fa423a03fd3d"
-      }
-    },
-    {
-      "elementClass": "Connection",
-      "url": "./connection.js",
-      "id": "11574e9c-b9a1-4450-9796-1e31e4df4880",
-      "from": {
-        "connector": "out-00",
-        "item": "8d82948e-b7f6-475f-9150-37f8a5b412b6"
-      },
-      "to": {
-        "connector": "in-00",
-        "item": "27116ae4-6282-4a8d-8692-0f8f43c5248c"
       }
     },
     {
@@ -694,6 +642,58 @@
       "to": {
         "connector": "in-00",
         "item": "278e00f2-c796-4fde-96b9-fb3528ad42ce"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "b4775575-7a7f-47a7-b1c8-199a5c18b1fb",
+      "from": {
+        "connector": "in-01",
+        "item": "27116ae4-6282-4a8d-8692-0f8f43c5248c"
+      },
+      "to": {
+        "connector": "out-00",
+        "item": "44268c24-45a8-47ac-bea0-f70f2fa6ba9b"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "6cd7ba7f-8f01-4000-82ab-97079e82fa0d",
+      "from": {
+        "connector": "out-00",
+        "item": "8a2f159a-5b9d-41e4-8241-e37fb29eae87"
+      },
+      "to": {
+        "connector": "in-01",
+        "item": "f318edf0-b0f9-48f4-9308-fa423a03fd3d"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "575b5e46-c4b3-4e53-a6b9-e372e428c989",
+      "from": {
+        "connector": "out-00",
+        "item": "27116ae4-6282-4a8d-8692-0f8f43c5248c"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "f318edf0-b0f9-48f4-9308-fa423a03fd3d"
+      }
+    },
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "9fd80975-d0c2-4315-a04c-e2e6085385f0",
+      "from": {
+        "connector": "out-00",
+        "item": "8d82948e-b7f6-475f-9150-37f8a5b412b6"
+      },
+      "to": {
+        "connector": "in-00",
+        "item": "27116ae4-6282-4a8d-8692-0f8f43c5248c"
       }
     }
   ]

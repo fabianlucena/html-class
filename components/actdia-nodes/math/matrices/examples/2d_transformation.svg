@@ -1,0 +1,3354 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1278" height="793">
+    <style>
+      :root {
+        --stroke-width: .003em;
+      }
+      
+      .actdia {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: auto;
+        background-color: #dddddd;
+        color: #242424;
+        stroke-width: var(--stroke-width, 0.06);
+      }
+      
+      .actdia-page {
+        fill: rgba(0, 0, 0, 0);
+        stroke: #C4C4C4;
+        stroke-dasharray: 1 .5;
+      }
+      
+      .actdia-item,
+      .print .actdia-item {
+        fill: #d1d1d1;
+        stroke: #474747;
+        stroke-dasharray: 0;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+      }
+      
+      .actdia-item text {
+        font-size: 1.2;
+        font-family: Arial;
+        stroke: none;
+        fill: #2e2e2e;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      
+      .actdia-item.full-filled {
+        fill: #747474;
+        stroke: #747474;
+      }
+      
+      .actdia-item.actdia-item-connection {
+        fill: rgba(0, 0, 0, 0);
+        stroke: #949494;
+        stroke-dasharray: 0;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+      }
+      
+      .actdia-item.actdia-item-connection.actdia-selected {
+        stroke: #8080FF;
+      }
+      
+      .actdia-item-connection .actdia-node-name {
+        display: none;
+      }
+      
+      .actdia-node-name {
+        display: none;
+      }
+      
+      .actdia-selection-box {
+        display: none;
+      }
+      
+      .actdia-selected &gt; .actdia-selection-box {
+        display: inline;
+        stroke: #8080FF;
+        fill: rgba(128, 128, 255, 0.1);
+        stroke-width: calc(var(--stroke-width, 0.06) * 2);
+        stroke-dasharray: calc(var(--stroke-width, 0.06) * 1.5) calc(var(--stroke-width, 0.06) * 3);
+      }
+      
+      .actdia-item .hi {
+        fill: #80D080;
+      }
+      .actdia-item .lo {
+        fill: #D08080;
+      }
+      
+      .actdia-item .updated {
+        fill: #8080D0;
+      }
+      
+      .actdia-item-connection .marker {
+        fill: #949494;
+        stroke: none;
+      }
+      
+      
+      .actdia-item-connection .marker.outlined,
+      .actdia-item-connection .marker .outlined {
+        fill: none;
+        stroke: #d3d3d3;
+      }
+      
+      .print .actdia-item .hi {
+        fill: #80D080;
+      }
+      .print .actdia-item .lo {
+        fill: #D08080;
+      }
+    
+      .print .actdia-item .updated {
+        fill: #8080D0;
+      }
+    </style>
+  <g
+    class="actdia"
+    transform="scale(16,16)"
+  >
+    <g
+      class="actdia-connections-layer"
+    >
+      <g
+        id="f73cdd10-e49b-4568-9992-9623f46e5d35"
+        name="Connection - 73cdd"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="ff4b8412-fc42-4bb1-8946-858094cb6bab"
+        >
+          <path
+            d="M 9 17 C 10.301708279317776 17 10.198291720682224 14 11.5 14"
+            id="c8bc5ed6-834e-495f-8f9f-ceba6aef56b0"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="d6e739f0-04b2-4884-8377-4ed6d50d3c76"
+        name="Connection - 6e739"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="ee4a0320-2e1c-436f-9d6e-6d660e401254"
+        >
+          <path
+            d="M 24 8 C 25.013793755049704 8 23.486206244950296 5 24.5 5"
+            id="af636653-fd11-46ec-b614-5b68d6278e4b"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="54afe62f-2ba8-4f8b-9ab8-2df15703d716"
+        name="Connection - 4afe6"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="70944095-29bf-42c8-8e1a-ad9cf63c788b"
+        >
+          <path
+            d="M 33 8 C 34.30170827931778 8 34.19829172068222 11 35.5 11"
+            id="2f90f92b-7628-4429-b62c-d8e13af0d8c9"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="d0297ff4-b168-4a73-be07-28339f3ed942"
+        name="Connection - 0297f"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="3bc549f0-2aea-4fe5-a1cc-7892dec4b904"
+        >
+          <path
+            d="M 15 21 C 16.201850425154664 21 18 20.201850425154664 18 19"
+            id="007d6f8b-01c1-49b2-bbd6-634ae58d63fd"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="d5d37d61-25a8-48d2-9aa0-c0f155a18681"
+        name="Connection - 5d37d"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="b0fdd84b-447e-4e56-85c8-1c15e34220f9"
+        >
+          <path
+            d="M 15 23 C 16.885618083164125 23 19 20.885618083164125 19 19"
+            id="43a842e0-db6d-41d9-8e8e-35423275302f"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="fd2457ba-7681-466f-827f-b5295ebea583"
+        name="Connection - d2457"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="0403f1bd-1ae8-4043-9343-d95ac1f11c7a"
+        >
+          <path
+            d="M 10 11 C 10.74535599249993 11 11 9.74535599249993 11 9"
+            id="7ed7bc9f-7443-4e07-9728-2db6c6cfb9ac"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="3c5be524-6731-450f-99ff-aa0250ab37f5"
+        name="Connection - c5be5"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="c5d404eb-b597-4b65-9fb5-9dee15206757"
+        >
+          <path
+            d="M 10 13 C 11.49071198499986 13 12 10.49071198499986 12 9"
+            id="3255191e-3164-41bd-a02e-a1b7ef406d61"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="f55e91bf-4efa-40f7-8f23-7ed0f546add9"
+        name="Connection - 55e91"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="c706094d-5b3a-4d0b-a637-d1e1d9f5bff6"
+        >
+          <path
+            d="M 44.5 3 C 45.92400062421959 3 44.57599937578041 7 46 7"
+            id="7ba5f861-335b-46c3-a6dc-c3817b58e74c"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="428c714d-15bd-45c1-bb16-918e6618f9b6"
+        name="Connection - 28c71"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="17a77b9f-68c6-4a1f-8d85-1a4450a8e9fa"
+        >
+          <path
+            d="M 48 7 C 50.02758751009941 7 51.97241248990059 8 54 8"
+            id="d1a75dad-dcd7-458c-a8a9-7d7c04f9ba9e"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="66a5508c-3af9-44c0-b67f-ac76d15e71ca"
+        name="Connection - 6a550"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="4a71aace-e326-44e8-8e69-1dce6da67df4"
+        >
+          <path
+            d="M 33 8 C 37.333333333333336 8 41.666666666666664 7.999999999999999 46 8"
+            id="14b3fd18-51c8-438a-82e3-e8f1a6cf67ba"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="6c6a1f4d-43a0-4fc0-8a2d-3a0547424a74"
+        name="Connection - c6a1f"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="81258c2f-998e-4fba-8c41-8fedad1a95ff"
+        >
+          <path
+            d="M 48 7 C 49.11803398874989 7 48.38196601125011 4 49.5 4"
+            id="2638e680-0f1f-4007-b95f-0606452a1f46"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="b4775575-7a7f-47a7-b1c8-199a5c18b1fb"
+        name="Connection - 47755"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="1314ad6c-6241-4397-be2e-62608b972d63"
+        >
+          <path
+            d="M 22 9 C 20.259948915181575 9 22.240051084818425 14 20.5 14"
+            id="d760d01a-74e1-47b3-847c-c655b45a9c14"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="6cd7ba7f-8f01-4000-82ab-97079e82fa0d"
+        name="Connection - cd7ba"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="e7b5feb6-aae1-4e24-a6c9-2c85b793a1f3"
+        >
+          <path
+            d="M 25.5 18 C 29.015837184954833 18 27.484162815045167 9 31 9"
+            id="19b6841c-fcf5-4000-b3b0-aa3a85a2a0a0"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="575b5e46-c4b3-4e53-a6b9-e372e428c989"
+        name="Connection - 75b5e"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="e324e6a4-3e14-4d2f-a0cf-b6d6f29a38f0"
+        >
+          <path
+            d="M 24 8 C 26.333333333333332 8 28.666666666666668 8 31 8"
+            id="1bbcce71-3f89-48fa-8854-9423379c6b0d"
+          >
+          </path>
+        </g>
+      </g>
+      <g
+        id="9fd80975-d0c2-4315-a04c-e2e6085385f0"
+        name="Connection - fd809"
+        class="actdia-item actdia-item-connection"
+        data-item-class="Connection"
+        data-url="./connection.js"
+      >
+        <g
+          class="actdia-shape"
+          id="e1787670-2d40-4619-afd2-2991fa66b10d"
+        >
+          <path
+            d="M 18.5 8 C 19.666666666666668 8 20.833333333333332 8 22 8"
+            id="540d50b0-62a1-4175-9b39-c94bf0b412b4"
+          >
+          </path>
+        </g>
+      </g>
+    </g>
+    <g
+      class="actdia-nodes-layer"
+    >
+      <g
+        id="44268c24-45a8-47ac-bea0-f70f2fa6ba9b"
+        name="Matriz de rotación - 4268c"
+        class="actdia-item actdia-2d actdia-item-rotationmatrix" transform="translate(12, 13)"
+        data-item-class="RotationMatrix"
+        data-url="../../components/actdia-nodes/math/matrices/rotation_matrix.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.7"
+          y="-0.2"
+          width="9.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="8a9cebf6-792b-4749-86fd-38dd61d9ac5f"
+        >
+          <rect
+            name="box"
+            x="-0.5"
+            y="0"
+            width="9"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="32d2f974-5662-4224-b250-9d594adac739"
+          >
+          </rect>
+          <g
+            name="texts"
+            id="fabb55bd-a0fd-4c0f-bfbc-3bff62cf5c16"
+          >
+            <text
+              class=""
+              x="1.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="f1ea7dca-2ee5-4f91-96b2-cb6d5480145d"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -0,80901
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="7cb1b63a-85fc-4971-b389-67a52f0ff041"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                0,58779
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="3624ea74-33ec-4b7a-a1d1-b0b723c33b4f"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="425eef3a-4b7a-40d0-b203-6c1920a81c93"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -0,58779
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="963a402e-b6b9-409f-819a-bd1647e61789"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                -0,80901
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="1cfc813e-8613-4695-8265-414535f3b5a3"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="819f1a95-be5f-4443-8246-f425f44f5d4a"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="eca7e442-5b70-4a7c-8af5-b9e7cbf94e94"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="53a66abd-0684-41c7-bcd7-2ecd57a72649"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="4"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="26035175-6786-4e86-9e88-b77e18b63ad0"
+        >
+          <tspan
+            x="4"
+            dy="0"
+          >
+            Matriz de rotación - 4268c
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="input"
+            type="in"
+            id="in-00"
+            transform=" translate(-0.5, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="0e8c9278-2265-469d-b8e3-efd0583b2a5c"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="2d0fea6b-220a-4ba9-821c-6607dd5bb320"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="output"
+            type="out"
+            id="out-00"
+            transform=" translate(8.5, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="43200aa1-d54a-47bf-8996-8e0b43e82bdc"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="a5c3c156-0a24-4fd0-9762-1004ab9656dc"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="1bf31866-3deb-47d2-8096-01c10ed5830f"
+        name="Slider - bf318"
+        class="actdia-item actdia-item-slider" transform="translate(3, 17)"
+        data-item-class="Slider"
+        data-url="../../components/actdia-nodes/slider.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="-0.7"
+          width="6.4"
+          height="1.4"
+        />
+        <g
+          class="actdia-shape"
+          id="0b4b5943-14d7-4c66-9977-fec20b63757a"
+        >
+          <rect
+            x="0"
+            y="-0.5"
+            width="6"
+            height="1"
+            rx="0.1"
+            ry="0.1"
+            id="cb0d2d63-c73f-4857-97f2-53b1c1f44da6"
+          >
+          </rect>
+          <path
+            name="ticks"
+            transform="translate(0.5, 0)"
+            d="M 0 -.3 V .3 M 0.5 -.3 V .3 M 1 -.3 V .3 M 1.5000000000000002 -.3 V .3 M 2 -.3 V .3 M 2.5 -.3 V .3 M 3 -.3 V .3 M 3.5 -.3 V .3 M 3.9999999999999996 -.3 V .3 M 4.5 -.3 V .3 M 4.999999999999999 -.3 V .3"
+            id="efdb81ca-7e39-4634-ba4b-9969b0ad5033"
+          >
+          </path>
+          <rect
+            x="0.5"
+            y="-0.15"
+            width="5"
+            height="0.3"
+            rx="0.1"
+            ry="0.1"
+            id="6692dd9b-8f72-400f-b94a-de6b6661a727"
+          >
+          </rect>
+          <rect
+            name="knob"
+            fill="none"
+            x="3.1999999999999993"
+            y="-0.8"
+            width="0.4"
+            height="1.6"
+            rx="0.15"
+            ry="0.15"
+            id="47032303-5625-4803-bc7d-d04e0c211b91"
+          >
+          </rect>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="3"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="95b4a22d-b261-44a8-ae10-0e8a7aaf355a"
+        >
+          <tspan
+            x="3"
+            dy="0"
+          >
+            Slider - bf318
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="out-00"
+            transform=" translate(6, 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="fb980668-a655-43df-ae8f-b108e2f0a05a"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="714f2d28-98de-49a9-9cca-bde3cb66fa1b"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="eff83687-4cc4-4921-940a-0416a2c58fb8"
+        name="Screen - ff836"
+        class="actdia-item actdia-item-screen" transform="translate(54, 6)"
+        data-item-class="Screen"
+        data-url="../../components/actdia-nodes/math/screen.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="-0.2"
+          width="20.4"
+          height="20.4"
+        />
+        <g
+          class="actdia-shape"
+          id="6637337b-afaf-46e1-a3ec-459a9fe2adef"
+        >
+          <rect
+            x="0"
+            y="0"
+            width="20"
+            height="20"
+            rx="0.2"
+            ry="0.2"
+            id="03a7f878-7812-4029-a0a5-954d8979cb61"
+          >
+          </rect>
+          <rect
+            fill="black"
+            x="0.5"
+            y="0.5"
+            width="19"
+            height="19"
+            rx="0.2"
+            ry="0.2"
+            id="c2a22c10-57eb-4e85-b246-5060d4e51722"
+          >
+          </rect>
+          <path
+            name="xGrid"
+            fill="none"
+            stroke="#80FF8060"
+            display="none"
+            id="50fbce1a-3516-4f21-8e20-6b1334c1f56b"
+          >
+          </path>
+          <path
+            name="yGrid"
+            fill="none"
+            stroke="#8080FF60"
+            display="none"
+            d=""
+            id="9c087ff8-393e-4b67-8b88-13975af92fc0"
+          >
+          </path>
+          <line
+            name="xAxis"
+            fill="none"
+            stroke="#80FF80A0"
+            display="none"
+            x1="0.5"
+            y1="0.5"
+            x2="19.5"
+            y2="0.5"
+            id="a5215d67-4a71-4c4f-a7ae-dfcdf340a48f"
+          >
+          </line>
+          <line
+            name="yAxis"
+            fill="none"
+            stroke="#8080FFA0"
+            display="none"
+            x1="0.5"
+            y1="0.5"
+            x2="0.5"
+            y2="19.5"
+            id="64cbe344-b0b1-4ef4-806c-5a0bc76d372e"
+          >
+          </line>
+          <path
+            name="path"
+            fill="none"
+            stroke="#ffd152"
+            transform="translate(0.5, 0.5)"
+            d="M 6.082709503961452 14.70259386455184 L 1.7462711886813924 8.734109217024379 L 9.917290496038543 2.7974061354481528 L 14.253728811318602 8.765890782975614 Z"
+            id="947182eb-7e7f-4bb3-8110-4f19eeeb6933"
+          >
+          </path>
+          <g
+            name="dots"
+            id="27389152-2785-40f6-b48f-576b447a7c50"
+            transform=" translate(0.5, 0.5)"
+          >
+            <circle
+              fill="#ffd152"
+              stroke="none"
+              cx="14.253728811318602"
+              cy="8.765890782975614"
+              r="0.1"
+              id="e6d8866d-c60e-465f-8d9c-2f41f23c7ae3"
+            >
+            </circle>
+            <circle
+              fill="#ffd152"
+              stroke="none"
+              cx="6.082709503961452"
+              cy="14.70259386455184"
+              r="0.1"
+              id="f23445d0-956d-4763-97ec-8fba5c8ca504"
+            >
+            </circle>
+            <circle
+              fill="#ffd152"
+              stroke="none"
+              cx="1.7462711886813924"
+              cy="8.734109217024379"
+              r="0.1"
+              id="dfb0ffd8-b57b-45c4-b536-99fd9e05237d"
+            >
+            </circle>
+            <circle
+              fill="#ffd152"
+              stroke="none"
+              cx="9.917290496038543"
+              cy="2.7974061354481528"
+              r="0.1"
+              id="48fbb49c-7fbd-4d48-a362-279ab8b4d2f4"
+            >
+            </circle>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="10"
+          y="10"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="0f717a97-8eed-4b75-bc61-5114de119506"
+        >
+          <tspan
+            x="10"
+            dy="0"
+          >
+            Screen - ff836
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="input"
+            type="in"
+            id="in-00"
+            transform=" translate(0, 2) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.3"
+              id="4a77594d-8ea6-4288-91f8-82edf5be876a"
+            >
+            </circle>
+            <path
+              d="M 0.2 -0.2 L -0.2 0 L 0.2 0.2"
+              id="55e7dcc5-fd02-45b5-804a-00335e94bb47"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="72982866-6ca0-4008-8dd6-e8527f29d0e1"
+        name="Matriz - 29828"
+        class="actdia-item actdia-item-matrix" transform="translate(36, 2)"
+        data-item-class="Matrix"
+        data-url="../../components/actdia-nodes/math/matrices/matrix.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.7"
+          y="-0.7"
+          width="9.4"
+          height="3.4"
+        />
+        <g
+          class="actdia-shape"
+          id="816acfd7-9c04-4308-801e-0e4305d82907"
+        >
+          <rect
+            name="box"
+            x="-0.5"
+            y="-0.5"
+            width="9"
+            height="3"
+            rx="0.2"
+            ry="0.2"
+            id="6e941b4b-b872-46c9-b435-fe0ed2cf6f80"
+          >
+          </rect>
+          <g
+            name="texts"
+            id="6674cc45-e88c-4aac-a354-453abae4c186"
+          >
+            <text
+              class=""
+              x="1.5"
+              y="-0.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:-0.5,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="3d5bfb9c-9adc-42ca-8028-b71cf6242029"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="-0.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:-0.5,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="78822c09-1249-4f3c-b4fd-6703978eb7a6"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                -1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="-0.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:-0.5,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="ba4e1585-7792-4165-a13d-05422f9fe867"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="0.625"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0.25,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="7caa2dbe-001a-4545-842b-97ddb0808698"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="0.625"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0.25,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="d6183258-4f7f-46c3-8930-d976d3dad8e2"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                -1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="0.625"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0.25,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="47176fd3-d7fc-4508-b3dc-bcce4eaad005"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1.375"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="c66e5d97-549b-468b-8cbf-a91c6a74bf82"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1.375"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="614109ce-be35-4dcf-b275-0289e53c6476"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1.375"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="4eff7837-7b6d-47b9-b2ca-2f1b6dd3a15c"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="2.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1.75,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="b853a8ec-f6b7-4afc-84ed-652df7b38c9c"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="2.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1.75,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="fdc6cd0f-2678-4eae-92b9-6f3dd2404278"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="2.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1.75,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              editable="true"
+              single-line="true"
+              numerical="true"
+              id="7ff584e2-0bb8-4ed1-957d-fcd6ad828b6b"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="4"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="8f700310-93bd-4316-8441-c62190a91912"
+        >
+          <tspan
+            x="4"
+            dy="0"
+          >
+            Matriz - 29828
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="output"
+            type="out"
+            id="out-00"
+            transform=" translate(8.5, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="e9bcf4d9-5f65-4ba0-b0a1-fc214c8df365"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="012fc95c-8c30-4c19-aec3-9aec186616c6"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="27116ae4-6282-4a8d-8692-0f8f43c5248c"
+        name="Multiplicación de matrices - 7116a"
+        class="actdia-item actdia-item-matrixmultiplication" transform="translate(22, 7)"
+        data-item-class="MatrixMultiplication"
+        data-url="../../components/actdia-nodes/math/matrices/matrix_multiplication.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="0.3"
+          width="2.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="7649a93b-fd56-4734-8fb4-4965b290c0db"
+        >
+          <rect
+            x="0"
+            y="0.5"
+            width="2"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="6c5418fb-a84d-4b8c-bb2d-6917b551090a"
+          >
+          </rect>
+          <text
+            class=""
+            x="1"
+            y="1.5"
+            font-size="1.5"
+            style="dominant-baseline: central;"
+            id="ea0827b4-cc77-4fcc-8611-c911a9036827"
+          >
+            <tspan
+              x="1"
+              dy="0"
+            >
+              ×
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="1"
+          y="1.5"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="b3ebc9e5-4e2e-4103-9024-f75dc69666f5"
+        >
+          <tspan
+            x="1"
+            dy="0"
+          >
+            Multiplicación de matrices - 7116a
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="in-00"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="c1c4aa66-6d3c-4b65-be98-45edd18087d2"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="3218307f-978b-4fb0-9538-fafe975131f6"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="in-01"
+            transform=" translate(0, 2) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="6aad638e-4f14-4560-b555-f73cb16525f7"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="bbb5d6db-799a-4298-99bc-aa59b0e7d26f"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o"
+            type="out"
+            id="out-00"
+            transform=" translate(2, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="ea4fb4b3-9921-46e6-a76a-848af014b729"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="4e256f49-0a2f-4545-8253-aff3de2cdbe3"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="f318edf0-b0f9-48f4-9308-fa423a03fd3d"
+        name="Multiplicación de matrices - 318ed"
+        class="actdia-item actdia-item-matrixmultiplication" transform="translate(31, 7)"
+        data-item-class="MatrixMultiplication"
+        data-url="../../components/actdia-nodes/math/matrices/matrix_multiplication.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="0.3"
+          width="2.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="4855f640-d2af-418d-9f41-91e5fe44c147"
+        >
+          <rect
+            x="0"
+            y="0.5"
+            width="2"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="5f701732-a278-4bee-b308-284c085746af"
+          >
+          </rect>
+          <text
+            class=""
+            x="1"
+            y="1.5"
+            font-size="1.5"
+            style="dominant-baseline: central;"
+            id="11881300-e0ac-408e-8b62-494f79e59cac"
+          >
+            <tspan
+              x="1"
+              dy="0"
+            >
+              ×
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="1"
+          y="1.5"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="5ab3dfa8-c635-4a47-8216-6c18c84f0210"
+        >
+          <tspan
+            x="1"
+            dy="0"
+          >
+            Multiplicación de matrices - 318ed
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="in-00"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="d5d0314b-13d5-41ca-aef8-52c0138c8048"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="83a6c653-aee3-4fb2-a2aa-d03021f29a4c"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="in-01"
+            transform=" translate(0, 2) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="cc99e114-82ab-4bab-9dc4-95452cc86d0e"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="8545cf10-0f35-4173-ae28-ca890c110981"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o"
+            type="out"
+            id="out-00"
+            transform=" translate(2, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="b5983ce0-7f9c-4562-8a47-318510e767cc"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="2aa5e943-1a1c-4c48-ade0-859b294d893e"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="f6c2c6a2-f6cd-4059-af2e-5705fe04a5dc"
+        name="Visor de matrices - 6c2c6"
+        class="actdia-item actdia-item-matrixviewer" transform="translate(25, 4)"
+        data-item-class="MatrixViewer"
+        data-url="../../components/actdia-nodes/math/matrices/matrix_viewer.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.7"
+          y="-0.2"
+          width="9.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="8ad3138f-631a-465d-a635-f464b3e7da2e"
+        >
+          <rect
+            name="box"
+            x="-0.5"
+            y="0"
+            width="9"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="c6a1222f-c845-45c8-bac4-9eba4b709169"
+          >
+          </rect>
+          <g
+            name="texts"
+            id="028c9c93-86c5-4169-8448-5c527c36224e"
+          >
+            <text
+              class=""
+              x="1.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="2c063641-f31b-4343-a3c0-e322d74a4653"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -4,08551
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="b87def5a-384b-4bb0-9341-a1e8ba668ffa"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                2,96835
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="66742cad-4c14-465e-a2d0-366519b19c23"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="ad382b63-b4e5-4c6e-aeb0-e46575fddc55"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -2,16822
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="4dbc2669-c7de-4a84-983e-6e86100c9a4d"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                -2,98424
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="780d5b34-165c-442a-a9de-ecf123fa5cae"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="235b4b11-0886-4cc5-802b-71957ee9b453"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="09ce3821-0262-401a-9f56-93ed32bfc285"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="a52b2a7b-4a73-489c-b3ef-0f7789071182"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="4"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="0932fbda-0811-4b7c-8111-8cb72990249a"
+        >
+          <tspan
+            x="4"
+            dy="0"
+          >
+            Visor de matrices - 6c2c6
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="input"
+            type="in"
+            id="in-00"
+            transform=" translate(-0.5, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="e8bbc937-02b6-42ed-a727-515f31a98421"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="42c9a633-cf59-49cb-90ea-d5ed77d2b09d"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="773c4a8f-18f2-483f-a665-18987911d937"
+        name="Visor de matrices - 73c4a"
+        class="actdia-item actdia-item-matrixviewer" transform="translate(36, 10)"
+        data-item-class="MatrixViewer"
+        data-url="../../components/actdia-nodes/math/matrices/matrix_viewer.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.7"
+          y="-0.2"
+          width="9.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="489e3125-c7e7-42a6-b680-154776f95ea4"
+        >
+          <rect
+            name="box"
+            x="-0.5"
+            y="0"
+            width="9"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="aecf746d-4972-4eb5-b809-b71a66109206"
+          >
+          </rect>
+          <g
+            name="texts"
+            id="012b79ef-220b-466f-be96-19642babf728"
+          >
+            <text
+              class=""
+              x="1.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="7a7548b1-00af-4f29-9208-ec0c0ebe2f74"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -4,08551
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="55b1368d-56cd-40cd-af86-8b1f948d746b"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                2,96835
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="2050dd3f-52ad-4c10-8099-91bf686f26b9"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="83a8243f-20a1-4a17-996d-542bebcdca74"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                -2,16822
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="5541f24b-3a7f-40bb-99b1-7d2a07041521"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                -2,98424
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="a5921f16-fcde-42db-89aa-62ad462d1354"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="a8e61e5e-50c9-4fbc-9391-85ede5915f1d"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                8
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="cd61969b-f4a3-4060-913a-d94fb88eaa15"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                8,75
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="753ba01b-b76f-4171-b1e2-682d37279a42"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="4"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="778f41a5-12f8-4d03-9709-0bfbc1c8086e"
+        >
+          <tspan
+            x="4"
+            dy="0"
+          >
+            Visor de matrices - 73c4a
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="input"
+            type="in"
+            id="in-00"
+            transform=" translate(-0.5, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="4b2c5f8b-8162-4ad9-832f-bb1e31e3aa2c"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="f80dd106-c6ef-4e8f-b008-712ccbe23212"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="8a2f159a-5b9d-41e4-8241-e37fb29eae87"
+        name="Matriz de traslación - a2f15"
+        class="actdia-item actdia-2d actdia-item-translationmatrix" transform="translate(17.000000000000043, 17.000000000000046)"
+        data-item-class="TranslationMatrix"
+        data-url="../../components/actdia-nodes/math/matrices/translation_matrix.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.7"
+          y="-0.2"
+          width="9.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="5d50c95c-4e11-4b54-a7d0-881374dd7a7e"
+        >
+          <rect
+            name="box"
+            x="-0.5"
+            y="0"
+            width="9"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="10ffa1f2-d9b1-487e-8925-0ea312b9c787"
+          >
+          </rect>
+          <g
+            name="texts"
+            id="6ed7829b-1506-4593-a99b-d18381280c39"
+          >
+            <text
+              class=""
+              x="1.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="627f13b7-a42e-468e-b127-973204aa4ccb"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="45576565-8b5e-4cff-94fd-8dd88b7f3029"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="9d520c25-fa0f-4647-b967-acb240f24abd"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="a57a4b17-d732-41c5-baaf-577a54ff43be"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="be788c66-227f-4fe9-866f-345910d81e6e"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="e17c1590-c5f1-45c3-b64e-916041ee4f74"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="4d756479-b343-4703-800c-694c6ed12145"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                8
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="a55f0e2c-a4e4-4098-b1c9-bda71e40895a"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                8,75
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="0977202e-4ac8-42f7-b606-049178aa8e4f"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="4"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="ba17e108-27c3-4fac-9f98-4d1276d9d25c"
+        >
+          <tspan
+            x="4"
+            dy="0"
+          >
+            Matriz de traslación - a2f15
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="x"
+            type="in"
+            id="in-00"
+            transform=" translate(1, 2) rotate(-270 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="bb01141d-4548-4d18-a87f-8ae6456c6133"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="619221ba-b90d-4db9-af1a-49e57f45c2ef"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="y"
+            type="in"
+            id="in-01"
+            transform=" translate(2, 2) rotate(-270 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="2248ca5f-21ba-42a9-b229-d8f51b942bc3"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="15b44c76-f5ab-48ca-97ac-e6d96922c3d2"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="z"
+            type="in"
+            id="in-02"
+            transform=" translate(3, 2) rotate(-270 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="de35b188-a950-48c2-9555-a2b0b5ec2e5d"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="f9de1cbb-bf0f-4918-a412-0aa63faa3e80"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="output"
+            type="out"
+            id="out-00"
+            transform=" translate(8.5, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="0c20c9b8-864c-4b68-bdc9-f75e5573c194"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="79dd6eaf-498b-4cd2-af7f-600e9bc8cf88"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="009e82f8-7ae4-405e-b754-1bee8ec4008b"
+        name="Slider - 09e82"
+        class="actdia-item actdia-item-slider" transform="translate(9, 21)"
+        data-item-class="Slider"
+        data-url="../../components/actdia-nodes/slider.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="-0.7"
+          width="6.4"
+          height="1.4"
+        />
+        <g
+          class="actdia-shape"
+          id="5b6fb4a7-9c1e-4289-a9b2-516032caf2ec"
+        >
+          <rect
+            x="0"
+            y="-0.5"
+            width="6"
+            height="1"
+            rx="0.1"
+            ry="0.1"
+            id="8ee1f28c-35d7-426a-9617-b030533d0c09"
+          >
+          </rect>
+          <path
+            name="ticks"
+            transform="translate(0.5, 0)"
+            d="M 0 -.3 V .3 M 0.5 -.3 V .3 M 1 -.3 V .3 M 1.5000000000000002 -.3 V .3 M 2 -.3 V .3 M 2.5 -.3 V .3 M 3 -.3 V .3 M 3.5 -.3 V .3 M 3.9999999999999996 -.3 V .3 M 4.5 -.3 V .3 M 4.999999999999999 -.3 V .3"
+            id="0016553c-6f1d-4766-ad31-c4054378522f"
+          >
+          </path>
+          <rect
+            x="0.5"
+            y="-0.15"
+            width="5"
+            height="0.3"
+            rx="0.1"
+            ry="0.1"
+            id="7b9276ee-57db-498b-8b00-2581544faddf"
+          >
+          </rect>
+          <rect
+            name="knob"
+            fill="none"
+            x="2.1999999999999993"
+            y="-0.8"
+            width="0.4"
+            height="1.6"
+            rx="0.15"
+            ry="0.15"
+            id="c8af5690-9c76-4800-8325-ef6e4ee37794"
+          >
+          </rect>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="3"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="a423812f-b87f-48c4-bfdb-e84fae5d2946"
+        >
+          <tspan
+            x="3"
+            dy="0"
+          >
+            Slider - 09e82
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="out-00"
+            transform=" translate(6, 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="f7e27b58-7ee4-4750-b508-5488bda8c702"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="17ffec1c-e0c3-4a7c-83ab-23f3ea91bc02"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="1deee9a9-ea92-4bb6-8c34-d8d9733ca510"
+        name="Slider - deee9"
+        class="actdia-item actdia-item-slider" transform="translate(9, 23)"
+        data-item-class="Slider"
+        data-url="../../components/actdia-nodes/slider.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="-0.7"
+          width="6.4"
+          height="1.4"
+        />
+        <g
+          class="actdia-shape"
+          id="74a8e2c0-7fcb-470e-817d-9b2d645d0ad7"
+        >
+          <rect
+            x="0"
+            y="-0.5"
+            width="6"
+            height="1"
+            rx="0.1"
+            ry="0.1"
+            id="67b5e410-fa2a-4532-aa51-50613293dbee"
+          >
+          </rect>
+          <path
+            name="ticks"
+            transform="translate(0.5, 0)"
+            d="M 0 -.3 V .3 M 0.5 -.3 V .3 M 1 -.3 V .3 M 1.5000000000000002 -.3 V .3 M 2 -.3 V .3 M 2.5 -.3 V .3 M 3 -.3 V .3 M 3.5 -.3 V .3 M 3.9999999999999996 -.3 V .3 M 4.5 -.3 V .3 M 4.999999999999999 -.3 V .3"
+            id="1fff429f-c61a-47f6-8eab-de0c9246c33a"
+          >
+          </path>
+          <rect
+            x="0.5"
+            y="-0.15"
+            width="5"
+            height="0.3"
+            rx="0.1"
+            ry="0.1"
+            id="d2d8f0ca-e2af-41f6-9f05-9df7f9060684"
+          >
+          </rect>
+          <rect
+            name="knob"
+            fill="none"
+            x="2.3874999999999993"
+            y="-0.8"
+            width="0.4"
+            height="1.6"
+            rx="0.15"
+            ry="0.15"
+            id="b7d539db-ad86-47b1-be63-dc5ef7482870"
+          >
+          </rect>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="3"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="3d201b77-9e78-448f-aa4a-e45c282e382e"
+        >
+          <tspan
+            x="3"
+            dy="0"
+          >
+            Slider - deee9
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="out-00"
+            transform=" translate(6, 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="2a5470a4-2c39-4f23-9fdb-c72938c98046"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="0e54a078-0aa5-49aa-b267-3f7490bf2056"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="8d82948e-b7f6-475f-9150-37f8a5b412b6"
+        name="Matriz de escala - d8294"
+        class="actdia-item actdia-2d actdia-item-scalematrix" transform="translate(10, 7)"
+        data-item-class="ScaleMatrix"
+        data-url="../../components/actdia-nodes/math/matrices/scale_matrix.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.7"
+          y="-0.2"
+          width="9.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="a3c7924b-d913-4241-8402-d7485a6f3ead"
+        >
+          <rect
+            name="box"
+            x="-0.5"
+            y="0"
+            width="9"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="c3c4f1e1-2129-4810-b952-d93776575e77"
+          >
+          </rect>
+          <g
+            name="texts"
+            id="6e0ff4ca-51f9-4d20-87be-3c559a750c74"
+          >
+            <text
+              class=""
+              x="1.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="2362ab18-8b9c-4cd6-bb35-91f877f30c12"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                5,05
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="ffcc7266-3706-4f7d-a0f0-904e93a70bb3"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="0.3333333333333333"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="1b480f5d-606d-4e14-9ede-9754beb02946"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="d5996201-e795-4447-b573-90f3e5a9c5e4"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="5df006e1-8abf-4939-bc7b-2f19be42e59e"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                3,68875
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0.6666666666666667,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="26c12771-34e3-4894-a7d5-459265e86723"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="4817241d-b777-4328-ac37-f706b301ea79"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="59d235b7-9e0a-4c35-8f10-28424fee0442"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                0
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1.6666666666666665"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1.3333333333333333,&quot;width&quot;:3,&quot;height&quot;:0.6666666666666666}"
+              single-line="true"
+              numerical="true"
+              id="903b7aa6-d133-4a06-9ffe-9c40bcba11d5"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="4"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="9d0009af-86a8-42c4-8233-8f1bc8d3c123"
+        >
+          <tspan
+            x="4"
+            dy="0"
+          >
+            Matriz de escala - d8294
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="x"
+            type="in"
+            id="in-00"
+            transform=" translate(1, 2) rotate(-270 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="11afda9d-c21c-4916-b6f0-2e6be6e66eb1"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="771e8bb3-feeb-4bc1-b890-2f45c0a08110"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="y"
+            type="in"
+            id="in-01"
+            transform=" translate(2, 2) rotate(-270 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="2921705e-b328-4b4e-b76d-ff63c5f56eeb"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="29878538-cb9a-4334-bf59-a1678e06d2b5"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="z"
+            type="in"
+            id="in-02"
+            transform=" translate(3, 2) rotate(-270 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="97ed1438-5c2f-459a-839c-a0a3aff84cea"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="50bc729d-2993-42e9-b8d5-c4ce7b1256f9"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="output"
+            type="out"
+            id="out-00"
+            transform=" translate(8.5, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="255083b0-af74-4958-b83d-9fb5536994f4"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="b3b609fe-ee37-49b4-ab65-a607cf4c33e2"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="b52d9803-3f2a-4aa0-836a-6181b73ae2bb"
+        name="Slider - 52d98"
+        class="actdia-item actdia-item-slider" transform="translate(4, 11)"
+        data-item-class="Slider"
+        data-url="../../components/actdia-nodes/slider.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="-0.7"
+          width="6.4"
+          height="1.4"
+        />
+        <g
+          class="actdia-shape"
+          id="27dfd7ac-e2a9-40ed-acca-599e0d04e56d"
+        >
+          <rect
+            x="0"
+            y="-0.5"
+            width="6"
+            height="1"
+            rx="0.1"
+            ry="0.1"
+            id="56f6b519-d44c-4cb6-b0d5-41daa3125b52"
+          >
+          </rect>
+          <path
+            name="ticks"
+            transform="translate(0.5, 0)"
+            d="M 0 -.3 V .3 M 0.5 -.3 V .3 M 1 -.3 V .3 M 1.5000000000000002 -.3 V .3 M 2 -.3 V .3 M 2.5 -.3 V .3 M 3 -.3 V .3 M 3.5 -.3 V .3 M 3.9999999999999996 -.3 V .3 M 4.5 -.3 V .3 M 4.999999999999999 -.3 V .3"
+            id="79307520-415a-4b7c-9671-808465aa61c9"
+          >
+          </path>
+          <rect
+            x="0.5"
+            y="-0.15"
+            width="5"
+            height="0.3"
+            rx="0.1"
+            ry="0.1"
+            id="7edbb31d-c3b2-4f7f-9fdc-2034e1e8c93e"
+          >
+          </rect>
+          <rect
+            name="knob"
+            fill="none"
+            x="2.7"
+            y="-0.8"
+            width="0.4"
+            height="1.6"
+            rx="0.15"
+            ry="0.15"
+            id="34af044b-7149-43ff-8cf4-40be764c7039"
+          >
+          </rect>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="3"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="381ddd8e-fb02-43f9-950c-12de7441f3a1"
+        >
+          <tspan
+            x="3"
+            dy="0"
+          >
+            Slider - 52d98
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="out-00"
+            transform=" translate(6, 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="4290037c-b2da-4190-bf88-bf5914213e6e"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="46190ca8-7299-4973-b278-fbe2d2b7d398"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="24614eb2-4a60-4127-9834-034cc26443d9"
+        name="Slider - 4614e"
+        class="actdia-item actdia-item-slider" transform="translate(4, 13)"
+        data-item-class="Slider"
+        data-url="../../components/actdia-nodes/slider.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="-0.7"
+          width="6.4"
+          height="1.4"
+        />
+        <g
+          class="actdia-shape"
+          id="2d3ec208-3899-489f-9b0b-8f5b73fa2c5e"
+        >
+          <rect
+            x="0"
+            y="-0.5"
+            width="6"
+            height="1"
+            rx="0.1"
+            ry="0.1"
+            id="52210dec-7981-4700-923c-72d15ff6dc49"
+          >
+          </rect>
+          <path
+            name="ticks"
+            transform="translate(0.5, 0)"
+            d="M 0 -.3 V .3 M 0.5 -.3 V .3 M 1 -.3 V .3 M 1.5000000000000002 -.3 V .3 M 2 -.3 V .3 M 2.5 -.3 V .3 M 3 -.3 V .3 M 3.5 -.3 V .3 M 3.9999999999999996 -.3 V .3 M 4.5 -.3 V .3 M 4.999999999999999 -.3 V .3"
+            id="9ab92821-7c52-4613-9baa-a9e46b355807"
+          >
+          </path>
+          <rect
+            x="0.5"
+            y="-0.15"
+            width="5"
+            height="0.3"
+            rx="0.1"
+            ry="0.1"
+            id="2a58f209-de02-4772-b426-88594862520e"
+          >
+          </rect>
+          <rect
+            name="knob"
+            fill="none"
+            x="2.0124999999999993"
+            y="-0.8"
+            width="0.4"
+            height="1.6"
+            rx="0.15"
+            ry="0.15"
+            id="56655c5e-cc4d-44ef-b896-6f2bf1570df2"
+          >
+          </rect>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="3"
+          y="0"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="b1703c6d-0b49-427b-9ed5-cbdb054487a9"
+        >
+          <tspan
+            x="3"
+            dy="0"
+          >
+            Slider - 4614e
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="o0"
+            type="out"
+            id="out-00"
+            transform=" translate(6, 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="3a1d577d-80df-4779-84bb-a3dd410133cf"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="94c5557f-3730-4ffe-b956-737438022e79"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="278e00f2-c796-4fde-96b9-fb3528ad42ce"
+        name="Visor de matrices - 78e00"
+        class="actdia-item actdia-item-matrixviewer" transform="translate(50, 2)"
+        data-item-class="MatrixViewer"
+        data-url="../../components/actdia-nodes/math/matrices/matrix_viewer.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.7"
+          y="-0.7"
+          width="9.4"
+          height="3.4"
+        />
+        <g
+          class="actdia-shape"
+          id="0ec3b921-885a-430f-b050-228ae8a09da2"
+        >
+          <rect
+            name="box"
+            x="-0.5"
+            y="-0.5"
+            width="9"
+            height="3"
+            rx="0.2"
+            ry="0.2"
+            id="e74e7955-2e90-46b9-b973-ca41affb1f6c"
+          >
+          </rect>
+          <g
+            name="texts"
+            id="3a292464-2c65-4de7-aefe-e6099c823716"
+          >
+            <text
+              class=""
+              x="1.5"
+              y="-0.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:-0.5,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="4c7c00c1-bd5a-4c70-9112-9c8d031f03d8"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                14,25373
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="-0.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:-0.5,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="a965cbb2-637c-405e-8ff6-b70c033585b3"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                8,76589
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="-0.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:-0.5,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="8bf2c007-ad92-4b5d-b49f-b56487dd2fb8"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="0.625"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:0.25,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="4d727a1a-0006-4f81-8011-5636b0ccedce"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                6,08271
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="0.625"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:0.25,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="034bc1d0-6e40-471f-8f11-92965969700f"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                14,70259
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="0.625"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:0.25,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="e1950cc1-2094-4560-894f-b7007a6ce0b9"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="1.375"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="c66becee-686f-4e79-8240-46bf3f290fc4"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                1,74627
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="1.375"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="f8219ae3-f306-47a9-bd39-dcd1dae95d99"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                8,73411
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="1.375"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="26fb3e39-eaf9-48f1-b9ce-cdf341bbe0a2"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="1.5"
+              y="2.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:0,&quot;y&quot;:1.75,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="4661991d-6791-4f9d-a315-d2af547deddd"
+            >
+              <tspan
+                x="1.5"
+                dy="0"
+              >
+                9,91729
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="4.5"
+              y="2.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:3,&quot;y&quot;:1.75,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="48a70378-e8f8-4413-9645-f6d04e8c98f7"
+            >
+              <tspan
+                x="4.5"
+                dy="0"
+              >
+                2,79741
+              </tspan>
+            </text>
+            <text
+              class=""
+              x="7.5"
+              y="2.125"
+              font-size="0.6"
+              style="text-anchor: middle; dominant-baseline: central;"
+              box="{&quot;x&quot;:6,&quot;y&quot;:1.75,&quot;width&quot;:3,&quot;height&quot;:0.75}"
+              single-line="true"
+              numerical="true"
+              id="19c063d1-d15b-4fcf-b2cb-5c3cfb840571"
+            >
+              <tspan
+                x="7.5"
+                dy="0"
+              >
+                1
+              </tspan>
+            </text>
+          </g>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="4"
+          y="1"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="6d121280-be65-4a27-a6d2-11656647a930"
+        >
+          <tspan
+            x="4"
+            dy="0"
+          >
+            Visor de matrices - 78e00
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="input"
+            type="in"
+            id="in-00"
+            transform=" translate(-0.5, 2) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="b0e16b16-bc55-4361-882e-0d1dbb735483"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="6b396d7f-8dde-499d-a99c-86fef02fd8ef"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+      <g
+        id="988ae82b-b00e-41cf-996c-878246e23acd"
+        name="Multiplicación de matrices - 88ae8"
+        class="actdia-item actdia-item-matrixmultiplication" transform="translate(46, 6)"
+        data-item-class="MatrixMultiplication"
+        data-url="../../components/actdia-nodes/math/matrices/matrix_multiplication.js"
+      >
+        <rect
+          class="actdia-selection-box"
+          x="-0.2"
+          y="0.3"
+          width="2.4"
+          height="2.4"
+        />
+        <g
+          class="actdia-shape"
+          id="fd2719d4-cd07-4381-964a-d2ad824e92e1"
+        >
+          <rect
+            x="0"
+            y="0.5"
+            width="2"
+            height="2"
+            rx="0.2"
+            ry="0.2"
+            id="a02cbbcf-a9b4-41a2-a9c7-780a466626e6"
+          >
+          </rect>
+          <text
+            class=""
+            x="1"
+            y="1.5"
+            font-size="1.5"
+            style="dominant-baseline: central;"
+            id="113c79c7-05bb-4368-bf7f-bb38d521fb97"
+          >
+            <tspan
+              x="1"
+              dy="0"
+            >
+              ×
+            </tspan>
+          </text>
+        </g>
+        <text
+          class="actdia-node-name"
+          x="1"
+          y="1.5"
+          font-size="1"
+          style="dominant-baseline: central;"
+          id="e7a62115-8df7-4911-87a9-d840e2b8be2a"
+        >
+          <tspan
+            x="1"
+            dy="0"
+          >
+            Multiplicación de matrices - 88ae8
+          </tspan>
+        </text>
+        <g
+        class="actdia-connectors"
+        >
+          <g
+            class="actdia-connector"
+            name="i0"
+            type="in"
+            id="in-00"
+            transform=" translate(0, 1) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="40fd36a5-9c23-4f87-bd3c-152c58e3cea8"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="a49a9207-edf3-4919-91da-2d094b08e410"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="i1"
+            type="in"
+            id="in-01"
+            transform=" translate(0, 2) rotate(-180 0 0)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="bb738bc8-23d0-4391-94e6-b78e2b94c869"
+            >
+            </circle>
+            <path
+              d="M 0.1 -0.1 L -0.15 0 L 0.1 0.1"
+              id="9217e351-a2fc-45bc-8107-3d804e3f76f3"
+            >
+            </path>
+          </g>
+          <g
+            class="actdia-connector"
+            name="o"
+            type="out"
+            id="out-00"
+            transform=" translate(2, 1)"
+          >
+            <circle
+              cx="0"
+              cy="0"
+              r="0.2"
+              id="b3b99708-c578-4bb4-b107-91f2a8705c4c"
+            >
+            </circle>
+            <path
+              d="M -0.1 -0.1 L 0.15 0 L -0.1 0.1"
+              id="00233edf-a4ec-418d-a905-dbb827a75f2d"
+            >
+            </path>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+      class="actdia-others-layer"
+    >
+    </g>
+  </g>
+</svg>

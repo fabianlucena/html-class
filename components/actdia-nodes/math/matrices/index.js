@@ -18,9 +18,9 @@ export default {
   categories: [],
   examples: [
     {
-      _label: 'Matrix',
-      url: './examples/matrices.json',
-      image: './examples/matrices.svg',
+      _label: '2D transformation',
+      url: './examples/2d_transformation.json',
+      image: './examples/2d_transformation.svg',
     },
   ],
 };

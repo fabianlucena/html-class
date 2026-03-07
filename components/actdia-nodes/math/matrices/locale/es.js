@@ -1,5 +1,6 @@
 export default {
   '2D': '2D',
+  '2D transformation': 'Transformación 2D',
   'Angle': 'Ángulo',
   'Augmented': 'Aumentada',
   'Columns': 'Columnas',
