@@ -14,6 +14,8 @@ export default {
     'rotation_matrix.js',
     'translation_matrix.js',
     'scale_matrix.js',
+    'projection_matrix.js',
+    'perspective_divide.js',
   ],
   categories: [],
   examples: [
