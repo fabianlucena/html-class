@@ -1373,7 +1373,7 @@ export default class ActDia {
           throw new Error('Unknown shape: ' + shape.shape);
         }
 
-        let { shape: shape1, children, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, ...attributes } = shape;
+        let { shape: shape1, children, x, y, sx, sy, rotate, rotateCenterX, rotateCenterY, skewX, skewY, parent, ...attributes } = shape;
         delete attributes.item;
         delete attributes.svgElement;
         attributes.transform = '';
@@ -1439,6 +1439,15 @@ export default class ActDia {
     return svg;
   }
 
+  getSVGAttribute(attribute, value, options = { prefix: '' }) {
+    value = escapeHTML(value);
+    if (!value) {
+      return '';
+    }
+
+    return `${options.prefix}${attribute}="${escapeHTML(value)}"`;
+  }
+
   getShapeSVGFromSVGData(svgData, options) {
     options ??= {};
     options.prefix ??= '\n';
@@ -1475,7 +1484,8 @@ export default class ActDia {
     const svg = options.prefix + `<${svgData.tag}`
       + (classList.size ? attributePrefix + `class="${[...classList].join(' ')}"` : '')
       + (attributes && Object.entries(attributes)
-        .map(([key, value]) => `${attributePrefix}${key}="${value}"`)
+        .map(([key, value]) => this.getSVGAttribute(key, value, { prefix: attributePrefix }))
+        .filter(a => a)
         .join('') || '')
       + options.prefix + '>'
       + (svgData.children?.length ? svgData.children.map(child => this.getShapeSVGFromSVGData(child, childOptions)).join('') : '')
