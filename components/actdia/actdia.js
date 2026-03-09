@@ -1445,7 +1445,7 @@ export default class ActDia {
       return '';
     }
 
-    return `${options.prefix}${attribute}="${escapeHTML(value)}"`;
+    return `${options.prefix}${attribute}="${value}"`;
   }
 
   getShapeSVGFromSVGData(svgData, options) {
