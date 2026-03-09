@@ -3,10 +3,9 @@ export function isHTMLElement(item) {
 }
 
 export function escapeHTML(text) {
-  if (!text)
-    return text;
-
-  if (typeof text === 'number') {
+  if (typeof text === 'undefined' || text === null) {
+    text = '';
+  } else if (typeof text === 'number') {
     text = text.toString();
   } else if (typeof text === 'boolean') {
     text = text.toString();
@@ -15,6 +14,9 @@ export function escapeHTML(text) {
     return text;
   }
   
+  if (!text)
+    return text;
+
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
