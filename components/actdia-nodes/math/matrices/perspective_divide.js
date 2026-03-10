@@ -15,8 +15,8 @@ export default function create({ Node, _, _f }) {
         {
           y: 1.5,
           shape: 'text',
-          text: '/W',
-          fontSize: 1.5,
+          text: '÷w',
+          fontSize: 1,
         },
       ],
     };
