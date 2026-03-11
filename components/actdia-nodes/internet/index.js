@@ -4,5 +4,7 @@ export default {
   nodesClasses: [
     'router.js',
     'switch.js',
+    'pc.js',
+    'web_server.js',
   ],
 };
