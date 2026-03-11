@@ -5,6 +5,7 @@ let language = (navigator.language || navigator.userLanguage || 'en')
   .split('-')[0]
   .toLowerCase();
 
+const loadedLocales = new Set();
 const onLanguageLoadedCallbacks = [];
 const urlTranslationsTables = [];
 
@@ -88,6 +89,11 @@ export async function loadLocale(url, options = {}) {
   }
   
   const importUrl = `${path}${url}/${lang}.js`;
+  if (loadedLocales.has(importUrl)) {
+    return;
+  }
+  
+  loadedLocales.add(importUrl);
   try {
     const table = (await import(/* @vite-ignore */ importUrl)).default;
     Object.assign(translations, table);

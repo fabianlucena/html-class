@@ -8,7 +8,7 @@ import { escapeHTML, isHTMLElement } from '../utils/html.js';
 import { getNumber, isNumber } from '../utils/number.js';
 import { getPath } from '../utils/path.js';
 import { newId } from '../utils/id.js';
-import { _, _f } from '../locale/locale.js';
+import { _, _f, loadLocaleForMeta } from '../locale/locale.js';
 import { DIRECTIONS } from './connector.js';
 import { deepCopy } from '../utils/object.js';
 
@@ -261,6 +261,10 @@ export default class ActDia {
 
   async importElements(...urls) {
     return Element.importAsync(this.getElementCreationData(), ...urls);
+  }
+
+  async loadLocaleForMeta(meta) {
+    return await loadLocaleForMeta(meta);
   }
 
   async importElementClassForMeta(url, meta) {

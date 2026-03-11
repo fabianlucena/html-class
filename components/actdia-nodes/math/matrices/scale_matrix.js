@@ -1,8 +1,5 @@
-import { loadLocaleForMeta } from '../../../locale/locale.js';
-
-loadLocaleForMeta(import.meta);
-
 export default async function create({ actdia, _f }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { SquareMatrix } = await actdia.importElementClassForMeta('square_matrix.js', import.meta);
 
   return class ScaleMatrix extends SquareMatrix {

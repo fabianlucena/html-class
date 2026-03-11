@@ -1,8 +1,6 @@
-import { loadLocaleForMeta } from '../locale/locale.js';
+export default async function create({ actdia, Node, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
 
-loadLocaleForMeta(import.meta);
-
-export default function create({ Node, _ }) {
   const functions =  [
     { value: 'linear', _label: _('Linear'), func: x => x, inverse: x => x },
     { value: 'threeHalves', _label: _('Three halves'), func: x => Math.pow(x, 3 / 2), inverse: x => Math.pow(x, 2 / 3) },
