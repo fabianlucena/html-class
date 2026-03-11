@@ -492,6 +492,7 @@ export default class Node extends Item {
   getFields() {
     return [
       ...this.commonFields,
+      ...this.constructor.fields || [],
       ...this.fields || [],
     ].filter(field => !field.condition || field.condition());
   }
