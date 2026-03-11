@@ -1,7 +1,9 @@
-import Connector from '../../actdia/connector.js';
+export default async function create({ actdia, Connector }) {
+  await actdia.loadLocaleForMeta(import.meta);
 
-export default class ConnectorUtp extends Connector {
-  type = 'utp';
-  accepts = [ 'in' ];
-  multiple = false;
+  return class ConnectorUtp extends Connector {
+    type = 'utp';
+    accepts = [ 'in' ];
+    multiple = false;
+  };
 }
