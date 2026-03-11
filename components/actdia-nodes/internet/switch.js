@@ -16,7 +16,8 @@ for (let i = 0; i < points.length - 1; i++) {
   const [x1, y1] = points[i];
   const [x2, y2] = points[i + 1];
   const len = Math.hypot(x2 - x1, y2 - y1);
-  segs.push({ x1, y1, x2, y2, len });
+  const dir = Math.atan2(y2 - y1, -(x2 - x1)) * 180 / Math.PI + 90;
+  segs.push({ x1, y1, x2, y2, len, dir });
 }
 
 const totalPermeter = segs.reduce((sum, s) => sum + s.len, 0);
@@ -29,14 +30,15 @@ function getPortPosition(factor) {
       const k = d / s.len;
       return {
         x: s.x1 + (s.x2 - s.x1) * k,
-        y: s.y1 + (s.y2 - s.y1) * k
+        y: s.y1 + (s.y2 - s.y1) * k,
+        dir: s.dir,
       };
     }
     d -= s.len;
   }
 
   const last = points[points.length - 1];
-  return { x: last[0], y: last[1] };
+  return { x: last.x, y: last.y, dir: last.dir };
 }
 
 export default async function create({ actdia, Node, _f }) {
@@ -179,6 +181,7 @@ export default async function create({ actdia, Node, _f }) {
         const pos = getPortPosition(i / portCount);
         port.x = pos.x;
         port.y = pos.y;
+        port.direction = pos.dir;
       }
 
       super.update(...arguments);
