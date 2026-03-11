@@ -1,4 +1,6 @@
-export default function create({ Node, _, _f }) {
+export default async function create({ actdia, Node, _, _f }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class PerspectiveDivide extends Node {
     static _label = _f('Perspective divide');
 

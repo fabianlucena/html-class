@@ -1,4 +1,5 @@
 export default async function create({ actdia, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Screen } = await actdia.importElementClassForMeta('screen.js', import.meta);
 
   return class CartesianPlane extends Screen {

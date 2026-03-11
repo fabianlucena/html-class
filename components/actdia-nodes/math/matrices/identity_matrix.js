@@ -1,4 +1,5 @@
-export default async function create({ actdia, _f }) {
+export default async function create({ actdia, _f}) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { SquareMatrix } = await actdia.importElementClassForMeta('square_matrix.js', import.meta);
   
   return class IdentityMatrix extends SquareMatrix {

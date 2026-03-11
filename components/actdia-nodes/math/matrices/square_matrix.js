@@ -1,4 +1,5 @@
 export default async function create({ actdia, _f }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Matrix } = await actdia.importElementClassForMeta('matrix.js', import.meta);
 
   return class SquareMatrix extends Matrix {

@@ -1,4 +1,5 @@
 export default async function create({ actdia, _f }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { MatrixBase } = await actdia.importElementClassForMeta('matrix_base.js', import.meta);
   
   return class Matrix extends MatrixBase {

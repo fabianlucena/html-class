@@ -1,6 +1,8 @@
 import { formatFloat } from '../../../utils/number.js';
 
-export default function create({ Node, _f }) {
+export default async function create({ actdia, Node, _f }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class MatrixBase extends Node {
     static _label = _f('Matrix base');
 
