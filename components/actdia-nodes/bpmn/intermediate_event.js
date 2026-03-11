@@ -3,7 +3,9 @@ import { getPath } from '../../utils/path.js';
 
 const basePath = getPath(import.meta.url);
 
-export default function create({ Node, _ }) {
+export default async function create({ actdia, Node, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
+  
   const eventTypes = getEventTypes(_, { forIntermediate: true });
 
   return class IntermediateEvent extends Node {

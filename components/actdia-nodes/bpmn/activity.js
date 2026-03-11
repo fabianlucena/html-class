@@ -3,7 +3,9 @@ import { getPath } from '../../utils/path.js';
 
 const basePath = getPath(import.meta.url);
 
-export default function create({ Node, _ }) {
+export default async function create({ actdia, Node, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   const activitiesTypes = getActivitiesTypes(_, { forStart: true });
 
   return class Activity extends Node {

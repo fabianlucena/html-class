@@ -1,4 +1,6 @@
-export default function create({ Node, _ }) {
+export default async function create({ actdia, Node, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
+  
   const windowFunctions = {
     rect: {
       func: (n) => Array(n).fill(1),

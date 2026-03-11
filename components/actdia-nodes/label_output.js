@@ -1,4 +1,6 @@
-export default function create({ Node, actdia }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   actdia.addLabeledStatusListener((label, status) => {
     const outputs = actdia.items
       .filter(i => i.elementClass === 'LabelOutput' && i.label === label);

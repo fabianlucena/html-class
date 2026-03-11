@@ -13,8 +13,10 @@ function formatNumber(number) {
 
   return number.toFixed(2);
 }
-  
-export default function create({ Node }) {
+
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class NNViewer extends Node {
     static label = 'Neural Network Viewer';
     

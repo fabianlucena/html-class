@@ -1,6 +1,8 @@
 import { getColors } from '../utils/color.js';
 
-export default function create({ Node, _ }) {
+export default async function create({ actdia, Node, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
+  
   return class Oscillograph extends Node {
     shape = {
       children: [

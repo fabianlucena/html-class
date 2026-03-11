@@ -1,6 +1,8 @@
 import { assignDeep } from '../utils/object.js';
 
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class Switch extends Node {
     shape = {
       x: -.5,

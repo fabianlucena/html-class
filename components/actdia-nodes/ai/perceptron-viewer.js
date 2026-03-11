@@ -17,8 +17,10 @@ function formatNumber(number) {
 
   return result;
 }
-  
-export default function create({ Node }) {
+
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class PerceptronViewer extends Node {
     static label = 'Perceptron Viewer';
     

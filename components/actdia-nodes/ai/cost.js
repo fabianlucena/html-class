@@ -1,4 +1,6 @@
-export default function create({ Node, _ }) {
+export default async function create({ actdia, Node, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   const errorFunctions = {
     mse: {
       func: (e, r) => { let d = e - r; return d * d / 2.0; },

@@ -1,4 +1,6 @@
-export default function create({ Node, _ }) {
+export default async function create({ actdia, Node, _ }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class Selector extends Node {
     shape = {
       children: [
