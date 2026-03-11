@@ -1,6 +1,8 @@
 export default {
   '2D': '2D',
   '2D transformation': 'Transformación 2D',
+  '3D': '3D',
+  '3D transformation': 'Transformación 3D',
   'Angle': 'Ángulo',
   'Aspect ratio': 'Relación de aspecto',
   'Augmented': 'Aumentada',

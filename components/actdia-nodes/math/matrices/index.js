@@ -24,5 +24,10 @@ export default {
       url: './examples/2d_transformation.json',
       image: './examples/2d_transformation.svg',
     },
+    {
+      _label: '3D transformation',
+      url: './examples/3d_transformation.json',
+      image: './examples/3d_transformation.svg',
+    },
   ],
 };
