@@ -43,8 +43,8 @@ export default async function create({ actdia, Node, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
 
   return class InternetSwitch extends Node {
-    static label = 'Switch';
-    static description = 'Internet Switch Node';
+    static _label = _f('Switch');
+    static _description = _f('Internet switch node');
     static import = [
       './connector-utp-port.js',
     ];

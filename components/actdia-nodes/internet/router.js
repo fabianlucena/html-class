@@ -2,8 +2,8 @@ export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
 
   return class InternetRouter extends Node {
-    static label = 'Router';
-    static description = 'Internet Router Node';
+    static _label = _f('Router');
+    static _description = _f('Internet router node');
     static import = [
       './connector-utp.js',
     ];
