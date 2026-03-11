@@ -1,4 +1,4 @@
-export default async function create({ actdia, Node }) {
+export default async function create({ actdia, Node, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
 
   return class InternetRouter extends Node {
