@@ -1,6 +1,6 @@
-export default async function create({ actdia, Node, _f }) {
+export default async function create({ actdia }) {
   await actdia.loadLocaleForMeta(import.meta);
-  const { Device } = await actdia.importElementClassForMeta('device.js', import.meta);
+  const { Device } = await actdia.getElementsClassOrImportForMeta('device.js', import.meta);
 
   return class PCBase extends Device {
     shape = {

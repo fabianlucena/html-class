@@ -1,6 +1,6 @@
 export default async function create({ actdia, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
-  const { PCBase } = await actdia.importElementClassForMeta('pc_base.js', import.meta);
+  const { PCBase } = await actdia.getElementsClassOrImportForMeta('pc_base.js', import.meta);
 
   return class WebServer extends PCBase {
     static _label = _f('Web server');
