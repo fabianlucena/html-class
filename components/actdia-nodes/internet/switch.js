@@ -1,5 +1,44 @@
 import { getNumber } from '../../utils/number.js';
 
+const points = [
+    [-.5, 1],
+    [-1, 2],
+    [-1, 3],
+    [3, 3],
+    [4, 1],
+    [4, 0],
+    [0, 0],
+    [-.5, 1],
+  ],
+  segs = [];
+
+for (let i = 0; i < points.length - 1; i++) {
+  const [x1, y1] = points[i];
+  const [x2, y2] = points[i + 1];
+  const len = Math.hypot(x2 - x1, y2 - y1);
+  segs.push({ x1, y1, x2, y2, len });
+}
+
+const totalPermeter = segs.reduce((sum, s) => sum + s.len, 0);
+
+function getPortPosition(factor) {
+  let d = factor * totalPermeter;
+
+  for (const s of segs) {
+    if (d <= s.len) {
+      const k = d / s.len;
+      return {
+        x: s.x1 + (s.x2 - s.x1) * k,
+        y: s.y1 + (s.y2 - s.y1) * k
+      };
+    }
+    d -= s.len;
+  }
+
+  const last = points[points.length - 1];
+  return { x: last[0], y: last[1] };
+}
+
 export default async function create({ actdia, Node, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
 
@@ -124,47 +163,7 @@ export default async function create({ actdia, Node, _f }) {
       );
     }
 
-    #points = [
-      [-.5, 1],
-      [-1, 2],
-      [-1, 3],
-      [3, 3],
-      [4, 1],
-      [4, 0],
-      [0, 0],
-      [-.5, 1],
-    ];
-    #segs = [];
-    #totalPermeter = 0;
-
-    getPortPosition(index) {
-      let d = index * this.#totalPermeter / this.#portCount;
-
-      for (const s of this.#segs) {
-        if (d <= s.len) {
-          const k = d / s.len;
-          return {
-            x: s.x1 + (s.x2 - s.x1) * k,
-            y: s.y1 + (s.y2 - s.y1) * k
-          };
-        }
-        d -= s.len;
-      }
-
-      // Por si t = 1 exactamente
-      const last = this.#points[this.#points.length - 1];
-      return { x: last[0], y: last[1] };
-    }
-
     init() {
-      for (let i = 0; i < this.#points.length - 1; i++) {
-        const [x1, y1] = this.#points[i];
-        const [x2, y2] = this.#points[i + 1];
-        const len = Math.hypot(x2 - x1, y2 - y1);
-        this.#segs.push({ x1, y1, x2, y2, len });
-        this.#totalPermeter += len;
-      }
-
       super.init(...arguments);
       this.updatePorts(false);
     }
@@ -173,10 +172,11 @@ export default async function create({ actdia, Node, _f }) {
       if (this.isInitializing)
         return;
 
+      const portCount = this.#portCount;
       const ports = this.connectors.filter(c => c.type === 'utpPort');
       for (let i = 0; i < ports.length; i++) {
         const port = ports[i];
-        const pos = this.getPortPosition(i);
+        const pos = getPortPosition(i / portCount);
         port.x = pos.x;
         port.y = pos.y;
       }
