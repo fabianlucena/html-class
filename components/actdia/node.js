@@ -288,24 +288,26 @@ export default class Node extends Item {
     return newConnector;
   }
   
-  addConnector(connector) {
+  addConnector(connector, update = true) {
     const newConnector = this.getNewConnector(connector);
     newConnector.item = this;
     this.connectors.push(newConnector);
-    this.update();
+    if (update) {
+      this.update();
+    }
   }
   
-  addInput(input) {
+  addInput(input, update = true) {
     input.type ??= 'in';
-    this.addConnector(input);
+    this.addConnector(input, update);
   }
 
-  addOutput(output) {
+  addOutput(output, update = true) {
     output.type ??= 'out';
-    this.addConnector(output);
+    this.addConnector(output, update);
   }
 
-  removeLasConnectorByType(type) {
+  removeLasConnectorByType(type, update = true) {
     for (let i = this.connectors.length - 1; i >= 0; i--) {
       const connector = this.connectors[i];
       if (connector.type === type) {
@@ -314,18 +316,21 @@ export default class Node extends Item {
           this.actdia.deleteItem(...connector.connections);
         }
 
-        this.update();
+        if (update) {
+          this.update();
+        }
+        
         break;
       }
     }
   }
 
-  removeLastInput() {
-    this.removeLasConnectorByType('in');
+  removeLastInput(update = true) {
+    this.removeLasConnectorByType('in', update);
   }
 
-  removeLastOutput() {
-    this.removeLasConnectorByType('out');
+  removeLastOutput(update = true) {
+    this.removeLasConnectorByType('out', update);
   }
 
   getConnector(name) {
