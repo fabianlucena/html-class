@@ -2,7 +2,8 @@ import { importCss, loadTextCss } from '../utils/import-css.js';
 import Element from './element.js';
 import Item from './item.js';
 import Node from './node.js';
-import Connection from './node.js';
+import Connection from './connection.js';
+import Connector from './connector.js';
 import { isItem, isNode, isConnection } from './type.js';
 import { escapeHTML, isHTMLElement } from '../utils/html.js';
 import { getNumber, isNumber } from '../utils/number.js';
@@ -256,6 +257,7 @@ export default class ActDia {
       Item,
       Node,
       Connection,
+      Connector,
     };
   }
 
