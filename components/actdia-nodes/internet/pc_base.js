@@ -1,11 +1,8 @@
 export default async function create({ actdia, Node, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
+  const { Device } = await actdia.importElementClassForMeta('device.js', import.meta);
 
-  return class PCBase extends Node {
-    static import = [
-      './connector-utp-port.js',
-    ];
-
+  return class PCBase extends Device {
     shape = {
       children: [
         {
