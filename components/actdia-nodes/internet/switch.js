@@ -1,11 +1,13 @@
-export default async function create({ actdia, Node }) {
+import { getNumber } from '../../utils/number.js';
+
+export default async function create({ actdia, Node, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
 
   return class InternetSwitch extends Node {
     static label = 'Switch';
     static description = 'Internet Switch Node';
     static import = [
-      './connector-utp.js',
+      './connector-utp-port.js',
     ];
 
     shape = {
@@ -64,15 +66,143 @@ export default async function create({ actdia, Node }) {
     };
 
     connectors = [
-      { name: 'p00', type: 'utp', x: 0, y: 0, direction: 'left',  extends: 'tiny' },
-      { name: 'p01', type: 'utp', x: 4, y: 1, direction: 'right', extends: 'tiny' },
+      { name: 'p00', type: 'utpPort', x: 0, y: 0, direction: 'left',  extends: 'tiny' },
+      { name: 'p01', type: 'utpPort', x: 4, y: 1, direction: 'right', extends: 'tiny' },
     ];
 
     box = {
-      x: 0,
-      y: -.5,
-      width: 4,
+      x: -1,
+      y: 0,
+      width: 5,
       height: 3,
     };
+
+    fields = [
+      {
+        name: 'portCount',
+        _label: _f('Ports'),
+        type: 'number',
+        defaultValue: 8,
+        min: 1,
+        max: 24,
+        isTool: true,
+      },
+    ];
+
+    #portCount = 8;
+
+    get portCount() {
+      return this.#portCount;
+    }
+
+    set portCount(value) {
+      this.setPortCount();
+    }
+
+    setPortCount(value, update = true) {
+      value = getNumber(value, 8);
+      if (value < 2) {
+        value = 2;
+      }
+
+      if (value === this.#portCount) {
+        return;
+      }
+
+      this.#portCount = value;
+      this.updatePorts(update);
+    }
+
+    getNewConnector(connector) {
+      return super.getNewConnector(
+        {
+          index: this.inputsCount,
+          type: 'utpPort',
+          name: `p${String(this.inputsCount).padStart(2, '0')}`,
+        },
+        ...arguments,
+      );
+    }
+
+    #points = [
+      [-.5, 1],
+      [-1, 2],
+      [-1, 3],
+      [3, 3],
+      [4, 1],
+      [4, 0],
+      [0, 0],
+      [-.5, 1],
+    ];
+    #segs = [];
+    #totalPermeter = 0;
+
+    getPortPosition(index) {
+      let d = index * this.#totalPermeter / this.#portCount;
+
+      for (const s of this.#segs) {
+        if (d <= s.len) {
+          const k = d / s.len;
+          return {
+            x: s.x1 + (s.x2 - s.x1) * k,
+            y: s.y1 + (s.y2 - s.y1) * k
+          };
+        }
+        d -= s.len;
+      }
+
+      // Por si t = 1 exactamente
+      const last = this.#points[this.#points.length - 1];
+      return { x: last[0], y: last[1] };
+    }
+
+    init() {
+      for (let i = 0; i < this.#points.length - 1; i++) {
+        const [x1, y1] = this.#points[i];
+        const [x2, y2] = this.#points[i + 1];
+        const len = Math.hypot(x2 - x1, y2 - y1);
+        this.#segs.push({ x1, y1, x2, y2, len });
+        this.#totalPermeter += len;
+      }
+
+      super.init(...arguments);
+      this.updatePorts(false);
+    }
+
+    update() {
+      if (this.isInitializing)
+        return;
+
+      const ports = this.connectors.filter(c => c.type === 'utpPort');
+      for (let i = 0; i < ports.length; i++) {
+        const port = ports[i];
+        const pos = this.getPortPosition(i);
+        port.x = pos.x;
+        port.y = pos.y;
+      }
+
+      super.update(...arguments);
+    }
+
+    updatePorts(update = true) {
+      const portCount = this.#portCount;
+      const currentPortCount = this.connectors.length;
+      let needUpdate = false;
+      if (portCount > currentPortCount) {
+        needUpdate = true;
+        for (let i = currentPortCount; i < portCount; i++) {
+          this.addConnector(false);
+        }
+      } else if (portCount < currentPortCount) {
+        needUpdate = true;
+        for (let i = portCount; i < currentPortCount; i++) {
+          this.removeLasConnectorByType('utpPort', false);
+        }
+      }
+
+      if (needUpdate && update) {
+        this.update();
+      }
+    }
   };
 }
