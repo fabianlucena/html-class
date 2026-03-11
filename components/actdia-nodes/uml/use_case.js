@@ -1,6 +1,8 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node, _f }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class UseCase extends Node {
-    static _label = 'Use case';
+    static _label = _f('Use case');
 
     shape = {
       shape: 'ellipse',

@@ -1,6 +1,8 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node, _f }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class Actor extends Node {
-    static _label = 'Actor';
+    static _label = _f('Actor');
 
     shape = {
       children: [
