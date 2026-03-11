@@ -2565,7 +2565,9 @@ export default class ActDia {
 
       const { connector } = this.getEventItemConnector(evt);
       if (connector) {
-        if (this.capturedItem.from.connector?.accepts?.includes(connector.type)) {
+        if (connector.multiple === false && connector.connections.length) {
+          this.showLabel(_('Connector: %s<br>Status: %s<br>Is connected', connector.name, connector.getStatusText()));
+        } else if (this.capturedItem.from.connector?.accepts?.includes(connector.type)) {
           this.showLabel(_('Connector: %s<br>Status: %s<br>Click to connect', connector.name, connector.getStatusText()));
         } else {
           this.showLabel(_('The connector "%s" does not accept connections of type: "%s".', connector.type, this.capturedItem.from.connector.type));
@@ -2594,7 +2596,12 @@ export default class ActDia {
       let { item, connector } = this.getEventItemConnector(evt);
       if (this.editable) {
         if (connector) {
-          this.showLabel(_('Connector: %s<br>Status: %s<br>Click to connect', connector.name, connector.getStatusText()));
+          if (connector.multiple === false && connector.connections.length) {
+            this.showLabel(_('Connector: %s<br>Status: %s<br>Is connected', connector.name, connector.getStatusText()));
+          } else {
+            this.showLabel(_('Connector: %s<br>Status: %s<br>Click to connect', connector.name, connector.getStatusText()));
+          }
+
           return;
         }
       }
@@ -2689,6 +2696,11 @@ export default class ActDia {
         this.pushNotification(_('The connector "%s" does not accept connections of type: "%s".', connector.type, this.capturedItem.from.connector.type));
         return true;
       }
+      
+      if (connector.multiple === false && connector.connections.length) {
+        this.pushNotification(_('The connector "%s" does not accept multiple connections.', connector.type));
+        return true;
+      }
 
       if (this.capturedItem.from.connector.type === 'out') {
         if (connector.type !== 'in') {
@@ -2709,7 +2721,11 @@ export default class ActDia {
       this.hideLabel();
 
       return false;
-    }  
+    }
+
+    if (connector.multiple === false && connector.connections.length) {
+      return false;
+    }
 
     (async () => {
       this.capturedItem = await this.addItem({
