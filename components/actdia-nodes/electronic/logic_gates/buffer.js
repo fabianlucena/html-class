@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class Buffer extends Node {
     shape = {
       shape: 'path',

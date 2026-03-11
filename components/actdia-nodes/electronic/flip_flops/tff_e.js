@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class TFF_E extends Node {
     static label = 'T Flip-Flop (edge triggered)';
     static description = 'T (Toggle) flip-flop (edge triggered) circuit node. The output Q changes state on the rising edge of the clock input.';

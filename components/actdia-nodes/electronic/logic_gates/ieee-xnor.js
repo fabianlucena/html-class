@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Xnor } = await actdia.importElementClassForMeta('xnor.js', import.meta);
   
   return class IEEEXnor extends Xnor {

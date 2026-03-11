@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Buffer } = await actdia.importElementClassForMeta('buffer.js', import.meta);
 
   return class IEEEBuffer extends Buffer {

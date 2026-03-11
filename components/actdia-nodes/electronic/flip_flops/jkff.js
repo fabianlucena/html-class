@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class JKFF extends Node {
     static label = 'JK Flip-Flop';
     static description = 'JK flip-flop circuit node. The J and K inputs control the state of the output Q on each clock pulse.';

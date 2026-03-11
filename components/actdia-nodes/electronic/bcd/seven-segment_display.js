@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class SevenSegmentDisplay extends Node {
     static label = 'Seven Segment Display';
     static description = 'Seven Segment Display circuit node.';

@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Or } = await actdia.importElementClassForMeta('or.js', import.meta);
 
   return class IEEEOr extends Or {

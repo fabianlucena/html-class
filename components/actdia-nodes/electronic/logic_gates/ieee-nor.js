@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Nor } = await actdia.importElementClassForMeta('nor.js', import.meta);
 
   return class IEEENor extends Nor {

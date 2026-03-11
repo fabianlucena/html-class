@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Not } = await actdia.importElementClassForMeta('not.js', import.meta);
 
   return class IEEENot extends Not {

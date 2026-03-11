@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class TFF_L extends Node {
     static label = 'T Flip-Flop (latch)';
     static description = 'T (Toggle) flip-flop (latch) circuit node. The output Q changes state when the clock input is high.';

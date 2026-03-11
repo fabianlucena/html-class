@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class BCTo7Segments extends Node {
     static label = 'BCD to 7 Segments';
     static description = 'Binary-Coded Decimal (BCD) to 7-segment display circuit node.';

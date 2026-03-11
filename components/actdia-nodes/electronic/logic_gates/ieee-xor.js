@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Xor } = await actdia.importElementClassForMeta('xor.js', import.meta);
 
   return class IEEEXor extends Xor {

@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class BCDCounter extends Node {
     static label = 'BCD Counter';
     static description = 'Binary-Coded Decimal (BCD) counter circuit node.';

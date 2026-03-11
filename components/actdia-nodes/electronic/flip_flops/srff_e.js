@@ -1,4 +1,6 @@
-export default function create({ Node }) {
+export default async function create({ actdia, Node }) {
+  await actdia.loadLocaleForMeta(import.meta);
+
   return class SRFF_E extends Node {
     static label = 'SR Flip-Flop (Edge Triggered)';
 

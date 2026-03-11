@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { Nand } = await actdia.importElementClassForMeta('nand.js', import.meta);
 
   return class IEEENand extends Nand {

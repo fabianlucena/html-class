@@ -1,4 +1,5 @@
 export default async function create({ actdia }) {
+  await actdia.loadLocaleForMeta(import.meta);
   const { And } = await actdia.importElementClassForMeta('and.js', import.meta);
 
   return class IEEEAnd extends And {
