@@ -1898,6 +1898,8 @@ export default class ActDia {
       return;
     }
 
+    let rotate = connector.autoRotate === false ? 0 : connector.direction;
+
     shape = {
       className: 'actdia-connector',
       name: connector.name,
@@ -1905,7 +1907,7 @@ export default class ActDia {
       x: connector.x,
       y: connector.y,
       id: connector.id,
-      rotate: -connector.direction,
+      rotate: -rotate,
       children: shape.children.map(s => ({item: node, ...s})),
     };
 
@@ -1929,7 +1931,7 @@ export default class ActDia {
           sy: 0.7,
           textAnchor: 'middle',
           dominantBaseline: 'middle',
-          rotate: connector.direction,
+          rotate,
         };
 
         if (connector.textDecoration)
