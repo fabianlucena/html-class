@@ -17,7 +17,7 @@ export default class Element {
     }
 
     classInfo.fqcn = classInfo.fqcn ?? classInfo.url + '/' + elementClass;
-    if (registry[classInfo.fqcn]) {
+    if (registry[classInfo.fqcn] && !classInfo.ignoreAlreadyRegistered) {
       console.warn(`Element class ${classInfo.fqcn} is already registered`);
       console.trace();
     }
@@ -35,7 +35,25 @@ export default class Element {
     return result.flat();
   }
 
-  static async importSingleAsync(creationData, url) {
+  static async getElementsOrImportAsync(creationData, ...urls) {
+    const urlToImport = [],
+      result = [];
+
+    for (const url of urls) {
+      const classRef = this.getElementsClassRefForUrl(url);
+      if (classRef.length) {
+        result.push(...classRef);
+      } else {
+        urlToImport.push(url);
+      }
+    }
+    
+    result.push(...await Promise.all(urlToImport.map(url => this.importSingleAsync(creationData, url, { ignoreAlreadyRegistered: true }))));
+
+    return result.flat();
+  }
+
+  static async importSingleAsync(creationData, url, { ignoreAlreadyRegistered = false } = {}) {
     let items;
 
     this.importedUrls ??= new Map();
@@ -53,7 +71,7 @@ export default class Element {
 
     const module = await import(/* @vite-ignore */ url);
     items = Object.values(module);
-    items = (await Promise.all(items.map(item => this.registerModuleItem(creationData, url, item))))
+    items = (await Promise.all(items.map(item => this.registerModuleItem(creationData, url, item, { ignoreAlreadyRegistered }))))
       .flat()
       .filter(item => item);
     
@@ -61,10 +79,10 @@ export default class Element {
     return items;
   }
 
-  static async registerModuleItem(creationData, url, classRef) {
+  static async registerModuleItem(creationData, url, classRef, { ignoreAlreadyRegistered = false } = {}) {
     if (typeof classRef !== 'function') {
       if (Array.isArray(classRef)) {
-        return classRef.map(item => this.registerModuleItem(creationData, url, item))
+        return classRef.map(item => this.registerModuleItem(creationData, url, item, { ignoreAlreadyRegistered }))
           .flat()
           .filter(item => item);
       }
@@ -74,7 +92,7 @@ export default class Element {
 
     const isClass = /^class\s/.test(Function.prototype.toString.call(classRef));
     if (!isClass) {
-      return this.registerModuleItem(creationData, url, await classRef({ ...creationData, baseUrl: getPath(url), url }));
+      return this.registerModuleItem(creationData, url, await classRef({ ...creationData, baseUrl: getPath(url), url }), { ignoreAlreadyRegistered });
     }
     
     const elementClass = classRef.name;
@@ -100,6 +118,7 @@ export default class Element {
       classRef,
       url,
       fqcn,
+      ignoreAlreadyRegistered,
     });
   }
 
@@ -129,6 +148,12 @@ export default class Element {
   static getElementClassRef(fqcn) {
     const classInfo = this.getElementClassInfo(fqcn);
     return classInfo?.classRef;
+  }
+
+  static getElementsClassRefForUrl(url) {
+    return Object.values(registry)
+      .filter(classInfo => classInfo.url === url)
+      .map(classInfo => classInfo.classRef);
   }
 
   static create(data) {
