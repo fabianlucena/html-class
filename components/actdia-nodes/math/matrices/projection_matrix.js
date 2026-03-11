@@ -122,7 +122,6 @@ export default async function create({ actdia, _f }) {
 
     updateStatus() {
       const { fov, aspect, near, far, type } = this;
-      console.log({ fov, aspect, near, far, type });
       let matrix;
       if (type === 'orthographic') {
         matrix = orthographic(fov, aspect, near, far);
