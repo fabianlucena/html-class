@@ -1,7 +1,7 @@
 import { isMatrix } from '../../../matrix/matrix.js';
 
 export default async function create({ actdia, _f }) {
-  const { MatrixBase } = await actdia.importElementClass(import.meta.url.replace('matrix_viewer.js', 'matrix_base.js'));
+  const { MatrixBase } = await actdia.importElementClassForMeta('matrix_base.js', import.meta);
   
   return class MatrixViewer extends MatrixBase {
     static _label = _f('Matrix viewer');

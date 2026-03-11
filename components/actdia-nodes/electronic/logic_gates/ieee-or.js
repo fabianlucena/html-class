@@ -1,5 +1,6 @@
-export default async function create({ actdia, baseUrl }) {
-  const { Or } = await actdia.importElementClass(baseUrl + '/or.js');
+export default async function create({ actdia }) {
+  const { Or } = await actdia.importElementClassForMeta('or.js', import.meta);
+
   return class IEEEOr extends Or {
     static label = 'IEEE Or';
 

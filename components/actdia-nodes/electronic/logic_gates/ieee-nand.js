@@ -1,5 +1,6 @@
-export default async function create({ actdia, baseUrl }) {
-  const { Nand } = await actdia.importElementClass(baseUrl + '/nand.js');
+export default async function create({ actdia }) {
+  const { Nand } = await actdia.importElementClassForMeta('nand.js', import.meta);
+
   return class IEEENand extends Nand {
     static label = 'IEEE Nand';
 

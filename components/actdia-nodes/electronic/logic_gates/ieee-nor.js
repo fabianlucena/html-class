@@ -1,5 +1,6 @@
-export default async function create({ actdia, baseUrl }) {
-  const { Nor } = await actdia.importElementClass(baseUrl + '/nor.js');
+export default async function create({ actdia }) {
+  const { Nor } = await actdia.importElementClassForMeta('nor.js', import.meta);
+
   return class IEEENor extends Nor {
     static label = 'IEEE Nor';
 

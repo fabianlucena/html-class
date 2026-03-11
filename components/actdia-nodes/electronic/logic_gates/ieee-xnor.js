@@ -1,5 +1,6 @@
-export default async function create({ actdia, baseUrl }) {
-  const { Xnor } = await actdia.importElementClass(baseUrl + '/xnor.js');
+export default async function create({ actdia }) {
+  const { Xnor } = await actdia.importElementClassForMeta('xnor.js', import.meta);
+  
   return class IEEEXnor extends Xnor {
     static label = 'IEEE Xnor';
 
