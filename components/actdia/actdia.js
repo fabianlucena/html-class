@@ -265,12 +265,20 @@ export default class ActDia {
     return Element.importAsync(this.getElementCreationData(), ...urls);
   }
 
+  async getElementsOrImport(...urls) {
+    return Element.getElementsOrImportAsync(this.getElementCreationData(), ...urls);
+  }
+
   async loadLocaleForMeta(meta) {
     return await loadLocaleForMeta(meta);
   }
 
   async importElementClassForMeta(url, meta) {
     return await this.importElementClass(url, { pathFromUrl: meta.url });
+  }
+
+  async getElementsClassOrImportForMeta(url, meta) {
+    return await this.getElementsClassOrImport(url, { pathFromUrl: meta.url });
   }
 
   async importElementClass(url, options) {
@@ -294,7 +302,32 @@ export default class ActDia {
         return map;
       }, {});
     } catch (error) {
-      this.pushNotification(_('Error importing element class from URL:') + ` ${url}\n` + error, 'error');
+      this.pushNotification(_('Error importing element class from URL: %s', ` ${url}\n` + error), 'error');
+    }
+  }
+
+  async getElementsClassOrImport(url, options) {
+    let path = '';
+    if (options) {
+      if (options.pathFromUrl) {
+        path = getPath(options.pathFromUrl);
+        if (!path.endsWith('/')) {
+          path += '/';
+        }
+      }
+    }
+    
+    try {
+      const classesInfo = await this.getElementsOrImport(path + url);
+      return classesInfo.reduce((map, ci) => {
+        if (ci?.classRef) {
+          map[ci.elementClass] = ci.classRef;
+        }
+
+        return map;
+      }, {});
+    } catch (error) {
+      this.pushNotification(_('Error importing element class from URL: %s', ` ${url}\n` + error), 'error');
     }
   }
 
