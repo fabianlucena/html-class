@@ -479,13 +479,13 @@ export default class Node extends Item {
 
   propagate(options = {}) {
     this.connectors
-      .filter(c => c.type === 'out')
+      .filter(c => c.isOutput)
       .forEach(connector => connector?.setStatus?.(this.status, options));
   }
 
   backpropagate(options = {}) {
     this.connectors
-      .filter(c => c.type === 'in')
+      .filter(c => c.isInput)
       .forEach(connector => connector?.setBackStatus(this.backStatus, options));
   }
 

@@ -108,10 +108,6 @@ export default class Connector extends Element {
       this.onUpdate({ status });
     }
 
-    if (this.type === 'in' && this.item) {
-      this.item.updateStatus({ ...options, connector: this });
-    }
-
     this.propagate(options);
   }
 

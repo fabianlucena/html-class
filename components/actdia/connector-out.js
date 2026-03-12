@@ -4,4 +4,5 @@ export default class ConnectorOut extends Connector {
   type = 'out';
   accepts = [ 'in' ];
   multiple = false;
+  isOutput = true;
 }

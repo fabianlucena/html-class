@@ -411,7 +411,7 @@ export default class Connection extends Item {
 
     if (to
       && to !== 'mouse'
-      && to.connector.type === 'in'
+      && to.connector.isInput
       && !options.connectors.has(to.connector)
     ) {
       options = { ...options, connectors: new Set([...options.connectors]) };
@@ -428,7 +428,7 @@ export default class Connection extends Item {
 
     if (to
       && to !== 'mouse'
-      && to.connector.type === 'out'
+      && to.connector.isOutput
       && !options.connectors.has(to.connector)
     ) {
       options = { ...options, connectors: new Set([...options.connectors]) };
