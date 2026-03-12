@@ -1,3 +1,11 @@
+const input = document.createElement('input');
+input.style.position = 'absolute';
+input.style.left = '35em';
+input.style.top = '2em';
+//input.style.opacity = 0;
+//input.style.zIndex = -1;
+document.body.appendChild(input);
+
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
 
@@ -8,6 +16,8 @@ export default async function create({ actdia, Node }) {
           shape: 'rect',
           rx: .1,
           ry: .1,
+          width: 10,
+          height: 3,
         },
         {
           shape: 'rect',
@@ -16,6 +26,8 @@ export default async function create({ actdia, Node }) {
           x: .5,
           y: .5,
           fill: '#00000080',
+          width: 9,
+          height: 2,
         },
         {
           shape: 'text',
@@ -26,6 +38,8 @@ export default async function create({ actdia, Node }) {
           fillOpacity: 1,
           textAnchor: 'left',
           dominantBaseline: 'top',
+          width: 9,
+          height: 2,
         },
       ],
     };
@@ -34,7 +48,7 @@ export default async function create({ actdia, Node }) {
       x: 0,
       y: 0,
       width: 10,
-      height: 2,
+      height: 3,
     };
 
     connectors = [
@@ -54,6 +68,11 @@ export default async function create({ actdia, Node }) {
       this.shape.children[0].height = value;
       this.shape.children[1].height = value - 1;
       super.setHeight(...arguments);
+    }
+
+    constructor(...args) {
+      super(...args);
+      input.addEventListener('keydown', evt => this.keyDownHandler(evt));
     }
 
     update() {
@@ -88,6 +107,10 @@ export default async function create({ actdia, Node }) {
       }
 
       super.update();
+    }
+
+    keyDownHandler(evt) {
+      this.setStatus(evt.key, { force: true });
     }
   };
 }
