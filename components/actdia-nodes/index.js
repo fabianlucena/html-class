@@ -19,6 +19,7 @@ export default {
     'label_input.js',
     'label_output.js',
     'script.js',
+    'terminal.js',
   ],
   categories: [
     { url: 'uml', _label: 'UML' },
