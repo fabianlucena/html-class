@@ -174,7 +174,7 @@ export default async function create({ actdia, Node, _ }) {
       if (!this.inputs.length)
         return;
 
-      const value = this.inputs[0].status;
+      const value = this.inputs[0].received;
       this.#data.push(value);
       while (this.#data.length > this.windowWidth) {
         this.#data.shift();

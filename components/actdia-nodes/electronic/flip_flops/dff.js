@@ -30,19 +30,17 @@ export default async function create({ actdia, Node }) {
     ];
 
     updateStatus(options = {}) {
-      const inputs = this.connectors
-        .filter(c => c.isInput);
+      const inputs = this.inputs;
 
-      const status = inputs[0].status >= 0.5 ? 1 : 0;
+      const status = inputs[0].received >= 0.5 ? 1 : 0;
       this.setStatus(status, options);
     }
 
     propagate(options = {}) {
-      const outputs = this.connectors
-        .filter(c => c.isOutput);
+      const outputs = this.outputs;
 
-      outputs[0].setStatus(this.status, options);
-      outputs[1].setStatus(!this.status, options);
+      outputs[0]?.send(this.status, options);
+      outputs[1]?.send(!this.status, options);
     }
   };
 }

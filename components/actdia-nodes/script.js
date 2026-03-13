@@ -92,7 +92,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus() {
-      let value = this.inputs[0].status;
+      let value = this.inputs[0].received;
       value = this.#code(value);
 
       this.setStatus(value);

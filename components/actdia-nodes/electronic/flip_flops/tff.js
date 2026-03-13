@@ -44,11 +44,10 @@ export default async function create({ actdia, Node }) {
     }
 
     propagate(options = {}) {
-      const outputs = this.connectors
-        .filter(c => c.isOutput);
+      const outputs = this.outputs;
 
-      outputs[0].setStatus(this.status, options);
-      outputs[1].setStatus(!this.status, options);
+      outputs[0]?.send(this.status, options);
+      outputs[1]?.send(!this.status, options);
     }
   };
 }

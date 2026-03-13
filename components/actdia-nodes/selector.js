@@ -54,7 +54,7 @@ export default async function create({ actdia, Node, _ }) {
     index = 0;
 
     updateStatusSync() {
-      const data = this.connectors[0].status;
+      const data = this.connectors[0].received;
       if (!data || !Array.isArray(data)) {
         this.shape.children[1].text = _('No data');
         this.tryUpdateShape(this.shape.children[1]);

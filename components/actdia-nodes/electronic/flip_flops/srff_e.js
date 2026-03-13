@@ -41,7 +41,7 @@ export default async function create({ actdia, Node }) {
 
     updateStatus(options = {}) {
       const clock = this.connectors.find(c => c.name === 'clk');
-      if (clock.status < 0.5) {
+      if (clock.received < 0.5) {
         this.previousClockStatus = 0;
         return;
       }
@@ -53,26 +53,24 @@ export default async function create({ actdia, Node }) {
 
       this.previousClockStatus = 1;
 
-      const inputs = this.connectors
-        .filter(c => c.isInput);
+      const inputs = this.inputs;
 
-      if (inputs[0].status >= 0.5) {
-        if (inputs[1].status < 0.5) {
+      if (inputs[0].received >= 0.5) {
+        if (inputs[1].received < 0.5) {
           this.setStatus(1, options);
         }
       } else {
-        if (inputs[1].status >= 0.5) {
+        if (inputs[1].received >= 0.5) {
           this.setStatus(0, options);
         }
       }  
     }
 
     propagate(options = {}) {
-      const outputs = this.connectors
-        .filter(c => c.isOutput);
+      const outputs = this.outputs;
 
-      outputs[0].setStatus(this.status, options);
-      outputs[1].setStatus(!this.status, options);
+      outputs[0]?.send(this.status, options);
+      outputs[1]?.send(!this.status, options);
     }
   };
 }
