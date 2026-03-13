@@ -45,7 +45,7 @@ export default async function create({ actdia, Node }) {
     ];
 
     get channels() {
-      return this.connectors.filter(c => c.type === 'out').length;
+      return this.connectors.filter(c => c.isOutput).length;
     }
 
     set channels(value) {
@@ -82,13 +82,13 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus(options = {}) {
-      this.setStatus(this.connectors.find(c => c.type === 'in')?.status, options);
+      this.setStatus(this.connectors.find(c => c.isInput)?.status, options);
     }
 
     propagate(options = {}) {
       this.connectors
-        .filter(c => c.type === 'out')
-        .forEach((c, i) => c.setStatus(this.status[i], options));
+        .filter(c => c.isOutput)
+        .forEach((c, i) => c.send(this.status[i], options));
     }
   };
 }

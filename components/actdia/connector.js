@@ -89,10 +89,10 @@ export default class Connector extends Element {
     this.connections.push(item);
 
     if (this.connections?.length) {
-      if (this.type === 'out') {
+      if (this.isOutput) {
         this.propagate();
-      } else if (this.type === 'in') {
-        this.setStatus(this.connections[0].status);
+      } else if (this.isInput) {
+        this.recv(this.connections[0].status);
       }
     }
   }
@@ -119,6 +119,10 @@ export default class Connector extends Element {
 
     this.onRecv?.({ connector: this, data, options });
     this.onUpdate?.({ connector: this, data, action: 'recv', options });
+
+    if (options.propagate !== false) {
+      this.item.updateStatus(options);
+    }
 
     if (options.backPropagate) {
       options.action = 'recv';

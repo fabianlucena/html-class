@@ -56,7 +56,7 @@ export default async function create({ actdia, Node }) {
 
     propagate(options = {}) {
       const outputs = this.connectors
-        .filter(c => c.type === 'out');
+        .filter(c => c.isOutput);
 
       outputs[0].setStatus(this.status, options);
       outputs[1].setStatus(!this.status, options);

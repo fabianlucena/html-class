@@ -97,8 +97,8 @@ export default async function create({ actdia, Node }) {
 
     propagate() {
       const status = this.status >= 0.5 ? 1 : 0;
-      this.connectors.find(c => c.name === 'q').setStatus(status);
-      this.connectors.find(c => c.name === '!q').setStatus(1 - status);
+      this.connectors.find(c => c.name === 'q').send(status);
+      this.connectors.find(c => c.name === '!q').send(1 - status);
     }
 
     statusUpdated() {

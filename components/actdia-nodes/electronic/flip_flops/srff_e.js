@@ -54,7 +54,7 @@ export default async function create({ actdia, Node }) {
       this.previousClockStatus = 1;
 
       const inputs = this.connectors
-        .filter(c => c.type === 'in');
+        .filter(c => c.isInput);
 
       if (inputs[0].status >= 0.5) {
         if (inputs[1].status < 0.5) {
@@ -69,7 +69,7 @@ export default async function create({ actdia, Node }) {
 
     propagate(options = {}) {
       const outputs = this.connectors
-        .filter(c => c.type === 'out');
+        .filter(c => c.isOutput);
 
       outputs[0].setStatus(this.status, options);
       outputs[1].setStatus(!this.status, options);

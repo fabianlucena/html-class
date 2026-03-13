@@ -46,7 +46,7 @@ export default async function create({ actdia, Node }) {
 
     updateStatus(options = {}) {
       this.setStatus(
-        this.connectors.filter(c => c.type === 'in' && c.status >= 0.5).length === 1?
+        this.connectors.filter(c => c.isInput && c.status >= 0.5).length === 1?
           0 : 1,
         options
       );

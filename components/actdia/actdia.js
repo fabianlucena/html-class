@@ -2739,11 +2739,11 @@ export default class ActDia {
         return true;
       }
 
-      if (this.capturedItem.from.connector.type === 'out') {
+      if (this.capturedItem.from.connector.isOutput) {
         if (connector.type !== 'in') {
           return true;
         }
-      } else if (this.capturedItem.from.connector.type === 'in') {
+      } else if (this.capturedItem.from.connector.isInput) {
         if (connector.type !== 'out') {
           return true;
         }

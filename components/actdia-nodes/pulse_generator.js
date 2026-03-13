@@ -173,7 +173,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus() {
-      this.#factor = this.connectors.find(c => c.name === 'x').status;
+      this.#factor = this.getConnector('x').status.recv;
       this.updateInterval();
       super.updateStatus(...arguments);
     }

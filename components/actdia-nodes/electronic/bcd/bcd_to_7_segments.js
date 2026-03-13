@@ -71,13 +71,13 @@ export default async function create({ actdia, Node }) {
 
       const segments = segmentMap[decimal] || [0, 0, 0, 0, 0, 0, 0];
 
-      this.connectors.find(c => c.name === 'a').setStatus(segments[0]);
-      this.connectors.find(c => c.name === 'b').setStatus(segments[1]);
-      this.connectors.find(c => c.name === 'c').setStatus(segments[2]);
-      this.connectors.find(c => c.name === 'd').setStatus(segments[3]);
-      this.connectors.find(c => c.name === 'e').setStatus(segments[4]);
-      this.connectors.find(c => c.name === 'f').setStatus(segments[5]);
-      this.connectors.find(c => c.name === 'g').setStatus(segments[6]);
+      this.connectors.find(c => c.name === 'a').send(segments[0]);
+      this.connectors.find(c => c.name === 'b').send(segments[1]);
+      this.connectors.find(c => c.name === 'c').send(segments[2]);
+      this.connectors.find(c => c.name === 'd').send(segments[3]);
+      this.connectors.find(c => c.name === 'e').send(segments[4]);
+      this.connectors.find(c => c.name === 'f').send(segments[5]);
+      this.connectors.find(c => c.name === 'g').send(segments[6]);
     }
   };
 }

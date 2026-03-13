@@ -159,7 +159,7 @@ export default async function create({ actdia, Node, _ }) {
     ];
 
     get inputsCount() {
-      return this.connectors.filter(c => c.type === 'in').length;
+      return this.connectors.filter(c => c.isInput).length;
     }
 
     set inputsCount(value) {

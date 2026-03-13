@@ -45,7 +45,7 @@ export default async function create({ actdia, Node }) {
     ];
 
     get channels() {
-      return this.connectors.filter(c => c.type === 'in').length;
+      return this.connectors.filter(c => c.isInput).length;
     }
 
     set channels(value) {
@@ -82,7 +82,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus(options = {}) {
-      this.setStatus([...this.connectors.filter(c => c.type === 'in').map(c => c.status)], options);
+      this.setStatus([...this.connectors.filter(c => c.isInput).map(c => c.status)], options);
     }
   };
 }

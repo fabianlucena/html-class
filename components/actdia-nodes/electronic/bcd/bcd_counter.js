@@ -47,20 +47,20 @@ export default async function create({ actdia, Node }) {
     previousClockStatus = 0;
 
     updateStatus(options) {
-      let reset = this.connectors.find(c => c.name === 'rst').status >= 0.5;
+      let reset = this.connectors.find(c => c.name === 'rst').status.recv >= 0.5;
       if (reset) {
         this.status = 0;
         this.propagate(options);
         return;
       }
 
-      let enabled = this.connectors.find(c => c.name === 'en').status >= 0.5;
+      let enabled = this.connectors.find(c => c.name === 'en').status.recv >= 0.5;
       if (!enabled) {
         return;
       }
 
       const clock = this.connectors.find(c => c.name === 'clk');
-      if (clock.status < 0.5) {
+      if (clock.status.recv < 0.5) {
         this.previousClockStatus = 0;
         return;
       }
@@ -70,21 +70,21 @@ export default async function create({ actdia, Node }) {
         return;
       }
 
-      this.previousClockStatus = 1;   
+      this.previousClockStatus = 1;
 
       if (this.status < 9) {
         this.status++;
-        this.connectors.find(c => c.name === 'carry').setStatus(false);
+        this.connectors.find(c => c.name === 'carry').send(false);
       } else {
         this.status = 0;
-        this.connectors.find(c => c.name === 'carry').setStatus(true);
+        this.connectors.find(c => c.name === 'carry').send(true);
       }
 
       this.propagate(options);
     }
 
     propagate(options = {}) {
-      let outs = this.connectors.filter(c => c.type === 'out');
+      let outs = this.connectors.filter(c => c.isOutput);
 
       const
         q0 = this.status % 2,
@@ -92,10 +92,15 @@ export default async function create({ actdia, Node }) {
         q2 = (this.status % 8) >= 4 ? 1: 0,
         q3 = this.status >= 8 ? 1: 0;
 
-      if (q0 !== outs[0].status) outs[0].setStatus(q0, options);
-      if (q1 !== outs[1].status) outs[1].setStatus(q1, options);
-      if (q2 !== outs[2].status) outs[2].setStatus(q2, options);
-      if (q3 !== outs[3].status) outs[3].setStatus(q3, options);
+      if (q0 !== outs[0].status.send) outs[0].send(q0, options);
+      if (q1 !== outs[1].status.send) outs[1].send(q1, options);
+      if (q2 !== outs[2].status.send) outs[2].send(q2, options);
+      if (q3 !== outs[3].status.send) outs[3].send(q3, options);
+
+      console.log(outs[0].status.send,
+        outs[1].status.send,
+        outs[2].status.send,
+        outs[3].status.send);
     }
   };
 }

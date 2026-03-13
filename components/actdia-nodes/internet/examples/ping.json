@@ -1,0 +1,69 @@
+{
+  "actdia": {
+    "version": "0.1.0"
+  },
+  "imports": [
+    "../../components/actdia-nodes/internet/pc.js",
+    "../../components/actdia-nodes/terminal.js",
+    "./connection.js"
+  ],
+  "nodes": [
+    {
+      "elementClass": "PC",
+      "url": "../../components/actdia-nodes/internet/pc.js",
+      "id": "11b6dafe-fdaf-4caf-9360-0b46c0ad897f",
+      "mac": "86:25:65:74:e4:4e",
+      "ip": "192.168.1.12",
+      "subnet": "255.255.255.0",
+      "fqcn": "../../components/actdia-nodes/internet/pc.js/PC",
+      "x": 9,
+      "y": 5,
+      "name": "PC - 1b6da",
+      "connectors": [
+        {
+          "id": "utpPort-00"
+        },
+        {
+          "id": "io-00"
+        }
+      ]
+    },
+    {
+      "elementClass": "Terminal",
+      "url": "../../components/actdia-nodes/terminal.js",
+      "id": "4fba519c-3849-4547-be0d-32c4e2d4cf35",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 59.00000000000001,
+        "height": 29
+      },
+      "fqcn": "../../components/actdia-nodes/terminal.js/Terminal",
+      "x": 14,
+      "y": 1,
+      "name": "Terminal - fba51",
+      "width": 59.00000000000001,
+      "height": 29,
+      "connectors": [
+        {
+          "id": "io-00"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "elementClass": "Connection",
+      "url": "./connection.js",
+      "id": "190648ea-5fc4-4c00-b066-6cf4b4e5e4ab",
+      "from": {
+        "connector": "io-00",
+        "item": "11b6dafe-fdaf-4caf-9360-0b46c0ad897f"
+      },
+      "to": {
+        "connector": "io-00",
+        "item": "4fba519c-3849-4547-be0d-32c4e2d4cf35"
+      }
+    }
+  ]
+}

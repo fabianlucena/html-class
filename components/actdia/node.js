@@ -384,8 +384,8 @@ export default class Node extends Item {
   update() {
     super.update();
     
-    this.#inputs = this.connectors.filter(c => c.type === 'in');
-    this.#outputs = this.connectors.filter(c => c.type === 'out');
+    this.#inputs = this.connectors.filter(c => c.isInput);
+    this.#outputs = this.connectors.filter(c => c.isOutput);
     this.#clk = this.connectors.find(c => c.name === 'clk')
       || this.connectors.find(c => c.name === '!clk');
 
@@ -476,7 +476,7 @@ export default class Node extends Item {
   propagate(options = {}) {
     this.connectors
       .filter(c => c.isOutput)
-      .forEach(connector => connector?.setStatus?.(this.status, options));
+      .forEach(connector => connector?.send?.(this.status, options));
   }
 
   getFields() {

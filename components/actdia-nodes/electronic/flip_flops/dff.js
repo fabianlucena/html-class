@@ -31,7 +31,7 @@ export default async function create({ actdia, Node }) {
 
     updateStatus(options = {}) {
       const inputs = this.connectors
-        .filter(c => c.type === 'in');
+        .filter(c => c.isInput);
 
       const status = inputs[0].status >= 0.5 ? 1 : 0;
       this.setStatus(status, options);
@@ -39,7 +39,7 @@ export default async function create({ actdia, Node }) {
 
     propagate(options = {}) {
       const outputs = this.connectors
-        .filter(c => c.type === 'out');
+        .filter(c => c.isOutput);
 
       outputs[0].setStatus(this.status, options);
       outputs[1].setStatus(!this.status, options);

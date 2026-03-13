@@ -99,7 +99,7 @@ export default async function create({ actdia, Node }) {
       while (layer.length) {
         data.push(layer.map(n => [n.bias, ...n.weights]).flat());
         const newLayer = layer.map(n => n.connectors
-            .filter(c => c.type === 'in')
+            .filter(c => c.isInput)
             .map(c => c.connections.map(c => c?.from?.item).flat())
             .flat()
           )
