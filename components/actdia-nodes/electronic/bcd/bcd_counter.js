@@ -96,11 +96,6 @@ export default async function create({ actdia, Node }) {
       if (q1 !== outs[1].status.send) outs[1].send(q1, options);
       if (q2 !== outs[2].status.send) outs[2].send(q2, options);
       if (q3 !== outs[3].status.send) outs[3].send(q3, options);
-
-      console.log(outs[0].status.send,
-        outs[1].status.send,
-        outs[2].status.send,
-        outs[3].status.send);
     }
   };
 }

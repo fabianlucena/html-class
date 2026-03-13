@@ -104,12 +104,13 @@ export default class Connector extends Element {
   send(data, options = {}) {
     this.status.send = deepCopy(data);
 
+    options = {...options};
     this.onSend?.({ connector: this, data, options });
     this.onUpdate?.({ connector: this, data, action: 'send', options });
 
     if (options.propagate !== false) {
       options.action = 'send';
-      options.data ??= this.status.send;
+      options.data ??= data;
       this.propagate(options);
     }
   }
