@@ -48,7 +48,7 @@ export default class Connection extends Item {
     from.connector.addConnection(this);
 
     this.from = from;
-    if (from.connector.isOutput) 
+    if (from.connector?.isOutput) 
       this.setStatus(from.connector.sent);
   }
 
@@ -75,7 +75,7 @@ export default class Connection extends Item {
     }
 
     this.to = to;
-    if (to.connector.isOutput)
+    if (to.connector?.isOutput)
       this.setStatus(to.connector.sent);
   }
 
