@@ -1852,6 +1852,10 @@ export default class ActDia {
       attributes.box = box;
     }
 
+    if (style.space) {
+      attributes['xml:space'] = style.space;
+    }
+
     return {
       x, y, width, height,
       lineSpacing,
