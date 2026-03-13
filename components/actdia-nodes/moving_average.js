@@ -189,8 +189,8 @@ export default async function create({ actdia, Node, _ }) {
 
       const ma = this.#data.reduce((a, b, i) => a + b * this.#window[i], 0);
 
-      this.#ma.setStatus(ma);
-      this.#valueMa.setStatus([value, ma]);
+      this.#ma.send(ma);
+      this.#valueMa.send([value, ma]);
     }
   };
 }
