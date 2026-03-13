@@ -76,7 +76,7 @@ export default class Connection extends Item {
 
     this.to = to;
     if (to.connector.isOutput)
-      this.setStatus(from.connector.sent);
+      this.setStatus(to.connector.sent);
   }
 
   removeReferencedItem(item) {
