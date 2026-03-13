@@ -64,7 +64,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus() {
-      let status = this.#input.status;
+      let status = this.#input.received;
       if (Array.isArray(status)) {
         status = status.map(v => v ? v : 0);
       }

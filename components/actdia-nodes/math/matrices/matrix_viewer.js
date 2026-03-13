@@ -28,7 +28,7 @@ export default async function create({ actdia, _, _f }) {
     }
 
     updateStatus() {
-      this.status = this.#input.status;
+      this.status = this.#input.received;
       let dimension = isMatrix(this.status);
       if (dimension) {
         this.dimension = dimension;

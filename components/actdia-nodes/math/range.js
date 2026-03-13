@@ -63,7 +63,7 @@ export default async function create({ actdia, Node, _ }) {
         return;
       }
 
-      let domain = this.#input.status;
+      let domain = this.#input.received;
       if (!Array.isArray(domain)) {
         domain = [domain];
       }
@@ -73,7 +73,7 @@ export default async function create({ actdia, Node, _ }) {
         this.#calculating = true;
         domain.forEach((v, i) => {
           this.#funOutput.setStatus(v);
-          pairs.push([v, this.#funInput.status]);
+          pairs.push([v, this.#funInput.received]);
         });
       } catch (error) {
         console.error(error);

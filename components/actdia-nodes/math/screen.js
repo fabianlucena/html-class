@@ -440,7 +440,7 @@ export default async function create({ actdia, Node }) {
         return;
       }
 
-      let status = this.#input.status;
+      let status = this.#input.received;
       if (!Array.isArray(status)) {
         return;
       }

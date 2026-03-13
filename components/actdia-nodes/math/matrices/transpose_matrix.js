@@ -51,7 +51,7 @@ export default async function create({ actdia, Node, _, _f }) {
     }
 
     transposeMatrix() {
-      const m = this.#input.status;
+      const m = this.#input.received;
       if (!m && m !== 0) {
         return _('No matrix input');
       }
