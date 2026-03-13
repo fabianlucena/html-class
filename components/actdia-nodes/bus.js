@@ -49,16 +49,25 @@ export default async function create({ actdia, Node }) {
     }
 
     set channels(value) {
-      const newChannels = this.channels;
-      if (value > newChannels) {
-        for (let i = newChannels; i < value; i++) {
-          this.addConnector();
+      this.setChannels(value);
+    }
+
+    setChannels(value, update = true) {
+      let needUpdate = false;
+      const currentChannels = this.channels;
+      if (value > currentChannels) {
+        needUpdate = true;
+        for (let i = currentChannels; i < value; i++) {
+          this.addConnector(null, false);
         }
-      } else if (value < newChannels) {
-        for (let i = value; i < newChannels; i++) {
-          this.removeLastInput();
+      } else if (value < currentChannels) {
+        needUpdate = true;
+        for (let i = value; i < currentChannels; i++) {
+          this.removeLastInput(false);
         }
       }
+
+      needUpdate && update && this.update();
     }
 
     update() {
@@ -82,7 +91,11 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus(options = {}) {
-      this.setStatus([...this.connectors.filter(c => c.isInput).map(c => c.received)], options);
+      this.setStatus([...this.inputs.map(c => c.received)], options);
+    }
+
+    statusUpdated(options = {}) {
+      this.outputs.forEach(c => c.send(this.status));
     }
   };
 }
