@@ -2926,7 +2926,7 @@ export default class ActDia {
   }
 
   mouseUpHandler(evt) {
-    this.hotPlaces.forEach(hotPlace => hotPlace.dragging = false);
+    this.hotPlaces?.forEach(hotPlace => hotPlace.dragging = false);
     this.endSelectionBox();
 
     if (this.dragging) {
