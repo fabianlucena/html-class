@@ -118,7 +118,8 @@ export default async function create({ actdia, Node, _ }) {
     }
 
     updateStatus(options = {}) {
-      const rst = this.#rst.status >= 0.5;
+      const rst = this.#rst.received >= 0.5;
+      console.log(_('Backpropagation reset status: %s', rst));
       if (this.#lastRst !== rst) {
         this.#lastRst = rst;
         if (rst) {
@@ -133,7 +134,7 @@ export default async function create({ actdia, Node, _ }) {
       if (!this.inputs.length)
         return;
 
-      if (this.#en.connections.length && !this.#en.status) {
+      if (this.#en.connections.length && !this.#en.received) {
         return;
       }
 
@@ -156,12 +157,12 @@ export default async function create({ actdia, Node, _ }) {
       if (node.elementClass === 'Perceptron') {
         if (costNode && learningRate && delta) {
           let sum = node.bias;
-          node.inputs.forEach((i, index) => sum += i.status * node.weights[index]);
+          node.inputs.forEach((i, index) => sum += i.received * node.weights[index]);
           delta *= node.derivative(sum);
 
           const dd = [learningRate * delta];
           node.inputs.forEach((input, index) => 
-            dd.push(learningRate * delta * input.status)
+            dd.push(learningRate * delta * input.received)
           );
 
           if (this.#newNodesWeights.has(node)) {
@@ -175,7 +176,7 @@ export default async function create({ actdia, Node, _ }) {
         }
       } else if (node.elementClass === 'Cost') {
         costNode = node;
-        delta = costNode.derivative(...costNode.inputs.map(i => i.status));
+        delta = costNode.derivative(...costNode.inputs.map(i => i.received));
       } else {
         newInvalidDeep = invalidDeep - 1;
         if (newInvalidDeep === 0) {
