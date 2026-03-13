@@ -470,7 +470,7 @@ export default async function create({ actdia, Node }) {
         const connectedPoints = [];
         let i = 0,
           l = pathValues.length,
-          aux = pathValues[i++],
+          aux = pathValues[i++] ?? [],
           auxOuther = aux[0] < 0 || aux[0] > this.#maxX || aux[1] < 0 || aux[1] > this.#maxY,
           value,
           valueOuther;

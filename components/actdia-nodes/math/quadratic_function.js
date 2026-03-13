@@ -3,6 +3,7 @@ export default async function create({ actdia, Node, _ }) {
 
   return class QuadraticFunction extends Node {
     static label = _('Quadratic function');
+
     shape = {
       children: [
         {
@@ -119,18 +120,18 @@ export default async function create({ actdia, Node, _ }) {
 
     updateStatus({ connector } = {}) {
       if (connector === this.#aConnector) {
-        this.setA(this.#aConnector.status, false);
+        this.setA(this.#aConnector.received, false);
       } else if (connector === this.#bConnector) {
-        this.setB(this.#bConnector.status, false);
+        this.setB(this.#bConnector.received, false);
       } else if (connector === this.#cConnector) {
-        this.setC(this.#cConnector.status, false);
+        this.setC(this.#cConnector.received, false);
       }
 
       if (!this.#xConnector)
         return;
       
       const
-        x = this.#xConnector.status,
+        x = this.#xConnector.received,
         a = this.#a,
         b = this.#b,
         c = this.#c;

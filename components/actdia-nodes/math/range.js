@@ -34,7 +34,7 @@ export default async function create({ actdia, Node, _ }) {
       { name: 'output',         type: 'out', x: 6, y: 1, direction: 'right', extends: 'small' },
       { name: 'compoundOutput', type: 'out', x: 6, y: 2, direction: 'right', extends: 'small' },
       { name: 'funOutput',      type: 'out', x: 1, y: 3, direction: 'bottom', extends: 'small' },
-      { name: 'funInput',       type: 'in',  x: 5, y: 3, direction: 'bottom', extends: 'small' },
+      { name: 'funInput',       type: 'in',  x: 5, y: 3, direction: 'bottom', extends: 'small', onRecv: (...params) => this.onFunInputRecv(...params) },
     ];
 
     #input = null;
@@ -54,7 +54,7 @@ export default async function create({ actdia, Node, _ }) {
 
     #calculating = false;
     updateStatus({ connector, force } = {}) {
-      if (false
+      if (!connector
         || !this.#funInput.connections.length
         || !this.#funOutput.connections.length
         || !this.#input.connections.length
@@ -72,7 +72,7 @@ export default async function create({ actdia, Node, _ }) {
       try {
         this.#calculating = true;
         domain.forEach((v, i) => {
-          this.#funOutput.setStatus(v);
+          this.#funOutput.send(v);
           pairs.push([v, this.#funInput.received]);
         });
       } catch (error) {
@@ -82,8 +82,11 @@ export default async function create({ actdia, Node, _ }) {
       this.#calculating = false;
 
       this.setStatus(pairs, { propagate: false });
-      this.#output.setStatus(pairs.map(pair => pair[1]));
-      this.#compoundOutput.setStatus(pairs);
+      this.#output.send(pairs.map(pair => pair[1]));
+      this.#compoundOutput.send(pairs);
+    }
+
+    onFunInputRecv({ options }) {
     }
   };
 }

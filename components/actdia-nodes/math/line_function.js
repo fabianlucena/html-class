@@ -97,13 +97,13 @@ export default async function create({ actdia, Node, _ }) {
 
     updateStatus({ connector }) {
       if (connector === this.#aConnector) {
-        this.setA(this.#aConnector.status, false);
+        this.setA(this.#aConnector.received, false);
       } else if (connector === this.#bConnector) {
-        this.setB(this.#bConnector.status, false);
+        this.setB(this.#bConnector.received, false);
       }
       
       const
-        x = this.#xConnector.status,
+        x = this.#xConnector.received,
         a = this.#a,
         b = this.#b;
 
