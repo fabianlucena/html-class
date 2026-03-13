@@ -113,7 +113,7 @@ export default async function create({ actdia, Node, _ }) {
     }
 
     updateStatus(options = {}) {
-      const inputs = this.inputs.map(i => i.status);
+      const inputs = this.inputs.map(i => i.received);
       let status = this.func(inputs[1], inputs[0]);
 
       this.setStatus(status, options);
