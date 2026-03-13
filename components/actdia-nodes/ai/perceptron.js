@@ -254,7 +254,7 @@ export default async function create({ actdia, Node, _ }) {
 
     updateStatus(options = {}) {
       const z = this.inputs
-        .map((c, i) => (c.status ?? 0) * (this.weights[i] ?? 0))
+        .map((c, i) => (c.received ?? 0) * (this.weights[i] ?? 0))
         .reduce((a, b) => a + b, 0) + (this.bias ?? 0);
 
       const y = this.#func(z);
