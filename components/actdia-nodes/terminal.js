@@ -2,9 +2,25 @@ const input = document.createElement('input');
 input.style.position = 'absolute';
 input.style.left = '35em';
 input.style.top = '2em';
-//input.style.opacity = 0;
-//input.style.zIndex = -1;
+input.style.opacity = 0;
+input.style.zIndex = -1;
 document.body.appendChild(input);
+
+const keysTranslation = {
+  'Enter': '\n',
+  'Backspace': '\b',
+  'Tab': '\t',
+  'Shift': '',
+  'Control': '',
+  'Alt': '',
+  'CapsLock': '',
+  'Dead': '',
+  'Escape': '\x1b',
+  'ArrowUp': '',
+  'ArrowRight': '',
+  'ArrowDown': '',
+  'ArrowLeft': '',
+};
 
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
@@ -31,7 +47,7 @@ export default async function create({ actdia, Node }) {
         },
         {
           shape: 'text',
-          text: '$ ',
+          text: '',
           x: .5,
           y: .5,
           lineSpacing: 1.0,
@@ -52,11 +68,13 @@ export default async function create({ actdia, Node }) {
     };
 
     connectors = [
-      { name: 'port', type: 'io', x: 0, y: 1, direction: 'left' },
+      { name: 'port', type: 'io', x: 0, y: 1, direction: 'left', onUpdate: params => this.onPortUpdated(params) },
     ];
 
     canChangeWidth = true;
     canChangeHeight = true;
+    #portConnector = null;
+    #keyDownHandler = evt => this.keyDownHandler(evt);
 
     setWidth(value) {
       this.shape.children[0].width = value;
@@ -70,9 +88,9 @@ export default async function create({ actdia, Node }) {
       super.setHeight(...arguments);
     }
 
-    constructor(...args) {
-      super(...args);
-      input.addEventListener('keydown', evt => this.keyDownHandler(evt));
+    init() {
+      super.init(...arguments);
+      this.#portConnector = this.getConnector('port');
     }
 
     update() {
@@ -109,8 +127,31 @@ export default async function create({ actdia, Node }) {
       super.update();
     }
 
+    select() {
+      super.select(...arguments);
+      if (this.selected) {
+        input.addEventListener('keydown', this.#keyDownHandler);
+        input.focus();
+      } else {
+        input.removeEventListener('keydown', this.#keyDownHandler);
+      }
+    }
+
     keyDownHandler(evt) {
-      this.setStatus(evt.key, { force: true });
+      let key = keysTranslation[evt.key] ?? evt.key;
+      if (key === '')
+        return;
+
+      this.#portConnector.setStatus({ send: key }, { force: true });
+    }
+
+    onPortUpdated({ status, options }) {
+      if (!Object.keys(status).includes('recv')) {
+        return;
+      }
+
+      this.shape.children[2].text += status.recv;
+      this.updateShape(this.shape.children[2]);
     }
   };
 }
