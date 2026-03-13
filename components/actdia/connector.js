@@ -48,6 +48,7 @@ export default class Connector extends Element {
   }
 
   connections = [];
+  status = {};
 
   init(options) {
     super.init(...arguments);
@@ -100,26 +101,34 @@ export default class Connector extends Element {
     this.connections = (this.connections || []).filter(i => i !== item);
   }
 
-  setStatus(status, options = {}) {
-    status = deepCopy(status);
+  send(data, options = {}) {
+    this.status.send = deepCopy(data);
 
-    this.onUpdate?.({ connector: this, status, options });
-    this.status = status;
+    this.onSend?.({ connector: this, data, options });
+    this.onUpdate?.({ connector: this, data, action: 'send', options });
 
-    if (options.propagate !== false)
+    if (options.propagate !== false) {
+      options.action = 'send';
+      options.data ??= this.status.send;
       this.propagate(options);
+    }
+  }
+
+  recv(data, options = {}) {
+    this.status.recv = deepCopy(data);
+
+    this.onRecv?.({ connector: this, data, options });
+    this.onUpdate?.({ connector: this, data, action: 'recv', options });
+
+    if (options.backPropagate) {
+      options.action = 'recv';
+      options.data ??= this.status.recv;
+      this.backPropagate(options);
+    }
   }
 
   getStatusText() {
     return getStatusText(this.status);
-  }
-
-  setBackStatus(backStatus, options = {}) {
-    this.backStatus = deepCopy(backStatus);
-    if (this.type === 'out' && this.item)
-      this.item.updateBackStatus({ ...options, connector: this });
-
-    this.backpropagate(options);
   }
 
   propagate(options = {}) {
@@ -130,26 +139,11 @@ export default class Connector extends Element {
       return;
     }
 
-    this.connections.forEach(connection => {
-      options.from = this;
-      options.connectors = new Set([...connectors, this]);
-      connection.setStatus(this.status, options);
-    });
-  }
-
-  backpropagate(options = {}) {
-    options ??= {};
-    options.from = this;
-    const connectors = new Set([...options.connectors || []]);
-    if (connectors?.has(this)) {
-      this.actdia?.pushNotification(_('Circular backpropagation detected, stopping.'), 'warning');
-      return;
-    }
-    
-    this.connections.forEach(connection => {
-      options.from = this;
-      options.connectors = new Set([...connectors, this]);
-      connection.setBackStatus(this.backStatus, options);
-    });
+    this.connections
+      .forEach(connection => {
+        options.from = this;
+        options.connectors = new Set([...connectors, this]);
+        connection.setStatus(options.data, options);
+      });
   }
 }

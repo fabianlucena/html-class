@@ -415,24 +415,7 @@ export default class Connection extends Item {
       && !options.connectors.has(to.connector)
     ) {
       options = { ...options, connectors: new Set([...options.connectors]) };
-      to.connector.setStatus(this.status, options);
-    }
-  }
-
-  setBackStatus(backStatus, options) {
-    let to;
-    if (options.from === this.from?.connector)
-      to = this.to;
-    else if (options.from === this.to?.connector)
-      to = this.from;
-
-    if (to
-      && to !== 'mouse'
-      && to.connector.isOutput
-      && !options.connectors.has(to.connector)
-    ) {
-      options = { ...options, connectors: new Set([...options.connectors]) };
-      to.connector.setBackStatus(backStatus, options);
+      to.connector.recv(this.status, options);
     }
   }
 }

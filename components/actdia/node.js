@@ -473,20 +473,10 @@ export default class Node extends Item {
     this.propagate(options);
   }
 
-  backStatusUpdated(options) {
-    this.backpropagate(options);
-  }
-
   propagate(options = {}) {
     this.connectors
       .filter(c => c.isOutput)
       .forEach(connector => connector?.setStatus?.(this.status, options));
-  }
-
-  backpropagate(options = {}) {
-    this.connectors
-      .filter(c => c.isInput)
-      .forEach(connector => connector?.setBackStatus(this.backStatus, options));
   }
 
   getFields() {

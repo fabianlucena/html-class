@@ -283,14 +283,6 @@ export default class Item extends Element {
     }
   }
 
-  setBackStatus(backStatus, options = {}) {
-    if (!options.force && isEqual(this.backStatus, backStatus))
-      return;
-
-    this.backStatus = deepCopy(backStatus);
-    this.backStatusUpdated(options);
-  }
-
   getStatusText() {
     return getStatusText(this.status);
   }
@@ -298,8 +290,6 @@ export default class Item extends Element {
   updateStatus() {}
 
   statusUpdated() {}
-
-  backStatusUpdated() {}
 
   moveTo(to) {
     this.x = to.x;
@@ -349,13 +339,6 @@ export default class Item extends Element {
   }
 
   update(options = {}) {
-    if (!options.skipNotification) {
-      this.updateTransform();
-      this.actdia?.updateItem(this);
-    }
-  }
-
-  updateBackStatus(options = {}) {
     if (!options.skipNotification) {
       this.updateTransform();
       this.actdia?.updateItem(this);
