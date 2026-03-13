@@ -101,14 +101,13 @@ export default class Connector extends Element {
   }
 
   setStatus(status, options = {}) {
-    status = deepCopy(status)
+    status = deepCopy(status);
+
+    this.onUpdate?.({ connector: this, status, options });
     this.status = status;
 
-    if (this.onUpdate) {
-      this.onUpdate({ status });
-    }
-
-    this.propagate(options);
+    if (options.propagate !== false)
+      this.propagate(options);
   }
 
   getStatusText() {

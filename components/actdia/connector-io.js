@@ -10,22 +10,15 @@ export default class ConnectorIO extends Connector {
 
   setStatus(status, options = {}) {
     if (!status.send) {
-      if (typeof status !== 'object')
+      if (typeof status !== 'object') {
         status = { send: status };
-      else 
+      } else {
         status = { recv: Object.values(status || {})[0] };
+        options.propagate = false;
+      }
     }
 
-    status = deepCopy(status)
-    this.status = status;
-
-    if (this.onUpdate) {
-      this.onUpdate({ status });
-    }
-
-    this.item?.updateStatus({ ...options, connector: this });
-
-    this.propagate(options);
+    super.setStatus(status, options);
   }
 
   propagate(options = {}) {
