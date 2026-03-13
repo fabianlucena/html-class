@@ -82,13 +82,11 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus(options = {}) {
-      this.setStatus(this.connectors.find(c => c.isInput)?.status, options);
+      this.setStatus(this.connectors.find(c => c.isInput)?.received, options);
     }
 
     propagate(options = {}) {
-      this.connectors
-        .filter(c => c.isOutput)
-        .forEach((c, i) => c.send(this.status[i], options));
+      this.outputs.forEach((c, i) => c.send(this.status[i], options));
     }
   };
 }
