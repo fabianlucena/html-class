@@ -61,8 +61,8 @@ export default async function create({ actdia, Node }) {
       this.tryUpdateShape(this.shape.children[1]);
     }
 
-    updateStatus(newStatus, options = {}) {
-      this.setStatus(newreceived, options);
+    updateStatus(status, options = {}) {
+      this.setStatus(status, options);
     }
 
     statusUpdated() {
