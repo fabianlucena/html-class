@@ -53,7 +53,7 @@ export default class Node extends Item {
     nodes.forEach(node => {
       node.connectors
         .filter(c => c.name === 'clk' || c.name === '!clk')
-        .forEach(c => c.setStatus(status));
+        .forEach(c => c.recv(status));
     });
   };
 
@@ -462,14 +462,14 @@ export default class Node extends Item {
   updateStatus(options = {}) {
     if (this.#clk) {
       if (this.#clkStatus === null) {
-        this.#clkStatus = this.#clk.status >= 0.5 ? 1 : 0;
+        this.#clkStatus = this.#clk.received >= 0.5 ? 1 : 0;
       } else {
-        if (this.#clk.status < 0.5) {
+        if (this.#clk.received < 0.5) {
           if (this.#clkStatus !== 0) {
             this.#clkStatus = 0;
             this.updateStatusRSync(options);
           }
-        } else if (this.#clk.status >= 0.5) {
+        } else if (this.#clk.received >= 0.5) {
           if (this.#clkStatus !== 1) {
             this.#clkStatus = 1;
             this.updateStatusSync(options);
