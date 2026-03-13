@@ -5,7 +5,7 @@ export default async function create({ actdia, Node }) {
     const outputs = actdia.items
       .filter(i => i.elementClass === 'LabelOutput' && i.label === label);
 
-    outputs.forEach(item => item.updateStatus(status));
+    outputs.forEach(item => item.setStatus(status));
   });
 
   return class LabelOutput extends Node {
@@ -59,10 +59,6 @@ export default async function create({ actdia, Node }) {
     update() {
       this.shape.children[1].text = this.label;
       this.tryUpdateShape(this.shape.children[1]);
-    }
-
-    updateStatus(status, options = {}) {
-      this.setStatus(status, options);
     }
 
     statusUpdated() {

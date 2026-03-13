@@ -50,7 +50,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus(options = {}) {
-      this.setStatus(this.connectors.find(c => c.isInput)?.status, options);
+      this.setStatus(this.connectors.find(c => c.isInput)?.received, options);
     }
 
     statusUpdated() {
