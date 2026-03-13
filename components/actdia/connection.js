@@ -48,6 +48,8 @@ export default class Connection extends Item {
     from.connector.addConnection(this);
 
     this.from = from;
+    if (from.connector.isOutput) 
+      this.setStatus(from.connector.sent);
   }
 
   setTo(to, items) {
@@ -73,6 +75,8 @@ export default class Connection extends Item {
     }
 
     this.to = to;
+    if (to.connector.isOutput)
+      this.setStatus(from.connector.sent);
   }
 
   removeReferencedItem(item) {
@@ -402,7 +406,7 @@ export default class Connection extends Item {
     return null;
   }
 
-  statusUpdated(options) {
+  statusUpdated(options = {}) {
     let to;
     if (options.from === this.from?.connector)
       to = this.to;
@@ -412,9 +416,9 @@ export default class Connection extends Item {
     if (to
       && to !== 'mouse'
       && to.connector.isInput
-      && !options.connectors.has(to.connector)
+      && !options.connectors?.has(to.connector)
     ) {
-      options = { ...options, connectors: new Set([...options.connectors]) };
+      options = { ...options, connectors: new Set([...options?.connectors ?? []]) };
       to.connector.recv(this.status, options);
     }
   }
