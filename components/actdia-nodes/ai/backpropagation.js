@@ -119,7 +119,6 @@ export default async function create({ actdia, Node, _ }) {
 
     updateStatus(options = {}) {
       const rst = this.#rst.received >= 0.5;
-      console.log(_('Backpropagation reset status: %s', rst));
       if (this.#lastRst !== rst) {
         this.#lastRst = rst;
         if (rst) {
