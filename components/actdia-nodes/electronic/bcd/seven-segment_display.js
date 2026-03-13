@@ -88,7 +88,7 @@ export default async function create({ actdia, Node }) {
     ];
 
     updateStatus() {
-      const s = this.connectors.map(c => Math.min(Math.max(c.status >= 0.5 ? 1 : 0, 0), 1));
+      const s = this.connectors.map(c => Math.min(Math.max(c.status.recv >= 0.5 ? 1 : 0, 0), 1));
       s.forEach((v, i) => {
         const shape = this.shape.children[1].children[i];
         shape.opacity = v * .9 + .1;

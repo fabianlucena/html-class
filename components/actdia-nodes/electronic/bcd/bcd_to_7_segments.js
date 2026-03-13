@@ -49,10 +49,10 @@ export default async function create({ actdia, Node }) {
     ];
 
     updateStatus() {
-      const q0 = this.connectors.find(c => c.name === 'q0').status >= 0.5;
-      const q1 = this.connectors.find(c => c.name === 'q1').status >= 0.5;
-      const q2 = this.connectors.find(c => c.name === 'q2').status >= 0.5;
-      const q3 = this.connectors.find(c => c.name === 'q3').status >= 0.5;
+      const q0 = this.connectors.find(c => c.name === 'q0').status.recv >= 0.5;
+      const q1 = this.connectors.find(c => c.name === 'q1').status.recv >= 0.5;
+      const q2 = this.connectors.find(c => c.name === 'q2').status.recv >= 0.5;
+      const q3 = this.connectors.find(c => c.name === 'q3').status.recv >= 0.5;
       const decimal = (q3 ? 8 : 0) + (q2 ? 4 : 0) + (q1 ? 2 : 0) + (q0 ? 1 : 0);
 
       // 7-segment encoding for digits 0-9
