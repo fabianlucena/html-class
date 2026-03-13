@@ -216,6 +216,12 @@ export default class Node extends Item {
 
     super.init();
 
+    this.connectors?.forEach((connector, index) => {
+      if (!(connector instanceof Connector)) {
+        this.connectors[index] = this.getNewConnector({ ...connector, index });
+      }
+    });
+
     let connectorsData = [];
     for (let i = 0; i < arguments.length; i++) {
       if (!arguments[i])
@@ -257,11 +263,18 @@ export default class Node extends Item {
       this.propagate();
     }
 
+    this.updateInputsAndOutputs();
+
     if (this.isInitializing <= 0) {
       this.isInitializing = 0;
     } else {
       this.isInitializing--;
     }
+  }
+
+  updateInputsAndOutputs() {
+    this.#inputs = this.connectors.filter(c => c.isInput);
+    this.#outputs = this.connectors.filter(c => c.isOutput);
   }
 
   getNewConnector(connector) {
@@ -292,6 +305,7 @@ export default class Node extends Item {
     const newConnector = this.getNewConnector(connector);
     newConnector.item = this;
     this.connectors.push(newConnector);
+    this.updateInputsAndOutputs();
     if (update) {
       this.update();
     }
@@ -312,6 +326,7 @@ export default class Node extends Item {
       const connector = this.connectors[i];
       if (connector.type === type) {
         this.connectors.splice(i, 1);
+        this.updateInputsAndOutputs();
         if (connector.connections?.length) {
           this.actdia.deleteItem(...connector.connections);
         }
@@ -384,8 +399,8 @@ export default class Node extends Item {
   update() {
     super.update();
     
-    this.#inputs = this.connectors.filter(c => c.isInput);
-    this.#outputs = this.connectors.filter(c => c.isOutput);
+    this.updateInputsAndOutputs();
+
     this.#clk = this.connectors.find(c => c.name === 'clk')
       || this.connectors.find(c => c.name === '!clk');
 
