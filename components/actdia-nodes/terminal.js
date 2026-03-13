@@ -57,6 +57,7 @@ export default async function create({ actdia, Node }) {
           width: 9,
           height: 2,
           space: 'preserve',
+          fontFamily: 'Consolas, "Courier New", monospace',
         },
       ],
     };

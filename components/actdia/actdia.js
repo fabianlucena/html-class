@@ -1349,12 +1349,16 @@ export default class ActDia {
     typeof style.fontfill !== 'undefined' && style.fontfill !== null && (styleAttribute.fill = style.fontfill);
     typeof style.fill !== 'undefined' && style.fill !== null && (styleAttribute.fill = style.fill);
     typeof fontSize !== 'undefined' && fontSize !== null && (attributes['font-size'] = `${fontSize}`);
-    typeof style.fontFamily !== 'undefined' && style.fontFamily !== null && (attributes.fontFamily = style.fontFamily);
+    typeof style.fontFamily !== 'undefined' && style.fontFamily !== null && (styleAttribute['font-family'] = style.fontFamily.replace(/"/g, '\''));
     typeof textAnchor !== 'undefined' && textAnchor !== null && (styleAttribute['text-anchor'] = textAnchor);
     typeof dominantBaseline !== 'undefined' && dominantBaseline !== null && (styleAttribute['dominant-baseline'] = dominantBaseline);
+    
+    if (style.space)
+      attributes['xml:space'] = style.space;
 
     if (style.textDecoration)
       styleAttribute['text-decoration'] = style.textDecoration;
+
     if (Object.keys(styleAttribute).length) {
       attributes.style = styleAttribute;
     }
@@ -1850,10 +1854,6 @@ export default class ActDia {
       }
 
       attributes.box = box;
-    }
-
-    if (style.space) {
-      attributes['xml:space'] = style.space;
     }
 
     return {
