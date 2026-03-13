@@ -8,10 +8,10 @@ export default async function create({ actdia, _f }) {
     static _label = _f('Projection matrix');
 
     connectors = [
-      { name: 'fov',    type: 'in',  x: 1, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({status}) => this.setFov(status) },
-      { name: 'aspect', type: 'in',  x: 2, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({status}) => this.setAspect(status) },
-      { name: 'near',   type: 'in',  x: 3, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({status}) => this.setNear(status) },
-      { name: 'far',    type: 'in',  x: 4, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({status}) => this.setFar(status) },
+      { name: 'fov',    type: 'in',  x: 1, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({data}) => this.setFov(data) },
+      { name: 'aspect', type: 'in',  x: 2, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({data}) => this.setAspect(data) },
+      { name: 'near',   type: 'in',  x: 3, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({data}) => this.setNear(data) },
+      { name: 'far',    type: 'in',  x: 4, y: 3, direction: 'bottom', extends: 'tiny', onUpdate: ({data}) => this.setFar(data) },
       { name: 'output', type: 'out', x: 2, y: 1, direction: 'right',  extends: 'tiny' },
     ];
 

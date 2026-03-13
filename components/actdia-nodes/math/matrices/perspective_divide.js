@@ -41,7 +41,7 @@ export default async function create({ actdia, Node, _, _f }) {
     }
 
     perspectiveDivide() {
-      const data = this.inputs[0]?.status;
+      const data = this.inputs[0]?.received;
       if (!Array.isArray(data)) {
         return _('No vector input');
       }

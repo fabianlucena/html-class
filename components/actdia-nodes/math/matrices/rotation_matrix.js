@@ -130,7 +130,7 @@ export default async function create({ actdia, _f }) {
       }
 
       const angleScale = this.actdia?.properties.angleScale || 1;
-      this.#angle = this.#input?.status ?? 0;
+      this.#angle = this.#input?.received ?? 0;
       let ca = Math.cos(this.#angle * angleScale);
       let sa = Math.sin(this.#angle * angleScale);
       if (this.#type === '2d') {

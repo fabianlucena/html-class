@@ -48,9 +48,9 @@ export default async function create({ actdia, _f }) {
     #type = '2d';
 
     connectors = [
-      { name: 'x', type: 'in',  x: 1, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({status}) => this.setTranslation({ x: status }) },
-      { name: 'y', type: 'in',  x: 2, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({status}) => this.setTranslation({ y: status }) },
-      { name: 'z', type: 'in',  x: 3, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({status}) => this.setTranslation({ z: status }) },
+      { name: 'x', type: 'in',  x: 1, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({data}) => this.setTranslation({ x: data }) },
+      { name: 'y', type: 'in',  x: 2, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({data}) => this.setTranslation({ y: data }) },
+      { name: 'z', type: 'in',  x: 3, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({data}) => this.setTranslation({ z: data }) },
       { name: 'output', type: 'out', x: 2, y: 1, direction: 'right', extends: 'tiny' },
     ];
 

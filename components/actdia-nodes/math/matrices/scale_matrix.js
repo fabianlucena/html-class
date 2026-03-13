@@ -55,9 +55,9 @@ export default async function create({ actdia, _f }) {
     #augmented = false;
 
     connectors = [
-      { name: 'x', type: 'in',  x: 1, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({status}) => this.setScale({ x: status }) },
-      { name: 'y', type: 'in',  x: 2, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({status}) => this.setScale({ y: status }) },
-      { name: 'z', type: 'in',  x: 3, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({status}) => this.setScale({ z: status }) },
+      { name: 'x', type: 'in',  x: 1, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({data}) => this.setScale({ x: data }) },
+      { name: 'y', type: 'in',  x: 2, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({data}) => this.setScale({ y: data }) },
+      { name: 'z', type: 'in',  x: 3, y: 3, direction: 'bottom',  extends: 'tiny', onUpdate: ({data}) => this.setScale({ z: data }) },
       { name: 'output', type: 'out', x: 2, y: 1, direction: 'right', extends: 'tiny' },
     ];
 

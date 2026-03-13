@@ -44,12 +44,12 @@ export default async function create({ actdia, Node, _, _f }) {
     }
 
     add() {
-      const v0 = this.inputs[0]?.status;
+      const v0 = this.inputs[0]?.received;
       if (!v0 && v0 !== 0) {
         return _('No matrix input');
       }
 
-      const v1 = this.inputs[1]?.status;
+      const v1 = this.inputs[1]?.received;
       if (!v1 && v1 !== 0) {
         return _('No matrix input');
       }
