@@ -47,20 +47,20 @@ export default async function create({ actdia, Node }) {
     previousClockStatus = 0;
 
     updateStatus(options) {
-      let reset = this.connectors.find(c => c.name === 'rst').status.recv >= 0.5;
+      let reset = this.connectors.find(c => c.name === 'rst').received >= 0.5;
       if (reset) {
         this.status = 0;
         this.propagate(options);
         return;
       }
 
-      let enabled = this.connectors.find(c => c.name === 'en').status.recv >= 0.5;
+      let enabled = this.connectors.find(c => c.name === 'en').received >= 0.5;
       if (!enabled) {
         return;
       }
 
       const clock = this.connectors.find(c => c.name === 'clk');
-      if (clock.status.recv < 0.5) {
+      if (clock.received < 0.5) {
         this.previousClockStatus = 0;
         return;
       }
@@ -92,10 +92,10 @@ export default async function create({ actdia, Node }) {
         q2 = (this.status % 8) >= 4 ? 1: 0,
         q3 = this.status >= 8 ? 1: 0;
 
-      if (q0 !== outs[0].status.send) outs[0].send(q0, options);
-      if (q1 !== outs[1].status.send) outs[1].send(q1, options);
-      if (q2 !== outs[2].status.send) outs[2].send(q2, options);
-      if (q3 !== outs[3].status.send) outs[3].send(q3, options);
+      if (q0 !== outs[0].sent) outs[0].send(q0, options);
+      if (q1 !== outs[1].sent) outs[1].send(q1, options);
+      if (q2 !== outs[2].sent) outs[2].send(q2, options);
+      if (q3 !== outs[3].sent) outs[3].send(q3, options);
     }
   };
 }

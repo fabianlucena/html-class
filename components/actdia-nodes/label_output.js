@@ -62,7 +62,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus(newStatus, options = {}) {
-      this.setStatus(newStatus.recv, options);
+      this.setStatus(newreceived, options);
     }
 
     statusUpdated() {

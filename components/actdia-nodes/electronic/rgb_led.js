@@ -31,9 +31,9 @@ export default async function create({ actdia, Node }) {
 
     updateStatus() {
       let
-        r = this.connectors[0].status.recv || 0,
-        g = this.connectors[1].status.recv || 0,
-        b = this.connectors[2].status.recv || 0;
+        r = this.connectors[0].received || 0,
+        g = this.connectors[1].received || 0,
+        b = this.connectors[2].received || 0;
 
       if (isNaN(r) || r <= 0) r = 0;
       if (isNaN(g) || g <= 0) g = 0;

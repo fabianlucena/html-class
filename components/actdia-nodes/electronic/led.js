@@ -75,7 +75,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus() {
-      let status = this.connectors[0].status.recv || 0;
+      let status = this.connectors[0].received || 0;
       if (isNaN(status) || status <= 0) {
         status = 0;
       }

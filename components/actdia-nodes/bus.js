@@ -82,7 +82,7 @@ export default async function create({ actdia, Node }) {
     }
 
     updateStatus(options = {}) {
-      this.setStatus([...this.connectors.filter(c => c.isInput).map(c => c.status)], options);
+      this.setStatus([...this.connectors.filter(c => c.isInput).map(c => c.received)], options);
     }
   };
 }

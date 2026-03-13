@@ -123,7 +123,7 @@ export default async function create({ actdia, Node, _ }) {
     }
 
     updateStatus() {
-      let status = this.connectors[0].status;
+      let status = this.connectors[0].received;
       if (!Array.isArray(status)) {
         status = [status];
       }

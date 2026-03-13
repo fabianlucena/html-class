@@ -48,7 +48,8 @@ export default class Connector extends Element {
   }
 
   connections = [];
-  status = {};
+  received;
+  sent;
 
   init(options) {
     super.init(...arguments);
@@ -102,7 +103,7 @@ export default class Connector extends Element {
   }
 
   send(data, options = {}) {
-    this.status.send = deepCopy(data);
+    this.sent = deepCopy(data);
 
     options = {...options};
     this.onSend?.({ connector: this, data, options });
@@ -116,7 +117,7 @@ export default class Connector extends Element {
   }
 
   recv(data, options = {}) {
-    this.status.recv = deepCopy(data);
+    this.received = deepCopy(data);
 
     this.onRecv?.({ connector: this, data, options });
     this.onUpdate?.({ connector: this, data, action: 'recv', options });
@@ -127,13 +128,26 @@ export default class Connector extends Element {
 
     if (options.backPropagate) {
       options.action = 'recv';
-      options.data ??= this.status.recv;
+      options.data ??= this.received;
       this.backPropagate(options);
     }
   }
 
   getStatusText() {
-    return getStatusText(this.status);
+    let text = [];
+    if (typeof this.received !== 'undefined') {
+      text.push(_('received: %s', this.received));
+    }
+
+    if (typeof this.sent !== 'undefined') {
+      text.push(_('sent: %s', this.sent));
+    }
+
+    if (!text.length) {
+      text.push(_('no data sent or received yet.'));
+    }
+
+    return getStatusText(text.join('\n'));
   }
 
   propagate(options = {}) {
