@@ -152,8 +152,7 @@ export default class Element {
 
   static getElementsClassRefForUrl(url) {
     return Object.values(registry)
-      .filter(classInfo => classInfo.url === url)
-      .map(classInfo => classInfo.classRef);
+      .filter(classInfo => classInfo.url === url);
   }
 
   static create(data) {
