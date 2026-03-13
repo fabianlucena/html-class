@@ -119,6 +119,7 @@ export default class Connector extends Element {
   recv(data, options = {}) {
     this.received = deepCopy(data);
 
+    options = {...options, connector: this, action: 'recv', data: this.received };
     this.onRecv?.({ connector: this, data, options });
     this.onUpdate?.({ connector: this, data, action: 'recv', options });
 
@@ -127,8 +128,6 @@ export default class Connector extends Element {
     }
 
     if (options.backPropagate) {
-      options.action = 'recv';
-      options.data ??= this.received;
       this.backPropagate(options);
     }
   }
