@@ -56,6 +56,7 @@ export default async function create({ actdia, Node }) {
           dominantBaseline: 'top',
           width: 9,
           height: 2,
+          space: 'preserve',
         },
       ],
     };
@@ -68,7 +69,7 @@ export default async function create({ actdia, Node }) {
     };
 
     connectors = [
-      { name: 'port', type: 'io', x: 0, y: 1, direction: 'left', onUpdate: params => this.onPortUpdated(params) },
+      { name: 'port', type: 'io', x: 0, y: 1, direction: 'left', onRecv: params => this.onPortRecv(params) },
     ];
 
     canChangeWidth = true;
@@ -142,15 +143,11 @@ export default async function create({ actdia, Node }) {
       if (key === '')
         return;
 
-      this.#portConnector.setStatus({ send: key }, { force: true });
+      this.#portConnector.send(key, { force: true });
     }
 
-    onPortUpdated({ status, options }) {
-      if (!Object.keys(status).includes('recv')) {
-        return;
-      }
-
-      this.shape.children[2].text += status.recv;
+    onPortRecv({ data }) {
+      this.shape.children[2].text += data;
       this.updateShape(this.shape.children[2]);
     }
   };

@@ -59,7 +59,7 @@ export default async function create({ actdia, _f }) {
 
     constructor() {
       super(...arguments);
-      this.connectors.push({ name: 'terminal', type: 'io', x: -1, y: 1, direction: 'left', onUpdate: param => this.terminalRecvHandler(param) });
+      this.connectors.push({ name: 'terminal', type: 'io', x: -1, y: 1, direction: 'left', onRecv: param => this.onTerminalRecv(param) });
     }
 
     init() {
@@ -68,12 +68,8 @@ export default async function create({ actdia, _f }) {
       this.status = '';
     }
 
-    terminalRecvHandler({ connector, status, options }) {
-      if (!Object.keys(status).includes('recv')) {
-        return;
-      }
-
-      let key = status.recv;
+    onTerminalRecv({ connector, data }) {
+      let key = data;
       switch (key) {
         case '\x1b':
           this.#command = '';
@@ -89,7 +85,7 @@ export default async function create({ actdia, _f }) {
           this.#command += key;
       }
       
-      connector.setStatus({ send: key }, { force: true });
+      connector.send(key, { force: true });
     }
 
     execCommand() {
