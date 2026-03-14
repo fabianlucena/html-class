@@ -15,7 +15,7 @@ const commands = {
   },
   'ip': {
     help: 'Show network interfaces.',
-    usage: 'ip a',
+    usage: 'ip addr',
     exec: ip
   },
   'ping': {
@@ -47,10 +47,33 @@ function clear() {
 }
 
 function ip({ args, commandData }) {
-  if (args.length > 1 || args[0] !== 'a')
+  if (args[0] === 'address'.substring(0, args[0].length)) {
+    return ip_addr.bind(this)({ args: args.slice(1), commandData });
+  }
+
+  return usage(commandData);
+}
+
+function ip_addr({ args, commandData }) {
+  const command = args[0] ?? 'show',
+    commandLength = command.length ;
+
+  if (command === 'show'.substring(0, commandLength)) {
+    return ip_addr_show.bind(this)({ args: args.slice(1), commandData });
+  } else if (command === 'help'.substring(0, commandLength)) {
+    return ip_addr_help.bind(this)({ args: args.slice(1), commandData });
+  } else if (command === 'add'.substring(0, commandLength)) {
+    return ip_addr_add.bind(this)({ args: args.slice(1), commandData });
+  }
+
+  return `Object "${args[0]}" is unknown, try "ip address help"\n`;
+}
+
+// ip addr show eth0
+function ip_addr_show({ args, commandData }) {
+  if (args.length > 1)
     return usage(commandData);
 
-  
 /*$ ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -69,19 +92,35 @@ function ip({ args, commandData }) {
 3: wlp2s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 1000
     link/ether 54:27:8d:aa:bb:cc brd ff:ff:ff:ff:ff:ff*/
 
+  if (!this.netInterfaces.length)
+    return 'Device not found.\n';
+
+  let interfaces;
+  if (args.length) {
+    const filter = args[0],
+      filterLength = filter.length;
+    interfaces = this.netInterfaces
+      .filter(i => filter === i.name.substring(0, filterLength));
+
+    if (interfaces.length !== 1)
+      interfaces = this.netInterfaces;
+  } else {
+    interfaces = this.netInterfaces;
+  }
+
   let result = '';
-  for (let i in this.netInterfaces) {
-    const netInterface = this.netInterfaces[i];
+  for (let i in interfaces) {
+    const netInterface = interfaces[i];
     result += `${i}: ${netInterface.name}: <${netInterface.link === 'loopback' ? 'LOOPBACK,UP,LOWER_UP' : 'BROADCAST,MULTICAST,UP,LOWER_UP'}>  mtu ${netInterface.mtu}\n`
       + `    link/${netInterface.link} ${netInterface.mac} brd ${netInterface.macBrd}\n`;
 
     result += netInterface.inet.map(inet => 
-      `    inet ${inet.address}/${inet.prefix}${inet.broadcast ? ` brd ${inet.broadcast}` : ''} scope ${inet.scope}\n`
+      `    inet ${inet.address}/${inet.prefix}${inet.broadcast ? ` brd ${inet.broadcast}` : ''} scope ${inet.scope}${inet.secondary && ' secondary' || ''}\n`
       + `       valid_lft ${inet.valid_lft} preferred_lft ${inet.preferred_lft}`)
       .join('\n') + '\n';
 
     result += netInterface.inet6.map(inet6 => 
-      `    inet6 ${inet6.address}/${inet6.prefix} scope ${inet6.scope}\n`
+      `    inet6 ${inet6.address}/${inet6.prefix} scope ${inet6.scope}${inet6.secondary && ' secondary' || ''}\n`
       + `       valid_lft ${inet6.valid_lft} preferred_lft ${inet6.preferred_lft}`)
       .join('\n') + '\n ';
 
@@ -91,6 +130,39 @@ function ip({ args, commandData }) {
   return result;
 }
 
+function ip_addr_help() {
+  return `Usage: ip address { add | del } IFADDR dev STRING
+       ip address { show | flush } [ dev STRING ] [ scope SCOPE-ID ]
+                                 [ to PREFIX ] [ FLAG-LIST ] [ label PATTERN ]
+       ip address { save | restore }
+       ip address { help }
+
+IFADDR := PREFIX | ADDR peer PREFIX
+          [ broadcast ADDR ] [ anycast ADDR ]
+          [ label STRING ] [ scope SCOPE-ID ]
+          [ metric NUMBER ] [ valid_lft LFT ] [ preferred_lft LFT ]
+
+SCOPE-ID := [ host | link | global | NUMBER ]
+
+FLAG-LIST := [ dynamic | permanent | secondary | primary | tentative |
+               deprecated | dadfailed | temporary | CONFFLAG-LIST ]
+
+CONFFLAG-LIST := [ home | nodad | mngtmpaddr | noprefixroute | autojoin ]\n`;
+}
+
+// ip addr add 192.168.1.50/24 dev eth0
+function ip_addr_add({ args, commandData }) {
+  if (args.length < 3 || args[1] !== 'dev'.substring(0, args[1].length))
+    return usage(commandData);
+
+  const ip = args[0];
+  const dev = args[2];
+
+  this.addIPAddress(dev, ip);
+
+  return '';
+}
+
 function ping({ args }) {
   if (args.length === 0) {
     return usage(commands.ping);
@@ -98,6 +170,9 @@ function ping({ args }) {
 
   return `Pinging ${args[0]}...\n`;
 }
+
+// sudo ip route add default via 192.168.1.1
+// sudo ip addr del 192.168.1.50/24 dev eth0
 
 export default function NetworkBaseMixin(Base) {
   return class extends Base {
@@ -147,6 +222,8 @@ export default function NetworkBaseMixin(Base) {
           prefix: maskToPrefix(inet.netmask),
           netmask: ntop(inet.netmask),
           broadcast: inet.broadcast ? ntop(inet.broadcast) : null,
+          secondary: inet.secondary,
+          dynamic: inet.dynamic,
           scope: inet.scope,
           valid_lft: inet.valid_lft,
           preferred_lft: inet.preferred_lft,
@@ -156,6 +233,8 @@ export default function NetworkBaseMixin(Base) {
           prefix: maskToPrefix(inet6.netmask),
           netmask: ntop(inet6.netmask),
           broadcast: inet6.broadcast ? ntop(inet6.broadcast) : null,
+          secondary: inet6.secondary,
+          dynamic: inet.dynamic,
           scope: inet6.scope,
           valid_lft: inet6.valid_lft,
           preferred_lft: inet6.preferred_lft,
@@ -266,10 +345,26 @@ export default function NetworkBaseMixin(Base) {
 
       inet.address = address;
 
+      if (typeof netInterface === 'string') {
+        const name = netInterface,
+          nameLength = name.length;
+          
+        const founded = this.#netInterfaces.filter(i => name === i.name.substring(0, nameLength));
+        if (!founded.length)
+          throw new Error(`Network interface "${netInterface}" not found`);
+
+        if (founded.length > 1)
+          throw new Error('Too much interfaces');
+
+        netInterface = founded[0];
+      }
+
       if (address.length === 4) {
+        inet.secondary = !!netInterface.inet.length;
         netInterface.inet.push(inet);
-        inet.scope ??= 'global dynamic ' + netInterface.name;
+        inet.scope ??= 'global';
       } else if (address.length === 16) {
+        inet.secondary = !!netInterface.inet6.length;
         netInterface.inet6.push(inet);
         inet.netmask ??= prefixToMask(parseInt(prefix), 16);
         inet.scope ??= 'link';
