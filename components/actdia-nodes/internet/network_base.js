@@ -145,7 +145,7 @@ export default function NetworkBaseMixin(Base) {
         inet: netInterface.inet.map(inet => ({
           address: ntop(inet.address),
           prefix: maskToPrefix(inet.netmask),
-          mask: ntop(inet.netmask),
+          netmask: ntop(inet.netmask),
           broadcast: inet.broadcast ? ntop(inet.broadcast) : null,
           scope: inet.scope,
           valid_lft: inet.valid_lft,
@@ -154,7 +154,7 @@ export default function NetworkBaseMixin(Base) {
         inet6: netInterface.inet6.map(inet6 => ({
           address: ntop(inet6.address),
           prefix: maskToPrefix(inet6.netmask),
-          mask: ntop(inet6.netmask),
+          netmask: ntop(inet6.netmask),
           broadcast: inet6.broadcast ? ntop(inet6.broadcast) : null,
           scope: inet6.scope,
           valid_lft: inet6.valid_lft,
@@ -172,35 +172,17 @@ export default function NetworkBaseMixin(Base) {
       netInterface = { ...netInterface };
       netInterface.name ??= `eth${this.netInterfaces.length}`;
       netInterface.link ??= 'ether';
+      netInterface.inet ??= [];
+      netInterface.inet6 ??= [];
 
       if (netInterface.link === 'loopback') {
         netInterface.mac ??= new Uint8Array(6);
         netInterface.mtu ??= 65536;
         netInterface.macBrd ??= new Uint8Array(6);
-        netInterface.inet = [
-          {
-            address: pton('127.0.0.1'),
-            netmask: pton('255.0.0.0'),
-            scope: 'host lo',
-            valid_lft: 'forever',
-            preferred_lft: 'forever',
-          },
-        ];
-        netInterface.inet6 = [
-          {
-            address: pton('::1'),
-            netmask: pton('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'),
-            scope: 'host',
-            valid_lft: 'forever',
-            preferred_lft: 'forever',
-          },
-        ];
       } else {
         netInterface.mac ??= generateLocalMac();
         netInterface.mtu ??= 1500;
         netInterface.macBrd ??= new Uint8Array(6).fill(255);
-        netInterface.inet = [];
-        netInterface.inet6 = [];
       }
 
       if (typeof netInterface.mac === 'string')
@@ -212,34 +194,90 @@ export default function NetworkBaseMixin(Base) {
       if (typeof netInterface.connector === 'string')
         netInterface.connector = this.getConnector(netInterface.connector);
 
+      if (netInterface.inet) {
+        const inet = [...netInterface.inet];
+        netInterface.inet = [];
+        inet.forEach(inet => this.addIPAddress(netInterface, inet));
+      }
+
+      if (netInterface.inet6) {
+        const inet6 = [...netInterface.inet6];
+        netInterface.inet6 = [];
+        inet6.forEach(inet6 => this.addIPAddress(netInterface, inet6));
+      }
+
+      if (netInterface.link === 'loopback') {
+        if (!netInterface.inet.length) {
+          netInterface.inet = [
+            {
+              address: pton('127.0.0.1'),
+              netmask: pton('255.0.0.0'),
+              scope: 'host lo',
+              valid_lft: 'forever',
+              preferred_lft: 'forever',
+            },
+          ];
+        }
+        if (!netInterface.inet6.length) {
+          netInterface.inet6 = [
+            {
+              address: pton('::1'),
+              netmask: pton('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'),
+              scope: 'host',
+              scope: 'host',
+              valid_lft: 'forever',
+              preferred_lft: 'forever',
+            },
+          ];
+        }
+      }
+
       this.#netInterfaces.push(netInterface);
 
       return netInterface;
     }
 
-    addIPAddress(netInterface, ip, inet = {}) {
-      const [address, prefix] = ip.split('/');
-      const add = pton(address);
-      if (!inet.netmask && typeof prefix === 'undefined') {
-        throw new Error('Netmask or prefix is required');
+    addIPAddress(netInterface, ip, inet) {
+      if (typeof ip === 'object' && !inet) {
+        inet = ip;
+        ip = null;
       }
 
-      inet = {
-        ...inet,
-        address: add,
-      };
+      inet ??= {};
 
-      if (add.length === 4) {
+      let address;
+      if (ip) {
+        let prefix;
+        [address, prefix] = ip.split('/');
+        address = pton(address);
+        if (typeof prefix !== 'undefined') {
+          inet.netmask ??= prefixToMask(parseInt(prefix), address.length);
+        } else if (!inet.netmask) {
+          if (typeof inet.prefix !== 'undefined') {
+            inet.netmask ??= prefixToMask(parseInt(inet.prefix), address.length);
+          } else {
+            throw new Error('Netmask or prefix is required');
+          }
+        }
+      } else {
+        address = pton(inet.address);
+        inet.netmask = pton(inet.netmask) ?? pton(inet.mask);
+      }
+
+      inet.address = address;
+
+      if (address.length === 4) {
         netInterface.inet.push(inet);
-        inet.netmask ??= prefixToMask(parseInt(prefix));
         inet.scope ??= 'global dynamic ' + netInterface.name;
-      } else if (add.length === 16) {
+      } else if (address.length === 16) {
         netInterface.inet6.push(inet);
-        inet.netmask ??= prefixToMask(parseInt(prefix));
+        inet.netmask ??= prefixToMask(parseInt(prefix), 16);
         inet.scope ??= 'link';
+      } else {
+        throw new Error('Invalid IP address length');
       }
 
-      inet.broadcast ??= ipToBrd(add, inet.netmask);
+      inet.broadcast = ipToBrd(address, inet.netmask);
 
       inet.valid_lft ??= '86399sec';
       inet.preferred_lft ??= '86399sec';
@@ -260,7 +298,7 @@ export default function NetworkBaseMixin(Base) {
 
       const commandData = commands[command1];
       if (!commandData || !commandData.exec)
-        return `Unknown command: ${command1}. Try help for allowed commands.`;
+        return `Unknown command: ${command1}. Try help for allowed commands.\n`;
 
       return commandData.exec.bind(this)({command, args, commandData});
     }
