@@ -148,8 +148,29 @@ export default async function create({ actdia, Node }) {
     }
 
     onPortRecv({ data }) {
-      this.shape.children[2].text += data;
+      this.shape.children[2].text = this.parseVT100(data, this.shape.children[2].text);
       this.updateShape(this.shape.children[2]);
+    }
+
+    parseVT100(data, buffer = '') {
+      for (let i = 0, l = data.length - 1; i <= l; i++) {
+        const char = data[i];
+        if (char === '\x1B' && i < l && data[i + 1] === '[') {
+          if (data.substring(i + 2, i + 4) === '2J') {
+            i += 3;
+            buffer = '';
+          } else if (data.substring(i + 2, i + 3) === 'H') {
+            i += 2;
+            buffer = '';
+          }
+        } else if (char === '\b') {
+          buffer = buffer.slice(0, -1);
+        } else {
+          buffer += data[i];
+        }
+      }
+
+      return buffer;
     }
   };
 }
