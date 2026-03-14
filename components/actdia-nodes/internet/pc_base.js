@@ -1,8 +1,8 @@
 export default async function create({ actdia }) {
   await actdia.loadLocaleForMeta(import.meta);
-  const { Device } = await actdia.getElementsClassOrImportForMeta('device.js', import.meta);
+  const { NetworkDevice } = await actdia.getElementsClassOrImportForMeta('network_device.js', import.meta);
 
-  return class PCBase extends Device {
+  return class PCBase extends NetworkDevice {
     shape = {
       children: [
         {
@@ -23,7 +23,7 @@ export default async function create({ actdia }) {
     };
 
     connectors = [
-      { name: 'lan', type: 'utpPort', x: -1, y: 0, direction: 'left' },
+      { name: 'eth0', type: 'utpPort', x: -1, y: 0, direction: 'left' },
     ];
 
     box = {
@@ -32,5 +32,16 @@ export default async function create({ actdia }) {
       width: 2,
       height: 4,
     };
+
+    init() {
+      super.init(...arguments);
+      if (!this.getNetInterface('lo')) {
+        this.addInterface({ name: 'lo' });
+      }
+
+      if (!this.getNetInterface('eth0')) {
+        this.addInterface({ name: 'eth0', connector: this.getConnector('eth0') });
+      }
+    }
   };
 }
