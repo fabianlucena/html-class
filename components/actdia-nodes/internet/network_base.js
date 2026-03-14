@@ -234,7 +234,7 @@ export default function NetworkBaseMixin(Base) {
           netmask: ntop(inet6.netmask),
           broadcast: inet6.broadcast ? ntop(inet6.broadcast) : null,
           secondary: inet6.secondary,
-          dynamic: inet.dynamic,
+          dynamic: inet6.dynamic,
           scope: inet6.scope,
           valid_lft: inet6.valid_lft,
           preferred_lft: inet6.preferred_lft,
