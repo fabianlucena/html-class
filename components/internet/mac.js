@@ -7,7 +7,7 @@ export function generateLocalMac() {
   return bytes;
 }
 
-export function mac2str(mac) {
+export function macToStr(mac) {
   if (!mac)
     return null;
 
@@ -16,7 +16,7 @@ export function mac2str(mac) {
     .join(':');
 }
 
-export function str2mac(str) {
+export function strToMac(str) {
   if (!str)
     return null;
 
@@ -26,4 +26,3 @@ export function str2mac(str) {
 
   return new Uint8Array(bytes);
 }
-
