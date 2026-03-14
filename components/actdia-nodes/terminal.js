@@ -16,10 +16,10 @@ const keysTranslation = {
   'CapsLock': '',
   'Dead': '',
   'Escape': '\x1b',
-  'ArrowUp': '',
-  'ArrowRight': '',
-  'ArrowDown': '',
-  'ArrowLeft': '',
+  'ArrowUp': '\x1b[A',
+  'ArrowDown': '\x1b[B',
+  'ArrowRight': '\x1b[C',
+  'ArrowLeft': '\x1b[D',
 };
 
 export default async function create({ actdia, Node }) {
@@ -156,11 +156,21 @@ export default async function create({ actdia, Node }) {
       for (let i = 0, l = data.length - 1; i <= l; i++) {
         const char = data[i];
         if (char === '\x1B' && i < l && data[i + 1] === '[') {
-          if (data.substring(i + 2, i + 4) === '2J') {
+          if (data.substring(i + 2, i + 4) === '2J') { // Clear screen
             i += 3;
             buffer = '';
-          } else if (data.substring(i + 2, i + 3) === 'H') {
+          } else if (data.substring(i + 2, i + 3) === 'H') { // Move cursor to home
             i += 2;
+            buffer = '';
+          } else if (data.substring(i + 2, i + 4) === '2K') { // creal current line
+            i += 3;
+
+            const pos = buffer.length;
+            const idx = text.lastIndexOf('\n', pos - 1);
+            const start = idx === -1 ? 0 : idx + 1;
+            buffer = buffer.slice(0, start) + buffer.slice(pos);
+          } else if (data.substring(i + 2, i + 4) === '1G') { // move cursor to begining of line
+            i += 3;
             buffer = '';
           }
         } else if (char === '\b') {

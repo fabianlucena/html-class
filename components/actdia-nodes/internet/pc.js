@@ -8,6 +8,8 @@ export default async function create({ actdia, _f }) {
 
     #terminalConnector = null;
     #command = '';
+    #history = [];
+    #historyIndex = 0;
 
     constructor() {
       super(...arguments);
@@ -28,7 +30,31 @@ export default async function create({ actdia, _f }) {
           result = '';
           break;
 
+        case '\x1b[A':
+          if (this.#historyIndex > 0) {
+            this.#historyIndex--;
+          } else {
+            this.#historyIndex = 0;
+          }
+
+          this.#command = this.#history[this.#historyIndex];
+          result = '\x1b[1G' + this.#command;
+          break;
+
+        case '\x1b[A':
+          const last = this.#history.length - 1;
+          if (this.#historyIndex < last) {
+            this.#historyIndex++;
+          } else {
+            this.#historyIndex = last;
+          }
+          this.#command = this.#history[this.#historyIndex];
+          result = '\x1b[1G' + this.#command;
+          break;
+
         case '\n':
+          this.#history.push(this.#command);
+          this.#historyIndex = this.#history.length;
           result = '\n' + this.execCommand(this.#command) + '$ ';
           this.#command = '';
           break;
