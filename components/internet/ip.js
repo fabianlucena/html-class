@@ -19,7 +19,7 @@ export function ntop(ip) {
     let currentLen = 0;
 
     for (let i = 0; i < 8; i++) {
-      if (parts[i] === "0") {
+      if (parts[i] === '0') {
         if (currentStart === -1) {
           currentStart = i;
           currentLen = 1;
@@ -49,7 +49,7 @@ export function ntop(ip) {
         before.join(':'),
         '',
         after.join(':')
-      ].join(':').replace(/(^:|:$)/, '::');
+      ].join(':').replace(/(^:|:$)/, '::').replace(/:::/g, '::');
     }
 
     return parts.join(':');
@@ -59,6 +59,9 @@ export function ntop(ip) {
 }
 
 export function pton(str) {
+  if (!str)
+    return;
+
   let parts4 = str.split('.').map(Number);
   if (parts4.length === 4 && !parts4.some(p => isNaN(p) || p < 0 || p > 255)) {
     return new Uint8Array(parts4);
@@ -70,7 +73,7 @@ export function pton(str) {
   if (emptyIndex !== -1) {
     if (emptyIndex === 0 && hexParts[1] === '') {
       hexParts.splice(0, 2, '');
-    } else if (emptyIndex === hexParts.length - 1 && hexParts[hexParts.length - 2] === '') {
+    } else if (emptyIndex === hexParts.length - 2 && hexParts[hexParts.length - 1] === '') {
       hexParts.splice(hexParts.length - 2, 2, '');
     }
 
@@ -107,6 +110,9 @@ export function pton(str) {
 }
 
 export function maskToPrefix(mask) {
+  if (!mask)
+    return;
+
   let bits = 0;
   for (const byte of mask) {
     if (byte === 0xFF) {
@@ -140,7 +146,6 @@ export function prefixToMask(prefix, length = 4) {
 }
 
 export function ipToBrd(address, netmask) {
-  console.log(address, netmask);
   if (address.length !== netmask.length) {
     throw new Error('Address and netmask length mismatch');
   }
