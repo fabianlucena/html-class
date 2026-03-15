@@ -20,12 +20,17 @@ const keysTranslation = {
   'Control': '',
   'Alt': '',
   'CapsLock': '',
+  'NumLock': '',
   'Dead': '',
   'Escape': '\x1b',
   'ArrowUp': '\x1b[A',
   'ArrowDown': '\x1b[B',
   'ArrowRight': '\x1b[C',
   'ArrowLeft': '\x1b[D',
+  'PageUp': '\x1b[5~',
+  'PageDown': '\x1b[6~',
+  'ScrollLock': '',
+  'Meta': '',
 };
 
 export default async function create({ actdia, Node }) {

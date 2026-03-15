@@ -3,7 +3,8 @@ export default class TermBase {
   escapeNumber = '';
   escapeCommand = '';
   lmn = true;
-  tabSize = 4 ;
+  tabSize = 4;
+  pageSize = 10;
 
   constructor(options) {
     Object.assign(this, options);
@@ -45,11 +46,11 @@ export default class TermBase {
 
     switch (char) {
       case '\n':
+        this.enter();
         this.moveCursor(0, 1);
         if (this.lmn) {
           this.setCursor({ col: 0 });
         }
-        this.enter();
         break;
 
       case '\r':
@@ -131,9 +132,7 @@ export default class TermBase {
 
       case 'P': // Delete characters
         n = parseInt(this.escapeNumber) || 1;
-        for (let i = 0; i < n; i++) {
-          this.deleteChar(n);
-        }
+        this.deleteChar(n);
         break;
 
       case 'h': // Set mode 
@@ -171,6 +170,14 @@ export default class TermBase {
 
           case '4': // End key
             this.setCursor({ fromLastCol: 0 });
+            break;
+
+          case '5': // Page up
+            this.moveCursor(0, -this.pageSize);
+            break;
+
+          case '6': // Page down
+            this.moveCursor(0, this.pageSize);
             break;
         }
         

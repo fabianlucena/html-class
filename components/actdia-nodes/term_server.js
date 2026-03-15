@@ -60,27 +60,33 @@ export default class TermServer extends TermBase {
       }
     }
 
-    if (rowDelta < 0) {
-      if (this.historyIndex > 0) {
-        this.historyIndex--;
-      } else {
-        this.historyIndex = 0;
+    if (rowDelta) {
+      if (rowDelta < 0) {
+        if (this.historyIndex > 0) {
+          this.historyIndex--;
+        } else {
+          this.historyIndex = 0;
+        }
+      } else if (rowDelta > 0) {
+        const length = this.history.length;
+        if (this.historyIndex < length) {
+          this.historyIndex++;
+        } else {
+          this.historyIndex = length;
+        }
       }
 
-      if (this.history[this.historyIndex]) {
-        command = '\x1b[2K\x1b[1G' + (this.history[this.historyIndex] ?? '');
-      }
-    } else if (rowDelta > 0) {
-      const length = this.history.length;
-      if (this.historyIndex < length) {
-        this.historyIndex++;
-      } else {
-        this.historyIndex = length;
-      }
+      let newBuffer = this.history[this.historyIndex] ?? '';
       
-      if (this.history[this.historyIndex]) {
-        command = '\x1b[2K\x1b[1G' + (this.history[this.historyIndex] ?? '');
+      if (this.pos) {
+        command = `\x1b[${this.pos}D`;
       }
+      if (this.buffer) {
+        command += `\x1b[${this.buffer.length}P`;
+      }
+      command += newBuffer;
+      this.buffer = newBuffer;
+      this.pos = newBuffer.length;
     }
 
     this.send(command);
