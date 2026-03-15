@@ -47,11 +47,33 @@ function clear() {
 }
 
 function ip({ args, commandData }) {
+  if (args[0] === 'help'.substring(0, args[0].length)) {
+    return ip_help.bind(this)({ args: args.slice(1), commandData });
+  }
+
   if (args[0] === 'address'.substring(0, args[0].length)) {
     return ip_addr.bind(this)({ args: args.slice(1), commandData });
   }
 
+  if (args[0] === 'route'.substring(0, args[0].length)) {
+    return ip_route.bind(this)({ args: args.slice(1), commandData });
+  }
+
   return usage(commandData);
+}
+
+function ip_help() {
+  return `ip [ OPTIONS ] OBJECT { COMMAND | help }
+
+OBJECT :=
+  address
+  route
+  link
+  neigh
+  rule
+  tunnel
+  maddr
+  monitor\n`;
 }
 
 function ip_addr({ args, commandData }) {
@@ -66,7 +88,10 @@ function ip_addr({ args, commandData }) {
     return ip_addr_add.bind(this)({ args: args.slice(1), commandData });
   }
 
-  return `Object "${args[0]}" is unknown, try "ip address help"\n`;
+  if (!args[0])
+    return `No command specified, try "ip address help"\n`;
+
+  return `Command "${args[0]}" is unknown, try "ip address help"\n`;
 }
 
 // ip addr show eth0
@@ -161,6 +186,40 @@ function ip_addr_add({ args, commandData }) {
   this.addIPAddress(dev, ip);
 
   return '';
+}
+
+function ip_route({ args, commandData }) {
+  const command = args[0] ?? 'show',
+    commandLength = command.length ;
+
+  if (command === 'help'.substring(0, commandLength)) {
+    return ip_route_help.bind(this)({ args: args.slice(1), commandData });
+  }
+
+  if (!args[0])
+    return `No command specified, try "ip route help"\n`;
+
+  return `Command "${args[0]}" is unknown, try "ip route help"\n`;
+}
+
+function ip_route_help() {
+  return `Usage: ip route { list | flush } SELECTOR
+       ip route get ADDRESS
+       ip route { add | del | change | append | replace } ROUTE
+
+SELECTOR := [ root PREFIX ] [ match PREFIX ] [ exact PREFIX ]
+            [ table TABLE_ID ] [ proto RTPROTO ]
+            [ type TYPE ] [ scope SCOPE ]
+
+ROUTE := NODE_SPEC [ INFO_SPEC ]
+
+NODE_SPEC := [ TYPE ] PREFIX [ tos TOS ]
+             [ table TABLE_ID ] [ proto RTPROTO ]
+             [ scope SCOPE ] [ metric METRIC ]
+
+INFO_SPEC := { NH | nhid ID } OPTIONS FLAGS [ nexthop NH ]...
+
+NH := [ via ADDRESS ] [ dev STRING ] [ weight NUMBER ] ...\n`;
 }
 
 function ping({ args }) {
