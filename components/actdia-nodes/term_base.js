@@ -3,6 +3,7 @@ export default class TermBase {
   escapeNumber = '';
   escapeCommand = '';
   lmn = true;
+  tabSize = 4 ;
 
   constructor(options) {
     Object.assign(this, options);
@@ -61,7 +62,7 @@ export default class TermBase {
         break;
 
       case '\t':
-        this.moveCursor(4 - (this.cursor.col % 4), 0);
+        this.moveCursor(this.tabSize - (this.pos % this.tabSize), 0);
         break;
 
       case '\x1B':
@@ -156,9 +157,23 @@ export default class TermBase {
         break;
     
       case '~': // Other commands with numbers
-        if (this.escapeNumber === '3') { // Delete key
-          this.deleteChar(1);
+        switch (this.escapeNumber) {
+          case '1': // Home key
+            this.setCursor({ col: 0 });
+            break;
+
+          case '2': // Insert key
+            break;
+
+          case '3': // Delete key
+            this.deleteChar(1);
+            break;
+
+          case '4': // End key
+            this.setCursor({ fromLastCol: 0 });
+            break;
         }
+        
         break;
     }
   }

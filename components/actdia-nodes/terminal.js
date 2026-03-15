@@ -13,6 +13,8 @@ const keysTranslation = {
   'Backspace': '\b',
   'Delete': '\x1b[3~',
   'Insert': '\x1b[2~',
+  'Home': '\x1b[1~',
+  'End': '\x1b[4~',
   'Tab': '\t',
   'Shift': '',
   'Control': '',

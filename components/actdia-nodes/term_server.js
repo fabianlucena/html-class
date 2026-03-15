@@ -12,9 +12,19 @@ export default class TermServer extends TermBase {
     Object.assign(this, options);
   }
 
-  setCursor({ col, row }) {
-    this.pos = col;
-    if (typeof row === 'number') {
+  setCursor({ col, row, fromLastCol }) {
+    let colDelta = 0, rowDelta = 0;
+    if (typeof col === 'number') {
+      colDelta = col - this.pos;
+    } else if (typeof fromLastCol === 'number') {
+      colDelta = (this.buffer.length + fromLastCol) - this.pos;
+    }
+
+    this.moveCursor(colDelta, rowDelta);
+
+    //this.pos = col;
+
+    /*if (typeof row === 'number') {
       if (typeof col === 'number') {
         this.send(`\x1b[${(row + 1)};${col + 1}H`);
       } else {
@@ -22,7 +32,7 @@ export default class TermServer extends TermBase {
       }
     } else if (typeof col === 'number') {
       this.send(`\x1b[${(col + 1)}G`);
-    }
+    }*/
   }
 
   moveCursor(colDelta, rowDelta) {
