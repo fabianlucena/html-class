@@ -10,6 +10,7 @@ export default async function create({ actdia, _f }) {
 
     #terminalConnector = null;
     #termServer = new TermServer({
+      prompt: '> ',
       sendHandler: data => this.#terminalConnector.send(data, { force: true }),
       commandHandler: command => this.execCommand(command),
     });

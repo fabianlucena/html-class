@@ -5,6 +5,7 @@ export default class TermServer extends TermBase {
   pos = 0;
   history = [];
   historyIndex = 0;
+  prompt = '> ';
 
   constructor(options) {
     super(...arguments);
@@ -25,14 +26,28 @@ export default class TermServer extends TermBase {
   }
 
   moveCursor(colDelta, rowDelta) {
-    this.pos += colDelta;
-
     let command = '';
 
     if (colDelta > 0) {
-      command += '\x1b[' + colDelta + 'C';
+      let newPos = this.pos + colDelta;
+      if (newPos > this.buffer.length) {
+        colDelta = this.buffer.length - this.pos;
+      }
+
+      if (colDelta) {
+        this.pos += colDelta;
+        command += '\x1b[' + colDelta + 'C';
+      }
     } else if (colDelta < 0) {
-      command += '\x1b[' + (-colDelta) + 'D';
+      let newPos = this.pos + colDelta;
+      if (newPos < 0) {
+        colDelta = -this.pos;
+      }
+      
+      if (colDelta) {
+        this.pos += colDelta;
+        command += '\x1b[' + (-colDelta) + 'D';
+      }
     }
 
     if (rowDelta < 0) {
@@ -99,10 +114,11 @@ export default class TermServer extends TermBase {
   enter() {
     const command = this.buffer;
     this.buffer = '';
+    this.pos = 0;
     this.history.push(command);
     this.historyIndex = this.history.length;
 
-    const result = '\n' + this.execCommand(command) + '$ ';
+    const result = '\n' + this.execCommand(command) + this.prompt;
     this.send(result);
   }
 
