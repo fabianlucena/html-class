@@ -1,3 +1,5 @@
+import Term from './term.js';
+
 const input = document.createElement('input');
 input.style.position = 'absolute';
 input.style.left = '35em';
@@ -9,6 +11,8 @@ document.body.appendChild(input);
 const keysTranslation = {
   'Enter': '\n',
   'Backspace': '\b',
+  'Delete': '\x1b[3~',
+  'Insert': '\x1b[2~',
   'Tab': '\t',
   'Shift': '',
   'Control': '',
@@ -29,6 +33,7 @@ export default async function create({ actdia, Node }) {
     shape = {
       children: [
         {
+          name: 'frame',
           shape: 'rect',
           rx: .1,
           ry: .1,
@@ -36,28 +41,43 @@ export default async function create({ actdia, Node }) {
           height: 3,
         },
         {
-          shape: 'rect',
-          rx: .2,
-          ry: .2,
+          name: 'viewport',
           x: .5,
           y: .5,
-          fill: '#00000080',
-          width: 9,
-          height: 2,
-        },
-        {
-          shape: 'text',
-          text: '',
-          x: .5,
-          y: .5,
-          lineSpacing: 1.0,
-          fillOpacity: 1,
-          textAnchor: 'left',
-          dominantBaseline: 'top',
-          width: 9,
-          height: 2,
-          space: 'preserve',
-          fontFamily: 'Consolas, "Courier New", monospace',
+          children: [
+            {
+              shape: 'rect',
+              name: 'background',
+              shape: 'rect',
+              rx: .2,
+              ry: .2,
+              fill: '#00000080',
+              width: 9,
+              height: 2,
+            },
+            {
+              name: 'text',
+              shape: 'text',
+              text: '',
+              lineSpacing: 1.0,
+              fillOpacity: 1,
+              textAnchor: 'left',
+              dominantBaseline: 'top',
+              width: 9,
+              height: 2,
+              space: 'preserve',
+              fontFamily: 'Consolas, "Courier New", monospace',
+            },
+            {
+              shape: 'path',
+              className: 'blink',
+              name: 'cursor',
+              d: 'M 0 0 h 1',
+              stroke: '#a1a1a1',
+              fill: 'none',
+              strokeWidth: .2,
+            },
+          ],
         },
       ],
     };
@@ -77,54 +97,110 @@ export default async function create({ actdia, Node }) {
     canChangeHeight = true;
     #portConnector = null;
     #keyDownHandler = evt => this.keyDownHandler(evt);
+    #term = new Term();
+    #backgroundShape = null;
+    #viewportShape = null;
+    #frameShape = null;
+    #textShape = null;
+    #cursorShape = null;
+    #charWidth = 0;
+    #charHeight = 0;
 
-    setWidth(value) {
-      this.shape.children[0].width = value;
-      this.shape.children[1].width = value - 1;
-      super.setWidth(...arguments);
+    get term() {
+      return this.#term;
     }
 
-    setHeight(value) {
-      this.shape.children[0].height = value;
-      this.shape.children[1].height = value - 1;
-      super.setHeight(...arguments);
+    get rows() {
+      return this.#term.rows;
+    }
+
+    set rows(value) {
+      this.#term.rows = value;
+    }
+
+    get cols() {
+      return this.#term.cols;
+    }
+
+    set cols(value) {
+      this.#term.cols = value;
     }
 
     init() {
       super.init(...arguments);
       this.#portConnector = this.getConnector('port');
+      this.#frameShape = this.getShape('frame');
+      this.#viewportShape = this.getShape('viewport');
+      this.#backgroundShape = this.getShape('background');
+      this.#textShape = this.getShape('text');
+      this.#cursorShape = this.getShape('cursor');
     }
 
     update() {
-      let textShape = this.shape.children[1];
-      if (textShape) {
-        let svgText = textShape?.svgElement;
+      const vWidth = this.box.width - 1;
+      const vHeight = this.box.height - 1;
+      
+      if (this.#frameShape) {
+        this.#frameShape.width = this.box.width;
+        this.#frameShape.height = this.box.height;
+      }
+      
+      if (this.#viewportShape) {
+        this.#viewportShape.width = vWidth;
+        this.#viewportShape.height = vHeight;
+      }
+      
+      if (this.#backgroundShape) {
+        this.#backgroundShape.width = vWidth;
+        this.#backgroundShape.height = vHeight;
+      }
+
+      if (this.#textShape) {
+        this.#textShape.width = vWidth;
+        this.#textShape.height = vHeight;
+
+        let svgText = this.#textShape?.svgElement;
         if (svgText) {
           if (this.autoSize) {
             const lines = this.text.split('\n');
             const lastLine = lines[lines.length - 1];
             const bbox = svgText.getBBox();
 
-            this.box.width = bbox.width + this.padding.right + this.padding.left;
-            this.box.height = bbox.height + this.padding.top + this.padding.bottom;
+            this.box.width = bbox.width;
+            this.box.height = bbox.height;
             if (lastLine.trim().length <= 0) {
               bbox.height++;
             }
-
-            textShape.y = this.padding.top;
-            this.shape.children[0].width = this.box.width;
-            this.shape.children[0].height = this.box.height;
           }
 
-          this.tryUpdateShape(this.shape.children[0]);
-          this.tryUpdateShape(textShape, { skipChildren: true });
           this.actdia.updateItemSelectionBox(this);
+
+          let tspan = svgText.children[0];
+          if (!tspan?.getNumberOfChars()) {
+            this.#textShape.text = ' ';
+            this.tryUpdateShape(this.#textShape);
+            tspan = svgText.children[0];
+          }
+
+          let width;
+          if (tspan.getNumberOfChars() === 1) {
+            width = tspan.getComputedTextLength();
+          } else {
+            width = tspan.getStartPositionOfChar(1).x
+              - tspan.getStartPositionOfChar(0).x;
+          }
+
+          this.rows = Math.floor(vHeight);
+          this.cols = Math.floor(vWidth / width);
+
+          this.#charWidth = vWidth / this.cols;
+          this.#charHeight = vHeight / this.rows;
+
+          this.#cursorShape.d = `M 0 ${this.#charHeight} h ${this.#charWidth}`;
         }
       }
 
-      if (this.isEditing) {
-        return;
-      }
+      this.tryUpdateShape(this.shape);
 
       super.update();
     }
@@ -148,39 +224,13 @@ export default async function create({ actdia, Node }) {
     }
 
     onPortRecv({ data }) {
-      this.shape.children[2].text = this.parseVT100(data, this.shape.children[2].text);
-      this.updateShape(this.shape.children[2]);
-    }
+      this.#term.receive(data);
+      this.#textShape.text = this.term.viewport.map(l => l.map(c => c.char).join('')).join('\n');
+      this.tryUpdateShape(this.#textShape);
 
-    parseVT100(data, buffer = '') {
-      for (let i = 0, l = data.length - 1; i <= l; i++) {
-        const char = data[i];
-        if (char === '\x1B' && i < l && data[i + 1] === '[') {
-          if (data.substring(i + 2, i + 4) === '2J') { // Clear screen
-            i += 3;
-            buffer = '';
-          } else if (data.substring(i + 2, i + 3) === 'H') { // Move cursor to home
-            i += 2;
-            buffer = '';
-          } else if (data.substring(i + 2, i + 4) === '2K') { // creal current line
-            i += 3;
-
-            const pos = buffer.length;
-            const idx = text.lastIndexOf('\n', pos - 1);
-            const start = idx === -1 ? 0 : idx + 1;
-            buffer = buffer.slice(0, start) + buffer.slice(pos);
-          } else if (data.substring(i + 2, i + 4) === '1G') { // move cursor to begining of line
-            i += 3;
-            buffer = '';
-          }
-        } else if (char === '\b') {
-          buffer = buffer.slice(0, -1);
-        } else {
-          buffer += data[i];
-        }
-      }
-
-      return buffer;
+      this.#cursorShape.x = this.term.cursor.col * this.#charWidth;
+      this.#cursorShape.y = this.term.cursor.row * this.#charHeight;
+      this.tryUpdateShape(this.#cursorShape);
     }
   };
 }

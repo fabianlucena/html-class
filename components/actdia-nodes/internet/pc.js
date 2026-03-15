@@ -1,3 +1,5 @@
+import TermServer from './../term_server.js';
+
 export default async function create({ actdia, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
   const { PCBase } = await actdia.getElementsClassOrImportForMeta('pc_base.js', import.meta);
@@ -7,9 +9,10 @@ export default async function create({ actdia, _f }) {
     static _description = _f('PC node');
 
     #terminalConnector = null;
-    #command = '';
-    #history = [];
-    #historyIndex = 0;
+    #termServer = new TermServer({
+      sendHandler: data => this.#terminalConnector.send(data, { force: true }),
+      commandHandler: command => this.execCommand(command),
+    });
 
     constructor() {
       super(...arguments);
@@ -23,46 +26,7 @@ export default async function create({ actdia, _f }) {
     }
 
     onTerminalRecv({ connector, data }) {
-      let result = data;
-      switch (data) {
-        case '\x1b':
-          this.#command = '';
-          result = '';
-          break;
-
-        case '\x1b[A':
-          if (this.#historyIndex > 0) {
-            this.#historyIndex--;
-          } else {
-            this.#historyIndex = 0;
-          }
-
-          this.#command = this.#history[this.#historyIndex];
-          result = '\x1b[1G' + this.#command;
-          break;
-
-        case '\x1b[A':
-          const last = this.#history.length - 1;
-          if (this.#historyIndex < last) {
-            this.#historyIndex++;
-          } else {
-            this.#historyIndex = last;
-          }
-          this.#command = this.#history[this.#historyIndex];
-          result = '\x1b[1G' + this.#command;
-          break;
-
-        case '\n':
-          this.#history.push(this.#command);
-          this.#historyIndex = this.#history.length;
-          result = '\n' + this.execCommand(this.#command) + '$ ';
-          this.#command = '';
-          break;
-
-        default: 
-          this.#command += result;
-      }
-      
+      const result = this.#termServer.receive(data);
       connector.send(result, { force: true });
     }
   }
