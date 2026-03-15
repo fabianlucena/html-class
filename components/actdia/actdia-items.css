@@ -110,3 +110,7 @@
     fill: #8080D0;
   }
 }
+
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
