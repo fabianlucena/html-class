@@ -80,10 +80,10 @@ function ip_addr({ args, commandData }) {
   const command = args[0] ?? 'show',
     commandLength = command.length ;
 
-  if (command === 'show'.substring(0, commandLength)) {
-    return ip_addr_show.bind(this)({ args: args.slice(1), commandData });
-  } else if (command === 'help'.substring(0, commandLength)) {
+  if (command === 'help'.substring(0, commandLength)) {
     return ip_addr_help.bind(this)({ args: args.slice(1), commandData });
+  } else if (command === 'show'.substring(0, commandLength)) {
+    return ip_addr_show.bind(this)({ args: args.slice(1), commandData });
   } else if (command === 'add'.substring(0, commandLength)) {
     return ip_addr_add.bind(this)({ args: args.slice(1), commandData });
   }
@@ -92,6 +92,26 @@ function ip_addr({ args, commandData }) {
     return `No command specified, try "ip address help"\n`;
 
   return `Command "${args[0]}" is unknown, try "ip address help"\n`;
+}
+
+function ip_addr_help() {
+  return `Usage: ip address { add | del } IFADDR dev STRING
+       ip address { show | flush } [ dev STRING ] [ scope SCOPE-ID ]
+                                 [ to PREFIX ] [ FLAG-LIST ] [ label PATTERN ]
+       ip address { save | restore }
+       ip address { help }
+
+IFADDR := PREFIX | ADDR peer PREFIX
+          [ broadcast ADDR ] [ anycast ADDR ]
+          [ label STRING ] [ scope SCOPE-ID ]
+          [ metric NUMBER ] [ valid_lft LFT ] [ preferred_lft LFT ]
+
+SCOPE-ID := [ host | link | global | NUMBER ]
+
+FLAG-LIST := [ dynamic | permanent | secondary | primary | tentative |
+               deprecated | dadfailed | temporary | CONFFLAG-LIST ]
+
+CONFFLAG-LIST := [ home | nodad | mngtmpaddr | noprefixroute | autojoin ]\n`;
 }
 
 // ip addr show eth0
@@ -118,7 +138,7 @@ function ip_addr_show({ args, commandData }) {
     link/ether 54:27:8d:aa:bb:cc brd ff:ff:ff:ff:ff:ff*/
 
   if (!this.netInterfaces.length)
-    return 'Device not found.\n';
+    return 'No devices found.\n';
 
   let interfaces;
   if (args.length) {
@@ -155,26 +175,6 @@ function ip_addr_show({ args, commandData }) {
   return result;
 }
 
-function ip_addr_help() {
-  return `Usage: ip address { add | del } IFADDR dev STRING
-       ip address { show | flush } [ dev STRING ] [ scope SCOPE-ID ]
-                                 [ to PREFIX ] [ FLAG-LIST ] [ label PATTERN ]
-       ip address { save | restore }
-       ip address { help }
-
-IFADDR := PREFIX | ADDR peer PREFIX
-          [ broadcast ADDR ] [ anycast ADDR ]
-          [ label STRING ] [ scope SCOPE-ID ]
-          [ metric NUMBER ] [ valid_lft LFT ] [ preferred_lft LFT ]
-
-SCOPE-ID := [ host | link | global | NUMBER ]
-
-FLAG-LIST := [ dynamic | permanent | secondary | primary | tentative |
-               deprecated | dadfailed | temporary | CONFFLAG-LIST ]
-
-CONFFLAG-LIST := [ home | nodad | mngtmpaddr | noprefixroute | autojoin ]\n`;
-}
-
 // ip addr add 192.168.1.50/24 dev eth0
 function ip_addr_add({ args, commandData }) {
   if (args.length < 3 || args[1] !== 'dev'.substring(0, args[1].length))
@@ -194,6 +194,8 @@ function ip_route({ args, commandData }) {
 
   if (command === 'help'.substring(0, commandLength)) {
     return ip_route_help.bind(this)({ args: args.slice(1), commandData });
+  } else if (command === 'show'.substring(0, commandLength)) {
+    return ip_route_show.bind(this)({ args: args.slice(1), commandData });
   }
 
   if (!args[0])
@@ -220,6 +222,36 @@ NODE_SPEC := [ TYPE ] PREFIX [ tos TOS ]
 INFO_SPEC := { NH | nhid ID } OPTIONS FLAGS [ nexthop NH ]...
 
 NH := [ via ADDRESS ] [ dev STRING ] [ weight NUMBER ] ...\n`;
+}
+
+// ip addr show
+function ip_route_show({ args, commandData }) {
+  if (args.length > 1)
+    return usage(commandData);
+
+/*$ default via 192.168.1.1 dev eth0 proto dhcp metric 100
+10.0.0.0/24 dev docker0 proto kernel scope link src 10.0.0.1
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1
+192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.50 metric 100 */
+
+  if (!this.routes.length)
+    return 'No routes found.\n';
+
+  let routes = this.routes;
+
+  let result = '';
+  for (let i in routes) {
+    const route = routes[i];
+    if (route.destination === 'default') {
+      result += `default via ${route.gateway} dev ${route.interface} proto ${route.proto} metric ${route.metric}\n`;
+    } else {
+      result += `${route.destination} dev ${route.interface} proto ${route.proto} scope ${route.scope} src ${route.src}${route.metric ? ` metric ${route.metric}` : ''}\n`;
+    }
+
+    result += '\n';
+  }
+
+  return result;
 }
 
 function ping({ args }) {
@@ -304,6 +336,20 @@ export default function NetworkBaseMixin(Base) {
     set netInterfaces(value) {
       this.#netInterfaces = [];
       value.forEach(netInterface => this.addNetInterface(netInterface));
+    }
+
+    get routes() {
+      return this.#routes.map(route => ({
+        destination: route.destination,
+        gateway: route.gateway,
+        dev: route.dev,
+        src: route.src,
+        proto: route.proto,
+        scope: route.scope,
+        metric: route.metric,
+        type: route.type,
+        table: route.table,
+      }));
     }
 
     addNetInterface(netInterface = {}) {
