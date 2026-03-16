@@ -157,3 +157,16 @@ export function ipToBrd(address, netmask) {
 
   return broadcast;
 }
+
+export function applyMask(address, netmask) {
+  if (address.length !== netmask.length) {
+    throw new Error('Address and netmask length mismatch');
+  }
+
+  const result = new Uint8Array(address.length);
+  for (let i = 0; i < address.length; i++) {
+    result[i] = address[i] & netmask[i];
+  }
+
+  return result;
+}
