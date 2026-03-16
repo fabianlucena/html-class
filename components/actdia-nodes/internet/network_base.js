@@ -1,6 +1,6 @@
 import { _f } from '../../locale/locale.js';
 import { generateLocalMac, macToStr, strToMac } from '../../internet/mac.js';
-import { ntop, pton, maskToPrefix, prefixToMask, ipToBrd, applyMask } from '../../internet/ip.js';
+import { ntop, pton, maskToPrefix, getAddressMaskPrefix, ipToBrd, applyMask } from '../../internet/ip.js';
 
 const commands = {
   'help': {
@@ -159,15 +159,13 @@ function ip_addr_show({ args, commandData }) {
     result += `${i}: ${netInterface.name}: <${netInterface.link === 'loopback' ? 'LOOPBACK,UP,LOWER_UP' : 'BROADCAST,MULTICAST,UP,LOWER_UP'}>  mtu ${netInterface.mtu}\n`
       + `    link/${netInterface.link} ${netInterface.mac} brd ${netInterface.macBrd}\n`;
 
-    result += netInterface.inet.map(inet => 
+    result += netInterface.inet4.map(inet => 
       `    inet ${inet.address}/${inet.prefix}${inet.broadcast ? ` brd ${inet.broadcast}` : ''} scope ${inet.scope}${inet.secondary && ' secondary' || ''}\n`
-      + `       valid_lft ${inet.valid_lft} preferred_lft ${inet.preferred_lft}`)
-      .join('\n') + '\n';
+      + `       valid_lft ${inet.valid_lft} preferred_lft ${inet.preferred_lft}\n`);
 
     result += netInterface.inet6.map(inet6 => 
       `    inet6 ${inet6.address}/${inet6.prefix} scope ${inet6.scope}${inet6.secondary && ' secondary' || ''}\n`
-      + `       valid_lft ${inet6.valid_lft} preferred_lft ${inet6.preferred_lft}`)
-      .join('\n') + '\n ';
+      + `       valid_lft ${inet6.valid_lft} preferred_lft ${inet6.preferred_lft}\n`);
 
     result += '\n';
   }
@@ -298,7 +296,8 @@ export default function NetworkBaseMixin(Base) {
 
     hostname = null;
     #netInterfaces = [];
-    #routes = [];
+    #routes4 = [];
+    #routes6 = [];
 
     get netInterfaces() {
       return this.#netInterfaces.map(netInterface => ({
@@ -308,7 +307,7 @@ export default function NetworkBaseMixin(Base) {
         mtu: netInterface.mtu,
         link: netInterface.link,
         connector: netInterface.connector?.name,
-        inet: netInterface.inet.map(inet => ({
+        inet4: netInterface.inet4.map(inet => ({
           address: ntop(inet.address),
           prefix: maskToPrefix(inet.netmask),
           netmask: ntop(inet.netmask),
@@ -339,11 +338,11 @@ export default function NetworkBaseMixin(Base) {
     }
 
     get routes() {
-      return this.#routes.map(route => ({
-        destination: route.destination,
-        gateway: route.gateway,
+      return this.#routes4.concat(this.#routes6).map(route => ({
+        destination: ntop(applyMask(route.address, route.netmask)) + '/' + maskToPrefix(route.netmask),
+        gateway: route.gateway ? ntop(route.gateway) : null,
         dev: route.dev,
-        src: route.src,
+        src: ntop(route.src),
         proto: route.proto,
         scope: route.scope,
         metric: route.metric,
@@ -356,7 +355,7 @@ export default function NetworkBaseMixin(Base) {
       netInterface = { ...netInterface };
       netInterface.name ??= `eth${this.netInterfaces.length}`;
       netInterface.link ??= 'ether';
-      netInterface.inet ??= [];
+      netInterface.inet4 ??= [];
       netInterface.inet6 ??= [];
 
       if (netInterface.link === 'loopback') {
@@ -379,10 +378,10 @@ export default function NetworkBaseMixin(Base) {
         netInterface.connector = this.getConnector(netInterface.connector);
 
       const dev = netInterface;
-      if (netInterface.inet) {
-        const inet = [...netInterface.inet];
-        netInterface.inet = [];
-        inet.forEach(inet => this.addIPAddress({ ...inet, dev }));
+      if (netInterface.inet4) {
+        const inet4 = [...netInterface.inet4];
+        netInterface.inet4 = [];
+        inet4.forEach(inet4 => this.addIPAddress({ ...inet4, dev }));
       }
 
       if (netInterface.inet6) {
@@ -392,8 +391,8 @@ export default function NetworkBaseMixin(Base) {
       }
 
       if (netInterface.link === 'loopback') {
-        if (!netInterface.inet.length) {
-          netInterface.inet = [
+        if (!netInterface.inet4.length) {
+          netInterface.inet4 = [
             {
               address: pton('127.0.0.1'),
               netmask: pton('255.0.0.0'),
@@ -444,38 +443,13 @@ export default function NetworkBaseMixin(Base) {
 
     addIPAddress(inet) {
       inet = { ...inet };
-      if (!inet.address) {
-        if (!inet.ip) {
-          throw new Error('IP address is required');
-        }
-        
-        let [address, prefix] = inet.ip.split('/');
-        inet.address = pton(address);
-
-        if (!inet.netmask) {
-          if (typeof prefix !== 'undefined') {
-            inet.netmask ??= prefixToMask(parseInt(prefix), address.length);
-          }
-        } else if (typeof inet.netmask === 'string') {
-          inet.netmask = pton(inet.netmask);
-        }
+      const amp = getAddressMaskPrefix(inet);
+      if (amp.error) {
+        throw new Error(amp.error);
       }
 
-      if (typeof inet.address === 'string') {
-        inet.address = pton(inet.address);
-      }
-
-      if (inet.address.length !== 4 && inet.address.length !== 16) {
-        throw new Error('Invalid IP address length');
-      }
-
-      if (!inet.netmask) {
-        throw new Error('Netmask or prefix is required');
-      }
-
-      if (typeof inet.netmask === 'string') {
-        inet.netmask = pton(inet.netmask);
-      }
+      inet.address = amp.address;
+      inet.netmask = amp.netmask;
 
       if (!inet.dev) {
         throw new Error('Network interface is required');
@@ -496,8 +470,8 @@ export default function NetworkBaseMixin(Base) {
       }
 
       if (inet.address.length === 4) {
-        inet.secondary = !!inet.dev.inet.length;
-        inet.dev.inet.push(inet);
+        inet.secondary = !!inet.dev.inet4.length;
+        inet.dev.inet4.push(inet);
         inet.scope ??= 'global';
       } else {
         inet.secondary = !!inet.dev.inet6.length;
@@ -524,8 +498,30 @@ export default function NetworkBaseMixin(Base) {
     }
 
     addRoute(route) {
-      route = { ...route };
-      this.#routes.push(route);
+      const amp = getAddressMaskPrefix({ ip: route.destination });
+      if (amp.error) {
+        throw new Error(amp.error);
+      }
+
+      const routeData = {
+        address: amp.address,
+        netmask: amp.netmask,
+        prefix: amp.prefix,
+        gateway: pton(route.gateway),
+        dev: route.dev,
+        src: pton(route.src),
+        proto: route.proto,
+        scope: route.scope,
+        metric: route.metric,
+        type: route.type,
+        table: route.table,
+      };
+
+      if (routeData.address.length === 4) {
+        this.#routes4.push(routeData);
+      } else {
+        this.#routes6.push(routeData);
+      }
     }
   };
 };
