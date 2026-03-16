@@ -1,6 +1,6 @@
 import { _f } from '../../locale/locale.js';
 import { generateLocalMac, macToStr, strToMac } from '../../internet/mac.js';
-import { ntop, pton, maskToPrefix, prefixToMask, ipToBrd } from '../../internet/ip.js';
+import { ntop, pton, maskToPrefix, prefixToMask, ipToBrd, applyMask } from '../../internet/ip.js';
 
 const commands = {
   'help': {
@@ -183,7 +183,7 @@ function ip_addr_add({ args, commandData }) {
   const ip = args[0];
   const dev = args[2];
 
-  this.addIPAddress(dev, ip);
+  this.addIPAddress({ ip, dev });
 
   return '';
 }
@@ -243,9 +243,9 @@ function ip_route_show({ args, commandData }) {
   for (let i in routes) {
     const route = routes[i];
     if (route.destination === 'default') {
-      result += `default via ${route.gateway} dev ${route.interface} proto ${route.proto} metric ${route.metric}\n`;
+      result += `default via ${route.gateway} dev ${route.dev.name} proto ${route.proto} metric ${route.metric}`;
     } else {
-      result += `${route.destination} dev ${route.interface} proto ${route.proto} scope ${route.scope} src ${route.src}${route.metric ? ` metric ${route.metric}` : ''}\n`;
+      result += `${route.destination} dev ${route.dev.name} proto ${route.proto} scope ${route.scope} src ${route.src}${route.metric ? ` metric ${route.metric}` : ''}`;
     }
 
     result += '\n';
@@ -378,16 +378,17 @@ export default function NetworkBaseMixin(Base) {
       if (typeof netInterface.connector === 'string')
         netInterface.connector = this.getConnector(netInterface.connector);
 
+      const dev = netInterface;
       if (netInterface.inet) {
         const inet = [...netInterface.inet];
         netInterface.inet = [];
-        inet.forEach(inet => this.addIPAddress(netInterface, inet));
+        inet.forEach(inet => this.addIPAddress({ ...inet, dev }));
       }
 
       if (netInterface.inet6) {
         const inet6 = [...netInterface.inet6];
         netInterface.inet6 = [];
-        inet6.forEach(inet6 => this.addIPAddress(netInterface, inet6));
+        inet6.forEach(inet6 => this.addIPAddress({ ...inet6, dev }));
       }
 
       if (netInterface.link === 'loopback') {
@@ -421,68 +422,6 @@ export default function NetworkBaseMixin(Base) {
       return netInterface;
     }
 
-    addIPAddress(netInterface, ip, inet) {
-      if (typeof ip === 'object' && !inet) {
-        inet = ip;
-        ip = null;
-      }
-
-      inet ??= {};
-
-      let address;
-      if (ip) {
-        let prefix;
-        [address, prefix] = ip.split('/');
-        address = pton(address);
-        if (typeof prefix !== 'undefined') {
-          inet.netmask ??= prefixToMask(parseInt(prefix), address.length);
-        } else if (!inet.netmask) {
-          if (typeof inet.prefix !== 'undefined') {
-            inet.netmask ??= prefixToMask(parseInt(inet.prefix), address.length);
-          } else {
-            throw new Error('Netmask or prefix is required');
-          }
-        }
-      } else {
-        address = pton(inet.address);
-        inet.netmask = pton(inet.netmask) ?? pton(inet.mask);
-      }
-
-      inet.address = address;
-
-      if (typeof netInterface === 'string') {
-        const name = netInterface,
-          nameLength = name.length;
-          
-        const founded = this.#netInterfaces.filter(i => name === i.name.substring(0, nameLength));
-        if (!founded.length)
-          throw new Error(`Network interface "${netInterface}" not found`);
-
-        if (founded.length > 1)
-          throw new Error('Too much interfaces');
-
-        netInterface = founded[0];
-      }
-
-      if (address.length === 4) {
-        inet.secondary = !!netInterface.inet.length;
-        netInterface.inet.push(inet);
-        inet.scope ??= 'global';
-      } else if (address.length === 16) {
-        inet.secondary = !!netInterface.inet6.length;
-        netInterface.inet6.push(inet);
-        inet.netmask ??= prefixToMask(parseInt(prefix), 16);
-        inet.scope ??= 'link';
-      } else {
-        throw new Error('Invalid IP address length');
-      }
-
-      inet.broadcast = ipToBrd(address, inet.netmask);
-
-      inet.valid_lft ??= '86399sec';
-      inet.preferred_lft ??= '86399sec';
-    }
-
     getNetInterface(name) {
       return this.netInterfaces.find(netInterface => netInterface.name === name);
     }
@@ -501,6 +440,92 @@ export default function NetworkBaseMixin(Base) {
         return `Unknown command: ${command1}. Try help for allowed commands.\n`;
 
       return commandData.exec.bind(this)({command, args, commandData});
+    }
+
+    addIPAddress(inet) {
+      inet = { ...inet };
+      if (!inet.address) {
+        if (!inet.ip) {
+          throw new Error('IP address is required');
+        }
+        
+        let [address, prefix] = inet.ip.split('/');
+        inet.address = pton(address);
+
+        if (!inet.netmask) {
+          if (typeof prefix !== 'undefined') {
+            inet.netmask ??= prefixToMask(parseInt(prefix), address.length);
+          }
+        } else if (typeof inet.netmask === 'string') {
+          inet.netmask = pton(inet.netmask);
+        }
+      }
+
+      if (typeof inet.address === 'string') {
+        inet.address = pton(inet.address);
+      }
+
+      if (inet.address.length !== 4 && inet.address.length !== 16) {
+        throw new Error('Invalid IP address length');
+      }
+
+      if (!inet.netmask) {
+        throw new Error('Netmask or prefix is required');
+      }
+
+      if (typeof inet.netmask === 'string') {
+        inet.netmask = pton(inet.netmask);
+      }
+
+      if (!inet.dev) {
+        throw new Error('Network interface is required');
+      }
+
+      if (typeof inet.dev === 'string') {
+        const name = inet.dev,
+          nameLength = name.length;
+          
+        const founded = this.#netInterfaces.filter(i => name === i.name.substring(0, nameLength));
+        if (!founded.length)
+          throw new Error(`Network interface "${inet.dev}" not found`);
+
+        if (founded.length > 1)
+          throw new Error('Too much interfaces');
+
+        inet.dev = founded[0];
+      }
+
+      if (inet.address.length === 4) {
+        inet.secondary = !!inet.dev.inet.length;
+        inet.dev.inet.push(inet);
+        inet.scope ??= 'global';
+      } else {
+        inet.secondary = !!inet.dev.inet6.length;
+        inet.dev.inet6.push(inet);
+        inet.scope ??= 'link';
+      }
+
+      inet.broadcast = ipToBrd(inet.address, inet.netmask);
+
+      inet.valid_lft ??= '86399sec';
+      inet.preferred_lft ??= '86399sec';
+
+      this.addRoute({
+        destination: ntop(applyMask(inet.address, inet.netmask)) + '/' + maskToPrefix(inet.netmask),
+        gateway: null,
+        dev: inet.dev,
+        src: ntop(inet.address),
+        proto: 'kernel',
+        scope: inet.scope,
+        metric: inet.secondary ? 100 : 0,
+        type: 'unicast',
+        table: 'main',
+      });
+    }
+
+    addRoute(route) {
+      route = { ...route };
+      this.#routes.push(route);
     }
   };
 };
