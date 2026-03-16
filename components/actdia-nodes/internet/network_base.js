@@ -156,7 +156,17 @@ function ip_addr_show({ args, commandData }) {
   let result = '';
   for (let i in interfaces) {
     const netInterface = interfaces[i];
-    result += `${i}: ${netInterface.name}: <${netInterface.link === 'loopback' ? 'LOOPBACK,UP,LOWER_UP' : 'BROADCAST,MULTICAST,UP,LOWER_UP'}>  mtu ${netInterface.mtu}\n`
+    const flags = [];
+    if (netInterface.link === 'loopback') {
+      flags.push('LOOPBACK');
+    } else {
+      flags.push('BROADCAST', 'MULTICAST');
+    }
+
+    flags.push(netInterface.up ? 'UP' : 'DOWN');
+    flags.push(netInterface.running ? 'LOWER_UP' : 'LOWER_DOWN');
+
+    result += `${i}: ${netInterface.name}: <${flags.join(',')}>  mtu ${netInterface.mtu}\n`
       + `    link/${netInterface.link} ${netInterface.mac} brd ${netInterface.macBrd}\n`;
 
     result += netInterface.inet4.map(inet => 
@@ -377,6 +387,8 @@ export default function NetworkBaseMixin(Base) {
       if (typeof netInterface.connector === 'string')
         netInterface.connector = this.getConnector(netInterface.connector);
 
+      this.#netInterfaces.push(netInterface);
+
       const dev = netInterface;
       if (netInterface.inet4) {
         const inet4 = [...netInterface.inet4];
@@ -391,32 +403,31 @@ export default function NetworkBaseMixin(Base) {
       }
 
       if (netInterface.link === 'loopback') {
+        netInterface.up ??= true;
+        netInterface.running ??= true;
+
         if (!netInterface.inet4.length) {
-          netInterface.inet4 = [
-            {
-              address: pton('127.0.0.1'),
-              netmask: pton('255.0.0.0'),
-              scope: 'host lo',
-              valid_lft: 'forever',
-              preferred_lft: 'forever',
-            },
-          ];
+          this.addIPAddress({
+            dev,
+            ip: '127.0.0.1/8',
+            scope: 'host lo',
+            valid_lft: 'forever',
+            preferred_lft: 'forever',
+          });
         }
         if (!netInterface.inet6.length) {
-          netInterface.inet6 = [
-            {
-              address: pton('::1'),
-              netmask: pton('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'),
-              scope: 'host',
-              scope: 'host',
-              valid_lft: 'forever',
-              preferred_lft: 'forever',
-            },
-          ];
+          this.addIPAddress({
+            dev,
+            ip: '::1/128',
+            scope: 'host',
+            valid_lft: 'forever',
+            preferred_lft: 'forever',
+          });
         }
       }
 
-      this.#netInterfaces.push(netInterface);
+      netInterface.up ??= false;
+      netInterface.running ??= false;
 
       return netInterface;
     }
@@ -518,9 +529,33 @@ export default function NetworkBaseMixin(Base) {
       };
 
       if (routeData.address.length === 4) {
-        this.#routes4.push(routeData);
+        this.#routes4 = [...this.#routes4, routeData].sort((a, b) => {
+          const prefixDiff = b.prefix - a.prefix;
+          if (prefixDiff !== 0) {
+            return prefixDiff;
+          }
+          
+          const metricDiff = a.metric - b.metric;
+          if (metricDiff !== 0) {
+            return metricDiff;
+          }
+
+          return 0;
+        });
       } else {
-        this.#routes6.push(routeData);
+        this.#routes6 = [...this.#routes6, routeData].sort((a, b) => {
+          const prefixDiff = b.prefix - a.prefix;
+          if (prefixDiff !== 0) {
+            return prefixDiff;
+          }
+          
+          const metricDiff = a.metric - b.metric;
+          if (metricDiff !== 0) {
+            return metricDiff;
+          }
+          
+          return 0;
+        });
       }
     }
   };
