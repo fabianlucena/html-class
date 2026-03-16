@@ -170,3 +170,53 @@ export function applyMask(address, netmask) {
 
   return result;
 }
+
+export function getAddressMaskPrefix({ ip, address, prefix, netmask }) {
+  if (!address) {
+    if (!ip) {
+      return { error: 'Invalid IP address is required' };
+    }
+    
+    let tryPrefix; 
+    [address, tryPrefix] = ip.split('/');
+    if (typeof tryPrefix !== 'undefined') {
+      prefix = tryPrefix;
+    }
+
+    address = pton(address);
+  } else if (typeof address === 'string') {
+    address = pton(address);
+  }
+
+  if (address.length !== 4 && address.length !== 16) {
+    return { error: 'Invalid IP address length' };
+  }
+
+  if (!netmask) {
+    if (typeof prefix === 'undefined') {
+      return { error: 'Netmask or prefix is required' };
+    }
+
+    prefix = parseInt(prefix);
+    netmask ??= prefixToMask(prefix, address.length);
+  } else if (typeof netmask === 'string') {
+    netmask = pton(netmask);
+    if (typeof prefix === 'undefined') {
+      prefix = maskToPrefix(netmask);
+    }
+  }
+
+  if (!netmask || !prefix) {
+    return { error: 'Netmask or prefix is required' };
+  }
+
+  if (netmask.length !== address.length) {
+    return { error: 'Incompatible IP address and netmask lengths' };
+  }
+
+  return {
+    address: address,
+    prefix: prefix,
+    netmask: netmask,
+  };
+}
