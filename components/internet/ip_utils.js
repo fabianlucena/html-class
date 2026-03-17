@@ -229,20 +229,18 @@ export function isIPv6(address) {
   return address.length === 16;
 }
 
-export function isEqualAddressMask(inet, { address, netmask }) {
-  if (!inet || !address || !netmask) {
+export function isInSubnet(addr, subnet) {
+  if (!addr || !subnet || !subnet.address || !subnet.netmask) {
     return false;
   }
 
-  
-
-  if (inet.address.length !== address.length) {
+  if (addr.length !== subnet.address.length) {
     return false;
   }
   
-  return inet.some(inet => {
-    return inet.address.every((byte, index) => byte === address[index]) && inet.netmask.every((byte, index) => byte === netmask[index]);
-  });
+  addr = applyMask(addr, subnet.netmask);
+
+  return addr.every((byte, index) => byte === subnet.address[index]);
 }
 
 export function isEqualIPv4AddressMask(

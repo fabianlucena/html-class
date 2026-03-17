@@ -1,4 +1,4 @@
-import NetworkBaseMixin from './network_base.js';
+import NetworkBaseMixin from './network_base_mixin.js';
 
 export default async function create({ actdia, Node, _f }) {
   await actdia.loadLocaleForMeta(import.meta);

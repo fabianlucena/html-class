@@ -3,7 +3,11 @@ import { generateLocalMac, macToStr, strToMac } from '../../internet/mac.js';
 import {
   ntop, pton, maskToPrefix, getAddressMaskPrefix, ipToBrd, applyMask,
   isIPv4, isIPv6, isEqualIPv4AddressMask, isEqualIPv6AddressMask,
-} from '../../internet/ip.js';
+  isInSubnet,
+} from '../../internet/ip_utils.js';
+import IcmpEchoRequest from '../../internet/icmp_echo_request.js';
+import Packet from '../../internet/packet.js';
+import Frame from '../../internet/frame.js';
 
 const commands = {
   'help': {
@@ -276,10 +280,10 @@ function ip_route_show({ args, commandData }) {
   let result = '';
   for (let i in routes) {
     const route = routes[i];
-    if (route.destination === 'default') {
+    if (route.dst === 'default') {
       result += `default via ${route.gateway} dev ${route.dev.name} proto ${route.proto} metric ${route.metric}`;
     } else {
-      result += `${route.destination} dev ${route.dev.name} proto ${route.proto} scope ${route.scope} src ${route.src}${route.metric ? ` metric ${route.metric}` : ''}`;
+      result += `${route.dst} dev ${route.dev.name} proto ${route.proto} scope ${route.scope} src ${route.src}${route.metric ? ` metric ${route.metric}` : ''}`;
     }
 
     result += '\n';
@@ -294,6 +298,9 @@ function ping({ args }) {
   if (args.length === 0) {
     return usage(commands.ping);
   }
+
+  var data = new IcmpEchoRequest();
+  this.send({ dst: pton(args[0]), data });
 
   return `Pinging ${args[0]}...\n`;
 }
@@ -374,7 +381,7 @@ export default function NetworkBaseMixin(Base) {
 
     get routes() {
       return this.#routes4.concat(this.#routes6).map(route => ({
-        destination: ntop(applyMask(route.address, route.netmask)) + '/' + maskToPrefix(route.netmask),
+        dst: ntop(applyMask(route.address, route.netmask)) + '/' + maskToPrefix(route.netmask),
         gateway: route.gateway ? ntop(route.gateway) : null,
         dev: route.dev,
         src: ntop(route.src),
@@ -575,7 +582,7 @@ export default function NetworkBaseMixin(Base) {
       inet.preferred_lft ??= '86399sec';
 
       this.addRoute({
-        destination: ntop(applyMask(inet.address, inet.netmask)) + '/' + maskToPrefix(inet.netmask),
+        dst: ntop(applyMask(inet.address, inet.netmask)) + '/' + maskToPrefix(inet.netmask),
         gateway: null,
         dev: inet.dev,
         src: ntop(inet.address),
@@ -645,7 +652,7 @@ export default function NetworkBaseMixin(Base) {
     }
 
     addRoute(route) {
-      const amp = getAddressMaskPrefix({ ip: route.destination });
+      const amp = getAddressMaskPrefix({ ip: route.dst });
       if (amp.error) {
         throw new Error(amp.error);
       }
@@ -693,6 +700,69 @@ export default function NetworkBaseMixin(Base) {
           return 0;
         });
       }
+    }
+
+    getRouteFor(dst) {
+      let routes;
+      if (isIPv4(dst)) {
+        routes = this.#routes4.filter(r => isInSubnet(dst, r));
+      } else if (isIPv6(dst)) {
+        routes = this.#routes6.filter(r => isInSubnet(dst, r));
+      } else {
+        throw new Error('Invalid destination address');
+      }
+
+      if (!routes.length) {
+        return;
+      }
+
+      if (routes.length > 1) {
+        routes.sort((a, b) => {
+          const prefixDiff = b.prefix - a.prefix;
+          if (prefixDiff !== 0) {
+            return prefixDiff;
+          }
+
+          const metricDiff = a.metric - b.metric;
+          if (metricDiff !== 0) {
+            return metricDiff;
+          }
+
+          return 0;
+        });
+      }
+
+      return routes[0];
+    }
+
+    send({ dst, data }) {
+      if (!dst) {
+        throw new Error('Destination is required');
+      }
+
+      if (!data) {
+        throw new Error('Data is required');
+      }
+
+      // Find route for the destination
+      let route = this.getRouteFor(dst);
+      if (!route) {
+        throw new Error(`No route to ${ntop(dst)}`);
+      }
+
+      let packet = new Packet({
+        src: route.src,
+        dst,
+        data,
+      });
+
+      var frame = new Frame({
+        src: route.dev.mac,
+        dst: route.gateway ? strToMac(route.gateway) : route.dev.macBrd,
+        packet,
+      });
+
+      console.log(frame);
     }
   };
 };
