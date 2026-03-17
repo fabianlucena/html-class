@@ -762,6 +762,14 @@ export default function NetworkBaseMixin(Base) {
         packet,
       });
 
+      if (frame.dst.every(b => b === 0)) {
+        this.recv(frame.raw);
+        return;
+      }
+    }
+
+    recv(raw) {
+      var frame = Frame.createFromRaw({ raw });
       console.log(frame);
     }
   };
