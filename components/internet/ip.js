@@ -220,3 +220,94 @@ export function getAddressMaskPrefix({ ip, address, prefix, netmask }) {
     netmask: netmask,
   };
 }
+
+export function isIPv4(address) {
+  return address.length === 4;
+}
+
+export function isIPv6(address) {
+  return address.length === 16;
+}
+
+export function isEqualAddressMask(inet, { address, netmask }) {
+  if (!inet || !address || !netmask) {
+    return false;
+  }
+
+  
+
+  if (inet.address.length !== address.length) {
+    return false;
+  }
+  
+  return inet.some(inet => {
+    return inet.address.every((byte, index) => byte === address[index]) && inet.netmask.every((byte, index) => byte === netmask[index]);
+  });
+}
+
+export function isEqualIPv4AddressMask(
+  { address: address1, netmask: netmask1, prefix: prefix1 },
+  { address: address2, netmask: netmask2, prefix: prefix2 }
+) {
+  if (!address1 || !address2
+    || address1.length !== 4 || address2.length !== 4
+  ) {
+    return false;
+  }
+
+  if (netmask1?.length !== 4) {
+    if (typeof (prefix1) === 'undefined') {
+      return false;
+    }
+
+    netmask1 = prefixToMask(prefix1, 4);
+  }
+
+  if (netmask2?.length !== 4) {
+    if (typeof (prefix2) === 'undefined') {
+      return false;
+    }
+
+    netmask2 = prefixToMask(prefix2, 4);
+  }
+  
+  return address1.every((byte, index) => byte === address2[index])
+    && netmask1.every((byte, index) => byte === netmask2[index]);
+}
+
+export function isEqualIPv6AddressMask(
+  { address: address1, netmask: netmask1, prefix: prefix1 },
+  { address: address2, netmask: netmask2, prefix: prefix2 }
+) {
+  if (!address1 || !address2
+    || address1.length !== 16 || address2.length !== 16
+  ) {
+    return false;
+  }
+
+  if (typeof (prefix1) === 'undefined') {
+    if (netmask1?.length !== 16) {
+      return false;
+    }
+
+    prefix1 = maskToPrefix(netmask1);
+  }
+
+  if (prefix1 < 0 || prefix1 > 128) {
+    return false;
+  }
+  
+  if (typeof (prefix2) === 'undefined') {
+    if (netmask2?.length !== 16) {
+      return false;
+    }
+
+    prefix2 = maskToPrefix(netmask2);
+  }
+
+  if (prefix2 !== prefix1) {
+    return false;
+  }
+
+  return address1.every((byte, index) => byte === address2[index]);
+}
