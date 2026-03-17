@@ -1,6 +1,9 @@
 import { _f } from '../../locale/locale.js';
 import { generateLocalMac, macToStr, strToMac } from '../../internet/mac.js';
-import { ntop, pton, maskToPrefix, getAddressMaskPrefix, ipToBrd, applyMask } from '../../internet/ip.js';
+import {
+  ntop, pton, maskToPrefix, getAddressMaskPrefix, ipToBrd, applyMask,
+  isIPv4, isIPv6, isEqualIPv4AddressMask, isEqualIPv6AddressMask,
+} from '../../internet/ip.js';
 
 const commands = {
   'help': {
@@ -86,6 +89,8 @@ function ip_addr({ args, commandData }) {
     return ip_addr_show.bind(this)({ args: args.slice(1), commandData });
   } else if (command === 'add'.substring(0, commandLength)) {
     return ip_addr_add.bind(this)({ args: args.slice(1), commandData });
+  } else if (command === 'del'.substring(0, commandLength)) {
+    return ip_addr_del.bind(this)({ args: args.slice(1), commandData });
   }
 
   if (!args[0])
@@ -114,8 +119,8 @@ FLAG-LIST := [ dynamic | permanent | secondary | primary | tentative |
 CONFFLAG-LIST := [ home | nodad | mngtmpaddr | noprefixroute | autojoin ]\n`;
 }
 
-// ip addr show eth0
 function ip_addr_show({ args, commandData }) {
+  // ip addr show eth0
   if (args.length > 1)
     return usage(commandData);
 
@@ -183,8 +188,9 @@ function ip_addr_show({ args, commandData }) {
   return result;
 }
 
-// ip addr add 192.168.1.50/24 dev eth0
 function ip_addr_add({ args, commandData }) {
+  // ip addr add 192.168.1.50/24 dev eth0
+
   if (args.length < 3 || args[1] !== 'dev'.substring(0, args[1].length))
     return usage(commandData);
 
@@ -192,6 +198,26 @@ function ip_addr_add({ args, commandData }) {
   const dev = args[2];
 
   this.addIPAddress({ ip, dev });
+
+  return '';
+}
+
+function ip_addr_del({ args, commandData }) {
+  // ip addr del 192.168.1.50/24 dev eth0
+
+  if (args.length < 1)
+    return usage(commandData);
+
+  const params = { ip: args[0] };
+
+  if (args.length > 2) {
+    if (args[1] !== 'dev'.substring(0, args[1].length))
+      return usage(commandData);
+
+    params.dev = args[2];
+  }
+
+  this.deleteIPAddress(params);
 
   return '';
 }
@@ -232,8 +258,8 @@ INFO_SPEC := { NH | nhid ID } OPTIONS FLAGS [ nexthop NH ]...
 NH := [ via ADDRESS ] [ dev STRING ] [ weight NUMBER ] ...\n`;
 }
 
-// ip addr show
 function ip_route_show({ args, commandData }) {
+  // ip route show
   if (args.length > 1)
     return usage(commandData);
 
@@ -262,6 +288,8 @@ function ip_route_show({ args, commandData }) {
   return result;
 }
 
+// sudo ip route add default via 192.168.1.1
+
 function ping({ args }) {
   if (args.length === 0) {
     return usage(commands.ping);
@@ -269,9 +297,6 @@ function ping({ args }) {
 
   return `Pinging ${args[0]}...\n`;
 }
-
-// sudo ip route add default via 192.168.1.1
-// sudo ip addr del 192.168.1.50/24 dev eth0
 
 export default function NetworkBaseMixin(Base) {
   return class extends Base {
@@ -432,8 +457,74 @@ export default function NetworkBaseMixin(Base) {
       return netInterface;
     }
 
-    getNetInterface(name) {
-      return this.netInterfaces.find(netInterface => netInterface.name === name);
+    getNetInterface(name, throwError = true) {
+      if (!name) {
+        if (throwError) {
+          throw new Error('Network interface is required');
+        }
+        return null;
+      }
+      
+      if (typeof name === 'string') {
+        const nameLength = name.length;
+        let founded = this.#netInterfaces.filter(i => name === i.name.substring(0, nameLength));
+
+        if (!founded.length) {
+          if (throwError) {
+            throw new Error(`Network interface "${name}" not found`);
+          }
+          return null;
+        }
+
+        if (founded.length > 1) {
+          founded = this.#netInterfaces.filter(i => name === i.name);
+          if (founded.length !== 1) {
+            if (throwError) {
+              throw new Error('Too much interfaces');
+            }
+            return null;
+          }
+        }
+
+        return founded[0];
+      }
+
+      var dev = name;
+      if (typeof dev !== 'object') {
+        if (throwError) {
+          throw new Error(`Invalid network interface`);
+        }
+        return null;
+      }
+
+      let founded = this.#netInterfaces.filter(i => i === dev);
+      if (!founded.length) {
+        if (throwError) {
+          throw new Error(`Network interface not found`);
+        }
+        return null;
+      }
+
+      if (founded.length !== 1) {
+        if (throwError) {
+          throw new Error('Too much interfaces');
+        }
+        return null;
+      }
+
+      return founded[0];
+    }
+
+    getInterfacesForAddress(ip) {
+      if (isIPv4(ip.address)) {
+        return this.#netInterfaces.filter(i => i.inet4.some(j => isEqualIPv4AddressMask(j, ip)));
+      }
+
+      if (isIPv6(ip.address)) {
+        return this.#netInterfaces.filter(i => i.inet6.some(j => isEqualIPv6AddressMask(j, ip)));
+      }
+
+      return [];
     }
 
     execCommand(command) {
@@ -449,7 +540,11 @@ export default function NetworkBaseMixin(Base) {
       if (!commandData || !commandData.exec)
         return `Unknown command: ${command1}. Try help for allowed commands.\n`;
 
-      return commandData.exec.bind(this)({command, args, commandData});
+      try {
+        return commandData.exec.bind(this)({command, args, commandData});
+      } catch (e) {
+        return `Error: ${e.message}\n`;
+      }
     }
 
     addIPAddress(inet) {
@@ -462,23 +557,7 @@ export default function NetworkBaseMixin(Base) {
       inet.address = amp.address;
       inet.netmask = amp.netmask;
 
-      if (!inet.dev) {
-        throw new Error('Network interface is required');
-      }
-
-      if (typeof inet.dev === 'string') {
-        const name = inet.dev,
-          nameLength = name.length;
-          
-        const founded = this.#netInterfaces.filter(i => name === i.name.substring(0, nameLength));
-        if (!founded.length)
-          throw new Error(`Network interface "${inet.dev}" not found`);
-
-        if (founded.length > 1)
-          throw new Error('Too much interfaces');
-
-        inet.dev = founded[0];
-      }
+      inet.dev = this.getNetInterface(inet.dev);
 
       if (inet.address.length === 4) {
         inet.secondary = !!inet.dev.inet4.length;
@@ -508,6 +587,63 @@ export default function NetworkBaseMixin(Base) {
       });
     }
 
+    deleteIPAddress({ dev, ...inet }) {
+      const amp = getAddressMaskPrefix(inet);
+      if (amp.error) {
+        throw new Error(amp.error);
+      }
+
+      if (dev) {
+        dev = this.getNetInterface(dev);
+        if (!dev) {
+          throw new Error('Network interface is required');
+        }
+      }
+
+      let interfaces = this.getInterfacesForAddress(amp);
+      if (!interfaces.length) {
+        throw new Error(`Address ${ntop(amp.address)}/${maskToPrefix(amp.netmask)} not found`);
+      }
+
+      if (interfaces.length > 1) {
+        if (dev) {
+          interfaces = interfaces.filter(i => i.name === dev.name);
+        }
+
+        if (interfaces.length > 1) {
+          throw new Error('Too much interfaces with the same address');
+        }
+
+        if (!interfaces.length) {
+          throw new Error(`Address ${ntop(amp.address)}/${maskToPrefix(amp.netmask)} not found on device ${dev.name}`);
+        }
+      }
+
+      dev = interfaces[0];
+      let deleted = 0;
+      const inet4Index = dev.inet4.findIndex(i => isEqualIPv4AddressMask(i, amp));
+      if (inet4Index !== -1) {
+        dev.inet4.splice(inet4Index, 1);
+        deleted++;
+      }
+
+      const inet6Index = dev.inet6.findIndex(i => isEqualIPv6AddressMask(i, amp));
+      if (inet6Index !== -1) {
+        dev.inet6.splice(inet6Index, 1);
+        deleted++;
+      }
+
+      if (deleted === 0) {
+        throw new Error(`Address ${ntop(amp.address)}/${maskToPrefix(amp.netmask)} not found on device ${dev.name}`);
+      }
+      
+      this.updateRoutes();
+    }
+
+    updateRoutes() {
+      // Implementation for updating routes
+    }
+
     addRoute(route) {
       const amp = getAddressMaskPrefix({ ip: route.destination });
       if (amp.error) {
@@ -519,7 +655,7 @@ export default function NetworkBaseMixin(Base) {
         netmask: amp.netmask,
         prefix: amp.prefix,
         gateway: pton(route.gateway),
-        dev: route.dev,
+        dev: this.getNetInterface(route.dev),
         src: pton(route.src),
         proto: route.proto,
         scope: route.scope,
