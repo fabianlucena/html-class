@@ -35,11 +35,11 @@ export default async function create({ actdia }) {
 
     init() {
       super.init(...arguments);
-      if (!this.getNetInterface('lo')) {
+      if (!this.getNetInterface('lo', false)) {
         this.addNetInterface({ name: 'lo', link: 'loopback' });
       }
 
-      if (!this.getNetInterface('enp3s0')) {
+      if (!this.getNetInterface('enp3s0', false)) {
         this.addNetInterface({ name: 'enp3s0', connector: this.getConnector('enp3s0') });
       }
     }
