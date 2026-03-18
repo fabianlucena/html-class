@@ -3,18 +3,18 @@ import Packet from './packet.js';
 
 export default class Frame {
   constructor({ src, dst, payload, raw }) {
+    if (raw) {
+      this.raw = raw;
+      this.payload = payload ?? Packet.createFromRaw({ raw: raw.slice(14) });
+      return;
+    }
+
     if (!payload) {
       throw new Error('Payload is required');
     }
 
     if (!(payload instanceof FramePayload)) {
       throw new Error('Payload must be an instance of FramePayload');
-    }
-
-    if (raw) {
-      this.raw = raw;
-      this.payload = payload;
-      return;
     }
 
     this.create({ src, dst, payload });
@@ -61,11 +61,5 @@ export default class Frame {
   protocol=0x${this.protocol.toString(16)}
 )
 ` + this.payload?.toString?.();
-  }
-
-  static createFromRaw({ raw }) {
-    const payload = Packet.createFromRaw({ raw: raw.slice(14) });
-    const frame = new Frame({ raw, payload });
-    return frame;
   }
 }

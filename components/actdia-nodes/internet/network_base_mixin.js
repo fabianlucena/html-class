@@ -769,7 +769,7 @@ export default function NetworkBaseMixin(Base) {
     }
 
     recv(raw) {
-      var frame = Frame.createFromRaw({ raw });
+      var frame = new Frame({ raw });
       console.log(frame.toString());
     }
   };
