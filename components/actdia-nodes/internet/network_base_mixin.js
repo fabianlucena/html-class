@@ -10,6 +10,7 @@ import Packet from '../../internet/packet.js';
 import Frame from '../../internet/frame.js';
 import FramePayload from '../../internet/frame_payload.js';
 import IPv4Packet from '../../internet/ipv4_packet.js';
+import { sleep } from '../../utils/sleep.js';
 
 const commands = {
   'help': {
@@ -295,10 +296,6 @@ function ip_route_show({ args, commandData }) {
 }
 
 // sudo ip route add default via 192.168.1.1
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 async function ping({ args, terminal }) {
   /*PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
