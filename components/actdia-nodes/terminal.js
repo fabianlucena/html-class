@@ -103,7 +103,7 @@ export default async function create({ actdia, Node }) {
     canChangeWidth = true;
     canChangeHeight = true;
     #portConnector = null;
-    #keyDownHandler = evt => this.keyDownHandler(evt);
+    #keyDownHandler = async evt => await this.keyDownHandler(evt);
     #term = new Term();
     #backgroundShape = null;
     #viewportShape = null;
@@ -222,12 +222,12 @@ export default async function create({ actdia, Node }) {
       }
     }
 
-    keyDownHandler(evt) {
+    async keyDownHandler(evt) {
       let key = keysTranslation[evt.key] ?? evt.key;
       if (key === '')
         return;
 
-      this.#portConnector.send(key, { force: true });
+      await this.#portConnector.send(key, { force: true });
     }
 
     async onPortRecv({ data }) {

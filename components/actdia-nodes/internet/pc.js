@@ -1,4 +1,5 @@
 import TermServer from './../term_server.js';
+import { sleep } from './../../utils/sleep.js';
 
 export default async function create({ actdia, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
@@ -11,8 +12,11 @@ export default async function create({ actdia, _f }) {
     #terminalConnector = null;
     #termServer = new TermServer({
       prompt: '> ',
-      sendHandler: data => this.#terminalConnector.send(data, { force: true }),
-      commandHandler: params => this.execCommand(params),
+      sendHandler: async data => {
+        await sleep(1);
+        await this.#terminalConnector.send(data, { force: true });
+      },
+      commandHandler: async params => await this.execCommand(params),
     });
 
     constructor() {
@@ -28,7 +32,7 @@ export default async function create({ actdia, _f }) {
 
     async onTerminalRecv({ connector, data }) {
       const result = await this.#termServer.receive(data);
-      connector.send(result, { force: true });
+      await connector.send(result, { force: true });
     }
   }
 }

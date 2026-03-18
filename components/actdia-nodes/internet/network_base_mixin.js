@@ -316,8 +316,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   }
 
   const identifier = Math.floor(Math.random() * 65536);
-  terminal.send(`PING ${args[0]} 56(84) bytes of data.\n`);
-  await sleep(100);
+  await terminal.send(`PING ${args[0]} 56(84) bytes of data.\n`);
   let transmited = 0, received = 0;
   const beginAt = new Date().getTime();
   let min, sum = 0, max, avg = 0, mvar = 0;
@@ -332,7 +331,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
     const icmp = packet.payload;
     received++;
     const time = receivedAt - sentAt;
-    terminal.send(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${time} ms\n`);
+    await terminal.send(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${time} ms\n`);
 
     if (min === undefined || time < min) min = time;
     if (max === undefined || time > max) max = time;
@@ -349,12 +348,9 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   const loss = transmited > 0 ? Math.round(((transmited - received) / transmited) * 100) : 0;
   const time = endAt - beginAt;
   const mdev = Math.sqrt(mvar / received).toFixed(3);
-  terminal.send(`\n--- ${args[0]} ping statistics ---\n`);
-  await sleep(10);
-  terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
-  await sleep(100);
-  terminal.send(`rtt min/avg/max/mdev = ${min}/${avg}/${max}/${mdev} ms\n`);
-  await sleep(10);
+  await terminal.send(`\n--- ${args[0]} ping statistics ---\n`);
+  await terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
+  await terminal.send(`rtt min/avg/max/mdev = ${min}/${avg}/${max}/${mdev} ms\n`);
 }
 
 export default function NetworkBaseMixin(Base) {
