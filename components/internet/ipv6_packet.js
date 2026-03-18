@@ -66,6 +66,8 @@ export default class IPv6Packet extends FramePayload {
       throw new Error('Payload must be provided');
     }
 
+    this.payload = payload;
+
     const totalLength = 40 + (payload?.raw.length || 0);
 
     this.raw = new Uint8Array(totalLength);
@@ -77,9 +79,9 @@ export default class IPv6Packet extends FramePayload {
     this.raw[5] = payload?.raw.length & 0xFF;
     this.raw[6] = payload?.protocol; // Next Header (ICMP)
     this.raw[7] = 64; // Hop Limit
-    this.raw.set(this.src, 8);
-    this.raw.set(this.dst, 24);
-    this.raw.set(this.data.raw, 40);
+    this.raw.set(src, 8);
+    this.raw.set(dst, 24);
+    this.raw.set(this.payload?.raw, 40);
   }
 
   update() {}

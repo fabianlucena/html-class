@@ -230,8 +230,8 @@ export default async function create({ actdia, Node }) {
       this.#portConnector.send(key, { force: true });
     }
 
-    onPortRecv({ data }) {
-      this.#term.receive(data);
+    async onPortRecv({ data }) {
+      await this.#term.receive(data);
       this.#textShape.text = this.term.viewport.map(l => l.map(c => c.char).join('')).join('\n');
       this.tryUpdateShape(this.#textShape);
 

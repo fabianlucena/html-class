@@ -8,6 +8,8 @@ import {
 import Icmp4EchoRequest from '../../internet/icmp4_echo_request.js';
 import Packet from '../../internet/packet.js';
 import Frame from '../../internet/frame.js';
+import FramePayload from '../../internet/frame_payload.js';
+import IPv4Packet from '../../internet/ipv4_packet.js';
 
 const commands = {
   'help': {
@@ -294,13 +296,15 @@ function ip_route_show({ args, commandData }) {
 
 // sudo ip route add default via 192.168.1.1
 
-function ping({ args }) {
+async function ping({ args }) {
   if (args.length === 0) {
     return usage(commands.ping);
   }
 
   var data = new Icmp4EchoRequest();
-  this.send({ dst: pton(args[0]), data });
+  var res = await this.send({ dst: pton(args[0]), data });
+  const frame = new Frame({ raw: res });
+  console.log(frame.toString());
 
   return `Pinging ${args[0]}...\n`;
 }
@@ -534,7 +538,7 @@ export default function NetworkBaseMixin(Base) {
       return [];
     }
 
-    execCommand(command) {
+    async execCommand(command) {
       let commandText = command.trim();
       if (!commandText)
         return '';
@@ -548,7 +552,7 @@ export default function NetworkBaseMixin(Base) {
         return `Unknown command: ${command1}. Try help for allowed commands.\n`;
 
       try {
-        return commandData.exec.bind(this)({command, args, commandData});
+        return await commandData.exec.bind(this)({command, args, commandData});
       } catch (e) {
         return `Error: ${e.message}\n`;
       }
@@ -735,7 +739,7 @@ export default function NetworkBaseMixin(Base) {
       return routes[0];
     }
 
-    send({ dst, data }) {
+    createFrame({ dst, data }) {
       if (!dst) {
         throw new Error('Destination is required');
       }
@@ -762,15 +766,41 @@ export default function NetworkBaseMixin(Base) {
         payload: packet,
       });
 
-      if (frame.dst.every(b => b === 0)) {
-        this.recv(frame.raw);
-        return;
-      }
+      return frame;
     }
 
-    recv(raw) {
-      var frame = new Frame({ raw });
-      console.log(frame.toString());
+    async send({ dst, data, sync = false }) {
+      const frame = this.createFrame({ dst, data });
+      if (frame.dst.every(b => b === 0)) {
+        return await this.recv(frame.raw);
+      }
+
+      return frame;
+    }
+
+    async recv(raw) {
+      const frame = new Frame({ raw });
+      const framePayload = frame.payload;
+      if (!framePayload) {
+        console.log('Received frame with no payload');
+        return;
+      }
+
+      if (!(framePayload instanceof FramePayload)) {
+        console.log('Received frame with unknown payload');
+        return;
+      }
+
+      if (framePayload instanceof IPv4Packet) {
+        const packet = framePayload;
+        const ipPayload = packet.payload;
+        if (ipPayload instanceof Icmp4EchoRequest) {
+          const echoRequest = ipPayload;
+          const echoReply = echoRequest.toEchoReply();
+          const frame = this.createFrame({ dst: packet.src, data: echoReply });
+          return frame.raw;
+        }
+      }
     }
   };
 };

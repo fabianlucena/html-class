@@ -10,15 +10,15 @@ export default class TermBase {
     Object.assign(this, options);
   }
 
-  receive(data) {
+  async receive(data) {
     let result = '';
     for (let i = 0, l = data?.length; i < l; i++) {
-      result += this.receiveChar(data[i]) ?? '';
+      result += await this.receiveChar(data[i]) ?? '';
     }
     return result;
   }
 
-  receiveChar(char) {
+  async receiveChar(char) {
     if (this.escapeSequence) {
       if (this.escapeSequence === '\x1B') {
         if (char !== '[') {
@@ -46,7 +46,7 @@ export default class TermBase {
 
     switch (char) {
       case '\n':
-        this.enter();
+        await this.enter();
         this.moveCursor(0, 1);
         if (this.lmn) {
           this.setCursor({ col: 0 });
@@ -201,5 +201,5 @@ export default class TermBase {
 
   deleteChar(n) {}
 
-  enter() {}
+  async enter() {}
 }

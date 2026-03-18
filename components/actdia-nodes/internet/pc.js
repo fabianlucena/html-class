@@ -26,8 +26,8 @@ export default async function create({ actdia, _f }) {
       this.status = '';
     }
 
-    onTerminalRecv({ connector, data }) {
-      const result = this.#termServer.receive(data);
+    async onTerminalRecv({ connector, data }) {
+      const result = await this.#termServer.receive(data);
       connector.send(result, { force: true });
     }
   }

@@ -127,14 +127,14 @@ export default class TermServer extends TermBase {
     this.send(`\x1b[${n}P`);
   }
 
-  enter() {
+  async enter() {
     const command = this.buffer;
     this.buffer = '';
     this.pos = 0;
     this.history.push(command);
     this.historyIndex = this.history.length;
 
-    const result = '\n' + this.execCommand(command) + this.prompt;
+    const result = '\n' + (await this.execCommand(command)) + this.prompt;
     this.send(result);
   }
 

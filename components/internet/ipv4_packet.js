@@ -112,8 +112,8 @@ export default class IPv4Packet extends FramePayload {
     this.raw[9] = this.payload?.protocol; // Protocol (ICMP)
     this.raw[10] = 0; // Header Checksum (placeholder)
     this.raw[11] = 0;
-    this.raw.set(this.src, 12);
-    this.raw.set(this.dst, 16);
+    this.raw.set(src, 12);
+    this.raw.set(dst, 16);
     this.raw.set(this.payload?.raw, 20);
   }
 
