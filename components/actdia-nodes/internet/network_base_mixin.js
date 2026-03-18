@@ -297,14 +297,30 @@ function ip_route_show({ args, commandData }) {
 // sudo ip route add default via 192.168.1.1
 
 async function ping({ args }) {
+  /*PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=118 time=22.4 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=118 time=21.9 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=118 time=22.1 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=118 time=22.0 ms
+
+--- 8.8.8.8 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3005ms
+rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
+
   if (args.length === 0) {
     return usage(commands.ping);
   }
 
-  var data = new Icmp4EchoRequest();
-  var res = await this.send({ dst: pton(args[0]), data });
+  console.log(`PING ${args[0]} 56(84) bytes of data.`);
+
+  const request = new Icmp4EchoRequest();
+  const sentAt = new Date().getTime();
+  const res = await this.send({ dst: pton(args[0]), data: request });
+  const receivedAt = new Date().getTime();
   const frame = new Frame({ raw: res });
-  console.log(frame.toString());
+  const packet = frame.payload;
+  const icmp = packet.payload;
+  console.log(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${receivedAt - sentAt} ms`);
 
   return `Pinging ${args[0]}...\n`;
 }
@@ -739,7 +755,7 @@ export default function NetworkBaseMixin(Base) {
       return routes[0];
     }
 
-    createFrame({ dst, data }) {
+    createFrame({ dst, data, ttl }) {
       if (!dst) {
         throw new Error('Destination is required');
       }
@@ -758,6 +774,7 @@ export default function NetworkBaseMixin(Base) {
         src: route.src,
         dst,
         payload: data,
+        ttl,
       });
 
       var frame = new Frame({
@@ -769,8 +786,8 @@ export default function NetworkBaseMixin(Base) {
       return frame;
     }
 
-    async send({ dst, data, sync = false }) {
-      const frame = this.createFrame({ dst, data });
+    async send({ dst, data, ttl }) {
+      const frame = this.createFrame({ dst, data, ttl });
       if (frame.dst.every(b => b === 0)) {
         return await this.recv(frame.raw);
       }
