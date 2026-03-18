@@ -5,7 +5,7 @@ import {
   isIPv4, isIPv6, isEqualIPv4AddressMask, isEqualIPv6AddressMask,
   isInSubnet,
 } from '../../internet/ip_utils.js';
-import IcmpEchoRequest from '../../internet/icmp_echo_request.js';
+import Icmp4EchoRequest from '../../internet/icmp4_echo_request.js';
 import Packet from '../../internet/packet.js';
 import Frame from '../../internet/frame.js';
 
@@ -299,7 +299,7 @@ function ping({ args }) {
     return usage(commands.ping);
   }
 
-  var data = new IcmpEchoRequest();
+  var data = new Icmp4EchoRequest();
   this.send({ dst: pton(args[0]), data });
 
   return `Pinging ${args[0]}...\n`;
@@ -750,16 +750,16 @@ export default function NetworkBaseMixin(Base) {
         throw new Error(`No route to ${ntop(dst)}`);
       }
 
-      let packet = new Packet({
+      let packet = Packet.create({
         src: route.src,
         dst,
-        data,
+        payload: data,
       });
 
       var frame = new Frame({
         src: route.dev.mac,
         dst: route.gateway ? strToMac(route.gateway) : route.dev.macBrd,
-        packet,
+        payload: packet,
       });
 
       if (frame.dst.every(b => b === 0)) {
@@ -770,7 +770,7 @@ export default function NetworkBaseMixin(Base) {
 
     recv(raw) {
       var frame = Frame.createFromRaw({ raw });
-      console.log(frame);
+      console.log(frame.toString());
     }
   };
 };

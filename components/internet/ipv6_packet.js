@@ -1,0 +1,86 @@
+import FramePayload from './frame_payload.js';
+import Icmp from './icmp4.js';
+
+export default class IPv6Packet extends FramePayload {
+  constructor({ src, dst, payload, raw }) {
+    super();
+
+    if (raw) {
+      this.raw = raw;
+      return;
+    }
+
+    this.create({ src, dst, payload });
+  }
+
+  get parentProtocol() {
+    return 0x86DD;
+  }
+
+  get version() {
+    return (this.raw[0] >> 4) & 0xF;
+  }
+
+  get trafficClass() {
+    return ((this.raw[0] & 0xF) << 4) | (this.raw[1] >> 4);
+  }
+
+  get flowLabel() {
+    return ((this.raw[1] & 0xF) << 16) | (this.raw[2] << 8) | this.raw[3];
+  }
+
+  get payloadLength() {
+    return (this.raw[4] << 8) | this.raw[5];
+  }
+
+  get nextHeader() {
+    return this.raw[6];
+  }
+
+  get headerLength() {
+    return 40;
+  }
+  
+  get src() {
+    return this.raw.slice(8, 24);
+  }
+
+  get dst() {
+    return this.raw.slice(24, 40);
+  }
+
+  create({ src, dst, payload }) {
+    if (this.raw) {
+      throw new Error('Packet is already created');
+    }
+
+    if (!src || !dst) {
+      throw new Error('Source and destination must be provided');
+    }
+
+    if (src.length !== 16 || dst.length !== 16) {
+      throw new Error('Source and destination must be IPv6 addresses');
+    }
+
+    if (!payload) {
+      throw new Error('Payload must be provided');
+    }
+
+    const totalLength = 40 + (payload?.raw.length || 0);
+
+    this.raw = new Uint8Array(totalLength);
+    this.raw[0] = 0x60; // Version
+    this.raw[1] = 0; // Traffic Class
+    this.raw[2] = 0; // Flow Label
+    this.raw[3] = 0;
+    this.raw[4] = (payload?.raw.length >> 8) & 0xFF;
+    this.raw[5] = payload?.raw.length & 0xFF;
+    this.raw[6] = payload?.protocol; // Next Header (ICMP)
+    this.raw[7] = 64; // Hop Limit
+    this.raw.set(this.src, 8);
+    this.raw.set(this.dst, 24);
+    this.raw.set(this.data.raw, 40);
+  }
+
+  update() {}
+}

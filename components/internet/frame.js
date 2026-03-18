@@ -1,48 +1,71 @@
+import FramePayload from './frame_payload.js';
 import Packet from './packet.js';
 
 export default class Frame {
-  constructor({ src, dst, packet, raw }) {
-    this.create({ src, dst, packet, raw });
+  constructor({ src, dst, payload, raw }) {
+    if (!payload) {
+      throw new Error('Payload is required');
+    }
+
+    if (!(payload instanceof FramePayload)) {
+      throw new Error('Payload must be an instance of FramePayload');
+    }
+
+    if (raw) {
+      this.raw = raw;
+      this.payload = payload;
+      return;
+    }
+
+    this.create({ src, dst, payload });
   }
 
-  create({ src, dst, packet, raw }) {
-    if (raw) {
-      src ??= raw.slice(6, 12),
-      dst ??= raw.slice(0, 6),
-      this.raw = raw;
+  get dst() {
+    return this.raw.slice(0, 6);
+  }
+
+  get src() {
+    return this.raw.slice(6, 12);
+  }
+
+  get protocol() {
+    return (this.raw[12] << 8) | this.raw[13];
+  }
+
+  create({ src, dst, payload }) {
+    if (this.raw) {
+      throw new Error('Frame is already created');
     }
 
-    if (src) {
-      this.src = src;
-    }
-
-    if (dst) {
-      this.dst = dst;
-    }
-
-    if (packet) {
-      this.packet = packet;
-    }
-
-    if (this.src.length !== 6 || this.dst.length !== 6) {
+    if (src.length !== 6 || dst.length !== 6) {
       throw new Error('Source and destination must be MAC addresses');
     }
 
-    if (!this.packet.raw || !this.packet.protocol) {
-      throw new Error('Packet must include raw and protocol');
+    if (!payload?.raw || !payload.parentProtocol) {
+      throw new Error('Payload must include raw and parentProtocol');
     }
 
-    this.raw = new Uint8Array(14 + this.packet.raw.length);
-    this.raw.set(this.dst, 0);
-    this.raw.set(this.src, 6);
-    this.raw.set([this.packet.protocol >> 8, this.packet.protocol & 0xFF], 12);
-    this.raw.set(this.packet.raw, 14);
+    this.payload = payload;
+
+    this.raw = new Uint8Array(14 + payload.raw.length);
+    this.raw.set(dst, 0);
+    this.raw.set(src, 6);
+    this.raw.set([this.payload.parentProtocol >> 8, this.payload.parentProtocol & 0xFF], 12);
+    this.raw.set(this.payload.raw, 14);
+  }
+
+  toString() {
+    return `Frame(
+  dst=${this.dst.map(b => b.toString(16).padStart(2, '0')).join(':')},
+  src=${this.src.map(b => b.toString(16).padStart(2, '0')).join(':')},
+  protocol=0x${this.protocol.toString(16)}
+)
+` + this.payload?.toString?.();
   }
 
   static createFromRaw({ raw }) {
-    return new Frame({
-      packet: Packet.createFromRaw({ raw: raw.slice(14), protocol: (raw[12] << 8) | raw[13] }),
-      raw,
-    });
+    const payload = Packet.createFromRaw({ raw: raw.slice(14) });
+    const frame = new Frame({ raw, payload });
+    return frame;
   }
 }

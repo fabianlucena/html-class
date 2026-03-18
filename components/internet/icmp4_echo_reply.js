@@ -1,24 +1,21 @@
-import Icmp from './icmp.js';
+import Icmp4 from './icmp4.js';
 
-export default class IcmpEchoRequest extends Icmp {
-  constructor({ payloadLength = 56, identifier = 0, sequenceNumber = 0 } = {}) {
+export default class Icmp4EchoReply extends Icmp4 {
+  constructor({ request } = {}) {
     super();
-    this.payloadLength = payloadLength;
-    this.identifier = identifier;
-    this.sequenceNumber = sequenceNumber;
-    this.create();
+    this.create({ request });
   }
 
-  static createFromRaw({ raw }) {
+  /*static createFromRaw({ raw }) {
     const identifier = (raw[4] << 8) | raw[5];
     const sequenceNumber = (raw[6] << 8) | raw[7];
     const payloadLength = raw.length - 8;
-    return new IcmpEchoRequest({ payloadLength, identifier, sequenceNumber });
-  }
+    return new IcmpEchoReply({ payloadLength, identifier, sequenceNumber });
+  }*/
 
-  create() {
+  /*create({ request }) {
     this.raw = new Uint8Array(8 + this.payloadLength);
-    this.raw[0] = 8; // Type: Echo Request
+    this.raw[0] = 0; // Type: Echo Reply
     this.raw[1] = 0;
     this.raw[4] = (this.identifier >> 8) & 0xFF; // Identifier
     this.raw[5] = this.identifier & 0xFF;
@@ -37,5 +34,5 @@ export default class IcmpEchoRequest extends Icmp {
     checksum = ~checksum & 0xFFFF;
     this.raw[2] = (checksum >> 8) & 0xFF;
     this.raw[3] = checksum & 0xFF;
-  }
+  }*/
 }
