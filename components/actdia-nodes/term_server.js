@@ -134,8 +134,9 @@ export default class TermServer extends TermBase {
     this.history.push(command);
     this.historyIndex = this.history.length;
 
-    const result = '\n' + (await this.execCommand(command)) + this.prompt;
-    this.send(result);
+    this.send('\n');
+    this.send(await this.execCommand(command));
+    this.send(this.prompt);
   }
 
   send(data) {
@@ -151,6 +152,6 @@ export default class TermServer extends TermBase {
       return 'No command handler';
     }
 
-    return this.commandHandler(command);
+    return this.commandHandler({ command, terminal: this });
   }
 }

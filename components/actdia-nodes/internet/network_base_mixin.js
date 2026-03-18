@@ -296,7 +296,11 @@ function ip_route_show({ args, commandData }) {
 
 // sudo ip route add default via 192.168.1.1
 
-async function ping({ args }) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function ping({ args, terminal }) {
   /*PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=118 time=22.4 ms
 64 bytes from 8.8.8.8: icmp_seq=2 ttl=118 time=21.9 ms
@@ -311,18 +315,46 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
     return usage(commands.ping);
   }
 
-  console.log(`PING ${args[0]} 56(84) bytes of data.`);
+  const identifier = Math.floor(Math.random() * 65536);
+  terminal.send(`PING ${args[0]} 56(84) bytes of data.\n`);
+  await sleep(100);
+  let transmited = 0, received = 0;
+  const beginAt = new Date().getTime();
+  let min, sum = 0, max, avg = 0, mvar = 0;
+  for (let i = 0; i < 4; i++) {
+    const request = new Icmp4EchoRequest({ identifier, sequenceNumber: i });
+    const sentAt = new Date().getTime();
+    transmited++;
+    const res = await this.send({ dst: pton(args[0]), data: request });
+    const receivedAt = new Date().getTime();
+    const frame = new Frame({ raw: res });
+    const packet = frame.payload;
+    const icmp = packet.payload;
+    received++;
+    const time = receivedAt - sentAt;
+    terminal.send(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${time} ms\n`);
 
-  const request = new Icmp4EchoRequest();
-  const sentAt = new Date().getTime();
-  const res = await this.send({ dst: pton(args[0]), data: request });
-  const receivedAt = new Date().getTime();
-  const frame = new Frame({ raw: res });
-  const packet = frame.payload;
-  const icmp = packet.payload;
-  console.log(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${receivedAt - sentAt} ms`);
+    if (min === undefined || time < min) min = time;
+    if (max === undefined || time > max) max = time;
+    sum += time;
+    const delta = time - avg;
 
-  return `Pinging ${args[0]}...\n`;
+    avg += delta / received;
+    mvar += delta * (time - avg);
+
+    await sleep(1000);
+  }
+  const endAt = new Date().getTime();
+
+  const loss = transmited > 0 ? Math.round(((transmited - received) / transmited) * 100) : 0;
+  const time = endAt - beginAt;
+  const mdev = Math.sqrt(mvar / received).toFixed(3);
+  terminal.send(`\n--- ${args[0]} ping statistics ---\n`);
+  await sleep(10);
+  terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
+  await sleep(100);
+  terminal.send(`rtt min/avg/max/mdev = ${min}/${avg}/${max}/${mdev} ms\n`);
+  await sleep(10);
 }
 
 export default function NetworkBaseMixin(Base) {
@@ -554,7 +586,7 @@ export default function NetworkBaseMixin(Base) {
       return [];
     }
 
-    async execCommand(command) {
+    async execCommand({ command, terminal }) {
       let commandText = command.trim();
       if (!commandText)
         return '';
@@ -568,7 +600,7 @@ export default function NetworkBaseMixin(Base) {
         return `Unknown command: ${command1}. Try help for allowed commands.\n`;
 
       try {
-        return await commandData.exec.bind(this)({command, args, commandData});
+        return await commandData.exec.bind(this)({ command, args, commandData, terminal });
       } catch (e) {
         return `Error: ${e.message}\n`;
       }
