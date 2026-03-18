@@ -321,24 +321,32 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
     const request = new Icmp4EchoRequest({ identifier, sequenceNumber: i });
     const sentAt = new Date().getTime();
     transmited++;
-    const res = await this.send({ dst: pton(args[0]), data: request });
+    let res = await Promise.any([
+      this.send({ dst: pton(args[0]), data: request, delay: Math.random() * 1100 }),
+      sleep(1000),
+    ]);
     const receivedAt = new Date().getTime();
-    const frame = new Frame({ raw: res });
-    const packet = frame.payload;
-    const icmp = packet.payload;
-    received++;
     const time = receivedAt - sentAt;
-    await terminal.send(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${time} ms\n`);
 
-    if (min === undefined || time < min) min = time;
-    if (max === undefined || time > max) max = time;
-    sum += time;
-    const delta = time - avg;
+    if (res) {
+      const frame = new Frame({ raw: res });
+      const packet = frame.payload;
+      const icmp = packet.payload;
+      received++;
+      await terminal.send(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${time} ms\n`);
 
-    avg += delta / received;
-    mvar += delta * (time - avg);
+      if (min === undefined || time < min) min = time;
+      if (max === undefined || time > max) max = time;
+      sum += time;
+      const delta = time - avg;
 
-    await sleep(1000);
+      avg += delta / received;
+      mvar += delta * (time - avg);
+    } else {
+      await terminal.send(`Request timeout for icmp_seq ${i}\n`);
+    }
+
+    await sleep(1000 - time);
   }
   const endAt = new Date().getTime();
 
@@ -811,7 +819,12 @@ export default function NetworkBaseMixin(Base) {
       return frame;
     }
 
-    async send({ dst, data, ttl }) {
+    async send({ dst, data, ttl, delay }) {
+      if (delay) {
+        await sleep(delay);
+      }
+
+      await sleep(10);
       const frame = this.createFrame({ dst, data, ttl });
       if (frame.dst.every(b => b === 0)) {
         return await this.recv(frame.raw);
