@@ -7,7 +7,7 @@ export default class Packet {
     throw new Error('Packet is an abstract class and cannot be instantiated directly');
   }
 
-  static create({ src, dst, payload, raw }) {
+  static create({ src, dst, payload, raw, ttl }) {
     if (raw) {
       return this.createFromRaw({ raw });
     }
@@ -25,9 +25,9 @@ export default class Packet {
     }
 
     if (dst.length === 4) {
-      return new IPv4Packet({ src, dst, payload });
+      return new IPv4Packet({ src, dst, payload, ttl });
     } else if (dst.length === 16) {
-      return new IPv6Packet({ src, dst, payload });
+      return new IPv6Packet({ src, dst, payload, ttl });
     } else {
       throw new Error('Source and destination must be IPv4 or IPv6 addresses');
     }

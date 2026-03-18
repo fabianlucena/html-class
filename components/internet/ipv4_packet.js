@@ -2,7 +2,7 @@ import FramePayload from './frame_payload.js';
 import PacketPayload from './packet_payload.js';
 
 export default class IPv4Packet extends FramePayload {
-  constructor({ src, dst, payload, raw }) {
+  constructor({ src, dst, payload, raw, ttl }) {
     super();
 
     if (raw) {
@@ -11,7 +11,7 @@ export default class IPv4Packet extends FramePayload {
       return;
     }
 
-    this.create({ src, dst, payload });
+    this.create({ src, dst, payload, ttl });
   }
 
   get parentProtocol() {
@@ -78,7 +78,7 @@ export default class IPv4Packet extends FramePayload {
     return this.raw.slice(16, 20);
   }
 
-  create({ src, dst, payload }) {
+  create({ src, dst, payload, ttl }) {
     if (this.raw) {
       throw new Error('Packet is already created');
     }
@@ -108,7 +108,7 @@ export default class IPv4Packet extends FramePayload {
     this.raw[5] = 0;
     this.raw[6] = 0x40; // Flags and Fragment Offset
     this.raw[7] = 0;
-    this.raw[8] = 64; // TTL
+    this.raw[8] = ttl ?? 64; // TTL
     this.raw[9] = this.payload?.protocol; // Protocol (ICMP)
     this.raw[10] = 0; // Header Checksum (placeholder)
     this.raw[11] = 0;

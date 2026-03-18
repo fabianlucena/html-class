@@ -2,7 +2,7 @@ import FramePayload from './frame_payload.js';
 import Icmp from './icmp4.js';
 
 export default class IPv6Packet extends FramePayload {
-  constructor({ src, dst, payload, raw }) {
+  constructor({ src, dst, payload, raw, ttl }) {
     super();
 
     if (raw) {
@@ -10,7 +10,7 @@ export default class IPv6Packet extends FramePayload {
       return;
     }
 
-    this.create({ src, dst, payload });
+    this.create({ src, dst, payload, ttl });
   }
 
   get parentProtocol() {
@@ -49,7 +49,7 @@ export default class IPv6Packet extends FramePayload {
     return this.raw.slice(24, 40);
   }
 
-  create({ src, dst, payload }) {
+  create({ src, dst, payload, ttl }) {
     if (this.raw) {
       throw new Error('Packet is already created');
     }
@@ -78,7 +78,7 @@ export default class IPv6Packet extends FramePayload {
     this.raw[4] = (payload?.raw.length >> 8) & 0xFF;
     this.raw[5] = payload?.raw.length & 0xFF;
     this.raw[6] = payload?.protocol; // Next Header (ICMP)
-    this.raw[7] = 64; // Hop Limit
+    this.raw[7] = ttl ?? 64; // Hop Limit
     this.raw.set(src, 8);
     this.raw.set(dst, 24);
     this.raw.set(this.payload?.raw, 40);
