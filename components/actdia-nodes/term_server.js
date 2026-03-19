@@ -12,7 +12,7 @@ export default class TermServer extends TermBase {
     Object.assign(this, options);
   }
 
-  async setCursor({ col, row, fromLastCol }) {
+  setCursor({ col, row, fromLastCol }) {
     let colDelta = 0, rowDelta = 0;
     if (typeof col === 'number') {
       colDelta = col - this.pos;
@@ -20,22 +20,22 @@ export default class TermServer extends TermBase {
       colDelta = (this.buffer.length + fromLastCol) - this.pos;
     }
 
-    await this.moveCursor(colDelta, rowDelta);
+    this.moveCursor(colDelta, rowDelta);
 
     //this.pos = col;
 
     /*if (typeof row === 'number') {
       if (typeof col === 'number') {
-        await this.send(`\x1b[${(row + 1)};${col + 1}H`);
+        this.send(`\x1b[${(row + 1)};${col + 1}H`);
       } else {
-        await this.send(`\x1b[${(row + 1)}H`);
+        this.send(`\x1b[${(row + 1)}H`);
       }
     } else if (typeof col === 'number') {
-      await this.send(`\x1b[${(col + 1)}G`);
+      this.send(`\x1b[${(col + 1)}G`);
     }*/
   }
 
-  async moveCursor(colDelta, rowDelta) {
+  moveCursor(colDelta, rowDelta) {
     let command = '';
 
     if (colDelta > 0) {
@@ -89,10 +89,10 @@ export default class TermServer extends TermBase {
       this.pos = newBuffer.length;
     }
 
-    await this.send(command);
+    this.send(command);
   }
 
-  async putCharInBuffer(char) {
+  putCharInBuffer(char) {
     if (this.pos < this.buffer.length) {
       this.buffer = this.buffer.slice(0, this.pos) + char + this.buffer.slice(this.pos + 1);
     } else {
@@ -102,29 +102,29 @@ export default class TermServer extends TermBase {
     this.pos++;
   }
 
-  async clearScreen() {
+  clearScreen() {
     this.buffer = '';
     this.pos = 0;
   }
 
-  async clearCurrentLine() {
+  clearCurrentLine() {
     this.buffer = '';
     this.pos = 0;
   }
 
-  async saveCursor() {
+  saveCursor() {
     this.savedCursor = { pos: this.pos };
   }
 
-  async restoreCursor() {
+  restoreCursor() {
     if (this.savedCursor) {
-      await this.setCursor({ col: this.savedCursor.pos });
+      this.setCursor({ col: this.savedCursor.pos });
     }
   }
 
-  async deleteChar(n) {
+  deleteChar(n) {
     this.buffer = this.buffer.slice(0, this.pos) + this.buffer.slice(this.pos + n);
-    await this.send(`\x1b[${n}P`);
+    this.send(`\x1b[${n}P`);
   }
 
   async enter() {
@@ -134,24 +134,24 @@ export default class TermServer extends TermBase {
     this.history.push(command);
     this.historyIndex = this.history.length;
 
-    await this.send('\n');
-    await this.send(await this.execCommand(command));
-    await this.send(this.prompt);
+    this.send('\n');
+    this.send(await this.execCommand(command));
+    this.send(this.prompt);
   }
 
-  async send(data) {
+  send(data) {
     if (!this.sendHandler) {
       return 'No send handler';
     }
 
-    await this.sendHandler(data);
+    this.sendHandler(data);
   }
 
-  async execCommand(command) {
+  execCommand(command) {
     if (!this.commandHandler) {
       return 'No command handler';
     }
 
-    return await this.commandHandler({ command, terminal: this });
+    return this.commandHandler({ command, terminal: this });
   }
 }

@@ -12,10 +12,7 @@ export default async function create({ actdia, _f }) {
     #terminalConnector = null;
     #termServer = new TermServer({
       prompt: '> ',
-      sendHandler: async data => {
-        await sleep(1);
-        await this.#terminalConnector.send(data, { force: true });
-      },
+      sendHandler: data => this.#terminalConnector.send(data, { force: true }),
       commandHandler: async params => await this.execCommand(params),
     });
 
@@ -30,9 +27,9 @@ export default async function create({ actdia, _f }) {
       this.status = '';
     }
 
-    async onTerminalRecv({ connector, data }) {
-      const result = await this.#termServer.receive(data);
-      await connector.send(result, { force: true });
+    onTerminalRecv({ connector, data }) {
+      const result = this.#termServer.receive(data);
+      connector.send(result, { force: true });
     }
   }
 }

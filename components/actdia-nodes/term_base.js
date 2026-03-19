@@ -10,15 +10,15 @@ export default class TermBase {
     Object.assign(this, options);
   }
 
-  async receive(data) {
+  receive(data) {
     let result = '';
     for (let i = 0, l = data?.length; i < l; i++) {
-      result += await this.receiveChar(data[i]) ?? '';
+      result += this.receiveChar(data[i]) ?? '';
     }
     return result;
   }
 
-  async receiveChar(char) {
+  receiveChar(char) {
     if (this.escapeSequence) {
       if (this.escapeSequence === '\x1B') {
         if (char !== '[') {
@@ -36,7 +36,7 @@ export default class TermBase {
         } else if (char >= '@' && char <= '~') {
           this.escapeSequence += char;
           this.escapeCommand = char;
-          await this.execEscapeSequence();
+          this.execEscapeSequence();
           this.escapeSequence = '';
         }
       }
@@ -46,24 +46,24 @@ export default class TermBase {
 
     switch (char) {
       case '\n':
-        await this.enter();
-        await this.moveCursor(0, 1);
+        this.enter();
+        this.moveCursor(0, 1);
         if (this.lmn) {
-          await this.setCursor({ col: 0 });
+          this.setCursor({ col: 0 });
         }
         break;
 
       case '\r':
-        await this.setCursor({ col: 0 });
+        this.setCursor({ col: 0 });
         break;
 
       case '\b':
-        await this.moveCursor(-1, 0);
-        await this.deleteChar(1);
+        this.moveCursor(-1, 0);
+        this.deleteChar(1);
         break;
 
       case '\t':
-        await this.moveCursor(this.tabSize - (this.pos % this.tabSize), 0);
+        this.moveCursor(this.tabSize - (this.pos % this.tabSize), 0);
         break;
 
       case '\x1B':
@@ -71,37 +71,37 @@ export default class TermBase {
         break;
 
       default:
-        await this.putCharInBuffer(char);
+        this.putCharInBuffer(char);
         return char;
     }
   }
 
-  async execEscapeSequence() {
+  execEscapeSequence() {
     let n;
     switch (this.escapeCommand) {
       case 'A': // Move cursor up
         n = parseInt(this.escapeNumber) || 1;
-        await this.moveCursor(0, -n);
+        this.moveCursor(0, -n);
         break;
 
       case 'B': // Move cursor down
         n = parseInt(this.escapeNumber) || 1;
-        await this.moveCursor(0, n);
+        this.moveCursor(0, n);
         break;
 
       case 'C': // Move cursor to the right
         n = parseInt(this.escapeNumber) || 1;
-        await this.moveCursor(n, 0);
+        this.moveCursor(n, 0);
         break;
 
       case 'D': // Move cursor to the left
         n = parseInt(this.escapeNumber) || 1;
-        await this.moveCursor(-n, 0);
+        this.moveCursor(-n, 0);
         break;
 
       case 'G': // Move cursor to column
         n = parseInt(this.escapeNumber) || 1;
-        await this.setCursor({ col: n - 1 });
+        this.setCursor({ col: n - 1 });
         break;
 
       case 'H': // Move cursor to home
@@ -115,24 +115,24 @@ export default class TermBase {
             }
           });
         }
-        await this.setCursor(newCursor);
+        this.setCursor(newCursor);
         break;
 
       case 'J': // Clear screen
         if (this.escapeNumber === '2') {
-          await this.clearScreen();
+          this.clearScreen();
         }
         break;
 
       case 'K': // Clear current line
         if (this.escapeNumber === '2') {
-          await this.clearCurrentLine();
+          this.clearCurrentLine();
         }
         break;
 
       case 'P': // Delete characters
         n = parseInt(this.escapeNumber) || 1;
-        await this.deleteChar(n);
+        this.deleteChar(n);
         break;
 
       case 'h': // Set mode 
@@ -148,36 +148,36 @@ export default class TermBase {
         break;
     
       case 's': // Save cursor position
-        await this.saveCursor();
+        this.saveCursor();
         break;
 
       case 'u': // Restore cursor position
-        await this.restoreCursor();
+        this.restoreCursor();
         break;
     
       case '~': // Other commands with numbers
         switch (this.escapeNumber) {
           case '1': // Home key
-            await this.setCursor({ col: 0 });
+            this.setCursor({ col: 0 });
             break;
 
           case '2': // Insert key
             break;
 
           case '3': // Delete key
-            await this.deleteChar(1);
+            this.deleteChar(1);
             break;
 
           case '4': // End key
-            await this.setCursor({ fromLastCol: 0 });
+            this.setCursor({ fromLastCol: 0 });
             break;
 
           case '5': // Page up
-            await this.moveCursor(0, -this.pageSize);
+            this.moveCursor(0, -this.pageSize);
             break;
 
           case '6': // Page down
-            await this.moveCursor(0, this.pageSize);
+            this.moveCursor(0, this.pageSize);
             break;
         }
         
@@ -185,21 +185,21 @@ export default class TermBase {
     }
   }
 
-  async setCursor({ col, row }) {}
+  setCursor({ col, row }) {}
 
-  async moveCursor(colDelta, rowDelta) {}
+  moveCursor(colDelta, rowDelta) {}
 
-  async putCharInBuffer(char) {}
+  putCharInBuffer(char) {}
 
-  async clearScreen() {}
+  clearScreen() {}
 
-  async clearCurrentLine() {}
+  clearCurrentLine() {}
 
-  async saveCursor() {}
+  saveCursor() {}
 
-  async restoreCursor() {}
+  restoreCursor() {}
 
-  async deleteChar(n) {}
+  deleteChar(n) {}
 
-  async enter() {}
+  enter() {}
 }

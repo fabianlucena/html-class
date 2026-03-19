@@ -59,17 +59,17 @@ export default class Term extends TermBase {
     this.cols = 80;
   }
 
-  async putCharInBuffer(char) {
+  putCharInBuffer(char) {
     if (this.cursor.pendingWrap) {
       this.cursor.pendingWrap = false;
-      await this.moveCursor(0, 1);
+      this.moveCursor(0, 1);
     }
 
     this.viewport[this.cursor.row][this.cursor.col].char = char;
-    await this.moveCursor(1, 0);
+    this.moveCursor(1, 0);
   }
 
-  async setCursor({ col, row }) {
+  setCursor({ col, row }) {
     if (typeof col === 'number')
       this.cursor.col = col;
 
@@ -96,29 +96,29 @@ export default class Term extends TermBase {
     }
   }
 
-  async moveCursor(dx, dy) {
-    await this.setCursor({ col: this.cursor.col + dx, row: this.cursor.row + dy });
+  moveCursor(dx, dy) {
+    this.setCursor({ col: this.cursor.col + dx, row: this.cursor.row + dy });
   }
 
-  async clearScreen() {
+  clearScreen() {
     this.viewport.forEach(row => row.forEach(cell => cell.char = ' '));
   }
 
-  async clearCurrentLine() {
+  clearCurrentLine() {
     this.viewport[this.cursor.row].forEach(cell => cell.char = ' ');
   }
 
-  async saveCursor() {
+  saveCursor() {
     this.savedCursor = { col: this.cursor.col, row: this.cursor.row };
   }
 
-  async restoreCursor() {
+  restoreCursor() {
     if (this.savedCursor) {
-      await this.setCursor({ col: this.savedCursor.col, row: this.savedCursor.row });
+      this.setCursor({ col: this.savedCursor.col, row: this.savedCursor.row });
     }
   }
 
-  async deleteChar(n) {
+  deleteChar(n) {
     this.viewport[this.cursor.row].splice(this.cursor.col, n);
     this.viewport[this.cursor.row].push(...new Array(n).fill(new Cell()));
   }
