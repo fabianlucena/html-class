@@ -11,6 +11,8 @@ import Frame from '../../internet/frame.js';
 import FramePayload from '../../internet/frame_payload.js';
 import IPv4Packet from '../../internet/ipv4_packet.js';
 import { sleep } from '../../utils/sleep.js';
+import { isEqual } from '../../utils/type.js';
+import Icmp4 from '../../internet/icmp4.js';
 
 const commands = {
   'help': {
@@ -313,24 +315,39 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   }
 
   const identifier = Math.floor(Math.random() * 65536);
+
+  const createWaitPingResponse = () => {
+    return new Promise(resolve => {
+      const handler = data => {
+        //if (data.ipPayload instanceof Icmp4EchoReply && data.ipPayload.identifier === identifier) {
+        //  this.removeRecvHandler(handler);
+          resolve(data);
+        //}
+      };
+      this.addRecvHandler({ handler, ipPayloadType: 1, icmp4Type: 0 });
+    });
+  };
+  // this.addRecvHandler({ handler: recvHandler, ipPayloadType: 1, icmp4Type: 0 });
+
+  const waitPingResponse = createWaitPingResponse();
   terminal.send(`PING ${args[0]} 56(84) bytes of data.\n`);
   let transmited = 0, received = 0;
   const beginAt = new Date().getTime();
+  const count = 1;
   let min, sum = 0, max, avg = 0, mvar = 0;
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < count; i++) {
     const request = new Icmp4EchoRequest({ identifier, sequenceNumber: i });
     const sentAt = new Date().getTime();
     transmited++;
-    let res = await this.send({ dst: pton(args[0]), data: request, delay: Math.random() * 1100 });
+
+    await this.send({ dst: pton(args[0]), data: request, delay: Math.random() * 1200 });
+    const res = await waitPingResponse;
     const receivedAt = new Date().getTime();
     const time = receivedAt - sentAt;
 
-    if (res) {
-      const frame = new Frame({ raw: res });
-      const packet = frame.payload;
-      const icmp = packet.payload;
+    if (res?.icmp4) {
       received++;
-      terminal.send(`${icmp.length} bytes from ${ntop(packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${packet.ttl} time=${time} ms\n`);
+      terminal.send(`${res.icmp4.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${res.icmp4.sequenceNumber} ttl=${res.packet.ttl} time=${time} ms\n`);
 
       if (min === undefined || time < min) min = time;
       if (max === undefined || time > max) max = time;
@@ -343,7 +360,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
       terminal.send(`Request timeout for icmp_seq ${i}\n`);
     }
 
-    sleep(1000 - time);
+    await sleep(1000 - time);
   }
   const endAt = new Date().getTime();
 
@@ -817,19 +834,48 @@ export default function NetworkBaseMixin(Base) {
     }
 
     async send({ dst, data, ttl, delay }) {
+      const frame = this.createFrame({ dst, data, ttl });
+      return await this.sendFrame(frame, { delay });
+    }
+
+    async sendFrame(frame, { delay } = {}) {
       if (delay) {
         await sleep(delay);
       }
 
-      const frame = this.createFrame({ dst, data, ttl });
       if (frame.dst.every(b => b === 0)) {
-        return this.recv(frame.raw);
+        this.recv(frame.raw);
       }
 
       return frame;
     }
 
-    recv(raw) {
+    recvHandlers = [];
+
+    addRecvHandler(options) {
+      if (typeof options === 'function') {
+        options = { handler: options };
+      }
+
+      if (!options || typeof options.handler !== 'function') {
+        throw new Error('Handler function is required');
+      }
+
+      this.recvHandlers.push(options);
+    }
+
+    removeRecvHandler(options) {
+      if (typeof options === 'function') {
+        options = { handler: options };
+      }
+
+      let index;
+      while((index = this.recvHandlers.findIndex(h => isEqual(h, options))) !== -1) {
+        this.recvHandlers.splice(index, 1);
+      }
+    }
+
+    async recv(raw) {
       const frame = new Frame({ raw });
       const framePayload = frame.payload;
       if (!framePayload) {
@@ -845,12 +891,30 @@ export default function NetworkBaseMixin(Base) {
       if (framePayload instanceof IPv4Packet) {
         const packet = framePayload;
         const ipPayload = packet.payload;
+        const handlerData = { frame, packet, ipPayload };
+
+        if (ipPayload instanceof Icmp4) {
+          handlerData.icmp4 = ipPayload;
+        }
+
         if (ipPayload instanceof Icmp4EchoRequest) {
           const echoRequest = ipPayload;
           const echoReply = echoRequest.toEchoReply();
           const frame = this.createFrame({ dst: packet.src, data: echoReply });
-          return frame.raw;
+          this.sendFrame(frame);
         }
+
+        this.recvHandlers.forEach(h => {
+           if (h.ipPayloadType && h.ipPayloadType !== packet.protocol) {
+             return;
+           }
+
+           if (h.icmp4Type !== undefined && ipPayload instanceof Icmp4 && h.icmp4Type !== ipPayload.type) {
+             return;
+           }
+
+           h.handler(handlerData);
+        });
       }
     }
   };
