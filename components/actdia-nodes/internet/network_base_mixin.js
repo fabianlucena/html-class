@@ -299,6 +299,11 @@ function ip_route_show({ args, commandData }) {
 
 // sudo ip route add default via 192.168.1.1
 
+function fixed(value) {
+  return value.toFixed(3)
+    .replace(/\.?0+$/, '');
+}
+
 async function ping({ args, terminal }) {
   /*PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=118 time=22.4 ms
@@ -331,6 +336,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
       icmp4Type: 0,
       timeout: 900,
       resultOnTmeout: null,
+      sequenceNumber: i,
     });
     await this.send({
       dst: pton(args[0]),
@@ -346,8 +352,12 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
       received++;
       terminal.send(`${res.icmp4.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${res.icmp4.sequenceNumber} ttl=${res.packet.ttl} time=${time} ms\n`);
 
-      if (min === undefined || time < min) min = time;
-      if (max === undefined || time > max) max = time;
+      if (min === undefined || time < min)
+        min = time;
+
+      if (max === undefined || time > max)
+        max = time;
+
       sum += time;
       const delta = time - avg;
 
@@ -363,10 +373,10 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
 
   const loss = transmited > 0 ? Math.round(((transmited - received) / transmited) * 100) : 0;
   const time = endAt - beginAt;
-  const mdev = Math.sqrt(mvar / received).toFixed(3);
+  const mdev = Math.sqrt(mvar / received);
   terminal.send(`\n--- ${args[0]} ping statistics ---\n`);
   terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
-  terminal.send(`rtt min/avg/max/mdev = ${min}/${avg}/${max}/${mdev} ms\n`);
+  terminal.send(`rtt min/avg/max/mdev = ${fixed(min)}/${fixed(avg)}/${fixed(max)}/${fixed(mdev)} ms\n`);
 }
 
 export default function NetworkBaseMixin(Base) {
@@ -906,8 +916,27 @@ export default function NetworkBaseMixin(Base) {
             return;
           }
 
-          if (filters.icmp4Type !== undefined && (!(ipPayload instanceof Icmp4) || filters.icmp4Type !== ipPayload.type)) {
-            return;
+          let icmp4;
+          if (filters.icmp4Type !== undefined) {
+            if (!(ipPayload instanceof Icmp4)) {
+              return;
+            }
+
+            icmp4 = ipPayload;
+
+            if (filters.icmp4Type !== icmp4.type) {
+              return;
+            }
+          }
+
+          if (filters.sequenceNumber !== undefined) {
+            if (icmp4) {
+              if (filters.sequenceNumber !== icmp4.sequenceNumber) {
+                return;
+              }
+            } else {
+              return;
+            }
           }
 
           handler(handlerData);
