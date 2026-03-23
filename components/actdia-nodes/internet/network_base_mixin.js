@@ -316,32 +316,29 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
 
   const identifier = Math.floor(Math.random() * 65536);
 
-  const createWaitPingResponse = () => {
-    return new Promise(resolve => {
-      const handler = data => {
-        //if (data.ipPayload instanceof Icmp4EchoReply && data.ipPayload.identifier === identifier) {
-        //  this.removeRecvHandler(handler);
-          resolve(data);
-        //}
-      };
-      this.addRecvHandler({ handler, ipPayloadType: 1, icmp4Type: 0 });
-    });
-  };
-  // this.addRecvHandler({ handler: recvHandler, ipPayloadType: 1, icmp4Type: 0 });
-
-  const waitPingResponse = createWaitPingResponse();
   terminal.send(`PING ${args[0]} 56(84) bytes of data.\n`);
   let transmited = 0, received = 0;
   const beginAt = new Date().getTime();
-  const count = 1;
+  const count = 4;
   let min, sum = 0, max, avg = 0, mvar = 0;
   for (let i = 0; i < count; i++) {
     const request = new Icmp4EchoRequest({ identifier, sequenceNumber: i });
     const sentAt = new Date().getTime();
     transmited++;
 
-    await this.send({ dst: pton(args[0]), data: request, delay: Math.random() * 1200 });
-    const res = await waitPingResponse;
+    const pingResponse = this.createDeferredRecv({
+      ipPayloadType: 1,
+      icmp4Type: 0,
+      timeout: 900,
+      resultOnTmeout: null,
+    });
+    await this.send({
+      dst: pton(args[0]),
+      data: request,
+      delay: Math.random() * 1200,
+    });
+    let res = await pingResponse;
+
     const receivedAt = new Date().getTime();
     const time = receivedAt - sentAt;
 
@@ -847,7 +844,7 @@ export default function NetworkBaseMixin(Base) {
         this.recv(frame.raw);
       }
 
-      return frame;
+      return { frame };
     }
 
     recvHandlers = [];
@@ -904,18 +901,66 @@ export default function NetworkBaseMixin(Base) {
           this.sendFrame(frame);
         }
 
-        this.recvHandlers.forEach(h => {
-           if (h.ipPayloadType && h.ipPayloadType !== packet.protocol) {
-             return;
-           }
+        this.recvHandlers.forEach(({handler, ...filters}) => {
+          if (filters.ipPayloadType && filters.ipPayloadType !== packet.protocol) {
+            return;
+          }
 
-           if (h.icmp4Type !== undefined && ipPayload instanceof Icmp4 && h.icmp4Type !== ipPayload.type) {
-             return;
-           }
+          if (filters.icmp4Type !== undefined && (!(ipPayload instanceof Icmp4) || filters.icmp4Type !== ipPayload.type)) {
+            return;
+          }
 
-           h.handler(handlerData);
+          handler(handlerData);
         });
       }
+    }
+
+    createDeferredRecv({ timeout, resultOnTmeout, log, ...filters }) {
+      return new Promise((resolve, reject) => {
+        let finished = false;
+        let timer = null;
+        const handlerOptions = { ...filters };
+
+        const cleanup = () => {
+          finished = true;
+
+          if (timer)
+            clearTimeout(timer);
+
+          this.removeRecvHandler(handlerOptions);
+        };
+        
+        handlerOptions.handler = data => {
+          if (finished)
+            return;
+
+          if (log)
+            console.log('Deferred recv received data', data, filters);
+
+          cleanup();
+          resolve(data);
+        };
+
+        if (timeout) {
+          timer = setTimeout(() => {
+            if (finished)
+              return;
+
+            if (log)
+              console.log(`Deferred recv timeout after ${timeout} ms`, filters);
+
+            cleanup();
+
+            if (typeof resultOnTmeout !== 'undefined') {
+              resolve(resultOnTmeout);
+            } else {
+              reject(new Error('Timeout'));
+            }
+          }, timeout);
+        }
+
+        this.addRecvHandler(handlerOptions);
+      });
     }
   };
 };
