@@ -23,7 +23,7 @@ export default async function create({ actdia }) {
     };
 
     connectors = [
-      { name: 'enp3s0', type: 'utpPort', x: -1, y: 0, direction: 'left', onRecv: ({data}) => this.recv(data) },
+      { name: 'enp3s0', type: 'utpPort', x: -1, y: 0, direction: 'left', onRecv: params => this.onRecv(params) },
     ];
 
     box = {
@@ -42,6 +42,10 @@ export default async function create({ actdia }) {
       if (!this.getNetInterface('enp3s0', false)) {
         this.addNetInterface({ name: 'enp3s0', connector: this.getConnector('enp3s0') });
       }
+    }
+
+    onRecv({ data, dev }) {
+      this.recv(Uint8Array.from(data), { dev: this.getNetInterface('enp3s0', false) });
     }
   };
 }
