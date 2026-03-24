@@ -56,8 +56,8 @@ export default class Frame {
 
   toString() {
     return `Frame(
-  dst=${this.dst.map(b => b.toString(16).padStart(2, '0')).join(':')},
-  src=${this.src.map(b => b.toString(16).padStart(2, '0')).join(':')},
+  dst=${[...this.dst].map(b => b.toString(16).padStart(2, '0')).join(':')},
+  src=${[...this.src].map(b => b.toString(16).padStart(2, '0')).join(':')},
   protocol=0x${this.protocol.toString(16)}
 )
 ` + this.payload?.toString?.();
