@@ -6,5 +6,7 @@ export default {
     'switch.js',
     'pc.js',
     'web_server.js',
+    'tap.js',
+    'ip_viewer.js',
   ],
 };
