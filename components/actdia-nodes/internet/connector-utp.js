@@ -5,6 +5,8 @@ export default async function create({ actdia, Connector }) {
     type = 'utp';
     accepts = [ 'utp' ];
     multiple = false;
+    isInput = true;
+    isOutput = true;
 
     autoRotate = false;
     shape = {
