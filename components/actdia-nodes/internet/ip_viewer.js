@@ -1,4 +1,4 @@
-import Frame from '../../internet/frame.js';
+import createFrame from '../../internet/frame_creator.js';
 
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
@@ -26,6 +26,10 @@ export default async function create({ actdia, Node }) {
           height: 4,
           text: '',
           fontSize: .8,
+          fontFamily: 'monospace',
+          textAnchor: 'left',
+          textBaseline: 'middle',
+          space: 'preserve',
         },
       ],
     };
@@ -75,13 +79,9 @@ export default async function create({ actdia, Node }) {
         status = status.map(v => v ? v : 0);
       }
 
-      //console.log(new Frame(status));
-
-      if (Array.isArray(status)) {
-        this.shape.children[1].text = JSON.stringify(status);
-      } else {
-        this.shape.children[1].text = JSON.stringify(status, null, ' ');
-      }
+      const frame = createFrame({ raw: status });
+      const text = frame.toString();
+      this.shape.children[1].text = text;
 
       this.tryUpdateShape(this.shape.children[1]);
     }
