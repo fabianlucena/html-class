@@ -1,11 +1,15 @@
 export function ntop(ip) {
-  if (ip instanceof Uint8Array && ip.length === 4) {
+  if (!(ip instanceof Uint8Array)) {
+    throw new Error('Invalid IP address');
+  }
+
+  if (ip.length === 4) {
     return Array.from(ip)
       .map(b => b.toString())
       .join('.');
   }
 
-  if (ip instanceof Uint8Array && ip.length === 16) {
+  if (ip.length === 16) {
     const parts = [];
     for (let i = 0; i < 16; i += 2) {
       const part = (ip[i] << 8) | ip[i + 1];
@@ -53,6 +57,12 @@ export function ntop(ip) {
     }
 
     return parts.join(':');
+  }
+
+  if (ip.length === 6) {
+    return Array.from(ip)
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join(':');
   }
 
   throw new Error('Invalid IP address');
