@@ -53,8 +53,14 @@ export default class Arp4 extends FramePayload {
     targetMac = new Uint8Array(6).fill(255),
     targetIp,
     opcode = 1,
+    raw,
   } = {}) {
     super();
+
+    if (raw) {
+      this.raw = raw;
+      return;
+    }
 
     this.raw = new Uint8Array(46);
     this.raw[0] = 0x00;
@@ -72,6 +78,6 @@ export default class Arp4 extends FramePayload {
   }
 
   toString() {
-    return `ARP ${this.opcode === 1 ? 'Request' : 'Reply'}: ${ntop(this.senderIp)} (${ntop(this.senderMac)}) -> ${ntop(this.targetIp)} (${ntop(this.targetMac)})`;
+    return `ARP ${this.opcode === 1 ? 'Request' : 'Reply'}: `; // ${ntop(this.senderIp)} (${ntop(this.senderMac)}) -> ${ntop(this.targetIp)} (${ntop(this.targetMac)})`;
   }
 }
