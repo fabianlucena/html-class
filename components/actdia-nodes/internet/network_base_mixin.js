@@ -201,7 +201,7 @@ function ip_addr_add({ args, commandData }) {
   // ip addr add 192.168.1.50/24 dev eth0
 
   if (args.length < 3 || args[1] !== 'dev'.substring(0, args[1].length))
-    return usage(commandData);
+    return `Usage: ip address add IFADDR dev STRING\n`;
 
   const ip = args[0];
   const dev = args[2];
@@ -831,30 +831,65 @@ export default function NetworkBaseMixin(Base) {
         ttl,
       });
 
+      let macDst;
+      if (dst.length === 4) {
+        if (route.dev.inet4.some(i => i.address.every((byte, index) => byte === dst[index]))) {
+          macDst = route.dev.mac;
+        } else if (route.gateway) {
+          macDst = getMacFor(route.gateway);
+        } else {
+          macDst = route.dev.macBrd;
+        }
+      } else if (dst.length === 16) {
+        console.log(dst);
+        if (route.dev.inet6.some(i => i.address.every((byte, index) => byte === dst[index]))) {
+          macDst = route.dev.mac;
+        } else if (route.gateway) {
+          macDst = getMacFor(route.gateway);
+        } else {
+          macDst = route.dev.macBrd;
+        }
+      } else {
+        throw new Error('Invalid destination address');
+      }
+
       var frame = new Frame({
         src: route.dev.mac,
-        dst: route.gateway ? strToMac(route.gateway) : route.dev.macBrd,
+        dst: macDst,
         payload: packet,
       });
 
-      return frame;
+      return { frame, route };
     }
 
     async send({ dst, data, ttl, delay }) {
-      const frame = this.createFrame({ dst, data, ttl });
-      return await this.sendFrame(frame, { delay });
+      const { frame, route } = this.createFrame({ dst, data, ttl });
+      return await this.sendFrame(frame, { route, delay });
     }
 
-    async sendFrame(frame, { delay } = {}) {
+    async sendFrame(frame, { route, delay } = {}) {
       if (delay) {
         await sleep(delay);
       }
 
-      if (frame.dst.every(b => b === 0)) {
+      route ??= this.getRouteFor(frame.dst);
+      if (!route) {
+        throw new Error(`No route to ${ntop(frame.dst)}`);
+      }
+
+      if (frame.dst.every((byte, index) => byte === route.dev.mac[index])) {
         this.recv(frame.raw);
       }
 
-      return { frame };
+      if (!route.dev.running) {
+        if (!route.dev.up) {
+          throw new Error(`Network interface ${route.dev.name} is down`);
+        }
+
+        throw new Error(`Network interface ${route.dev.name} is not connected`);
+      }
+      
+      return { frame, route };
     }
 
     recvHandlers = [];
@@ -907,8 +942,8 @@ export default function NetworkBaseMixin(Base) {
         if (ipPayload instanceof Icmp4EchoRequest) {
           const echoRequest = ipPayload;
           const echoReply = echoRequest.toEchoReply();
-          const frame = this.createFrame({ dst: packet.src, data: echoReply });
-          this.sendFrame(frame);
+          const { frame, route } = this.createFrame({ dst: packet.src, data: echoReply });
+          this.sendFrame(frame, { route });
         }
 
         this.recvHandlers.forEach(({handler, ...filters}) => {
