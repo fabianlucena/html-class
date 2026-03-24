@@ -810,6 +810,8 @@ export default function NetworkBaseMixin(Base) {
       return routes[0];
     }
 
+    macCache = new Map();
+
     async getMacUsingArp(dst, dev) {
       if (dst.length === 4) {
         const arp = new Arp4({
@@ -827,16 +829,25 @@ export default function NetworkBaseMixin(Base) {
         });
 
         const arpResponse = this.createDeferredRecv({
+          arpType: 'reply',
         });
         await this.sendFrame(frame, { dev });
         let res = await arpResponse;
-        console.log(4);
-        console.log(res);
+
+        if (!res?.arp) {
+          throw new Error(`No ARP response for ${ntop(dst)}`);
+        }
+
+        if (!res.arp.senderIp.every((byte, index) => byte === dst[index])) {
+          throw new Error(`ARP response does not match destination IP ${ntop(dst)}`);
+        }
+
+        this.macCache.set(dst, { mac: res.arp.senderMac, time: Date.now() });
+
+        return this.macCache.get(dst).mac;
       }
 
       throw new Error('ARP is only supported for IPv4 addresses');
-
-      // Implementation for ARP resolution
     }
 
     async getMacDstForRoute({ route, dst, useBrd = false }) {
@@ -915,7 +926,7 @@ export default function NetworkBaseMixin(Base) {
       if (frame.dst.every((byte, index) => byte === dev.mac[index])) {
         this.recv(frame.raw);
       } else {
-        dev.connector.send(frame.raw);
+        dev.connector.send([...frame.raw]);
       }
 
       return { frame, dev };
@@ -946,7 +957,7 @@ export default function NetworkBaseMixin(Base) {
       }
     }
 
-    async recv(raw) {
+    async recv(raw, { dev } = {}) {
       const frame = new Frame({ raw });
       const framePayload = frame.payload;
       if (!framePayload) {
@@ -959,53 +970,85 @@ export default function NetworkBaseMixin(Base) {
         return;
       }
 
-      if (framePayload instanceof IPv4Packet) {
-        const packet = framePayload;
-        const ipPayload = packet.payload;
-        const handlerData = { frame, packet, ipPayload };
+      const handlerData = { frame };
 
-        if (ipPayload instanceof Icmp4) {
-          handlerData.icmp4 = ipPayload;
-        }
-
-        if (ipPayload instanceof Icmp4EchoRequest) {
-          const echoRequest = ipPayload;
-          const echoReply = echoRequest.toEchoReply();
-          const { frame, dev } = await this.createFrame({ dst: packet.src, data: echoReply });
+      if (framePayload instanceof Arp4) {
+        handlerData.arp = framePayload;
+        const arp = framePayload;
+        if (arp.opcode === 1) {
+          const arpReply = new Arp4({
+            senderMac: dev.mac,
+            senderIp: arp.targetIp,
+            targetMac: arp.senderMac,
+            targetIp: arp.senderIp,
+            opcode: 2,
+          });
+          const frame = new Frame({
+            src: dev.mac,
+            dst: Array(6).fill(255),
+            payload: arpReply,
+          });
+          
           this.sendFrame(frame, { dev });
         }
+      }
 
-        this.recvHandlers.forEach(({handler, ...filters}) => {
-          if (filters.ipPayloadType && filters.ipPayloadType !== packet.protocol) {
+      if (framePayload instanceof IPv4Packet) {
+        handlerData.packet = framePayload;
+        handlerData.ipPayload = handlerData.packet.payload;
+
+        if (handlerData.ipPayload instanceof Icmp4) {
+          handlerData.icmp4 = handlerData.ipPayload;
+        }
+
+        if (handlerData.ipPayload instanceof Icmp4EchoRequest) {
+          const echoRequest = handlerData.ipPayload;
+          const echoReply = echoRequest.toEchoReply();
+          const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
+          this.sendFrame(frame, { dev });
+        }
+      }
+
+      this.recvHandlers.forEach(({handler, ...filters}) => {
+        if (filters.ipPayloadType && filters.ipPayloadType !== handlerData.packet?.protocol) {
+          return;
+        }
+
+        let icmp4;
+        if (filters.icmp4Type !== undefined) {
+          if (!(handlerData.ipPayload instanceof Icmp4)) {
             return;
           }
 
-          let icmp4;
-          if (filters.icmp4Type !== undefined) {
-            if (!(ipPayload instanceof Icmp4)) {
+          icmp4 = handlerData.ipPayload;
+
+          if (filters.icmp4Type !== icmp4.type) {
+            return;
+          }
+        }
+
+        if (filters.sequenceNumber !== undefined) {
+          if (icmp4) {
+            if (filters.sequenceNumber !== icmp4.sequenceNumber) {
               return;
             }
+          } else {
+            return;
+          }
+        }
 
-            icmp4 = ipPayload;
-
-            if (filters.icmp4Type !== icmp4.type) {
-              return;
-            }
+        if (filters.arpType !== undefined) {
+          if (!(handlerData.arp instanceof Arp4)) {
+            return;
           }
 
-          if (filters.sequenceNumber !== undefined) {
-            if (icmp4) {
-              if (filters.sequenceNumber !== icmp4.sequenceNumber) {
-                return;
-              }
-            } else {
-              return;
-            }
+          if (filters.arpType === 'reply' && handlerData.arp.opcode !== 2) {
+            return;
           }
+        }
 
-          handler(handlerData);
-        });
-      }
+        handler(handlerData);
+      });
     }
 
     createDeferredRecv({ timeout, resultOnTmeout, log, ...filters }) {
