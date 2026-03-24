@@ -13,6 +13,7 @@ import IPv4Packet from '../../internet/ipv4_packet.js';
 import { sleep } from '../../utils/sleep.js';
 import { isEqual } from '../../utils/type.js';
 import Icmp4 from '../../internet/icmp4.js';
+import Arp4 from '../../internet/arp4.js';
 
 const commands = {
   'help': {
@@ -533,7 +534,7 @@ export default function NetworkBaseMixin(Base) {
       }
 
       netInterface.up ??= false;
-      netInterface.running ??= false;
+      netInterface.running ??= true;
 
       return netInterface;
     }
@@ -809,7 +810,36 @@ export default function NetworkBaseMixin(Base) {
       return routes[0];
     }
 
-    getMacDstForRoute(route, dst, useBrd = false) {
+    async getMacUsingArp(dst, dev) {
+      if (dst.length === 4) {
+        const arp = new Arp4({
+          senderMac: dev.mac,
+          senderIp: dev.inet4[0].address,
+          targetMac: Array(6).fill(255),
+          targetIp: dst,
+          opcode: 1
+        });
+
+        const frame = new Frame({
+          src: dev.mac,
+          dst: Array(6).fill(255),
+          payload: arp,
+        });
+
+        const arpResponse = this.createDeferredRecv({
+        });
+        await this.sendFrame(frame, { dev });
+        let res = await arpResponse;
+        console.log(4);
+        console.log(res);
+      }
+
+      throw new Error('ARP is only supported for IPv4 addresses');
+
+      // Implementation for ARP resolution
+    }
+
+    async getMacDstForRoute({ route, dst, useBrd = false }) {
       if (dst.length !== 4 && dst.length !== 16) {
         throw new Error('Invalid destination address');
       }
@@ -819,17 +849,17 @@ export default function NetworkBaseMixin(Base) {
       }
 
       if (route.gateway) {
-        return getMacFor(route.gateway);
+        return getMacFor(dst, route.gateway);
       }
 
       if (useBrd) {
-        macDst = route.dev.macBrd;
+        return route.dev.macBrd;
       }
-      
-      throw new Error(`No route to ${ntop(dst)}`);
+
+      return await this.getMacUsingArp(dst, route.dev);
     }
 
-    createFrame({ dst, data, ttl, useBrd = false }) {
+    async createFrame({ dst, data, ttl, useBrd = false }) {
       if (!dst) {
         throw new Error('Destination is required');
       }
@@ -839,57 +869,56 @@ export default function NetworkBaseMixin(Base) {
       }
 
       // Find route for the destination
-      let route = this.getRouteFor(dst);
+      const route = this.getRouteFor(dst);
       if (!route) {
         throw new Error(`No route to ${ntop(dst)}`);
       }
 
-      let packet = Packet.create({
+      const packet = Packet.create({
         src: route.src,
         dst,
         payload: data,
         ttl,
       });
 
-      var frame = new Frame({
+      const frame = new Frame({
         src: route.dev.mac,
-        dst: this.getMacDstForRoute(route, dst, useBrd),
+        dst: await this.getMacDstForRoute({ route, dst, useBrd }),
         payload: packet,
       });
 
-      return { frame, route };
+      return { frame, dev: route.dev, route };
     }
 
     async send({ dst, data, ttl, delay }) {
-      const { frame, route } = this.createFrame({ dst, data, ttl });
-      return await this.sendFrame(frame, { route, delay });
+      const { frame, dev } = await this.createFrame({ dst, data, ttl });
+      return await this.sendFrame(frame, { dev, delay });
     }
 
-    async sendFrame(frame, { route, delay } = {}) {
+    async sendFrame(frame, { dev, delay } = {}) {
       if (delay) {
         await sleep(delay);
       }
-
-      route ??= this.getRouteFor(frame.dst);
-      if (!route) {
-        throw new Error(`No route to ${ntop(frame.dst)}`);
+      
+      if (!dev) {
+        throw new Error('Network interface is required to send frame');
       }
 
-      if (!route.dev.running) {
-        if (!route.dev.up) {
-          throw new Error(`Network interface ${route.dev.name} is down`);
+      if (!dev.running) {
+        if (!dev.up) {
+          throw new Error(`Network interface ${dev.name} is down`);
         }
 
-        throw new Error(`Network interface ${route.dev.name} is not connected`);
+        throw new Error(`Network interface ${dev.name} is not connected`);
       }
 
-      if (frame.dst.every((byte, index) => byte === route.dev.mac[index])) {
+      if (frame.dst.every((byte, index) => byte === dev.mac[index])) {
         this.recv(frame.raw);
       } else {
-        console.log(frame.toString());
+        dev.connector.send(frame.raw);
       }
 
-      return { frame, route };
+      return { frame, dev };
     }
 
     recvHandlers = [];
@@ -942,8 +971,8 @@ export default function NetworkBaseMixin(Base) {
         if (ipPayload instanceof Icmp4EchoRequest) {
           const echoRequest = ipPayload;
           const echoReply = echoRequest.toEchoReply();
-          const { frame, route } = this.createFrame({ dst: packet.src, data: echoReply });
-          this.sendFrame(frame, { route });
+          const { frame, dev } = await this.createFrame({ dst: packet.src, data: echoReply });
+          this.sendFrame(frame, { dev });
         }
 
         this.recvHandlers.forEach(({handler, ...filters}) => {
