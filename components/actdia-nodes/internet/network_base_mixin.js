@@ -1042,7 +1042,7 @@ export default function NetworkBaseMixin(Base) {
             return;
           }
 
-          if (filters.arpType === 'reply' && handlerData.arp.opcode !== 2) {
+          if (filters.arpType === 'reply' && !handlerData.arp.isReply) {
             return;
           }
         }

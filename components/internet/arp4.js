@@ -6,6 +6,36 @@ export default class Arp4 extends FramePayload {
     return 0x0806;
   }
 
+  constructor({
+    senderMac = new Uint8Array(6).fill(0),
+    senderIp,
+    targetMac = new Uint8Array(6).fill(255),
+    targetIp,
+    opcode = 1,
+    raw,
+  } = {}) {
+    super();
+
+    if (raw) {
+      this.raw = raw;
+      return;
+    }
+
+    this.raw = new Uint8Array(46);
+    this.raw[0] = 0x00;
+    this.raw[1] = 0x01; // Ethernet
+    this.raw[2] = 0x08;
+    this.raw[3] = 0x00; // IPv4
+    this.raw[4] = 6; // MAC address length
+    this.raw[5] = 4; // IPv4 address length
+    this.raw[6] = (opcode >> 8) & 0xFF;
+    this.raw[7] = opcode & 0xFF;
+    this.raw.set(senderMac, 8);
+    this.raw.set(senderIp, 14);
+    this.raw.set(targetMac, 18);
+    this.raw.set(targetIp, 24);
+  }
+
   // HTYPE = 0x0001 (Ethernet)
   get hardwareType() {
     return (this.raw[0] << 8) | this.raw[1];
@@ -47,34 +77,12 @@ export default class Arp4 extends FramePayload {
     return this.raw.slice(24, 28);
   }
 
-  constructor({
-    senderMac = new Uint8Array(6).fill(0),
-    senderIp,
-    targetMac = new Uint8Array(6).fill(255),
-    targetIp,
-    opcode = 1,
-    raw,
-  } = {}) {
-    super();
+  get isRequest() {
+    return this.opcode === 1;
+  }
 
-    if (raw) {
-      this.raw = raw;
-      return;
-    }
-
-    this.raw = new Uint8Array(46);
-    this.raw[0] = 0x00;
-    this.raw[1] = 0x01; // Ethernet
-    this.raw[2] = 0x08;
-    this.raw[3] = 0x00; // IPv4
-    this.raw[4] = 6; // MAC address length
-    this.raw[5] = 4; // IPv4 address length
-    this.raw[6] = (opcode >> 8) & 0xFF;
-    this.raw[7] = opcode & 0xFF;
-    this.raw.set(senderMac, 8);
-    this.raw.set(senderIp, 14);
-    this.raw.set(targetMac, 18);
-    this.raw.set(targetIp, 24);
+  get isReply() {
+    return this.opcode === 2;
   }
 
   toString() {
