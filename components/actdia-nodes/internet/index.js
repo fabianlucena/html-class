@@ -7,6 +7,6 @@ export default {
     'pc.js',
     'web_server.js',
     'tap.js',
-    'ip_viewer.js',
+    'frame_viewer.js',
   ],
 };

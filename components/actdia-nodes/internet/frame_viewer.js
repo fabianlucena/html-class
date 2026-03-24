@@ -3,7 +3,7 @@ import createFrame from '../../internet/frame_creator.js';
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
 
-  return class IPViewer extends Node {
+  return class IPFrameViewer extends Node {
     static import = [
       './connector-utp-port.js',
     ];
