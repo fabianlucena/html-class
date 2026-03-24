@@ -156,7 +156,8 @@ export default class IPv4Packet extends FramePayload {
   protocol=${this.protocol},
   headerChecksum=0x${this.headerChecksum.toString(16)},
   src=${this.src.join('.')},
-  dst=${this.dst.join('.')})
+  dst=${this.dst.join('.')}
+)
 ` + this.payload?.toString?.();
   }
 }

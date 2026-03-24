@@ -145,6 +145,21 @@ export default class Icmp4Echo extends Icmp4 {
   }
 
   toString() {
+    const payloadHex = this.raw
+      .slice(8)
+      .reduce((lines, b, i) => {
+        const hex = b.toString(16).padStart(2, '0');
+        const groupIndex = Math.floor(i / 8);
+
+        if (!lines[groupIndex])
+          lines[groupIndex] = [];
+        lines[groupIndex].push(hex);
+
+        return lines;
+      }, [])
+      .map(group => group.join(' '))
+      .join('\n    ');
+    this.raw.slice(8).map(b => b.toString(16).padStart(2, '0')).join(' ')
     return `${this.constructor.name}(
   type=${this.type},
   code=${this.code},
@@ -152,7 +167,8 @@ export default class Icmp4Echo extends Icmp4 {
   identifier=${this.identifier},
   sequenceNumber=${this.sequenceNumber},
   payloadLength=${this.payloadLength},
-  payload=${this.raw.slice(8).map(b => b.toString(16).padStart(2, '0')).join(' ')}
+  payload=
+    ${payloadHex}
 )`;
   }
 }
