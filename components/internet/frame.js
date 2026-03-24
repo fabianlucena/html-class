@@ -4,6 +4,10 @@ import FramePayload from './frame_payload.js';
 export default class Frame {
   constructor({ src, dst, payload, raw }) {
     if (raw) {
+      if (Array.isArray(raw)) {
+        raw = new Uint8Array(raw);
+      }
+
       this.raw = raw;
       this.payload = createFramePayload({ raw: raw.slice(14), frame: this });
       return;
@@ -55,11 +59,15 @@ export default class Frame {
   }
 
   toString() {
-    return `Frame(
+    let result = `Frame(
   dst=${[...this.dst].map(b => b.toString(16).padStart(2, '0')).join(':')},
   src=${[...this.src].map(b => b.toString(16).padStart(2, '0')).join(':')},
   protocol=0x${this.protocol.toString(16)}
 )
-` + this.payload?.toString?.();
+`;
+
+    result += this.payload?.toString?.();
+
+    return result;
   }
 }
