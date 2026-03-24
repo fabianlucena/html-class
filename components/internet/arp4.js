@@ -36,28 +36,24 @@ export default class Arp4 extends FramePayload {
     this.raw.set(targetIp, 24);
   }
 
-  // HTYPE = 0x0001 (Ethernet)
-  get hardwareType() {
+  get hardwareType() { // HTYPE = 0x0001 (Ethernet)
     return (this.raw[0] << 8) | this.raw[1];
   }
   
-  // PTYPE = 0x0800 (IPv4)
-  get protocolType() {
+  
+  get protocolType() { // PTYPE = 0x0800 (IPv4)
     return (this.raw[2] << 8) | this.raw[3];
   }
 
-  // HLEN = 6 (MAC address length)
-  get hardwareSize() {
+  get hardwareSize() { // HLEN = 6 (MAC address length)
     return this.raw[4];
   }
   
-  // PLEN = 4 (IPv4 address length)
-  get protocolSize() {
+  get protocolSize() { // PLEN = 4 (IPv4 address length)
     return this.raw[5];
   }
 
-  // OPER = 1 (ARP Request), 2 (ARP Reply)
-  get opcode() {
+  get opcode() { // OPER = 1 (ARP Request), 2 (ARP Reply)
     return (this.raw[6] << 8) | this.raw[7];
   }
 

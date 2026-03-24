@@ -1,3 +1,5 @@
+import Frame from '../../internet/frame.js';
+
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
 
@@ -72,6 +74,8 @@ export default async function create({ actdia, Node }) {
       if (Array.isArray(status)) {
         status = status.map(v => v ? v : 0);
       }
+
+      //console.log(new Frame(status));
 
       if (Array.isArray(status)) {
         this.shape.children[1].text = JSON.stringify(status);

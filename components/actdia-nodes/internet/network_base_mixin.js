@@ -5,15 +5,15 @@ import {
   isIPv4, isIPv6, isEqualIPv4AddressMask, isEqualIPv6AddressMask,
   isInSubnet,
 } from '../../internet/ip_utils.js';
-import Icmp4EchoRequest from '../../internet/icmp4_echo_request.js';
-import Packet from '../../internet/packet.js';
-import Frame from '../../internet/frame.js';
-import FramePayload from '../../internet/frame_payload.js';
-import IPv4Packet from '../../internet/ipv4_packet.js';
 import { sleep } from '../../utils/sleep.js';
 import { isEqual } from '../../utils/type.js';
+import Frame from '../../internet/frame.js';
 import Icmp4 from '../../internet/icmp4.js';
+import Icmp4EchoRequest from '../../internet/icmp4_echo_request.js';
 import Arp4 from '../../internet/arp4.js';
+import createPacket from '../../internet/packet_creator.js';
+import IPv4Packet from '../../internet/ipv4_packet.js';
+import FramePayload from '../../internet/frame_payload.js';
 
 const commands = {
   'help': {
@@ -625,6 +625,7 @@ export default function NetworkBaseMixin(Base) {
       try {
         return await commandData.exec.bind(this)({ command, args, commandData, terminal });
       } catch (e) {
+        console.error(e);
         return `Error: ${e.message}\n`;
       }
     }
@@ -885,7 +886,7 @@ export default function NetworkBaseMixin(Base) {
         throw new Error(`No route to ${ntop(dst)}`);
       }
 
-      const packet = Packet.create({
+      const packet = createPacket({
         src: route.src,
         dst,
         payload: data,

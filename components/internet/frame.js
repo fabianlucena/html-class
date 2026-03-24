@@ -1,23 +1,11 @@
+import createFramePayload from './frame_payload_creator.js';
 import FramePayload from './frame_payload.js';
-import Packet from './packet.js';
-import Arp4 from './arp4.js';
 
 export default class Frame {
   constructor({ src, dst, payload, raw }) {
     if (raw) {
       this.raw = raw;
-      const proto = (raw[12] << 8) + raw[13];
-      switch (proto) {
-        case 0x0806:
-          this.payload = new Arp4({ raw: raw.slice(14) });
-          break;
-
-        case 0x0800:
-        case 0x86DD:
-         this.payload = Packet.createFromRaw({ raw: raw.slice(14) });
-          break;
-      }
-
+      this.payload = createFramePayload({ raw: raw.slice(14), frame: this });
       return;
     }
 

@@ -1,5 +1,5 @@
 import FramePayload from './frame_payload.js';
-import PacketPayload from './packet_payload.js';
+import createPacketPayload from './packet_payload_creator.js';
 
 export default class IPv4Packet extends FramePayload {
   constructor({ src, dst, payload, raw, ttl }) {
@@ -7,7 +7,7 @@ export default class IPv4Packet extends FramePayload {
 
     if (raw) {
       this.raw = raw;
-      this.payload = PacketPayload.createFromRaw({ protocol: this.protocol, raw: raw.slice(this.headerLength) });
+      this.payload = createPacketPayload({ packet: this, raw: raw.slice(this.headerLength) });
       return;
     }
 
