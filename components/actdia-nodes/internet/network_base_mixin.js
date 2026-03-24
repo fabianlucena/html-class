@@ -300,7 +300,7 @@ function ip_route_show({ args, commandData }) {
 // sudo ip route add default via 192.168.1.1
 
 function fixed(value) {
-  return value.toFixed(3)
+  return (value ?? 0).toFixed(3)
     .replace(/\.?0+$/, '');
 }
 
@@ -373,7 +373,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
 
   const loss = transmited > 0 ? Math.round(((transmited - received) / transmited) * 100) : 0;
   const time = endAt - beginAt;
-  const mdev = Math.sqrt(mvar / received);
+  const mdev = received ? Math.sqrt(mvar / received) : 0;
   terminal.send(`\n--- ${args[0]} ping statistics ---\n`);
   terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
   terminal.send(`rtt min/avg/max/mdev = ${fixed(min)}/${fixed(avg)}/${fixed(max)}/${fixed(mdev)} ms\n`);
@@ -809,7 +809,27 @@ export default function NetworkBaseMixin(Base) {
       return routes[0];
     }
 
-    createFrame({ dst, data, ttl }) {
+    getMacDstForRoute(route, dst, useBrd = false) {
+      if (dst.length !== 4 && dst.length !== 16) {
+        throw new Error('Invalid destination address');
+      }
+
+      if (route.dev.inet4.some(i => i.address.every((byte, index) => byte === dst[index]))) {
+        return route.dev.mac;
+      }
+
+      if (route.gateway) {
+        return getMacFor(route.gateway);
+      }
+
+      if (useBrd) {
+        macDst = route.dev.macBrd;
+      }
+      
+      throw new Error(`No route to ${ntop(dst)}`);
+    }
+
+    createFrame({ dst, data, ttl, useBrd = false }) {
       if (!dst) {
         throw new Error('Destination is required');
       }
@@ -831,31 +851,9 @@ export default function NetworkBaseMixin(Base) {
         ttl,
       });
 
-      let macDst;
-      if (dst.length === 4) {
-        if (route.dev.inet4.some(i => i.address.every((byte, index) => byte === dst[index]))) {
-          macDst = route.dev.mac;
-        } else if (route.gateway) {
-          macDst = getMacFor(route.gateway);
-        } else {
-          macDst = route.dev.macBrd;
-        }
-      } else if (dst.length === 16) {
-        console.log(dst);
-        if (route.dev.inet6.some(i => i.address.every((byte, index) => byte === dst[index]))) {
-          macDst = route.dev.mac;
-        } else if (route.gateway) {
-          macDst = getMacFor(route.gateway);
-        } else {
-          macDst = route.dev.macBrd;
-        }
-      } else {
-        throw new Error('Invalid destination address');
-      }
-
       var frame = new Frame({
         src: route.dev.mac,
-        dst: macDst,
+        dst: this.getMacDstForRoute(route, dst, useBrd),
         payload: packet,
       });
 
@@ -877,10 +875,6 @@ export default function NetworkBaseMixin(Base) {
         throw new Error(`No route to ${ntop(frame.dst)}`);
       }
 
-      if (frame.dst.every((byte, index) => byte === route.dev.mac[index])) {
-        this.recv(frame.raw);
-      }
-
       if (!route.dev.running) {
         if (!route.dev.up) {
           throw new Error(`Network interface ${route.dev.name} is down`);
@@ -888,7 +882,13 @@ export default function NetworkBaseMixin(Base) {
 
         throw new Error(`Network interface ${route.dev.name} is not connected`);
       }
-      
+
+      if (frame.dst.every((byte, index) => byte === route.dev.mac[index])) {
+        this.recv(frame.raw);
+      } else {
+        console.log(frame.toString());
+      }
+
       return { frame, route };
     }
 
