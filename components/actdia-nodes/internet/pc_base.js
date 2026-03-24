@@ -23,7 +23,7 @@ export default async function create({ actdia }) {
     };
 
     connectors = [
-      { name: 'enp3s0', type: 'utpPort', x: -1, y: 0, direction: 'left' },
+      { name: 'enp3s0', type: 'utpPort', x: -1, y: 0, direction: 'left', onRecv: ({data}) => this.recv(data) },
     ];
 
     box = {
