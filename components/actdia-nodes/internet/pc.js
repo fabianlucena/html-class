@@ -1,5 +1,4 @@
 import TermServer from './../term_server.js';
-import { sleep } from './../../utils/sleep.js';
 
 export default async function create({ actdia, _f }) {
   await actdia.loadLocaleForMeta(import.meta);
