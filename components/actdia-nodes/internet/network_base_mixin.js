@@ -811,9 +811,15 @@ export default function NetworkBaseMixin(Base) {
       return routes[0];
     }
 
-    macCache = new Map();
+    #macCache = new Map();
 
     async getMacUsingArp(dst, dev) {
+      const key = [...dst].join(':');
+      const cachedMac = this.#macCache.get(key)?.mac;
+      if (cachedMac) {
+        return cachedMac;
+      }
+
       if (dst.length === 4) {
         const arp = new Arp4({
           senderMac: dev.mac,
@@ -843,9 +849,10 @@ export default function NetworkBaseMixin(Base) {
           throw new Error(`ARP response does not match destination IP ${ntop(dst)}`);
         }
 
-        this.macCache.set(dst, { mac: res.arp.senderMac, time: Date.now() });
+        const mac = res.arp.senderMac;
+        this.#macCache.set(key, { mac, time: Date.now() });
 
-        return this.macCache.get(dst).mac;
+        return mac;
       }
 
       throw new Error('ARP is only supported for IPv4 addresses');
