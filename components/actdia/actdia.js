@@ -619,6 +619,27 @@ export default class ActDia {
           return delta;
         },
       },
+      {
+        name: 'delete',
+        cursor: 'not-allowed',
+        parent: () => this,
+        getDelta() {
+          const delta = {
+            ...this.parent().getDeltaForHotPlace(this, 1, 2),
+            width: 0,
+            height: 0,
+          };
+
+          delta.mx = delta.x;
+          delta.my = delta.y;
+          delta.x = 0;
+          delta.y = 0;
+          delta.dx = 0;
+          delta.dy = 0;
+
+          return delta;
+        },
+      },
     ];
 
     for (let hotPlace of this.hotPlaces) {
@@ -2415,6 +2436,8 @@ export default class ActDia {
     this.hotPlaces[7].svg.setAttribute('y', y2 + .25);
     this.hotPlaces[8].svg.setAttribute('x', x2 + 1.5);
     this.hotPlaces[8].svg.setAttribute('y', y1 + .5);
+    this.hotPlaces[9].svg.setAttribute('x', x2 + 1.5);
+    this.hotPlaces[9].svg.setAttribute('y', y1 + 1.5);
     this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', ''));
   }
 
@@ -2844,6 +2867,10 @@ export default class ActDia {
     if (evt.button === 0) {
       const hotPlace = this.hotPlaces?.find(hp => hp?.svg === evt.target);
       if (hotPlace) {
+        if (hotPlace.name === 'delete') {
+          this.deleteSelected();
+        }
+        
         const items = this.getItems({ onlyNodes: true, onlySelected: true });
         if (items.length) {
           hotPlace.dragging = {
