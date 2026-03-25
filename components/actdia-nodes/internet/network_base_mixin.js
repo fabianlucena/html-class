@@ -36,7 +36,7 @@ const commands = {
   },
   'ping': {
     help: 'Ping a host.',
-    usage: 'ping <host>',
+    usage: 'ping [-c|--count <count>] <host>',
     exec: ping
   }
 };
@@ -323,8 +323,34 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
     return usage(commands.ping);
   }
 
+  let ipText,
+    count = 4;
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === '-h' || arg === '--help') {
+      return usage(commands.ping);
+    }
+
+    if (arg === '-c' || arg === '--count') {
+      i++;
+      count = parseInt(args[i]);
+      continue;
+    }
+
+    if (arg.startsWith('-')) {
+      return `Unknown option: ${arg}\n`;
+    }
+
+    if (!ipText) {
+      ipText = arg;
+      continue;
+    }
+
+    return `Unknown option: ${arg}\n`;
+  }
+
   const identifier = Math.floor(Math.random() * 65536);
-  const ip = pton(args[0]); // Validate IP address
+  const ip = pton(ipText); // Validate IP address
   let createRequest,
     responseFilters = {},
     resProperty,
@@ -344,13 +370,12 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
     resProperty = 'icmp6';
     ttlProperty = 'hopLimit';
   } else {
-    return `Invalid IP address: ${args[0]}\n`;
+    return `Invalid IP address: ${ipText}\n`;
   }
 
-  terminal.send(`PING ${args[0]} 56(84) bytes of data.\n`);
+  terminal.send(`PING ${ipText} 56(84) bytes of data.\n`);
   let transmited = 0, received = 0;
   const beginAt = new Date().getTime();
-  const count = 1;
   const timeout = 900;
   const delay = () => Math.random() * 1200;
   let min, sum = 0, max, avg = 0, mvar = 0;
@@ -403,7 +428,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   const loss = transmited > 0 ? Math.round(((transmited - received) / transmited) * 100) : 0;
   const time = endAt - beginAt;
   const mdev = received ? Math.sqrt(mvar / received) : 0;
-  terminal.send(`\n--- ${args[0]} ping statistics ---\n`);
+  terminal.send(`\n--- ${ipText} ping statistics ---\n`);
   terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
   terminal.send(`rtt min/avg/max/mdev = ${fixed(min)}/${fixed(avg)}/${fixed(max)}/${fixed(mdev)} ms\n`);
 }
