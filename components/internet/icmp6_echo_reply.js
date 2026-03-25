@@ -1,6 +1,6 @@
-import Icmp6 from './icmp6.js';
+import Icmp6Echo from './icmp6_echo.js';
 
-export default class Icmp6EchoReply extends Icmp6 {
+export default class Icmp6EchoReply extends Icmp6Echo {
   get defaultType() {
     return 129; // Type: Echo Reply
   }
