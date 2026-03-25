@@ -6,6 +6,10 @@ export default class Icmp4Echo extends Icmp4 {
     if (raw) {
       this.raw = new Uint8Array(raw.length);
       this.raw.set(raw);
+      if (this.calculateChecksum() !== this.checksum) {
+        console.error('Invalid checksum', this.calculateChecksum(), this.checksum);
+        throw new Error('Invalid checksum');
+      }
       this.raw[0] = this.defaultType;
       this.raw[1] = 0;
       this.update();
@@ -29,7 +33,7 @@ export default class Icmp4Echo extends Icmp4 {
     if (typeof sequenceNumber === 'number') {
       this.setSequenceNumber(sequenceNumber, false);
     }
-    
+
     this.update();
   }
 
@@ -69,14 +73,22 @@ export default class Icmp4Echo extends Icmp4 {
     this.setPayLoadLength(length);
   }
 
-  update() {
-    // Calculate checksum
-    let checksum = 0;
-    for (let i = 0; i < this.raw.length; i += 2) {
+  get checksum() {
+    return (this.raw[2] << 8) | this.raw[3];
+  }
+
+  calculateChecksum() {
+    let checksum = (this.raw[0] << 8) + (this.raw[1] || 0);
+    for (let i = 4; i < this.raw.length; i += 2) {
       checksum += (this.raw[i] << 8) + (this.raw[i + 1] || 0);
     }
     checksum = (checksum & 0xFFFF) + (checksum >> 16);
     checksum = ~checksum & 0xFFFF;
+    return checksum;
+  }
+
+  update() {
+    let checksum = this.calculateChecksum();
     this.raw[2] = (checksum >> 8) & 0xFF;
     this.raw[3] = checksum & 0xFF;
   }
@@ -160,6 +172,7 @@ export default class Icmp4Echo extends Icmp4 {
       .map(group => group.join(' '))
       .join('\n    ');
     this.raw.slice(8).map(b => b.toString(16).padStart(2, '0')).join(' ')
+
     return `${this.constructor.name}(
   type=${this.type},
   code=${this.code},

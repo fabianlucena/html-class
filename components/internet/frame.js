@@ -1,6 +1,6 @@
 import createFramePayload from './frame_payload_creator.js';
 import FramePayload from './frame_payload.js';
-import { ntop } from './ip_utils.js';
+import { ntop, crc32Ethernet } from './ip_utils.js';
 
 export default class Frame {
   constructor({ src, dst, payload, raw }) {
@@ -10,7 +10,17 @@ export default class Frame {
       }
 
       this.raw = raw;
-      this.payload = createFramePayload({ raw: raw.slice(14), frame: this });
+      if (raw.length < 18) {
+        throw new Error('Frame must be at least 18 bytes long');
+      }
+
+      const fcs = crc32Ethernet(this.raw.slice(0, this.raw.length - 4));
+      if (fcs.some((b, i) => b !== this.fcs[i])) {
+        console.error('Invalid FCS', fcs, this.fcs, raw);
+        throw new Error('Invalid FCS');
+      }
+
+      this.payload = createFramePayload({ raw: raw.slice(14, raw.length - 4), frame: this });
       return;
     }
 
@@ -37,6 +47,10 @@ export default class Frame {
     return (this.raw[12] << 8) | this.raw[13];
   }
 
+  get fcs() {
+    return this.raw.slice(this.raw.length - 4);
+  }
+
   create({ src, dst, payload }) {
     if (this.raw) {
       throw new Error('Frame is already created');
@@ -52,11 +66,20 @@ export default class Frame {
 
     this.payload = payload;
 
-    this.raw = new Uint8Array(Math.max(14 + payload.raw.length, 64));
+    this.raw = new Uint8Array(Math.max(14 + payload.raw.length + 4, 64));
     this.raw.set(dst, 0);
     this.raw.set(src, 6);
     this.raw.set([this.payload.parentProtocol >> 8, this.payload.parentProtocol & 0xFF], 12);
     this.raw.set(this.payload.raw, 14);
+    
+    this.update();
+  }
+
+  update() {
+    const fcs = crc32Ethernet(this.raw.slice(0, this.raw.length - 4));
+    fcs.forEach((b, i) => {
+      this.raw[this.raw.length - 4 + i] = b;
+    });
   }
 
   toString() {
@@ -65,6 +88,7 @@ export default class Frame {
   src: ${[...this.src].map(b => b.toString(16).padStart(2, '0')).join(':')}
   protocol: 0x${this.protocol.toString(16)}
   size: ${this.raw.length} bytes
+  fcs: ${[...this.fcs].map(b => b.toString(16).padStart(2, '0')).join(' ')}
 )
 `;
 

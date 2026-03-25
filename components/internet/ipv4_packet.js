@@ -8,6 +8,11 @@ export default class IPv4Packet extends FramePayload {
 
     if (raw) {
       this.raw = raw;
+      if (this.calculateChecksum() !== this.headerChecksum) {
+        console.error('Invalid header checksum', this.calculateChecksum(), this.headerChecksum);
+        throw new Error('Invalid header checksum');
+      }
+
       this.payload = createPacketPayload({ packet: this, raw: raw.slice(this.headerLength) });
       return;
     }
@@ -116,16 +121,26 @@ export default class IPv4Packet extends FramePayload {
     this.raw.set(src, 12);
     this.raw.set(dst, 16);
     this.raw.set(this.payload?.raw, 20);
+
+    this.update();
   }
 
-  update() {
-    // Calculate checksum
+  calculateChecksum() {
     let checksum = 0;
-    for (let i = 0; i < this.headerLength; i += 2) {
+    for (let i = 0; i < 10; i += 2) {
+      checksum += (this.raw[i] << 8) + (this.raw[i + 1] || 0);
+    }
+    for (let i = 12; i < this.headerLength; i += 2) {
       checksum += (this.raw[i] << 8) + (this.raw[i + 1] || 0);
     }
     checksum = (checksum & 0xFFFF) + (checksum >> 16);
     checksum = ~checksum & 0xFFFF;
+    return checksum;
+  }
+
+  update() {
+    // Calculate checksum
+    let checksum = this.calculateChecksum();
     this.raw[10] = (checksum >> 8) & 0xFF;
     this.raw[11] = checksum & 0xFF;
   }
