@@ -1,5 +1,4 @@
 import createFrame from '../../internet/frame_creator.js';
-import { ntop } from '../../internet/ip_utils.js';
 
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
@@ -90,12 +89,9 @@ export default async function create({ actdia, Node }) {
       }
 
       const frame = createFrame({ raw: status });
-      let src = '',
-        dst = '',
-        type = frame.payload?.constructor.name ?? frame.constructor.name;
-
-      src = ntop(frame.getSrcAddress());
-      dst = ntop(frame.getDstAddress());
+      let src = frame.getSrcAddressLabel(),
+        dst = frame.getDstAddressLabel(),
+        type = frame.getTypeLabel();
 
       const text = `${type}: ${src} -> ${dst}`;
 
