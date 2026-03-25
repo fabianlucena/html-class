@@ -53,11 +53,11 @@ export default async function create({ actdia, Node, _f }) {
 
     onRecv({ connector, data }) {
       if (connector === this.#AConnector) {
+        this.#monitorConnectos.send(data);
         this.#BConnector.send(data);
-        this.#monitorConnectos.send(data);
       } else if (connector === this.#BConnector) {
-        this.#AConnector.send(data);
         this.#monitorConnectos.send(data);
+        this.#AConnector.send(data);
       }
     }
   }
