@@ -30,6 +30,7 @@ export default async function create({ actdia, Node }) {
           textAnchor: 'left',
           textBaseline: 'middle',
           space: 'preserve',
+          onClick: args => this.historyClick(args),
         },
       ],
     };
@@ -50,10 +51,12 @@ export default async function create({ actdia, Node }) {
     canChangeHeight = true;
 
     #input = null;
+    #output = null;
     
     init() {
       super.init(...arguments);
       this.#input = this.getConnector('input');
+      this.#output = this.getConnector('output');
     }
 
     setWidth(value) {
@@ -81,6 +84,8 @@ export default async function create({ actdia, Node }) {
     }
 
     #text = '';
+    #history = [];
+    #index = -1;
 
     updateStatus() {
       let status = this.#input.received;
@@ -89,6 +94,8 @@ export default async function create({ actdia, Node }) {
       }
 
       const frame = createFrame({ raw: status });
+      this.#history.push(frame);
+
       let src = frame.getSrcAddressLabel(),
         dst = frame.getDstAddressLabel(),
         type = frame.getTypeLabel();
@@ -100,6 +107,15 @@ export default async function create({ actdia, Node }) {
       this.shape.children[1].text = this.#text;
 
       this.tryUpdateShape(this.shape.children[1]);
+
+      if (this.#index === -1) {
+        this.#output.send(status);
+      }
+    }
+
+    historyClick({ target }) {
+      this.#index = Array.from(target.parentElement.children).indexOf(target);
+      this.#output.send([...this.#history[this.#index].raw]);
     }
   };
 }
