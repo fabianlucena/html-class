@@ -82,7 +82,10 @@ export default class Arp4 extends FramePayload {
   }
 
   toString() {
-    return `ARP ${this.opcode === 1 ? 'Request' : 'Reply'}: ${ntop(this.senderIp)} (${ntop(this.senderMac)}) -> ${ntop(this.targetIp)} (${ntop(this.targetMac)})`;
+    return `ARP ${this.opcode === 1 ? 'Request' : 'Reply'}(
+  src: ${ntop(this.senderIp)} (${ntop(this.senderMac)})
+  dst: ${ntop(this.targetIp)} (${ntop(this.targetMac)})
+)`;
   }
 
   getTypeLabel() {

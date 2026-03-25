@@ -145,19 +145,19 @@ export default class IPv4Packet extends FramePayload {
 
   toString() {
     return `IPv4Packet(
-  version=${this.version},
-  ihl=${this.ihl},
-  dscp=${this.dscp},
-  ecn=${this.ecn},
-  totalLength=${this.totalLength},
-  identification=${this.identification}, 
-  flags=${this.flags},
-  fragmentOffset=${this.fragmentOffset},
-  ttl=${this.ttl},
-  protocol=${this.protocol},
-  headerChecksum=0x${this.headerChecksum.toString(16)},
-  src=${this.src.join('.')},
-  dst=${this.dst.join('.')}
+  version: ${this.version}
+  ihl: ${this.ihl}
+  dscp: ${this.dscp}
+  ecn: ${this.ecn}
+  totalLength: ${this.totalLength}
+  identification: ${this.identification}
+  flags: ${this.flags}
+  fragmentOffset: ${this.fragmentOffset}
+  ttl: ${this.ttl}
+  protocol: ${this.protocol}
+  headerChecksum: 0x${this.headerChecksum.toString(16)}
+  src: ${this.src.join('.')}
+  dst: ${this.dst.join('.')}
 )
 ` + this.payload?.toString?.();
   }
