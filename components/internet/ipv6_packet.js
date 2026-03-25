@@ -1,5 +1,6 @@
 import FramePayload from './frame_payload.js';
-import createPacketPayload from './packet_payload_creator.js';
+import createIPv6PacketPayload from './ipv6_packet_payload_creator.js';
+import { ntop } from './ip_utils.js';
 
 export default class IPv6Packet extends FramePayload {
   constructor({ src, dst, payload, raw, ttl }) {
@@ -7,7 +8,7 @@ export default class IPv6Packet extends FramePayload {
 
     if (raw) {
       this.raw = raw;
-      this.payload = createPacketPayload({ packet: this, raw: raw.slice(this.headerLength) });
+      this.payload = createIPv6PacketPayload({ packet: this, raw: raw.slice(this.headerLength) });
       return;
     }
 
@@ -38,8 +39,8 @@ export default class IPv6Packet extends FramePayload {
     return this.raw[6];
   }
 
-  get headerLength() {
-    return 40;
+  get hopLimit() {
+    return this.raw[7];
   }
   
   get src() {
@@ -48,6 +49,10 @@ export default class IPv6Packet extends FramePayload {
 
   get dst() {
     return this.raw.slice(24, 40);
+  }
+
+  get headerLength() {
+    return 40;
   }
 
   create({ src, dst, payload, ttl }) {
@@ -78,14 +83,47 @@ export default class IPv6Packet extends FramePayload {
     this.raw[3] = 0;
     this.raw[4] = (payload?.raw.length >> 8) & 0xFF;
     this.raw[5] = payload?.raw.length & 0xFF;
-    this.raw[6] = payload?.protocol; // Next Header (ICMP)
+    this.raw[6] = payload?.parentNextHeader; // Next Header (ICMP)
     this.raw[7] = ttl ?? 64; // Hop Limit
     this.raw.set(src, 8);
     this.raw.set(dst, 24);
     this.raw.set(this.payload?.raw, 40);
 
-    this.payload.packet = this;
+    this.update();
   }
 
-  update() {}
+  update() {
+    if (this.payload) {
+      this.payload.packet = this;
+      this.payload.update();
+    }
+  }
+
+  toString() {
+    return `IPv6Packet(
+  version: ${this.version}
+  trafficClass: ${this.trafficClass}
+  flowLabel: ${this.flowLabel}
+  payloadLength: ${this.payloadLength}
+  nextHeader: ${this.nextHeader}
+  hopLimit: ${this.hopLimit}
+  src: ${ntop(this.src)}
+  dst: ${ntop(this.dst)}
+)
+` + this.payload?.toString?.();
+  }
+  
+  getTypeLabel() {
+    return this.payload?.getTypeLabel?.()
+      || this.payload?.constructor.name
+      || this.constructor.name;
+  }
+
+  getSrcAddressLabel() {
+    return ntop(this.src);
+  }
+
+  getDstAddressLabel() {
+    return ntop(this.dst);
+  }
 }

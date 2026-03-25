@@ -1,5 +1,5 @@
 import FramePayload from './frame_payload.js';
-import createPacketPayload from './packet_payload_creator.js';
+import createIPv4PacketPayload from './ipv4_packet_payload_creator.js';
 import { ntop } from './ip_utils.js';
 
 export default class IPv4Packet extends FramePayload {
@@ -13,7 +13,7 @@ export default class IPv4Packet extends FramePayload {
         throw new Error('Invalid header checksum');
       }
 
-      this.payload = createPacketPayload({ packet: this, raw: raw.slice(this.headerLength) });
+      this.payload = createIPv4PacketPayload({ packet: this, raw: raw.slice(this.headerLength) });
       return;
     }
 
@@ -171,8 +171,8 @@ export default class IPv4Packet extends FramePayload {
   ttl: ${this.ttl}
   protocol: ${this.protocol}
   headerChecksum: 0x${this.headerChecksum.toString(16)}
-  src: ${this.src.join('.')}
-  dst: ${this.dst.join('.')}
+  src: ${ntop(this.src)}
+  dst: ${ntop(this.dst)}
 )
 ` + this.payload?.toString?.();
   }

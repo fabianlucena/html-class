@@ -161,4 +161,33 @@ export default class Icmp6Echo extends Icmp6 {
     this.raw[2] = (checksum >> 8) & 0xFF;
     this.raw[3] = checksum & 0xFF;
   }
+
+  toString() {
+    const payloadHex = this.raw
+      .slice(8)
+      .reduce((lines, b, i) => {
+        const hex = b.toString(16).padStart(2, '0');
+        const groupIndex = Math.floor(i / 8);
+
+        if (!lines[groupIndex])
+          lines[groupIndex] = [];
+        lines[groupIndex].push(hex);
+
+        return lines;
+      }, [])
+      .map(group => group.join(' '))
+      .join('\n    ');
+    this.raw.slice(8).map(b => b.toString(16).padStart(2, '0')).join(' ')
+
+    return `${this.constructor.name}(
+  type=${this.type},
+  code=${this.code},
+  checksum=0x${this.checksum.toString(16).padStart(4, '0')},
+  identifier=${this.identifier},
+  sequenceNumber=${this.sequenceNumber},
+  payloadLength=${this.payloadLength},
+  payload=
+    ${payloadHex}
+)`;
+  }
 }

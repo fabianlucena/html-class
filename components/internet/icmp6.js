@@ -1,7 +1,7 @@
 import PacketPayload from './packet_payload.js';
 
 export default class Icmp6 extends PacketPayload {
-  get parentProtocol() {
+  get parentNextHeader() {
     return 0x3A;
   }
 
