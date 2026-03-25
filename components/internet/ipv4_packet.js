@@ -1,5 +1,6 @@
 import FramePayload from './frame_payload.js';
 import createPacketPayload from './packet_payload_creator.js';
+import { ntop } from './ip_utils.js';
 
 export default class IPv4Packet extends FramePayload {
   constructor({ src, dst, payload, raw, ttl }) {
@@ -159,5 +160,19 @@ export default class IPv4Packet extends FramePayload {
   dst=${this.dst.join('.')}
 )
 ` + this.payload?.toString?.();
+  }
+  
+  getTypeLabel() {
+    return this.payload?.getTypeLabel?.()
+      || this.payload?.constructor.name
+      || this.constructor.name;
+  }
+
+  getSrcAddressLabel() {
+    return ntop(this.src);
+  }
+
+  getDstAddressLabel() {
+    return ntop(this.dst);
   }
 }

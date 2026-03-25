@@ -1,5 +1,6 @@
 import createFramePayload from './frame_payload_creator.js';
 import FramePayload from './frame_payload.js';
+import { ntop } from './ip_utils.js';
 
 export default class Frame {
   constructor({ src, dst, payload, raw }) {
@@ -71,11 +72,27 @@ export default class Frame {
     return result;
   }
 
-  getSrcAddress() {
-    return this.payload?.getSrcAddress?.() || this.src;
+  getTypeLabel() {
+    return this.payload?.getTypeLabel?.()
+      || this.payload?.constructor.name
+      || this.constructor.name;
   }
 
-  getDstAddress() {
-    return this.payload?.getDstAddress?.() || this.dst;
+  getSrcAddressLabel() {
+    let label = this.payload?.getSrcAddressLabel?.();
+    if (label) {
+      label += ` (${ntop(this.src)})`;
+    }
+
+    return label;
+  }
+
+  getDstAddressLabel() {
+    let label = this.payload?.getDstAddressLabel?.();
+    if (label) {
+      label += ` (${ntop(this.dst)})`;
+    }
+
+    return label;
   }
 }
