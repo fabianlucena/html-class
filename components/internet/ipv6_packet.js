@@ -39,6 +39,10 @@ export default class IPv6Packet extends FramePayload {
     return this.raw[6];
   }
 
+  get protocol() {
+    return this.raw[6];
+  }
+
   get hopLimit() {
     return this.raw[7];
   }
