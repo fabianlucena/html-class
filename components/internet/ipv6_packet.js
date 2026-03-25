@@ -1,5 +1,5 @@
 import FramePayload from './frame_payload.js';
-import createIPv6PacketPayload from './ipv6_packet_payload_creator.js';
+import createPacketPayload from './packet_payload_creator.js';
 import { ntop } from './ip_utils.js';
 
 export default class IPv6Packet extends FramePayload {
@@ -8,7 +8,7 @@ export default class IPv6Packet extends FramePayload {
 
     if (raw) {
       this.raw = raw;
-      this.payload = createIPv6PacketPayload({ packet: this, raw: raw.slice(this.headerLength) });
+      this.payload = createPacketPayload({ code: this.nextHeader, packet: this, raw: raw.slice(this.headerLength) });
       return;
     }
 
