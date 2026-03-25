@@ -328,7 +328,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   let createRequest,
     responseFilters = {},
     resProperty,
-    ttlPropertyping ;
+    ttlProperty;
   if (isIPv4(ip)) {
     createRequest = sequenceNumber => new Icmp4EchoRequest({ identifier, sequenceNumber });
     responseFilters.ipPayloadType = 1;
