@@ -37,10 +37,6 @@ export default class Icmp4Echo extends Icmp4 {
     this.update();
   }
 
-  get parentProtocol() {
-    return 1; // ICMP
-  }
-
   get type() {
     return this.raw[0];
   }
