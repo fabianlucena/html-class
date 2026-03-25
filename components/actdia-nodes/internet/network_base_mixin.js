@@ -993,7 +993,7 @@ export default function NetworkBaseMixin(Base) {
           });
           const frame = new Frame({
             src: dev.mac,
-            dst: Array(6).fill(255),
+            dst: arp.senderMac,
             payload: arpReply,
           });
           
