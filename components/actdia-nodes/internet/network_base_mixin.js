@@ -13,7 +13,9 @@ import Icmp4EchoRequest from '../../internet/icmp4_echo_request.js';
 import Arp4 from '../../internet/arp4.js';
 import createPacket from '../../internet/packet_creator.js';
 import IPv4Packet from '../../internet/ipv4_packet.js';
+import IPv6Packet from '../../internet/ipv6_packet.js';
 import FramePayload from '../../internet/frame_payload.js';
+import Icmp6 from '../../internet/icmp6.js';
 import Icmp6EchoRequest from '../../internet/icmp6_echo_request.js';
 
 const commands = {
@@ -325,15 +327,22 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   const ip = pton(args[0]); // Validate IP address
   let createRequest,
     responseFilters = {},
-    resProperty;
+    resProperty,
+    ttlPropertyping ;
   if (isIPv4(ip)) {
     createRequest = sequenceNumber => new Icmp4EchoRequest({ identifier, sequenceNumber });
-    responseFilters.icmp4Type = 0;
+    responseFilters.ipPayloadType = 1;
+    responseFilters.icmpType = 0;
+    responseFilters.identifier = identifier;
     resProperty = 'icmp4';
+    ttlProperty = 'ttl';
   } else if (isIPv6(ip)) {
     createRequest = sequenceNumber => new Icmp6EchoRequest({ identifier, sequenceNumber });
-    responseFilters.icmp6Type = 129;
+    responseFilters.ipPayloadType = 58;
+    responseFilters.icmpType = 129;
+    responseFilters.identifier = identifier;
     resProperty = 'icmp6';
+    ttlProperty = 'hopLimit';
   } else {
     return `Invalid IP address: ${args[0]}\n`;
   }
@@ -353,7 +362,6 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
 
     const pingResponse = this.createDeferredRecv({
       ...responseFilters,
-      ipPayloadType: 1,
       timeout,
       resultOnTmeout: null,
       sequenceNumber: i,
@@ -371,7 +379,7 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
     if (res?.[resProperty]) {
       const icmp = res[resProperty];
       received++;
-      terminal.send(`${icmp.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${res.packet.ttl} time=${time} ms\n`);
+      terminal.send(`${icmp.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${res.packet[ttlProperty]} time=${time} ms\n`);
 
       if (min === undefined || time < min)
         min = time;
@@ -1062,42 +1070,54 @@ export default function NetworkBaseMixin(Base) {
         }
       }
 
+      if (framePayload instanceof IPv6Packet) {
+        handlerData.packet = framePayload;
+        if (!dev.inet6.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
+          console.log('Received IPv6 packet not for this device');
+          return;
+        }
+
+        handlerData.ipPayload = handlerData.packet.payload;
+
+        if (handlerData.ipPayload instanceof Icmp6) {
+          handlerData.icmp6 = handlerData.ipPayload;
+        }
+
+        if (handlerData.ipPayload instanceof Icmp6EchoRequest) {
+          const echoRequest = handlerData.ipPayload;
+          const echoReply = echoRequest.toEchoReply();
+          const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
+          this.sendFrame(frame, { dev });
+        }
+      }
+
+      if (handlerData.ipPayload instanceof Icmp4) {
+        handlerData.icmp4 = handlerData.ipPayload;
+        handlerData.icmp = handlerData.icmp4;
+      } else if (handlerData.ipPayload instanceof Icmp6) {
+        handlerData.icmp6 = handlerData.ipPayload;
+        handlerData.icmp = handlerData.icmp6;
+      }
+
       this.recvHandlers.forEach(({handler, ...filters}) => {
         if (filters.ipPayloadType && filters.ipPayloadType !== handlerData.packet?.protocol) {
           return;
         }
 
-        let icmp4;
-        if (filters.icmp4Type !== undefined) {
-          if (!(handlerData.ipPayload instanceof Icmp4)) {
-            return;
-          }
-
-          icmp4 = handlerData.ipPayload;
-
-          if (filters.icmp4Type !== icmp4.type) {
-            return;
-          }
+        if (filters.icmpType !== undefined && filters.icmpType !== handlerData.icmp?.type) {
+          return;
         }
 
-        if (filters.sequenceNumber !== undefined) {
-          if (icmp4) {
-            if (filters.sequenceNumber !== icmp4.sequenceNumber) {
-              return;
-            }
-          } else {
-            return;
-          }
+        if (filters.sequenceNumber !== undefined && filters.sequenceNumber !== handlerData.icmp?.sequenceNumber) {
+          return;
         }
 
-        if (filters.arpType !== undefined) {
-          if (!(handlerData.arp instanceof Arp4)) {
-            return;
-          }
+        if (filters.identifier !== undefined && filters.identifier !== handlerData.icmp?.identifier) {
+          return;
+        }
 
-          if (filters.arpType === 'reply' && !handlerData.arp.isReply) {
-            return;
-          }
+        if (filters.arpType === 'reply' && !handlerData.arp?.isReply) {
+          return;
         }
 
         handler(handlerData);
