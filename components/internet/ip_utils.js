@@ -248,9 +248,9 @@ export function isInSubnet(addr, subnet) {
     return false;
   }
   
-  addr = applyMask(addr, subnet.netmask);
+  const maskedAddr = applyMask(addr, subnet.netmask);
 
-  return addr.every((byte, index) => byte === subnet.address[index]);
+  return maskedAddr.every((byte, index) => byte === subnet.address[index]);
 }
 
 export function isEqualIPv4AddressMask(
