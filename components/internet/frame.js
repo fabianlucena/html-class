@@ -70,4 +70,12 @@ export default class Frame {
 
     return result;
   }
+
+  getSrcAddress() {
+    return this.payload?.getSrcAddress?.() || this.src;
+  }
+
+  getDstAddress() {
+    return this.payload?.getDstAddress?.() || this.dst;
+  }
 }
