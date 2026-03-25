@@ -8,5 +8,6 @@ export default {
     'web_server.js',
     'tap.js',
     'frame_viewer.js',
+    'frame_history.js',
   ],
 };

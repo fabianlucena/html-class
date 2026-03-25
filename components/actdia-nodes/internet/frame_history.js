@@ -1,9 +1,10 @@
 import createFrame from '../../internet/frame_creator.js';
+import { ntop } from '../../internet/ip_utils.js';
 
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
 
-  return class IPFrameViewer extends Node {
+  return class IPFrameHistory extends Node {
     static import = [
       './connector-utp-port.js',
     ];
@@ -42,7 +43,8 @@ export default async function create({ actdia, Node }) {
     };
 
     connectors = [
-      { name: 'input', type: 'utpPort', x: 6, y: 0, direction: 'top', extends: 'small' },
+      { name: 'input',  type: 'utpPort', x: 6, y: 0, direction: 'top' },
+      { name: 'output', type: 'utpPort', x: 6, y: 4, direction: 'bottom' },
     ];
 
     canChangeWidth = true;
@@ -58,8 +60,9 @@ export default async function create({ actdia, Node }) {
     setWidth(value) {
       this.shape.children[0].width = value;
       this.shape.children[1].width = value;
-      
+
       this.connectors[0].x = value / 2;
+      this.connectors[1].x = value / 2;
 
       super.setWidth(...arguments);
     }
@@ -71,11 +74,14 @@ export default async function create({ actdia, Node }) {
 
       this.shape.children[0].height = value;
       this.shape.children[1].height = value;
-      
+
       this.connectors[0].y = dy;
+      this.connectors[1].y = value + dy;
 
       super.setHeight(...arguments);
     }
+
+    #text = '';
 
     updateStatus() {
       let status = this.#input.received;
@@ -84,8 +90,18 @@ export default async function create({ actdia, Node }) {
       }
 
       const frame = createFrame({ raw: status });
-      const text = frame.toString();
-      this.shape.children[1].text = text;
+      let src = '',
+        dst = '',
+        type = frame.payload?.constructor.name ?? frame.constructor.name;
+
+      src = ntop(frame.getSrcAddress());
+      dst = ntop(frame.getDstAddress());
+
+      const text = `${type}: ${src} -> ${dst}`;
+
+      this.#text += this.#text ? `\n${text}` : text;
+
+      this.shape.children[1].text = this.#text;
 
       this.tryUpdateShape(this.shape.children[1]);
     }
