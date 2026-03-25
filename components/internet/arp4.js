@@ -21,7 +21,7 @@ export default class Arp4 extends FramePayload {
       return;
     }
 
-    this.raw = new Uint8Array(46);
+    this.raw = new Uint8Array(28);
     this.raw[0] = 0x00;
     this.raw[1] = 0x01; // Ethernet
     this.raw[2] = 0x08;
@@ -39,7 +39,6 @@ export default class Arp4 extends FramePayload {
   get hardwareType() { // HTYPE = 0x0001 (Ethernet)
     return (this.raw[0] << 8) | this.raw[1];
   }
-  
   
   get protocolType() { // PTYPE = 0x0800 (IPv4)
     return (this.raw[2] << 8) | this.raw[3];
@@ -83,6 +82,11 @@ export default class Arp4 extends FramePayload {
 
   toString() {
     return `ARP ${this.opcode === 1 ? 'Request' : 'Reply'}(
+  hardwareType: ${this.hardwareType}
+  protocolType: 0x${this.protocolType.toString(16)}
+  hardwareSize: ${this.hardwareSize}
+  protocolSize: ${this.protocolSize}
+  opcode: ${this.opcode}
   src: ${ntop(this.senderIp)} (${ntop(this.senderMac)})
   dst: ${ntop(this.targetIp)} (${ntop(this.targetMac)})
 )`;

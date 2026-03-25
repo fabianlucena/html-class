@@ -52,7 +52,7 @@ export default class Frame {
 
     this.payload = payload;
 
-    this.raw = new Uint8Array(14 + payload.raw.length);
+    this.raw = new Uint8Array(Math.max(14 + payload.raw.length, 64));
     this.raw.set(dst, 0);
     this.raw.set(src, 6);
     this.raw.set([this.payload.parentProtocol >> 8, this.payload.parentProtocol & 0xFF], 12);
@@ -64,6 +64,7 @@ export default class Frame {
   dst: ${[...this.dst].map(b => b.toString(16).padStart(2, '0')).join(':')}
   src: ${[...this.src].map(b => b.toString(16).padStart(2, '0')).join(':')}
   protocol: 0x${this.protocol.toString(16)}
+  size: ${this.raw.length} bytes
 )
 `;
 
