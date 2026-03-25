@@ -323,9 +323,18 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
 
   const identifier = Math.floor(Math.random() * 65536);
   const ip = pton(args[0]); // Validate IP address
-  const ipv4 = isIPv4(ip);
-  const ipv6 = isIPv6(ip);
-  if (!ipv4 && !ipv6) {
+  let createRequest,
+    responseFilters = {},
+    resProperty;
+  if (isIPv4(ip)) {
+    createRequest = sequenceNumber => new Icmp4EchoRequest({ identifier, sequenceNumber });
+    responseFilters.icmp4Type = 0;
+    resProperty = 'icmp4';
+  } else if (isIPv6(ip)) {
+    createRequest = sequenceNumber => new Icmp6EchoRequest({ identifier, sequenceNumber });
+    responseFilters.icmp6Type = 129;
+    resProperty = 'icmp6';
+  } else {
     return `Invalid IP address: ${args[0]}\n`;
   }
 
@@ -336,72 +345,50 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   const timeout = 900;
   const delay = () => Math.random() * 1200;
   let min, sum = 0, max, avg = 0, mvar = 0;
-  if (ipv4) {
-    for (let i = 0; i < count; i++) {
-      const request = new Icmp4EchoRequest({ identifier, sequenceNumber: i });
-      const sentAt = new Date().getTime();
-      transmited++;
 
-      const pingResponse = this.createDeferredRecv({
-        ipPayloadType: 1,
-        icmp4Type: 0,
-        timeout,
-        resultOnTmeout: null,
-        sequenceNumber: i,
-      });
-      await this.send({
-        dst: ip,
-        data: request,
-        delay: delay(),
-      });
-      let res = await pingResponse;
+  for (let i = 0; i < count; i++) {
+    const request = createRequest(i);
+    const sentAt = new Date().getTime();
+    transmited++;
 
-      const receivedAt = new Date().getTime();
-      const time = receivedAt - sentAt;
+    const pingResponse = this.createDeferredRecv({
+      ...responseFilters,
+      ipPayloadType: 1,
+      timeout,
+      resultOnTmeout: null,
+      sequenceNumber: i,
+    });
+    await this.send({
+      dst: ip,
+      data: request,
+      delay: delay(),
+    });
+    let res = await pingResponse;
 
-      if (res?.icmp4) {
-        received++;
-        terminal.send(`${res.icmp4.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${res.icmp4.sequenceNumber} ttl=${res.packet.ttl} time=${time} ms\n`);
+    const receivedAt = new Date().getTime();
+    const time = receivedAt - sentAt;
 
-        if (min === undefined || time < min)
-          min = time;
+    if (res?.[resProperty]) {
+      const icmp = res[resProperty];
+      received++;
+      terminal.send(`${icmp.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${res.packet.ttl} time=${time} ms\n`);
 
-        if (max === undefined || time > max)
-          max = time;
+      if (min === undefined || time < min)
+        min = time;
 
-        sum += time;
-        const delta = time - avg;
+      if (max === undefined || time > max)
+        max = time;
 
-        avg += delta / received;
-        mvar += delta * (time - avg);
-      } else {
-        terminal.send(`Request timeout for icmp_seq ${i}\n`);
-      }
+      sum += time;
+      const delta = time - avg;
 
-      await sleep(1000 - time);
+      avg += delta / received;
+      mvar += delta * (time - avg);
+    } else {
+      terminal.send(`Request timeout for icmp_seq ${i}\n`);
     }
-  } else { // ipv6
-    for (let i = 0; i < count; i++) {
-      const request = new Icmp6EchoRequest({ identifier, sequenceNumber: i });
-      const sentAt = new Date().getTime();
-      transmited++;
 
-      const pingResponse = this.createDeferredRecv({
-        ipPayloadType: 1,
-        icmp6Type: 129,
-        timeout,
-        resultOnTmeout: null,
-        sequenceNumber: i,
-      });
-      await this.send({
-        dst: ip,
-        data: request,
-        delay: delay(),
-      });
-      let res = await pingResponse;
-
-      await sleep(1000 - time);
-    }
+    await sleep(1000 - time);
   }
   const endAt = new Date().getTime();
 
@@ -892,12 +879,16 @@ export default function NetworkBaseMixin(Base) {
     }
 
     async getMacDstForRoute({ route, dst, useBrd = false }) {
-      if (dst.length !== 4 && dst.length !== 16) {
+      if (dst.length === 4) {
+        if (route.dev.inet4.some(i => i.address.every((byte, index) => byte === dst[index]))) {
+          return route.dev.mac;
+        }
+      } else if (dst.length === 16) {
+        if (route.dev.inet6.some(i => i.address.every((byte, index) => byte === dst[index]))) {
+          return route.dev.mac;
+        }
+      } else {
         throw new Error('Invalid destination address');
-      }
-
-      if (route.dev.inet4.some(i => i.address.every((byte, index) => byte === dst[index]))) {
-        return route.dev.mac;
       }
 
       if (route.gateway) {
