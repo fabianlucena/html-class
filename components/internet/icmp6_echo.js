@@ -143,7 +143,7 @@ export default class Icmp6Echo extends Icmp6 {
     for (let i = 0; i < 32; i += 2) {
       checksum += (this.#packet.raw[i] << 8) + (this.raw[i + 1] || 0);
     }
-    checksum += upperLayerPacketLength;
+    checksum += this.raw.length; // Upper layer packet length
     checksum += 58; // Next Header
     checksum += (this.#packet.raw[0] << 8) + (this.raw[1] || 0);
 

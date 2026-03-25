@@ -83,6 +83,8 @@ export default class IPv6Packet extends FramePayload {
     this.raw.set(src, 8);
     this.raw.set(dst, 24);
     this.raw.set(this.payload?.raw, 40);
+
+    this.payload.packet = this;
   }
 
   update() {}
