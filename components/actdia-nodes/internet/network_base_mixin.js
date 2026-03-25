@@ -186,11 +186,11 @@ function ip_addr_show({ args, commandData }) {
 
     result += netInterface.inet4.map(inet => 
       `    inet ${inet.address}/${inet.prefix}${inet.broadcast ? ` brd ${inet.broadcast}` : ''} scope ${inet.scope}${inet.secondary && ' secondary' || ''}\n`
-      + `       valid_lft ${inet.valid_lft} preferred_lft ${inet.preferred_lft}\n`);
+      + `       valid_lft ${inet.valid_lft} preferred_lft ${inet.preferred_lft}\n`).join('');
 
     result += netInterface.inet6.map(inet6 => 
       `    inet6 ${inet6.address}/${inet6.prefix} scope ${inet6.scope}${inet6.secondary && ' secondary' || ''}\n`
-      + `       valid_lft ${inet6.valid_lft} preferred_lft ${inet6.preferred_lft}\n`);
+      + `       valid_lft ${inet6.valid_lft} preferred_lft ${inet6.preferred_lft}\n`).join('');
 
     result += '\n';
   }
