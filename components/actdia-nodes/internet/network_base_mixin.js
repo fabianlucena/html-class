@@ -966,6 +966,10 @@ export default function NetworkBaseMixin(Base) {
     }
 
     async recv(raw, { dev } = {}) {
+      if (!raw?.length) {
+        return;
+      }
+
       const frame = new Frame({ raw });
       const framePayload = frame.payload;
       if (!framePayload) {
