@@ -5,5 +5,5 @@ export default function createPacketPayload({ packet, raw }) {
     return createIcmp4({ raw });
   }
 
-  throw new Error('Unsupported packet payload protocol');
+  throw new Error(`Unsupported packet payload protocol: ${packet.protocol}`);
 }
