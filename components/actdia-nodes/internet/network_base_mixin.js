@@ -873,13 +873,17 @@ export default function NetworkBaseMixin(Base) {
         return cachedMac;
       }
 
+      let mac;
       if (dst.length === 4) {
-        return await this.getMacAddressForIPv4(dst, dev);
+        mac = await this.getMacAddressForIPv4(dst, dev);
       } else if (dst.length === 16) {
-        return await this.getMacAddressForIPv6(dst, dev);
+        mac = await this.getMacAddressForIPv6(dst, dev);
       } else {
         throw new Error('Invalid destination address');
       }
+
+      this.#macCache.set(key, { mac, time: Date.now() });
+      return mac;
     }
 
     async getMacAddressForIPv4(dst, dev) {
@@ -915,10 +919,7 @@ export default function NetworkBaseMixin(Base) {
         throw new Error(`ARP response does not match destination IP ${ntop(dst)}`);
       }
 
-      const mac = res.arp.senderMac;
-      this.#macCache.set(key, { mac, time: Date.now() });
-
-      return mac;
+      return res.arp.senderMac;
     }
 
     async getMacAddressForIPv6(dst, dev) {
@@ -954,10 +955,7 @@ export default function NetworkBaseMixin(Base) {
         throw new Error(`Neighbor advertisement does not match destination IP ${ntop(dst)}`);
       }
 
-      const mac = res.arp.senderMac;
-      this.#macCache.set(key, { mac, time: Date.now() });
-
-      return mac;
+      return res.arp.senderMac;
     }
 
     async getMacDstForRoute({ route, dst, useBrd = false }) {
