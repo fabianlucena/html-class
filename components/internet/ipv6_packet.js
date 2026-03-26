@@ -3,7 +3,14 @@ import createPacketPayload from './packet_payload_creator.js';
 import { ntop } from './ip_utils.js';
 
 export default class IPv6Packet extends FramePayload {
-  constructor({ src, dst, payload, raw, ttl }) {
+  constructor({
+    raw,
+    src,
+    dst,
+    payload,
+    ttl,
+    hopLimit
+  }) {
     super();
 
     if (raw) {
@@ -12,7 +19,7 @@ export default class IPv6Packet extends FramePayload {
       return;
     }
 
-    this.create({ src, dst, payload, ttl });
+    this.create({ src, dst, payload, ttl, hopLimit });
   }
 
   get parentProtocol() {
@@ -59,7 +66,7 @@ export default class IPv6Packet extends FramePayload {
     return 40;
   }
 
-  create({ src, dst, payload, ttl }) {
+  create({ src, dst, payload, ttl, hopLimit }) {
     if (this.raw) {
       throw new Error('Packet is already created');
     }
@@ -76,6 +83,20 @@ export default class IPv6Packet extends FramePayload {
       throw new Error('Payload must be provided');
     }
 
+    if (typeof hopLimit !== 'undefined') {
+      if (typeof hopLimit !== 'number') {
+        throw new Error('Hop limit must be a number');
+      }
+
+      if (typeof ttl !== 'undefined') {
+        throw new Error('Either TTL or Hop Limit must be provided');
+      }
+    } else if (typeof ttl !== 'undefined') {
+      if (typeof ttl !== 'number') {
+        throw new Error('TTL must be a number');
+      }
+    }
+
     this.payload = payload;
 
     const totalLength = 40 + (payload?.raw.length || 0);
@@ -88,7 +109,7 @@ export default class IPv6Packet extends FramePayload {
     this.raw[4] = (payload?.raw.length >> 8) & 0xFF;
     this.raw[5] = payload?.raw.length & 0xFF;
     this.raw[6] = payload?.parentNextHeader; // Next Header (ICMP)
-    this.raw[7] = ttl ?? 64; // Hop Limit
+    this.raw[7] = hopLimit ?? ttl ?? 64; // Hop Limit
     this.raw.set(src, 8);
     this.raw.set(dst, 24);
     this.raw.set(this.payload?.raw, 40);
