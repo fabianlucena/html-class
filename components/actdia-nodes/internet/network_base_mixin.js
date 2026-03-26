@@ -17,6 +17,7 @@ import IPv6Packet from '../../internet/ipv6_packet.js';
 import FramePayload from '../../internet/frame_payload.js';
 import Icmp6 from '../../internet/icmp6.js';
 import Icmp6EchoRequest from '../../internet/icmp6_echo_request.js';
+import Icmp6NeighborSolicitation from '../../internet/icmp6_neighbor_solicitation.js';
 
 const commands = {
   'help': {
@@ -927,25 +928,29 @@ export default function NetworkBaseMixin(Base) {
         throw new Error('Neighbor Discovery is only supported for IPv6 addresses');
       }
 
-      const arp = new Icmp6NeighborSolicitation({
-        senderMac: dev.mac,
-        senderIp: dev.inet6[0].address,
-        targetMac: Array(6).fill(255),
-        targetIp: dst,
-        opcode: 1
+      const ns = new Icmp6NeighborSolicitation({
+        targetAddress: dst,
+        sourceLinkLayerAddress: dev.mac,
+      });
+
+      const packet = new IPv6Packet({
+        src: dev.inet6[0].address,
+        dst: pton('ff02::1:ff' + ntop(dst).split(':').slice(-1)[0]),
+        payload: ns,
+        hopLimit: 255,
       });
 
       const frame = new Frame({
         src: dev.mac,
         dst: Array(6).fill(255),
-        payload: arp,
+        payload: packet,
       });
 
-      const arpResponse = this.createDeferredRecv({
+      const na = this.createDeferredRecv({
         arpType: 'reply',
       });
       await this.sendFrame(frame, { dev });
-      let res = await arpResponse;
+      let res = await na;
 
       if (!res?.arp) {
         throw new Error(`No neighbor advertisement response for ${ntop(dst)}`);
