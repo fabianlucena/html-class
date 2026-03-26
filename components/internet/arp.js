@@ -1,7 +1,7 @@
 import FramePayload from './frame_payload.js';
 import { ntop } from './ip_utils.js';
 
-export default class Arp4 extends FramePayload {
+export default class Arp extends FramePayload {
   get parentProtocol() {
     return 0x0806;
   }
