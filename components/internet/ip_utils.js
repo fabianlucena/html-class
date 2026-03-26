@@ -353,3 +353,49 @@ export function crc32Ethernet(bytes) {
     (crc >>> 24) & 0xFF
   ]);
 }
+
+export function createSolicitedNodeMulticast(address) {
+  const multicast = new Uint8Array(16);
+  multicast[0] = 0xFF;
+  multicast[1] = 0x02;
+  multicast[2] = 0x00;
+  multicast[3] = 0x00;
+  multicast[4] = 0x00;
+  multicast[5] = 0x00;
+  multicast[6] = 0x00;
+  multicast[7] = 0x00;
+  multicast[8] = 0x00;
+  multicast[9] = 0x00;
+  multicast[10] = 0x00;
+  multicast[11] = 0x01;
+  multicast[12] = 0xFF;
+  multicast[13] = address[13];
+  multicast[14] = address[14];
+  multicast[15] = address[15];
+  return multicast;
+}
+
+export function isMulticastIPv6(address) {
+  return address.length === 16 && address[0] === 0xFF;
+}
+
+export function isSolicitedNodeMulticast(address, targetAddress) {
+  if (address.length !== 16
+    || address[0] !== 0xFF
+    || address[1] !== 0x02
+    || address[11] !== 0x01
+    || address[12] !== 0xFF) {
+    return false;
+  }
+
+  if (targetAddress) {
+    if (targetAddress.length !== 16) {
+      return false;
+    }
+    return address[13] === targetAddress[13]
+      && address[14] === targetAddress[14]
+      && address[15] === targetAddress[15];
+  }
+
+  return true;
+}
