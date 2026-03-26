@@ -3,7 +3,7 @@ import { generateLocalMac, macToStr, strToMac } from '../../internet/mac.js';
 import {
   ntop, pton, maskToPrefix, getAddressMaskPrefix, ipToBrd, applyMask,
   isIPv4, isIPv6, isEqualIPv4AddressMask, isEqualIPv6AddressMask,
-  isInSubnet,
+  isInSubnet, createSolicitedNodeMulticast, isSolicitedNodeMulticast,
 } from '../../internet/ip_utils.js';
 import { sleep } from '../../utils/sleep.js';
 import { isEqual } from '../../utils/type.js';
@@ -935,7 +935,7 @@ export default function NetworkBaseMixin(Base) {
 
       const packet = new IPv6Packet({
         src: dev.inet6[0].address,
-        dst: pton('ff02::1:ff' + ntop(dst).split(':').slice(-1)[0]),
+        dst: createSolicitedNodeMulticast(dst),
         payload: ns,
         hopLimit: 255,
       });
@@ -1150,8 +1150,12 @@ export default function NetworkBaseMixin(Base) {
       if (framePayload instanceof IPv6Packet) {
         handlerData.packet = framePayload;
         if (!dev.inet6.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
-          console.log('Received IPv6 packet not for this device');
-          return;
+          if (!isMulticastIPv6(handlerData.packet.dst)
+            || !dev.inet6.some(i => isSolicitedNodeMulticast(handlerData.packet.dst, i.address))
+          ) {
+            console.log('Received IPv6 packet not for this device: ', ntop(handlerData.packet.dst));
+            return;
+          }
         }
 
         handlerData.ipPayload = handlerData.packet.payload;
