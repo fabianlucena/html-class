@@ -67,10 +67,6 @@ export default class Icmp6Echo extends Icmp6 {
   set sequenceNumber(value) {
     this.setSequenceNumber(value);
   }
-
-  get checksum() {
-    return (this.raw[2] << 8) | this.raw[3];
-  }
   
   get payloadLength() {
     return this.raw.length - 8;
