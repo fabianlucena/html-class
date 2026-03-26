@@ -1,8 +1,6 @@
 import Icmp6 from './icmp6.js';
 
 export default class Icmp6Echo extends Icmp6 {
-  #packet;
-
   constructor({ payloadLength = 56, identifier = 0, sequenceNumber = 0, payload, raw, packet } = {}) {
     super();
 
@@ -44,14 +42,6 @@ export default class Icmp6Echo extends Icmp6 {
     this.update();
   }
 
-  get packet() {
-    return this.#packet;
-  }
-
-  set packet(value) {
-    this.setPacket(value);
-  }
-
   get identifier() {
     return (this.raw[4] << 8) | this.raw[5];
   }
@@ -74,13 +64,6 @@ export default class Icmp6Echo extends Icmp6 {
 
   set payloadLength(length) {
     this.setPayLoadLength(length);
-  }
-
-  setPacket(value, update = true) {
-    this.#packet = value;
-    if (update) {
-      this.update();
-    }
   }
 
   setIdentifier(value, update = true) {
@@ -128,34 +111,6 @@ export default class Icmp6Echo extends Icmp6 {
     if (update) {
       this.update();
     }
-  }
-
-  calculateChecksum() {
-    if (!this.#packet) {
-      return 0;
-    }
-    
-    let checksum = 0;
-    for (let i = 0; i < 32; i += 2) {
-      checksum += (this.#packet.raw[i] << 8) + (this.raw[i + 1] || 0);
-    }
-    checksum += this.raw.length; // Upper layer packet length
-    checksum += 58; // Next Header
-    checksum += (this.#packet.raw[0] << 8) + (this.raw[1] || 0);
-
-    for (let i = 4; i < this.raw.length; i += 2) {
-      checksum += (this.#packet.raw[i] << 8) + (this.raw[i + 1] || 0);
-    }
-
-    checksum = (checksum & 0xFFFF) + (checksum >> 16);
-    checksum = ~checksum & 0xFFFF;
-    return checksum;
-  }
-
-  update() {
-    let checksum = this.calculateChecksum();
-    this.raw[2] = (checksum >> 8) & 0xFF;
-    this.raw[3] = checksum & 0xFF;
   }
 
   toString() {
