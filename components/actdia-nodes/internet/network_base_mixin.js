@@ -10,7 +10,7 @@ import { isEqual } from '../../utils/type.js';
 import Frame from '../../internet/frame.js';
 import Icmp4 from '../../internet/icmp4.js';
 import Icmp4EchoRequest from '../../internet/icmp4_echo_request.js';
-import Arp4 from '../../internet/arp4.js';
+import Arp from '../../internet/arp.js';
 import createPacket from '../../internet/packet_creator.js';
 import IPv4Packet from '../../internet/ipv4_packet.js';
 import IPv6Packet from '../../internet/ipv6_packet.js';
@@ -866,7 +866,7 @@ export default function NetworkBaseMixin(Base) {
 
     #macCache = new Map();
 
-    async getMacUsingArp(dst, dev) {
+    async getMacAddress(dst, dev) {
       const key = [...dst].join(':');
       const cachedMac = this.#macCache.get(key)?.mac;
       if (cachedMac) {
@@ -874,41 +874,90 @@ export default function NetworkBaseMixin(Base) {
       }
 
       if (dst.length === 4) {
-        const arp = new Arp4({
-          senderMac: dev.mac,
-          senderIp: dev.inet4[0].address,
-          targetMac: Array(6).fill(255),
-          targetIp: dst,
-          opcode: 1
-        });
+        return await this.getMacAddressForIPv4(dst, dev);
+      } else if (dst.length === 16) {
+        return await this.getMacAddressForIPv6(dst, dev);
+      } else {
+        throw new Error('Invalid destination address');
+      }
+    }
 
-        const frame = new Frame({
-          src: dev.mac,
-          dst: Array(6).fill(255),
-          payload: arp,
-        });
-
-        const arpResponse = this.createDeferredRecv({
-          arpType: 'reply',
-        });
-        await this.sendFrame(frame, { dev });
-        let res = await arpResponse;
-
-        if (!res?.arp) {
-          throw new Error(`No ARP response for ${ntop(dst)}`);
-        }
-
-        if (!res.arp.senderIp.every((byte, index) => byte === dst[index])) {
-          throw new Error(`ARP response does not match destination IP ${ntop(dst)}`);
-        }
-
-        const mac = res.arp.senderMac;
-        this.#macCache.set(key, { mac, time: Date.now() });
-
-        return mac;
+    async getMacAddressForIPv4(dst, dev) {
+      if (dst.length !== 4) {
+        throw new Error('ARP is only supported for IPv4 addresses');
       }
 
-      throw new Error('ARP is only supported for IPv4 addresses');
+      const arp = new Arp({
+        senderMac: dev.mac,
+        senderIp: dev.inet4[0].address,
+        targetMac: Array(6).fill(255),
+        targetIp: dst,
+        opcode: 1
+      });
+
+      const frame = new Frame({
+        src: dev.mac,
+        dst: Array(6).fill(255),
+        payload: arp,
+      });
+
+      const arpResponse = this.createDeferredRecv({
+        arpType: 'reply',
+      });
+      await this.sendFrame(frame, { dev });
+      let res = await arpResponse;
+
+      if (!res?.arp) {
+        throw new Error(`No ARP response for ${ntop(dst)}`);
+      }
+
+      if (!res.arp.senderIp.every((byte, index) => byte === dst[index])) {
+        throw new Error(`ARP response does not match destination IP ${ntop(dst)}`);
+      }
+
+      const mac = res.arp.senderMac;
+      this.#macCache.set(key, { mac, time: Date.now() });
+
+      return mac;
+    }
+
+    async getMacAddressForIPv6(dst, dev) {
+      if (dst.length !== 16) {
+        throw new Error('Neighbor Discovery is only supported for IPv6 addresses');
+      }
+
+      const arp = new Icmp6NeighborSolicitation({
+        senderMac: dev.mac,
+        senderIp: dev.inet6[0].address,
+        targetMac: Array(6).fill(255),
+        targetIp: dst,
+        opcode: 1
+      });
+
+      const frame = new Frame({
+        src: dev.mac,
+        dst: Array(6).fill(255),
+        payload: arp,
+      });
+
+      const arpResponse = this.createDeferredRecv({
+        arpType: 'reply',
+      });
+      await this.sendFrame(frame, { dev });
+      let res = await arpResponse;
+
+      if (!res?.arp) {
+        throw new Error(`No neighbor advertisement response for ${ntop(dst)}`);
+      }
+
+      if (!res.arp.senderIp.every((byte, index) => byte === dst[index])) {
+        throw new Error(`Neighbor advertisement does not match destination IP ${ntop(dst)}`);
+      }
+
+      const mac = res.arp.senderMac;
+      this.#macCache.set(key, { mac, time: Date.now() });
+
+      return mac;
     }
 
     async getMacDstForRoute({ route, dst, useBrd = false }) {
@@ -932,7 +981,7 @@ export default function NetworkBaseMixin(Base) {
         return route.dev.macBrd;
       }
 
-      return await this.getMacUsingArp(dst, route.dev);
+      return await this.getMacAddress(dst, route.dev);
     }
 
     async createFrame({ dst, data, ttl, useBrd = false }) {
@@ -1048,7 +1097,7 @@ export default function NetworkBaseMixin(Base) {
 
       const handlerData = { frame };
 
-      if (framePayload instanceof Arp4) {
+      if (framePayload instanceof Arp) {
         handlerData.arp = framePayload;
         const arp = framePayload;
         if (arp.opcode === 1) {
@@ -1057,7 +1106,7 @@ export default function NetworkBaseMixin(Base) {
             return;
           }
           
-          const arpReply = new Arp4({
+          const arpReply = new Arp({
             senderMac: dev.mac,
             senderIp: arp.targetIp,
             targetMac: arp.senderMac,
