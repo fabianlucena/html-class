@@ -3,7 +3,7 @@ import { generateLocalMac, macToStr, strToMac } from '../../internet/mac.js';
 import {
   ntop, pton, maskToPrefix, getAddressMaskPrefix, ipToBrd, applyMask,
   isIPv4, isIPv6, isEqualIPv4AddressMask, isEqualIPv6AddressMask,
-  isInSubnet, createSolicitedNodeMulticast, isSolicitedNodeMulticast,
+  isInSubnet, createSolicitedNodeMulticast, isMulticastIPv6, isSolicitedNodeMulticast,
 } from '../../internet/ip_utils.js';
 import { sleep } from '../../utils/sleep.js';
 import { isEqual } from '../../utils/type.js';
@@ -18,6 +18,7 @@ import FramePayload from '../../internet/frame_payload.js';
 import Icmp6 from '../../internet/icmp6.js';
 import Icmp6EchoRequest from '../../internet/icmp6_echo_request.js';
 import Icmp6NeighborSolicitation from '../../internet/icmp6_neighbor_solicitation.js';
+import Icmp6NeighborAdvertisement from '../../internet/icmp6_neighbor_advertisement.js';
 
 const commands = {
   'help': {
@@ -874,16 +875,19 @@ export default function NetworkBaseMixin(Base) {
         return cachedMac;
       }
 
-      let mac;
+      let mac, override;
       if (dst.length === 4) {
         mac = await this.getMacAddressForIPv4(dst, dev);
       } else if (dst.length === 16) {
-        mac = await this.getMacAddressForIPv6(dst, dev);
+        const res = await this.getMacAddressForIPv6(dst, dev);
+        mac = res.mac;
+        override = res.override;
       } else {
         throw new Error('Invalid destination address');
       }
 
       this.#macCache.set(key, { mac, time: Date.now() });
+
       return mac;
     }
 
@@ -946,21 +950,23 @@ export default function NetworkBaseMixin(Base) {
         payload: packet,
       });
 
-      const na = this.createDeferredRecv({
-        arpType: 'reply',
+      const naRes = this.createDeferredRecv({
+        icmp6NeighborAdvertisement: true,
       });
       await this.sendFrame(frame, { dev });
-      let res = await na;
+      let res = await naRes;
 
-      if (!res?.arp) {
+      if (!res?.icmp6 || !(res.icmp6 instanceof Icmp6NeighborAdvertisement)) {
         throw new Error(`No neighbor advertisement response for ${ntop(dst)}`);
       }
 
-      if (!res.arp.senderIp.every((byte, index) => byte === dst[index])) {
+      const na = res.icmp6;
+
+      if (!na.targetAddress.every((byte, index) => byte === dst[index])) {
         throw new Error(`Neighbor advertisement does not match destination IP ${ntop(dst)}`);
       }
 
-      return res.arp.senderMac;
+      return { mac: na.targetLinkLayerAddress, override: na.overrideFlag };
     }
 
     async getMacDstForRoute({ route, dst, useBrd = false }) {
@@ -1149,7 +1155,9 @@ export default function NetworkBaseMixin(Base) {
 
       if (framePayload instanceof IPv6Packet) {
         handlerData.packet = framePayload;
-        if (!dev.inet6.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
+        if (!isMulticastIPv6(handlerData.packet.dst)
+          && !dev.inet6.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))
+        ) {
           if (!isMulticastIPv6(handlerData.packet.dst)
             || !dev.inet6.some(i => isSolicitedNodeMulticast(handlerData.packet.dst, i.address))
           ) {
@@ -1167,7 +1175,31 @@ export default function NetworkBaseMixin(Base) {
         if (handlerData.ipPayload instanceof Icmp6EchoRequest) {
           const echoRequest = handlerData.ipPayload;
           const echoReply = echoRequest.toEchoReply();
-          const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
+          const { frame } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply, dev });
+          this.sendFrame(frame, { dev });
+        } else if (handlerData.ipPayload instanceof Icmp6NeighborSolicitation) {
+          const ns = handlerData.ipPayload;
+          const na = new Icmp6NeighborAdvertisement({
+            targetAddress: ns.targetAddress,
+            targetLinkLayerAddress: dev.mac,
+            flags: {
+              router: false,
+              solicited: true,
+              override: true,
+            },
+          });
+          const packet = new IPv6Packet({
+            src: ns.targetAddress,
+            dst: handlerData.packet.src,
+            payload: na,
+            hopLimit: 255,
+          });
+          const frame = new Frame({
+            src: dev.mac,
+            dst: handlerData.frame.src,
+            payload: packet,
+          });
+
           this.sendFrame(frame, { dev });
         }
       }
@@ -1180,7 +1212,19 @@ export default function NetworkBaseMixin(Base) {
         handlerData.icmp = handlerData.icmp6;
       }
 
-      this.recvHandlers.forEach(({handler, ...filters}) => {
+      this.recvHandlers.forEach(handler => {
+        if (handler.delete) {
+          return;
+        }
+
+        const { handler: handlerFunction, ...filters } = handler;
+
+        if (!handlerFunction) {
+          console.warn('Recv handler without handler function', { handler, filters });
+          handler.delete = true;
+          return;
+        }
+
         if (filters.ipPayloadType && filters.ipPayloadType !== handlerData.packet?.protocol) {
           return;
         }
@@ -1201,8 +1245,16 @@ export default function NetworkBaseMixin(Base) {
           return;
         }
 
-        handler(handlerData);
+        if (filters.icmp6NeighborAdvertisement && !(handlerData.icmp6 instanceof Icmp6NeighborAdvertisement)) {
+          return;
+        }
+
+        handlerFunction(handlerData);
+
+        handler.delete = true;
       });
+
+      this.recvHandlers = this.recvHandlers.filter(h => !h.delete);
     }
 
     createDeferredRecv({ timeout, resultOnTmeout, log, ...filters }) {
@@ -1217,7 +1269,7 @@ export default function NetworkBaseMixin(Base) {
           if (timer)
             clearTimeout(timer);
 
-          this.removeRecvHandler(handlerOptions);
+          handlerOptions.delete = true;
         };
         
         handlerOptions.handler = data => {
