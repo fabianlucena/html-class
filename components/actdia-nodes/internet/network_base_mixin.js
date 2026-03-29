@@ -1119,57 +1119,7 @@ export default function NetworkBaseMixin(Base) {
 
       await this.#recv_arp_handler(handlerData);
       await this.#recv_IPv4Packet_handler(handlerData);
-
-      if (framePayload instanceof IPv6Packet) {
-        handlerData.packet = framePayload;
-        if (!isMulticastIPv6(handlerData.packet.dst)
-          && !dev.inet6.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))
-        ) {
-          if (!isMulticastIPv6(handlerData.packet.dst)
-            || !dev.inet6.some(i => isSolicitedNodeMulticast(handlerData.packet.dst, i.address))
-          ) {
-            console.log('Received IPv6 packet not for this device: ', ntop(handlerData.packet.dst));
-            return;
-          }
-        }
-
-        handlerData.ipPayload = handlerData.packet.payload;
-
-        if (handlerData.ipPayload instanceof Icmp6) {
-          handlerData.icmp6 = handlerData.ipPayload;
-        }
-
-        if (handlerData.ipPayload instanceof Icmp6EchoRequest) {
-          const echoRequest = handlerData.ipPayload;
-          const echoReply = echoRequest.toEchoReply();
-          const { frame } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply, dev });
-          this.sendFrame(frame, { dev });
-        } else if (handlerData.ipPayload instanceof Icmp6NeighborSolicitation) {
-          const ns = handlerData.ipPayload;
-          const na = new Icmp6NeighborAdvertisement({
-            targetAddress: ns.targetAddress,
-            targetLinkLayerAddress: dev.mac,
-            flags: {
-              router: false,
-              solicited: true,
-              override: true,
-            },
-          });
-          const packet = new IPv6Packet({
-            src: ns.targetAddress,
-            dst: handlerData.packet.src,
-            payload: na,
-            hopLimit: 255,
-          });
-          const frame = new Frame({
-            src: dev.mac,
-            dst: handlerData.frame.src,
-            payload: packet,
-          });
-
-          this.sendFrame(frame, { dev });
-        }
-      }
+      await this.#recv_IPv6Packet_handler(handlerData);
 
       if (handlerData.ipPayload instanceof Icmp4) {
         handlerData.icmp4 = handlerData.ipPayload;
@@ -1237,6 +1187,63 @@ export default function NetworkBaseMixin(Base) {
         const echoRequest = handlerData.ipPayload;
         const echoReply = echoRequest.toEchoReply();
         const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
+        this.sendFrame(frame, { dev });
+      }
+    }
+    
+    async #recv_IPv6Packet_handler(handlerData) {
+      if (!(handlerData.frame.payload instanceof IPv6Packet)) {
+        return;
+      }
+
+      handlerData.packet = handlerData.frame.payload;
+
+      const dev = handlerData.dev;
+      if (!isMulticastIPv6(handlerData.packet.dst)
+        && !dev.inet6.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))
+      ) {
+        if (!isMulticastIPv6(handlerData.packet.dst)
+          || !dev.inet6.some(i => isSolicitedNodeMulticast(handlerData.packet.dst, i.address))
+        ) {
+          console.log('Received IPv6 packet not for this device: ', ntop(handlerData.packet.dst));
+          return;
+        }
+      }
+
+      handlerData.ipPayload = handlerData.packet.payload;
+
+      if (handlerData.ipPayload instanceof Icmp6) {
+        handlerData.icmp6 = handlerData.ipPayload;
+      }
+
+      if (handlerData.ipPayload instanceof Icmp6EchoRequest) {
+        const echoRequest = handlerData.ipPayload;
+        const echoReply = echoRequest.toEchoReply();
+        const { frame } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply, dev });
+        this.sendFrame(frame, { dev });
+      } else if (handlerData.ipPayload instanceof Icmp6NeighborSolicitation) {
+        const ns = handlerData.ipPayload;
+        const na = new Icmp6NeighborAdvertisement({
+          targetAddress: ns.targetAddress,
+          targetLinkLayerAddress: dev.mac,
+          flags: {
+            router: false,
+            solicited: true,
+            override: true,
+          },
+        });
+        const packet = new IPv6Packet({
+          src: ns.targetAddress,
+          dst: handlerData.packet.src,
+          payload: na,
+          hopLimit: 255,
+        });
+        const frame = new Frame({
+          src: dev.mac,
+          dst: handlerData.frame.src,
+          payload: packet,
+        });
+
         this.sendFrame(frame, { dev });
       }
     }
