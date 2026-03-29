@@ -1082,17 +1082,6 @@ export default function NetworkBaseMixin(Base) {
         return;
       }
 
-      let index;
-      while((index = this.#recvCustomHandlers.findIndex(h => isEqual(h, handler))) !== -1) {
-        this.#recvCustomHandlers.splice(index, 1);
-      }
-    }
-
-    async recv(raw, { dev } = {}) {
-      if (!raw?.length) {
-        return;
-      }
-
       const frame = new Frame({ raw });
       if (frame.dst.some((byte, index) => byte !== dev.mac[index])
         && frame.dst.some(byte => byte !== 0xff)
@@ -1162,6 +1151,8 @@ export default function NetworkBaseMixin(Base) {
       });
       
       this.sendFrame(frame, { dev });
+
+      return true;
     }
 
     async #recv_IPv4Packet_handler(handlerData) {
@@ -1189,6 +1180,8 @@ export default function NetworkBaseMixin(Base) {
         const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
         this.sendFrame(frame, { dev });
       }
+
+      return true;
     }
     
     async #recv_IPv6Packet_handler(handlerData) {
@@ -1246,6 +1239,8 @@ export default function NetworkBaseMixin(Base) {
 
         this.sendFrame(frame, { dev });
       }
+
+      return true;
     }
 
     async #recv_custom_handlers(handlerData) {
