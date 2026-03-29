@@ -1106,17 +1106,9 @@ export default function NetworkBaseMixin(Base) {
         frame,
       };
 
-      await this.#recv_arp_handler(handlerData);
-      await this.#recv_IPv4Packet_handler(handlerData);
-      await this.#recv_IPv6Packet_handler(handlerData);
-
-      if (handlerData.ipPayload instanceof Icmp4) {
-        handlerData.icmp4 = handlerData.ipPayload;
-        handlerData.icmp = handlerData.icmp4;
-      } else if (handlerData.ipPayload instanceof Icmp6) {
-        handlerData.icmp6 = handlerData.ipPayload;
-        handlerData.icmp = handlerData.icmp6;
-      }
+      await this.#recv_arp_handler(handlerData)
+      || (await this.#recv_IPv4Packet_handler(handlerData))
+      || (await this.#recv_IPv6Packet_handler(handlerData));
 
       this.#recv_custom_handlers(handlerData);
     }
@@ -1172,6 +1164,7 @@ export default function NetworkBaseMixin(Base) {
 
       if (handlerData.ipPayload instanceof Icmp4) {
         handlerData.icmp4 = handlerData.ipPayload;
+        handlerData.icmp = handlerData.icmp4;
       }
 
       if (handlerData.ipPayload instanceof Icmp4EchoRequest) {
@@ -1207,6 +1200,7 @@ export default function NetworkBaseMixin(Base) {
 
       if (handlerData.ipPayload instanceof Icmp6) {
         handlerData.icmp6 = handlerData.ipPayload;
+        handlerData.icmp = handlerData.icmp6;
       }
 
       if (handlerData.ipPayload instanceof Icmp6EchoRequest) {
