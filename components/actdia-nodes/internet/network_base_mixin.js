@@ -37,8 +37,16 @@ const commands = {
     exec: ip
   },
   'ping': {
-    help: 'Ping a host.',
-    usage: 'ping [-c|--count <count>] <host>',
+    help: `Ping a host.
+Options:
+  -c count       Stop after sending count ECHO_REQUEST packets. The default is to ping indefinitely.
+  -i interval    Wait interval seconds between sending each packet.
+  -h             Show this help message.
+  -W timeout     Set the timeout for each ping attempt.
+  -m minDelay    Set the minimum delay for each ping attempt.
+  -M maxDelay    Set the maximum delay for each ping attempt.
+`,
+    usage: 'ping [-c count] [-i interval] [-h] [-W timeout] [-m minDelay] [-M maxDelay] <host>',
     exec: ping
   }
 };
@@ -326,16 +334,44 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   }
 
   let ipText,
-    count = 4;
+    count = -1,
+    interval = 1000,  
+    timeout = 900,
+    minDelay = 0,
+    maxDelay = 0;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === '-h' || arg === '--help') {
       return usage(commands.ping);
     }
 
-    if (arg === '-c' || arg === '--count') {
+    if (arg === '-c') {
       i++;
       count = parseInt(args[i]);
+      continue;
+    }
+
+    if (arg === '-i') {
+      i++;
+      interval = parseFloat(args[i]) * 1000;
+      continue;
+    }
+
+    if (arg === '-W') {
+      i++;
+      timeout = parseFloat(args[i]) * 1000;
+      continue;
+    }
+
+    if (arg === '-m') {
+      i++;
+      minDelay = parseFloat(args[i]) * 1000;
+      continue;
+    }
+
+    if (arg === '-M') {
+      i++;
+      maxDelay = parseFloat(args[i]) * 1000;
       continue;
     }
 
@@ -378,20 +414,22 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
   terminal.send(`PING ${ipText} 56(84) bytes of data.\n`);
   let transmited = 0, received = 0;
   const beginAt = new Date().getTime();
-  const timeout = 900;
-  const delay = () => Math.random() * 1200;
+  const delay = maxDelay ?
+    () => minDelay + Math.random() * (maxDelay - minDelay) :
+    minDelay ? () => minDelay :
+    () => 0;
   let min, sum = 0, max, avg = 0, mvar = 0;
 
-  for (let i = 0; i < count; i++) {
-    const request = createRequest(i);
-    const sentAt = new Date().getTime();
+  while (count === -1 || transmited < count) {
     transmited++;
+    const request = createRequest(transmited);
+    const sentAt = new Date().getTime();
 
     const pingResponse = this.createDeferredRecv({
       ...responseFilters,
       timeout,
       resultOnTmeout: null,
-      sequenceNumber: i,
+      sequenceNumber: transmited,
     });
     await this.send({
       dst: ip,
@@ -420,10 +458,10 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
       avg += delta / received;
       mvar += delta * (time - avg);
     } else {
-      terminal.send(`Request timeout for icmp_seq ${i}\n`);
+      terminal.send(`Request timeout for icmp_seq ${transmited}\n`);
     }
 
-    await sleep(1000 - time);
+    await sleep(interval - time);
   }
   const endAt = new Date().getTime();
 
@@ -1127,7 +1165,7 @@ export default function NetworkBaseMixin(Base) {
 
       const dev = handlerData.dev;
       if (!dev.inet4.some(i => i.address.every((byte, index) => byte === arp.targetIp[index]))) {
-        console.log('Received ARP request not for this device');
+        console.warn('Received ARP request not for this device');
         return;
       }
       
@@ -1154,7 +1192,8 @@ export default function NetworkBaseMixin(Base) {
         return;
       }
 
-      handlerData.packet = handlerData.frame.payload;
+      handlerData.ipv4Packet = handlerData.frame.payload;
+      handlerData.packet = handlerData.ipv4Packet;
       handlerData.ipPayload = handlerData.packet.payload;
 
       if (handlerData.ipPayload instanceof Icmp4) {
@@ -1164,7 +1203,7 @@ export default function NetworkBaseMixin(Base) {
 
       const dev = handlerData.dev;
       if (!dev.inet4.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
-        console.log('Received IPv4 packet not for this device');
+        await this.#recv_forward(handlerData);
         return;
       }
 
@@ -1183,7 +1222,8 @@ export default function NetworkBaseMixin(Base) {
         return;
       }
 
-      handlerData.packet = handlerData.frame.payload;
+      handlerData.ipv6Packet = handlerData.frame.payload;
+      handlerData.packet = handlerData.ipv6Packet;
       handlerData.ipPayload = handlerData.packet.payload;
 
       if (handlerData.ipPayload instanceof Icmp6) {
@@ -1198,13 +1238,13 @@ export default function NetworkBaseMixin(Base) {
         if (!isMulticastIPv6(handlerData.packet.dst)
           || !dev.inet6.some(i => isSolicitedNodeMulticast(handlerData.packet.dst, i.address))
         ) {
-          console.log('Received IPv6 packet not for this device: ', ntop(handlerData.packet.dst));
+          await this.#recv_forward(handlerData);
           return;
         }
       }
 
       if (!handlerData.icmp) {
-        return true;
+        return;
       }
 
       if (handlerData.icmp instanceof Icmp6EchoRequest) {
@@ -1244,7 +1284,11 @@ export default function NetworkBaseMixin(Base) {
         return true;
       }
 
-      return true;
+      return;
+    }
+
+    async #recv_forward(handlerData) {
+      console.log(`Forwarding packet from ${ntop(handlerData.packet.src)} to ${ntop(handlerData.packet.dst)}`);
     }
 
     async #recv_custom_handlers(handlerData) {
