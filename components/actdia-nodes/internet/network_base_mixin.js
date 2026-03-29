@@ -1112,54 +1112,13 @@ export default function NetworkBaseMixin(Base) {
         return;
       }
 
-      const handlerData = { frame };
+      const handlerData = {
+        dev,
+        frame,
+      };
 
-      if (framePayload instanceof Arp) {
-        handlerData.arp = framePayload;
-        const arp = framePayload;
-        if (arp.opcode === 1) {
-          if (!dev.inet4.some(i => i.address.every((byte, index) => byte === arp.targetIp[index]))) {
-            console.log('Received ARP request not for this device');
-            return;
-          }
-          
-          const arpReply = new Arp({
-            senderMac: dev.mac,
-            senderIp: arp.targetIp,
-            targetMac: arp.senderMac,
-            targetIp: arp.senderIp,
-            opcode: 2,
-          });
-          const frame = new Frame({
-            src: dev.mac,
-            dst: arp.senderMac,
-            payload: arpReply,
-          });
-          
-          this.sendFrame(frame, { dev });
-        }
-      }
-
-      if (framePayload instanceof IPv4Packet) {
-        handlerData.packet = framePayload;
-        if (!dev.inet4.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
-          console.log('Received IPv4 packet not for this device');
-          return;
-        }
-
-        handlerData.ipPayload = handlerData.packet.payload;
-
-        if (handlerData.ipPayload instanceof Icmp4) {
-          handlerData.icmp4 = handlerData.ipPayload;
-        }
-
-        if (handlerData.ipPayload instanceof Icmp4EchoRequest) {
-          const echoRequest = handlerData.ipPayload;
-          const echoReply = echoRequest.toEchoReply();
-          const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
-          this.sendFrame(frame, { dev });
-        }
-      }
+      await this.#recv_arp_handler(handlerData);
+      await this.#recv_IPv4Packet_handler(handlerData);
 
       if (framePayload instanceof IPv6Packet) {
         handlerData.packet = framePayload;
@@ -1221,6 +1180,65 @@ export default function NetworkBaseMixin(Base) {
       }
 
       this.#recv_custom_handlers(handlerData);
+    }
+
+    async #recv_arp_handler(handlerData) {
+      if (!(handlerData.frame.payload instanceof Arp)) {
+        return;
+      }
+
+      const arp = handlerData.arp = handlerData.frame.payload;
+      if (arp.opcode !== 1) {
+        return;
+      }
+
+      const dev = handlerData.dev;
+      if (!dev.inet4.some(i => i.address.every((byte, index) => byte === arp.targetIp[index]))) {
+        console.log('Received ARP request not for this device');
+        return;
+      }
+      
+      const arpReply = new Arp({
+        senderMac: dev.mac,
+        senderIp: arp.targetIp,
+        targetMac: arp.senderMac,
+        targetIp: arp.senderIp,
+        opcode: 2,
+      });
+      const frame = new Frame({
+        src: dev.mac,
+        dst: arp.senderMac,
+        payload: arpReply,
+      });
+      
+      this.sendFrame(frame, { dev });
+    }
+
+    async #recv_IPv4Packet_handler(handlerData) {
+      if (!(handlerData.frame.payload instanceof IPv4Packet)) {
+        return;
+      }
+
+      handlerData.packet = handlerData.frame.payload;
+
+      const dev = handlerData.dev;
+      if (!dev.inet4.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
+        console.log('Received IPv4 packet not for this device');
+        return;
+      }
+
+      handlerData.ipPayload = handlerData.packet.payload;
+
+      if (handlerData.ipPayload instanceof Icmp4) {
+        handlerData.icmp4 = handlerData.ipPayload;
+      }
+
+      if (handlerData.ipPayload instanceof Icmp4EchoRequest) {
+        const echoRequest = handlerData.ipPayload;
+        const echoReply = echoRequest.toEchoReply();
+        const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
+        this.sendFrame(frame, { dev });
+      }
     }
 
     async #recv_custom_handlers(handlerData) {
