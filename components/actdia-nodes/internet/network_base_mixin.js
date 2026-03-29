@@ -1055,8 +1055,8 @@ export default function NetworkBaseMixin(Base) {
       return { frame, dev };
     }
 
-    #deferredRecvIdCounter = 1;
-    #recvHandlers = [];
+    #recvCustomHandlerIdCounter = 1;
+    #recvCustomHandlers = [];
 
     addRecvHandler(handler) {
       if (typeof handler === 'function') {
@@ -1067,14 +1067,14 @@ export default function NetworkBaseMixin(Base) {
         throw new Error('Handler function is required');
       }
 
-      handler._id = this.#deferredRecvIdCounter++;
+      handler._id = this.#recvCustomHandlerIdCounter++;
       handler._time = Date.now();
 
-      this.#recvHandlers.push(handler);
+      this.#recvCustomHandlers.push(handler);
     }
 
     removeRecvHandlerById(id) {
-      this.#recvHandlers = this.#recvHandlers.filter(h => h._id !== id);
+      this.#recvCustomHandlers = this.#recvCustomHandlers.filter(h => h._id !== id);
     }
 
     async recv(raw, { dev } = {}) {
@@ -1083,8 +1083,8 @@ export default function NetworkBaseMixin(Base) {
       }
 
       let index;
-      while((index = this.#recvHandlers.findIndex(h => isEqual(h, handler))) !== -1) {
-        this.#recvHandlers.splice(index, 1);
+      while((index = this.#recvCustomHandlers.findIndex(h => isEqual(h, handler))) !== -1) {
+        this.#recvCustomHandlers.splice(index, 1);
       }
     }
 
@@ -1220,7 +1220,11 @@ export default function NetworkBaseMixin(Base) {
         handlerData.icmp = handlerData.icmp6;
       }
 
-      this.#recvHandlers.forEach(handler => {
+      this.#recv_custom_handlers(handlerData);
+    }
+
+    async #recv_custom_handlers(handlerData) {
+      this.#recvCustomHandlers.forEach(handler => {
         if (handler.delete) {
           return;
         }
@@ -1262,7 +1266,7 @@ export default function NetworkBaseMixin(Base) {
         handler.delete = true;
       });
 
-      this.#recvHandlers = this.#recvHandlers.filter(h => !h.delete);
+      this.#recvCustomHandlers = this.#recvCustomHandlers.filter(h => !h.delete);
     }
 
     createDeferredRecv({ timeout, resultOnTmeout, log, ...filters }) {
