@@ -1055,28 +1055,36 @@ export default function NetworkBaseMixin(Base) {
       return { frame, dev };
     }
 
-    recvHandlers = [];
+    #deferredRecvIdCounter = 1;
+    #recvHandlers = [];
 
-    addRecvHandler(options) {
-      if (typeof options === 'function') {
-        options = { handler: options };
+    addRecvHandler(handler) {
+      if (typeof handler === 'function') {
+        handler = { handler };
       }
 
-      if (!options || typeof options.handler !== 'function') {
+      if (!handler.func || typeof handler.func !== 'function') {
         throw new Error('Handler function is required');
       }
 
-      this.recvHandlers.push(options);
+      handler._id = this.#deferredRecvIdCounter++;
+      handler._time = Date.now();
+
+      this.#recvHandlers.push(handler);
     }
 
-    removeRecvHandler(options) {
-      if (typeof options === 'function') {
-        options = { handler: options };
+    removeRecvHandlerById(id) {
+      this.#recvHandlers = this.#recvHandlers.filter(h => h._id !== id);
+    }
+
+    async recv(raw, { dev } = {}) {
+      if (!raw?.length) {
+        return;
       }
 
       let index;
-      while((index = this.recvHandlers.findIndex(h => isEqual(h, options))) !== -1) {
-        this.recvHandlers.splice(index, 1);
+      while((index = this.#recvHandlers.findIndex(h => isEqual(h, handler))) !== -1) {
+        this.#recvHandlers.splice(index, 1);
       }
     }
 
@@ -1212,15 +1220,15 @@ export default function NetworkBaseMixin(Base) {
         handlerData.icmp = handlerData.icmp6;
       }
 
-      this.recvHandlers.forEach(handler => {
+      this.#recvHandlers.forEach(handler => {
         if (handler.delete) {
           return;
         }
 
-        const { handler: handlerFunction, ...filters } = handler;
+        const { func, ...filters } = handler;
 
-        if (!handlerFunction) {
-          console.warn('Recv handler without handler function', { handler, filters });
+        if (!func) {
+          console.error('Recv handler without handler function', { handler, handlerData });
           handler.delete = true;
           return;
         }
@@ -1249,35 +1257,39 @@ export default function NetworkBaseMixin(Base) {
           return;
         }
 
-        handlerFunction(handlerData);
+        func(handlerData);
 
         handler.delete = true;
       });
 
-      this.recvHandlers = this.recvHandlers.filter(h => !h.delete);
+      this.#recvHandlers = this.#recvHandlers.filter(h => !h.delete);
     }
 
     createDeferredRecv({ timeout, resultOnTmeout, log, ...filters }) {
+      let finished = false;
+      let timer = null;
+      const handler = { ...filters };
+      
       return new Promise((resolve, reject) => {
-        let finished = false;
-        let timer = null;
-        const handlerOptions = { ...filters };
-
         const cleanup = () => {
           finished = true;
 
           if (timer)
             clearTimeout(timer);
 
-          handlerOptions.delete = true;
+          handler.delete = true;
         };
         
-        handlerOptions.handler = data => {
+        handler.log = log;
+        if (handler.log && typeof handler.log !== 'function') {
+          handler.log = console.log;
+        }
+
+        handler.func = data => {
           if (finished)
             return;
 
-          if (log)
-            console.log('Deferred recv received data', data, filters);
+          handler.log?.('Deferred recv received data', { ...handler, data });
 
           cleanup();
           resolve(data);
@@ -1288,8 +1300,7 @@ export default function NetworkBaseMixin(Base) {
             if (finished)
               return;
 
-            if (log)
-              console.log(`Deferred recv timeout after ${timeout} ms`, filters);
+            console.warn(`Deferred recv timeout after ${timeout} ms`, filters);
 
             cleanup();
 
@@ -1301,7 +1312,7 @@ export default function NetworkBaseMixin(Base) {
           }, timeout);
         }
 
-        this.addRecvHandler(handlerOptions);
+        this.addRecvHandler(handler);
       });
     }
   };
