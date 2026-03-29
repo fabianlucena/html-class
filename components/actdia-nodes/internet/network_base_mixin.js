@@ -1118,7 +1118,9 @@ export default function NetworkBaseMixin(Base) {
         return;
       }
 
-      const arp = handlerData.arp = handlerData.frame.payload;
+      handlerData.arp = handlerData.frame.payload;
+
+      const arp = handlerData.arp;
       if (arp.opcode !== 1) {
         return;
       }
@@ -1153,13 +1155,6 @@ export default function NetworkBaseMixin(Base) {
       }
 
       handlerData.packet = handlerData.frame.payload;
-
-      const dev = handlerData.dev;
-      if (!dev.inet4.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
-        console.log('Received IPv4 packet not for this device');
-        return;
-      }
-
       handlerData.ipPayload = handlerData.packet.payload;
 
       if (handlerData.ipPayload instanceof Icmp4) {
@@ -1167,7 +1162,13 @@ export default function NetworkBaseMixin(Base) {
         handlerData.icmp = handlerData.icmp4;
       }
 
-      if (handlerData.ipPayload instanceof Icmp4EchoRequest) {
+      const dev = handlerData.dev;
+      if (!dev.inet4.some(i => i.address.every((byte, index) => byte === handlerData.packet.dst[index]))) {
+        console.log('Received IPv4 packet not for this device');
+        return;
+      }
+
+      if (handlerData.icmp && handlerData.icmp instanceof Icmp4EchoRequest) {
         const echoRequest = handlerData.ipPayload;
         const echoReply = echoRequest.toEchoReply();
         const { frame, dev } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply });
@@ -1183,6 +1184,12 @@ export default function NetworkBaseMixin(Base) {
       }
 
       handlerData.packet = handlerData.frame.payload;
+      handlerData.ipPayload = handlerData.packet.payload;
+
+      if (handlerData.ipPayload instanceof Icmp6) {
+        handlerData.icmp6 = handlerData.ipPayload;
+        handlerData.icmp = handlerData.icmp6;
+      }
 
       const dev = handlerData.dev;
       if (!isMulticastIPv6(handlerData.packet.dst)
@@ -1196,19 +1203,20 @@ export default function NetworkBaseMixin(Base) {
         }
       }
 
-      handlerData.ipPayload = handlerData.packet.payload;
-
-      if (handlerData.ipPayload instanceof Icmp6) {
-        handlerData.icmp6 = handlerData.ipPayload;
-        handlerData.icmp = handlerData.icmp6;
+      if (!handlerData.icmp) {
+        return true;
       }
 
-      if (handlerData.ipPayload instanceof Icmp6EchoRequest) {
+      if (handlerData.icmp instanceof Icmp6EchoRequest) {
         const echoRequest = handlerData.ipPayload;
         const echoReply = echoRequest.toEchoReply();
         const { frame } = await this.createFrame({ dst: handlerData.packet.src, data: echoReply, dev });
         this.sendFrame(frame, { dev });
-      } else if (handlerData.ipPayload instanceof Icmp6NeighborSolicitation) {
+
+        return true;
+      }
+      
+      if (handlerData.icmp instanceof Icmp6NeighborSolicitation) {
         const ns = handlerData.ipPayload;
         const na = new Icmp6NeighborAdvertisement({
           targetAddress: ns.targetAddress,
@@ -1232,6 +1240,8 @@ export default function NetworkBaseMixin(Base) {
         });
 
         this.sendFrame(frame, { dev });
+
+        return true;
       }
 
       return true;
