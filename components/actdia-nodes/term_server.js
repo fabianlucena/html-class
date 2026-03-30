@@ -13,6 +13,10 @@ export default class TermServer extends TermBase {
   }
 
   controlChar(char) {
+    if (this.onControlChar?.(char)) {
+      return;
+    }
+    
     if (this.controlCharHandler?.(char)) {
       return;
     }
@@ -145,7 +149,7 @@ export default class TermServer extends TermBase {
     this.historyIndex = this.history.length;
 
     this.send('\n');
-    this.send(await this.execCommand(command));
+    this.send(await this.execCommand({ command, terminal: this }));
     this.send(this.prompt);
   }
 
@@ -157,11 +161,11 @@ export default class TermServer extends TermBase {
     this.sendHandler(data);
   }
 
-  execCommand(command) {
+  execCommand({ command, terminal }) {
     if (!this.commandHandler) {
       return 'No command handler';
     }
 
-    return this.commandHandler({ command, terminal: this });
+    return this.commandHandler({ command, terminal });
   }
 }
