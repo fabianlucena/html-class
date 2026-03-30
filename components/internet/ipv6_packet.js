@@ -120,7 +120,16 @@ export default class IPv6Packet extends FramePayload {
   update() {
     if (this.payload) {
       this.payload.packet = this;
-      this.payload.update();
+
+      const totalLength = 40 + (this.payload?.raw.length || 0);
+      if (this.raw.length !== totalLength) {
+        const oldRaw = this.raw;
+        this.raw = new Uint8Array(totalLength);
+        this.raw.set(oldRaw.slice(0, 40), 0);
+      }
+      this.raw[4] = (this.payload.raw.length >> 8) & 0xFF;
+      this.raw[5] = this.payload.raw.length & 0xFF;      
+      this.raw.set(this.payload?.raw, 40);
     }
   }
 
