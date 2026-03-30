@@ -227,11 +227,18 @@ export default async function create({ actdia, Node }) {
       if (key === '')
         return;
 
+      if (evt.ctrlKey && key.length === 1) {
+        const charCode = key.toUpperCase().charCodeAt(0);
+        if (charCode >= 64 && charCode <= 95) {
+          key = String.fromCharCode(charCode - 64);
+        }
+      }
+      
       await this.#portConnector.send(key, { force: true });
     }
 
     async onPortRecv({ data }) {
-      await this.#term.receive(data);
+      await this.#term.recv(data);
       this.#textShape.text = this.term.viewport.map(l => l.map(c => c.char).join('')).join('\n');
       this.tryUpdateShape(this.#textShape);
 
