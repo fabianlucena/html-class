@@ -8,6 +8,7 @@ export default class Icmp6NeighborAdvertisement extends Icmp6 {
 
   constructor({
     raw,
+    packet,
     flags = {},
     targetAddress,
     targetLinkLayerAddress,
@@ -16,6 +17,10 @@ export default class Icmp6NeighborAdvertisement extends Icmp6 {
     overrideFlag = false,
   } = {}) {
     super();
+
+    if (packet) {
+      this.setPacket(packet, false);
+    }
 
     if (raw) {
       this.raw = raw;

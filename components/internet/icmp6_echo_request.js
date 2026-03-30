@@ -7,6 +7,6 @@ export default class Icmp6EchoRequest extends Icmp6Echo {
   }
   
   toEchoReply() {
-    return new Icmp6EchoReply({ raw: this.raw });
+    return new Icmp6EchoReply({ raw: this.raw, packet: this.packet });
   }
 }

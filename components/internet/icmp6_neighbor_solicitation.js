@@ -8,10 +8,15 @@ export default class Icmp6NeighborSolicitation extends Icmp6 {
 
   constructor({
     raw,
+    packet,
     targetAddress,
     sourceLinkLayerAddress,
   } = {}) {
     super();
+
+    if (packet) {
+      this.setPacket(packet, false);
+    }
 
     if (raw) {
       this.raw = raw;
@@ -41,6 +46,8 @@ export default class Icmp6NeighborSolicitation extends Icmp6 {
       this.raw[25] = 1; // Option Length: 1 (8 bytes)
       this.raw.set(sourceLinkLayerAddress, 26);
     }
+
+    this.update();
   }
 
   get reserved() {
