@@ -13,6 +13,7 @@ export default async function create({ actdia, _f }) {
       prompt: '> ',
       sendHandler: data => this.#terminalConnector.send(data, { force: true }),
       commandHandler: async params => await this.execCommand(params),
+      controlCharHandler: char => this.controlCharHandler(char),
     });
 
     constructor() {
