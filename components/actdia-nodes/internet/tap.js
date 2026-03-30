@@ -22,6 +22,7 @@ export default async function create({ actdia, Node, _f }) {
           x: 0,
           y: 0,
           text: 'TAP',
+          fontSize: 0.65,
         },
       ],
     };
@@ -35,7 +36,7 @@ export default async function create({ actdia, Node, _f }) {
 
     connectors = [
       { name: 'a', type: 'utpPort', x: -1, y: 0, direction: 'left', onRecv: params => this.onRecv(params) },
-      { name: 'b', type: 'utpPort', x: 1, y: 0, direction: 'right', onRecv: params => this.onRecv(params) },
+      { name: 'b', type: 'utpPort', x:  1, y: 0, direction: 'right', onRecv: params => this.onRecv(params) },
       { name: 'monitor', type: 'utpPort', x: 0, y: 1, direction: 'bottom', onRecv: params => this.onRecv(params) },
     ];
 
