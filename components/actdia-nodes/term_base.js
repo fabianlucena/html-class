@@ -10,15 +10,16 @@ export default class TermBase {
     Object.assign(this, options);
   }
 
-  receive(data) {
+  recv(data) {
     let result = '';
     for (let i = 0, l = data?.length; i < l; i++) {
-      result += this.receiveChar(data[i]) ?? '';
+      result += this.recvChar(data[i]) ?? '';
     }
+
     return result;
   }
 
-  receiveChar(char) {
+  recvChar(char) {
     if (this.escapeSequence) {
       if (this.escapeSequence === '\x1B') {
         if (char !== '[') {
