@@ -170,13 +170,13 @@ export default class Icmp4Echo extends Icmp4 {
     this.raw.slice(8).map(b => b.toString(16).padStart(2, '0')).join(' ')
 
     return `${this.constructor.name}(
-  type=${this.type},
-  code=${this.code},
-  checksum=0x${((this.raw[2] << 8) | this.raw[3]).toString(16).padStart(4, '0')},
-  identifier=${this.identifier},
-  sequenceNumber=${this.sequenceNumber},
-  payloadLength=${this.payloadLength},
-  payload=
+  Type: ${this.type},
+  Code: ${this.code},
+  Checksum: ${((this.raw[2] << 8) | this.raw[3]).toString(16).padStart(4, '0')},
+  Identifier: ${this.identifier},
+  Sequence number: ${this.sequenceNumber},
+  Payload length: ${this.payloadLength},
+  Payload:
     ${payloadHex}
 )`;
   }

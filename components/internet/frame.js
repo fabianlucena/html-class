@@ -66,7 +66,8 @@ export default class Frame {
 
     this.payload = payload;
 
-    this.raw = new Uint8Array(Math.max(14 + payload.raw.length + 4, 64));
+    const totalLength = Math.max(14 + payload.raw.length + 4, 64);
+    this.raw = new Uint8Array(totalLength);
     this.raw.set(dst, 0);
     this.raw.set(src, 6);
     this.raw.set([this.payload.parentProtocol >> 8, this.payload.parentProtocol & 0xFF], 12);
@@ -76,6 +77,17 @@ export default class Frame {
   }
 
   update() {
+    if (this.payload) {
+      const totalLength = Math.max(14 + this.payload.raw.length + 4, 64);
+      if (this.raw.length !== totalLength) {
+        const oldRaw = this.raw;
+        this.raw = new Uint8Array(totalLength);
+        this.raw.set(oldRaw.slice(0, oldRaw.length - 4), 0);
+      }
+      this.raw.set([this.payload.parentProtocol >> 8, this.payload.parentProtocol & 0xFF], 12);
+      this.raw.set(this.payload.raw, 14);
+    }
+
     const fcs = crc32Ethernet(this.raw.slice(0, this.raw.length - 4));
     fcs.forEach((b, i) => {
       this.raw[this.raw.length - 4 + i] = b;
@@ -84,11 +96,11 @@ export default class Frame {
 
   toString() {
     let result = `Frame(
-  dst: ${[...this.dst].map(b => b.toString(16).padStart(2, '0')).join(':')}
-  src: ${[...this.src].map(b => b.toString(16).padStart(2, '0')).join(':')}
-  protocol: 0x${this.protocol.toString(16)}
-  size: ${this.raw.length} bytes
-  fcs: ${[...this.fcs].map(b => b.toString(16).padStart(2, '0')).join(' ')}
+  Destination: ${[...this.dst].map(b => b.toString(16).padStart(2, '0')).join(':')}
+  Source: ${[...this.src].map(b => b.toString(16).padStart(2, '0')).join(':')}
+  Protocol: 0x${this.protocol.toString(16)}
+  Size: ${this.raw.length} bytes
+  FCS: ${[...this.fcs].map(b => b.toString(16).padStart(2, '0')).join(' ')}
 )
 `;
 

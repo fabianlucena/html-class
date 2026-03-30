@@ -115,7 +115,7 @@ export default class IPv4Packet extends FramePayload {
     this.raw[6] = 0x40; // Flags and Fragment Offset
     this.raw[7] = 0;
     this.raw[8] = ttl ?? 64; // TTL
-    this.raw[9] = this.payload?.protocol; // Protocol (ICMP)
+    this.raw[9] = this.payload?.protocol;
     this.raw[10] = 0; // Header Checksum (placeholder)
     this.raw[11] = 0;
     this.raw.set(src, 12);
@@ -139,6 +139,19 @@ export default class IPv4Packet extends FramePayload {
   }
 
   update() {
+    if (this.payload) {
+      const totalLength = 20 + (this.payload?.raw.length || 0);
+      if (this.raw.length !== totalLength) {
+        const oldRaw = this.raw;
+        this.raw = new Uint8Array(totalLength);
+        this.raw.set(oldRaw.slice(0, 20));
+      }
+      this.raw[2] = (totalLength >> 8) & 0xFF;
+      this.raw[3] = totalLength & 0xFF;
+      this.raw[9] = this.payload?.protocol;
+      this.raw.set(this.payload?.raw, 20);
+    }
+    
     // Calculate checksum
     let checksum = this.calculateChecksum();
     this.raw[10] = (checksum >> 8) & 0xFF;
@@ -164,13 +177,13 @@ export default class IPv4Packet extends FramePayload {
   IHL: ${this.ihl}
   DSCP: ${this.dscp}
   ECN: ${this.ecn}
-  TotalLength: ${this.totalLength}
+  Total length: ${this.totalLength}
   Identification: ${this.identification}
   Flags: ${this.flags}
   Fragment offset: ${this.fragmentOffset}
   TTL: ${this.ttl}
   Protocol: ${this.protocol}
-  Header Checksum: ${this.headerChecksum.toString(16)}
+  Header checksum: ${this.headerChecksum.toString(16)}
   Source: ${ntop(this.src)}
   Destination: ${ntop(this.dst)}
 )
