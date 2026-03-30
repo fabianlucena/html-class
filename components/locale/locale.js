@@ -106,8 +106,25 @@ export async function loadLocaleForMeta(meta, options) {
   await loadLocale('locale', { ...options, pathFromUrl: meta.url });
 }
 
-export function dateTimeSmallFormatNoSeconds(date) {
-  const formatted = new Intl.DateTimeFormat(language, {
+export function dateTimeSmallFormatWithMilliseconds(date, lang = language) {
+  const formatted = new Intl.DateTimeFormat(lang, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3,
+    hour12: false
+  })
+    .format(date)
+    .replace(', ', ' ');
+
+  return formatted;
+}
+
+export function dateTimeSmallFormatNoSeconds(date, lang = language) {
+  const formatted = new Intl.DateTimeFormat(lang, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -116,7 +133,7 @@ export function dateTimeSmallFormatNoSeconds(date) {
     hour12: false
   })
     .format(date)
-    .replace(',', '');
+    .replace(', ', ' ');
 
   return formatted;
 }
