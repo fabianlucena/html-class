@@ -83,7 +83,7 @@ export default class Icmp6NeighborSolicitation extends Icmp6 {
   Code: ${this.code}
   Checksum: ${this.checksum.toString(16).padStart(4, '0')}
   Reserved: ${this.reserved.toString(16).padStart(8, '0')}
-  Target Address: ${ntop(this.targetAddress)}
+  Target address: ${ntop(this.targetAddress)}
   Options: ${optionsText || 'None'}
 )`;
   }

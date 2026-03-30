@@ -128,21 +128,21 @@ export default class IPv6Packet extends FramePayload {
         this.raw.set(oldRaw.slice(0, 40), 0);
       }
       this.raw[4] = (this.payload.raw.length >> 8) & 0xFF;
-      this.raw[5] = this.payload.raw.length & 0xFF;      
+      this.raw[5] = this.payload.raw.length & 0xFF;
       this.raw.set(this.payload?.raw, 40);
     }
   }
 
   toString() {
     return `IPv6Packet(
-  version: ${this.version}
-  trafficClass: ${this.trafficClass}
-  flowLabel: ${this.flowLabel}
-  payloadLength: ${this.payloadLength}
-  nextHeader: ${this.nextHeader}
-  hopLimit: ${this.hopLimit}
-  src: ${ntop(this.src)}
-  dst: ${ntop(this.dst)}
+  Version: ${this.version}
+  Traffic class: ${this.trafficClass}
+  Flow label: ${this.flowLabel}
+  Payload length: ${this.payloadLength}
+  Next header: ${this.nextHeader}
+  Hop limit: ${this.hopLimit}
+  Source: ${ntop(this.src)}
+  Destination: ${ntop(this.dst)}
 )
 ` + this.payload?.toString?.();
   }

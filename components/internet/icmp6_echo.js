@@ -141,8 +141,8 @@ export default class Icmp6Echo extends Icmp6 {
   Code: ${this.code},
   Checksum: ${this.checksum.toString(16).padStart(4, '0')},
   Identifier: ${this.identifier},
-  Sequence Number: ${this.sequenceNumber},
-  Payload Length: ${this.payloadLength},
+  Sequence number: ${this.sequenceNumber},
+  Payload length: ${this.payloadLength},
   Payload:
     ${payloadHex}
 )`;

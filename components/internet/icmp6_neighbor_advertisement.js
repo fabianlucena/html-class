@@ -113,7 +113,7 @@ export default class Icmp6NeighborAdvertisement extends Icmp6 {
   Router flag: ${this.flags & 0x80 ? '1' : ''}
   Solicited flag: ${this.flags & 0x40 ? '1' : ''}
   Override flag: ${this.flags & 0x20 ? '1' : ''}
-  Target Address: ${ntop(this.targetAddress)}
+  Target address: ${ntop(this.targetAddress)}
   Options: ${optionsText || 'None'}
 )`;
   }
