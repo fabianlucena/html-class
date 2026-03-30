@@ -12,6 +12,26 @@ export default class TermServer extends TermBase {
     Object.assign(this, options);
   }
 
+  controlChar(char) {
+    if (this.controlCharHandler?.(char)) {
+      return;
+    }
+    
+    const charCode = char.charCodeAt(0);
+    const charRepresentation = String.fromCharCode(charCode + 64);
+    return '^' + charRepresentation;
+  }
+
+  putCharInBuffer(char) {
+    if (this.pos < this.buffer.length) {
+      this.buffer = this.buffer.slice(0, this.pos) + char + this.buffer.slice(this.pos + 1);
+    } else {
+      this.buffer += char;
+    }
+
+    this.pos++;
+  }
+
   setCursor({ col, row, fromLastCol }) {
     let colDelta = 0, rowDelta = 0;
     if (typeof col === 'number') {
@@ -90,16 +110,6 @@ export default class TermServer extends TermBase {
     }
 
     this.send(command);
-  }
-
-  putCharInBuffer(char) {
-    if (this.pos < this.buffer.length) {
-      this.buffer = this.buffer.slice(0, this.pos) + char + this.buffer.slice(this.pos + 1);
-    } else {
-      this.buffer += char;
-    }
-
-    this.pos++;
   }
 
   clearScreen() {

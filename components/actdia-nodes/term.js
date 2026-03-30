@@ -59,6 +59,9 @@ export default class Term extends TermBase {
     this.cols = 80;
   }
 
+  controlChar(char) {
+  }
+
   putCharInBuffer(char) {
     if (this.cursor.pendingWrap) {
       this.cursor.pendingWrap = false;

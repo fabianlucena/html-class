@@ -72,6 +72,10 @@ export default class TermBase {
         break;
 
       default:
+        if (char < ' ') {
+          return this.controlChar(char);
+        }
+        
         this.putCharInBuffer(char);
         return char;
     }
@@ -186,11 +190,14 @@ export default class TermBase {
     }
   }
 
+  controlChar(char) {
+  }
+
+  putCharInBuffer(char) {}
+
   setCursor({ col, row }) {}
 
   moveCursor(colDelta, rowDelta) {}
-
-  putCharInBuffer(char) {}
 
   clearScreen() {}
 
