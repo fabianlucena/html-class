@@ -39,20 +39,24 @@ export default class Icmp6 extends PacketPayload {
       return 0;
     }
     
+    const packet = this.#packet;
+    const raw = this.raw;
     let checksum = 0;
     for (let i = 0; i < 32; i += 2) {
-      checksum += (this.#packet.raw[i] << 8) + (this.raw[i + 1] || 0);
+      checksum += (packet.raw[i] << 8) + (packet.raw[i + 1] || 0);
     }
-    checksum += this.raw.length; // Upper layer packet length
+    checksum += raw.length; // Upper layer packet length
     checksum += 58; // Next Header
-    checksum += (this.#packet.raw[0] << 8) + (this.raw[1] || 0);
 
-    for (let i = 4; i < this.raw.length; i += 2) {
-      checksum += (this.#packet.raw[i] << 8) + (this.raw[i + 1] || 0);
+    checksum += (raw[0] << 8) + (raw[1] || 0);
+
+    for (let i = 4; i < raw.length; i += 2) {
+      checksum += (raw[i] << 8) + (raw[i + 1] || 0);
     }
 
     checksum = (checksum & 0xFFFF) + (checksum >> 16);
     checksum = ~checksum & 0xFFFF;
+    
     return checksum;
   }
 
