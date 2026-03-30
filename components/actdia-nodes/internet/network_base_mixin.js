@@ -411,66 +411,79 @@ rtt min/avg/max/mdev = 21.9/22.1/22.4/0.2 ms*/
     return `Invalid IP address: ${ipText}\n`;
   }
 
-  terminal.send(`PING ${ipText} 56(84) bytes of data.\n`);
-  let transmited = 0, received = 0;
-  const beginAt = new Date().getTime();
-  const delay = maxDelay ?
-    () => minDelay + Math.random() * (maxDelay - minDelay) :
-    minDelay ? () => minDelay :
-    () => 0;
-  let min, sum = 0, max, avg = 0, mvar = 0;
-
-  while (count === -1 || transmited < count) {
-    transmited++;
-    const request = createRequest(transmited);
-    const sentAt = new Date().getTime();
-
-    const pingResponse = this.createDeferredRecv({
-      ...responseFilters,
-      timeout,
-      resultOnTmeout: null,
-      sequenceNumber: transmited,
-    });
-    await this.send({
-      dst: ip,
-      data: request,
-      delay: delay(),
-    });
-    let res = await pingResponse;
-
-    const receivedAt = new Date().getTime();
-    const time = receivedAt - sentAt;
-
-    if (res?.[resProperty]) {
-      const icmp = res[resProperty];
-      received++;
-      terminal.send(`${icmp.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${res.packet[ttlProperty]} time=${time} ms\n`);
-
-      if (min === undefined || time < min)
-        min = time;
-
-      if (max === undefined || time > max)
-        max = time;
-
-      sum += time;
-      const delta = time - avg;
-
-      avg += delta / received;
-      mvar += delta * (time - avg);
-    } else {
-      terminal.send(`Request timeout for icmp_seq ${transmited}\n`);
+  let cancel;
+  const previousOnControlChar = terminal.onControlChar;
+  terminal.onControlChar = char => {
+    if (char === '\x03') { // Ctrl+C
+      cancel = true;
+      return true;
     }
+  };
 
-    await sleep(interval - time);
+  try {
+    terminal.send(`PING ${ipText} 56(84) bytes of data.\n`);
+    let transmited = 0, received = 0;
+    const beginAt = new Date().getTime();
+    const delay = maxDelay ?
+      () => minDelay + Math.random() * (maxDelay - minDelay) :
+      minDelay ? () => minDelay :
+      () => 0;
+    let min, sum = 0, max, avg = 0, mvar = 0;
+
+    while (!cancel && (count === -1 || transmited < count)) {
+      transmited++;
+      const request = createRequest(transmited);
+      const sentAt = new Date().getTime();
+
+      const pingResponse = this.createDeferredRecv({
+        ...responseFilters,
+        timeout,
+        resultOnTmeout: null,
+        sequenceNumber: transmited,
+      });
+      await this.send({
+        dst: ip,
+        data: request,
+        delay: delay(),
+      });
+      let res = await pingResponse;
+
+      const receivedAt = new Date().getTime();
+      const time = receivedAt - sentAt;
+
+      if (res?.[resProperty]) {
+        const icmp = res[resProperty];
+        received++;
+        terminal.send(`${icmp.length} bytes from ${ntop(res.packet.src)}: icmp_seq=${icmp.sequenceNumber} ttl=${res.packet[ttlProperty]} time=${time} ms\n`);
+
+        if (min === undefined || time < min)
+          min = time;
+
+        if (max === undefined || time > max)
+          max = time;
+
+        sum += time;
+        const delta = time - avg;
+
+        avg += delta / received;
+        mvar += delta * (time - avg);
+      } else {
+        terminal.send(`Request timeout for icmp_seq ${transmited}\n`);
+      }
+
+      await sleep(interval - time);
+    }
+    const endAt = new Date().getTime();
+
+    const loss = transmited > 0 ? Math.round(((transmited - received) / transmited) * 100) : 0;
+    const time = endAt - beginAt;
+    const mdev = received ? Math.sqrt(mvar / received) : 0;
+    terminal.send(`\n--- ${ipText} ping statistics ---\n`);
+    terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
+    terminal.send(`rtt min/avg/max/mdev = ${fixed(min)}/${fixed(avg)}/${fixed(max)}/${fixed(mdev)} ms\n`);
+  } finally {
+    terminal.onControlChar = previousOnControlChar;
   }
-  const endAt = new Date().getTime();
-
-  const loss = transmited > 0 ? Math.round(((transmited - received) / transmited) * 100) : 0;
-  const time = endAt - beginAt;
-  const mdev = received ? Math.sqrt(mvar / received) : 0;
-  terminal.send(`\n--- ${ipText} ping statistics ---\n`);
-  terminal.send(`${transmited} packets transmitted, ${received} received, ${loss}% packet loss, time ${time}ms\n`);
-  terminal.send(`rtt min/avg/max/mdev = ${fixed(min)}/${fixed(avg)}/${fixed(max)}/${fixed(mdev)} ms\n`);
 }
 
 export default function NetworkBaseMixin(Base) {
