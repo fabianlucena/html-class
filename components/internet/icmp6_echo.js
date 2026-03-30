@@ -1,7 +1,14 @@
 import Icmp6 from './icmp6.js';
 
 export default class Icmp6Echo extends Icmp6 {
-  constructor({ payloadLength = 56, identifier = 0, sequenceNumber = 0, payload, raw, packet } = {}) {
+  constructor({
+    payloadLength = 56,
+    identifier = 0,
+    sequenceNumber = 0,
+    payload,
+    raw,
+    packet,
+  } = {}) {
     super();
 
     if (packet) {
@@ -12,8 +19,7 @@ export default class Icmp6Echo extends Icmp6 {
       this.raw = new Uint8Array(raw.length);
       this.raw.set(raw);
       if (this.calculateChecksum() !== this.checksum) {
-        console.error('Invalid checksum', this.calculateChecksum(), this.checksum);
-        throw new Error('Invalid checksum');
+        throw new Error(`Invalid checksum: calculated 0x${this.calculateChecksum().toString(16).padStart(4, '0')}, expected 0x${this.checksum.toString(16).padStart(4, '0')}`);
       }
       this.raw[0] = this.defaultType;
       this.raw[1] = 0;
@@ -131,13 +137,13 @@ export default class Icmp6Echo extends Icmp6 {
     this.raw.slice(8).map(b => b.toString(16).padStart(2, '0')).join(' ')
 
     return `${this.constructor.name}(
-  type=${this.type},
-  code=${this.code},
-  checksum=0x${this.checksum.toString(16).padStart(4, '0')},
-  identifier=${this.identifier},
-  sequenceNumber=${this.sequenceNumber},
-  payloadLength=${this.payloadLength},
-  payload=
+  Type: ${this.type},
+  Code: ${this.code},
+  Checksum: ${this.checksum.toString(16).padStart(4, '0')},
+  Identifier: ${this.identifier},
+  Sequence Number: ${this.sequenceNumber},
+  Payload Length: ${this.payloadLength},
+  Payload:
     ${payloadHex}
 )`;
   }
