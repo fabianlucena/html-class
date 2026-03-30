@@ -166,7 +166,7 @@ export default async function create({ actdia, Node }) {
         this.#textShape.width = vWidth;
         this.#textShape.height = vHeight;
 
-        let svgText = this.#textShape?.svgElement;
+        let svgText = this.#textShape?.svgElement.querySelector('text');
         if (svgText) {
           if (this.autoSize) {
             const lines = this.text.split('\n');
