@@ -1,4 +1,5 @@
 import createFrame from '../../internet/frame_creator.js';
+import { dateTimeSmallFormatWithMilliseconds } from '../../locale/locale.js';
 
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
@@ -101,7 +102,7 @@ export default async function create({ actdia, Node }) {
         dst = frame.getDstAddressLabel(),
         type = frame.getTypeLabel();
 
-      const text = `${time} ${type}: ${src} -> ${dst}`;
+      const text = `${dateTimeSmallFormatWithMilliseconds(time, 'en')} ${type}: ${src} -> ${dst}`;
 
       this.#text += this.#text ? `\n${text}` : text;
 
