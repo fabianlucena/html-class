@@ -1856,7 +1856,7 @@ export default class ActDia {
     }
 
     if (style.dominantBaseline === 'bottom') {
-      y += height - style.margin.bottom;
+      y += height - style.margin.bottom - ((shape.text?.split?.('\n').length ?? 1) - 1) * lineHeight;
     } else if (style.dominantBaseline === 'top') {
       y += style.margin.top;
     } else {
@@ -1886,34 +1886,40 @@ export default class ActDia {
   }
 
   getTextSVGData(shape, item, options) {
-    const { x, y, style, attributes: textAttributes } = this.getTextData(shape, item, options?.style, options);
+    const { x, y, width, height, style, attributes: dataTextAttributes } = this.getTextData(shape, item, options?.style, options);
     const lines = shape.text?.split?.('\n') ?? [];
     const commonAttributes = this.getStyleSVGAttributes(style, options);
     const fontAttibutes = this.getFontStyleSVGAttributes(style);
     const attributes = {
-      classList: [ ...(style.classList || [])],
       x,
       y,
       ...commonAttributes,
-      ...fontAttibutes,
-      ...textAttributes,
       style: {
         ...commonAttributes.style,
+      },
+    };
+    const textAttributes = {
+      classList: [ ...(style.classList || [])],
+      x,
+      y,
+      ...fontAttibutes,
+      ...dataTextAttributes,
+      style: {
         ...fontAttibutes.style,
-        ...textAttributes?.style,
+        ...dataTextAttributes?.style,
       },
     };
 
     if (shape.editable) {
-      attributes.editable = true;
+      textAttributes.editable = true;
     }
 
     if (shape.singleLine) {
-      attributes['single-line'] = true;
+      textAttributes['single-line'] = true;
     }
 
     if (shape.numerical) {
-      attributes['numerical'] = true;
+      textAttributes['numerical'] = true;
     }
 
     const children = lines.map((line, index) => {
@@ -1925,10 +1931,38 @@ export default class ActDia {
       };
     });
 
-    return {
+    const clipId = attributes.id ? `${attributes.id}-clip` : newId();
+    const clip = {
+      tag: 'clipPath',
+      attributes: {
+        id: clipId,
+      },
+      children: [
+        {
+          tag: 'rect',
+          attributes: {
+            width,
+            height,
+          },
+        },
+      ],
+    };
+
+    textAttributes['clip-path'] = `url(#${clipId})`;
+
+    const text = {
       tag: 'text',
-      attributes,
+      attributes: textAttributes,
       children,
+    };
+    
+    return {
+      tag: 'g',
+      attributes,
+      children: [
+        clip,
+        text,
+      ]
     };
   }
 
@@ -2099,6 +2133,7 @@ export default class ActDia {
       this.updateShape(shape, options);
       return true;
     } catch (error) {
+      console.error(error);
       this.pushNotification(error.message || error, 'error');
     }
     
@@ -2168,6 +2203,8 @@ export default class ActDia {
       }
 
       data.attributes.class = classList.join(' ');
+    } else {
+      data.attributes = {};
     }
     
     Object.entries(data.attributes).forEach(([key, value]) => {
