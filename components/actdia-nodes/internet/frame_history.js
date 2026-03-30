@@ -28,7 +28,7 @@ export default async function create({ actdia, Node }) {
           fontSize: .8,
           fontFamily: 'monospace',
           textAnchor: 'left',
-          textBaseline: 'middle',
+          dominantBaseline: 'bottom',
           space: 'preserve',
           onClick: args => this.historyClick(args),
         },
@@ -93,14 +93,15 @@ export default async function create({ actdia, Node }) {
         status = status.map(v => v ? v : 0);
       }
 
+      const time = new Date();
       const frame = createFrame({ raw: status });
-      this.#history.push(frame);
+      this.#history.push({ time, frame });
 
       let src = frame.getSrcAddressLabel(),
         dst = frame.getDstAddressLabel(),
         type = frame.getTypeLabel();
 
-      const text = `${type}: ${src} -> ${dst}`;
+      const text = `${time} ${type}: ${src} -> ${dst}`;
 
       this.#text += this.#text ? `\n${text}` : text;
 
@@ -115,7 +116,7 @@ export default async function create({ actdia, Node }) {
 
     historyClick({ target }) {
       this.#index = Array.from(target.parentElement.children).indexOf(target);
-      this.#output.send([...this.#history[this.#index].raw]);
+      this.#output.send([...this.#history[this.#index].frame.raw]);
     }
   };
 }
