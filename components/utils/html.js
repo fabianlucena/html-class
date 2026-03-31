@@ -10,7 +10,7 @@ export function escapeHTML(text) {
   } else if (typeof text === 'boolean') {
     text = text.toString();
   } else if (typeof text !== 'string') {
-    console.error('Invalid text type:', typeof text);
+    console.error('Invalid text type:', typeof text, text);
     return text;
   }
   
