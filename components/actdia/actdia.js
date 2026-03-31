@@ -3027,8 +3027,8 @@ export default class ActDia {
   }
 
   labeledStatus = {};
-  fireLabeledStatus(label, status) {
-    this.labeledStatus[label] = status;
-    this.labeledStatusListeners.forEach(l => l(label, status));
+  fireLabeledStatus(label, status, item) {
+    this.labeledStatus[label] = { status, item };
+    this.labeledStatusListeners.forEach(l => l(label, status, item));
   }
 }

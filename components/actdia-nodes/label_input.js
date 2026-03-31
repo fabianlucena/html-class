@@ -56,7 +56,7 @@ export default async function create({ actdia, Node }) {
     statusUpdated() {
       super.statusUpdated();
       this.updateForStatus();
-      this.actdia.fireLabeledStatus?.(this.label, this.status);
+      this.actdia.fireLabeledStatus?.(this.label, this.status, this);
     }
 
     updateForStatus() {
