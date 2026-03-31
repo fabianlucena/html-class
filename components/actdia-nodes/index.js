@@ -19,6 +19,7 @@ export default {
     'label_input.js',
     'label_output.js',
     'label_io.js',
+    'label_io_selector.js',
     'script.js',
     'terminal.js',
   ],

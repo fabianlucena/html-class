@@ -41,8 +41,8 @@ export default async function create({ actdia, Node }) {
     };
 
     connectors = [
-      { name: 'io1', type: 'io', x: -3, y: 0, direction: 'left',  extends: 'tiny' },
-      { name: 'io2', type: 'io', x:  3, y: 0, direction: 'right', extends: 'tiny' },
+      { name: 'io1', type: 'io', x: -3, y: 0, direction: 'left',  extends: 'small' },
+      { name: 'io2', type: 'io', x:  3, y: 0, direction: 'right', extends: 'small' },
     ];
 
     fields = [
