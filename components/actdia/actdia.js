@@ -2159,7 +2159,7 @@ export default class ActDia {
     return false;
   }
 
-  updateShape(shape, options) {
+  updateShape(shape, options = {}) {
     if (!shape)
       throw new Error(_('Trying to update a non-existent shape.'));
 
@@ -2255,7 +2255,7 @@ export default class ActDia {
   }
 
   updateItem(item) {
-    this.tryUpdateShape(this.getItemMainShape(item));
+    this.tryUpdateShape(this.getItemMainShape(item), { item });
     this.tryUpdateConnectors(item);
     this.updateItemSelectionBox(item);
     if (item.selected)
@@ -2294,7 +2294,7 @@ export default class ActDia {
     if (svgConnector) {
       data.shape.item = connector.item;
       data.shape.svgElement = svgConnector;
-      this.updateShape(data.shape);
+      this.updateShape(data.shape, { connector });
     } else {
       const svg = this.getShapeSVG(data.shape, connector.item);
       connector.item.svgConnectors.innerHTML += svg;
