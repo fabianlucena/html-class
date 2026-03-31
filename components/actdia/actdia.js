@@ -163,9 +163,7 @@ export default class ActDia {
           },
           {
             shape: 'path',
-            d: `M 0.3 -0.3
-              L -0.4 0
-              L  0.3 0.3`,
+            d: `M 0 -.35 l .35 .35 l -.35 .35 l -.35 -.35 z`,
           },
         ],
       },
