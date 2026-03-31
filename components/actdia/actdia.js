@@ -1912,6 +1912,25 @@ export default class ActDia {
       textAttributes.editable = true;
     }
 
+    if (shape.dblClickToEdit) {
+      textAttributes.dblClickToEdit = true;
+    }
+
+    let box = shape.box;
+    if (!box && width && height) {
+      box = { x, y, width, height };
+    }
+
+    if (box) {
+      if (typeof box !== 'string') {
+        box = JSON.stringify(box);
+      }
+
+      if (box) {
+        textAttributes.box = box;
+      }
+    }
+
     if (shape.singleLine) {
       textAttributes['single-line'] = true;
     }
@@ -2431,10 +2450,10 @@ export default class ActDia {
     }
 
     let
-      x1 = Math.min(...selectedItems.map(i => i.x + i.box.x)),
-      y1 = Math.min(...selectedItems.map(i => i.y + i.box.y)),
-      x2 = Math.max(...selectedItems.map(i => i.x + i.box.x + i.box.width)),
-      y2 = Math.max(...selectedItems.map(i => i.y + i.box.y + i.box.height));
+      x1 = Math.min(...selectedItems.map(i => i.x + (i.box.x ?? 0))),
+      y1 = Math.min(...selectedItems.map(i => i.y + (i.box.y ?? 0))),
+      x2 = Math.max(...selectedItems.map(i => i.x + (i.box.x ?? 0) + (i.box.width ?? 0))),
+      y2 = Math.max(...selectedItems.map(i => i.y + (i.box.y ?? 0) + (i.box.height ?? 0)));
 
     this.selectedBox ??= {};
     if (!this.selectedBox.svg) {
