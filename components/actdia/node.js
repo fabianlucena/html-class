@@ -397,6 +397,10 @@ export default class Node extends Item {
   }
 
   update() {
+    this.nodeUpdate();
+  }
+
+  nodeUpdate() {
     super.update();
     
     this.updateInputsAndOutputs();
