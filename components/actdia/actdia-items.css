@@ -114,3 +114,12 @@
 .blink {
   animation: blink 1s steps(1) infinite;
 }
+
+.selected-blink {
+  opacity: 0;
+}
+
+.actdia-selected .selected-blink {
+  opacity: 1;
+  animation: blink 1s steps(1) infinite;
+}

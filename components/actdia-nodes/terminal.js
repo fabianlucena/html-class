@@ -77,7 +77,7 @@ export default async function create({ actdia, Node }) {
             },
             {
               shape: 'path',
-              className: 'blink',
+              className: 'selected-blink',
               name: 'cursor',
               d: 'M 0 0 h 1',
               stroke: '#a1a1a1',
