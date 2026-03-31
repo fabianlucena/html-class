@@ -124,7 +124,7 @@ export default async function create({ actdia, Node }) {
     }
 
     onClick({ shape }) {
-      const newIndexText = shape?.name.match(/^label-(\d+)$/)?.[1];
+      const newIndexText = shape?.name?.match(/^label-(\d+)$/)?.[1];
       if (typeof newIndexText !== 'string') {
         return;
       }
