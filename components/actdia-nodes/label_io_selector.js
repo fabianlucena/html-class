@@ -22,8 +22,8 @@ export default async function create({ actdia, Node }) {
         {
           name: 'labels',
           shape: 'text',
-          x: 1.5,
-          y: 0,
+          x: 2,
+          y: .25,
           width: 5,
           height: 3,
           fontSize: 1,
@@ -40,13 +40,15 @@ export default async function create({ actdia, Node }) {
         },
         {
           name: 'buttons',
+          x: .25,
+          y: .25,
           children: [],
         },
       ],
     };
 
     box = {
-      width: 6,
+      width: 7,
       height: 2,
     };
 
@@ -90,7 +92,7 @@ export default async function create({ actdia, Node }) {
       const labelsCount = labels.length;
       const lines = Math.max(2, labelsCount);
       this.#baseShape.d = `M .5 0 h ${width - 1} l .5 .5 l -.5 .5 v ${lines} h -${width - 1} v -${lines} l -.5 -.5 l .5 -.5 z`;
-      this.#labelsShape.width = width - 2;
+      this.#labelsShape.width = width - 2.75;
       this.#labelsShape.height = lines;
       this.box.height = lines + 1;
       this.io1.x = 0;
@@ -100,17 +102,47 @@ export default async function create({ actdia, Node }) {
 
       this.#buttonsShape.children = Array.from({ length: labelsCount }, (_, i) => ({
         shape: 'circle',
-        name: `label-${i + 1}`,
+        name: `label-${i}`,
         x: 1,
         y: .5 + i,
         r: .4,
       }));
 
+      const selectedLabelIndex = this.labels.split('\n').findIndex(label => label === this.label);
+      if (selectedLabelIndex !== -1) {
+        this.#buttonsShape.children.push({
+          shape: 'circle',
+          name: `thumb`,
+          x: 1,
+          y: .5 + selectedLabelIndex,
+          r: .28,
+          fill: 'lightblue',
+        });
+      }
+
       this.nodeUpdate();
     }
 
     onClick({ shape }) {
-      console.log(shape);
+      const newIndexText = shape?.name.match(/^label-(\d+)$/)?.[1];
+      if (typeof newIndexText !== 'string') {
+        return;
+      }
+
+      const newIndex = parseInt(newIndexText);
+      if (isNaN(newIndex)) {
+        return;
+      }
+
+      this.selectLabelIndex(newIndex);
+    }
+
+    selectLabelIndex(newIndex) {
+      const newLabel = this.labels.split('\n')[newIndex];
+      if (this.label !== newLabel) {
+        this.label = newLabel;
+        this.update();
+      }
     }
  };
 }
