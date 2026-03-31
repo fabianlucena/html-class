@@ -190,7 +190,7 @@ export default class Item extends Element {
 
   updateShape(shape) {
     this.normalizeShape(shape);
-    this.actdia.updateShape(shape);
+    this.actdia.updateShape(shape, { item: this });
   }
 
   tryUpdateShape(shape) {
