@@ -51,11 +51,6 @@ export default async function create({ actdia, Node }) {
       },
     ];
 
-    construct() {
-      super.construct();
-      window.labeledStatus[this.label] = null;
-    }
-
     update() {
       this.shape.children[1].text = this.label;
       this.tryUpdateShape(this.shape.children[1]);
