@@ -54,6 +54,23 @@ export default async function create({ actdia, Node }) {
       },
     ];
     
+    #io1 = null;
+    #io2 = null
+
+    get io1() {
+      return this.#io1;
+    }
+
+    get io2() {
+      return this.#io2;
+    }
+
+    init() {
+      super.init(...arguments);
+      this.#io1 = this.getConnector('io1');
+      this.#io2 = this.getConnector('io2');
+    }
+    
     update() {
       this.shape.children[1].text = this.label;
       this.tryUpdateShape(this.shape.children[1]);
