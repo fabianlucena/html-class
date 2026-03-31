@@ -73,7 +73,7 @@ function clickHandler(evt) {
     target = target.parentElement;
   }
 
-  if (target.tagName === 'text' && target.getAttribute('editable')) {
+  if (target.tagName === 'text' && target.getAttribute('editable') && !target.getAttribute('dblClickToEdit')) {
     beginEditing(target);
   }
 }
@@ -292,7 +292,8 @@ function renderSVG() {
     box = svgText.getBBox();
   }
 
-  highlightBox.setAttribute('transform', `translate(${box.x - highlightBias}, ${box.y - highlightBias})`);
+  highlightBox.setAttribute('x', box.x - highlightBias);
+  highlightBox.setAttribute('y', box.y - highlightBias);
   highlightBox.setAttribute('width', box.width + highlightBias * 2);
   highlightBox.setAttribute('height', box.height + highlightBias * 2);
 
