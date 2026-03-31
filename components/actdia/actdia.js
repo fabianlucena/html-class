@@ -1941,6 +1941,8 @@ export default class ActDia {
         {
           tag: 'rect',
           attributes: {
+            x: shape.x,
+            y: shape.y,
             width,
             height,
           },
