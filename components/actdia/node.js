@@ -490,7 +490,7 @@ export default class Node extends Item {
 
   propagate(options = {}) {
     this.connectors
-      .filter(c => c.isOutput)
+      .filter(c => c.isOutput && c !== options.connector)
       .forEach(connector => connector?.send?.(this.status, options));
   }
 
