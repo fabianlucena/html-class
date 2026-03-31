@@ -277,6 +277,10 @@ export default class Item extends Element {
     if (!options.force && isEqual(this.status, value))
       return;
 
+    if (typeof options.force === 'number' && options.force) {
+      options.force--;
+    }
+
     this.#status = deepCopy(value);
     if (options.propagate !== false) {
       this.statusUpdated(options);
