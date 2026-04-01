@@ -651,9 +651,8 @@ export default class ActDia {
       };
 
       const data = this.getShapeSVGData(shape);
-      hotPlace.svgElement = document.createElementNS('http://www.w3.org/2000/svg', data.tag);
-      this.updateSVGElementFromData(hotPlace.svgElement, data);
-      this.othersLayerSVG.appendChild(hotPlace.svgElement);
+      this.updateSVGElementFromData(data, { parent: this.othersLayerSVG });
+      hotPlace.svgElement = data.shape.svgElement;
     }
   }
 
@@ -1167,6 +1166,7 @@ export default class ActDia {
         + transform
         + childOptions.prefix + `data-item-class="${escapeHTML(item.getElementClass())}"`
         + (url && childOptions.prefix + `data-url="${escapeHTML(item.getElementClassUrl())}"` || '')
+        + childOptions.prefix + `data-actdia-generated="true"`
       + options.prefix + '>'
         + components.join('')
       + options.prefix + '</g>';
@@ -1549,6 +1549,7 @@ export default class ActDia {
         .map(([key, value]) => this.getSVGAttribute(key, value, { prefix: attributePrefix }))
         .filter(a => a)
         .join('') || '')
+      + options.prefix + `data-actdia-generated="true"`
       + options.prefix + '>'
       + (svgData.children?.length ? svgData.children.map(child => this.getShapeSVGFromSVGData(child, childOptions)).join('') : '')
       + cData
@@ -1974,8 +1975,15 @@ export default class ActDia {
       attributes: textAttributes,
       children,
     };
-    
+
+    if (!shape.normalizedShape) {
+      shape.normalizedShape = {};
+    }
+
+    const normalizedShape = shape.normalizedShape;
+
     return {
+      shape: normalizedShape,
       tag: 'g',
       attributes,
       children: [
@@ -1994,6 +2002,7 @@ export default class ActDia {
 
     return options.prefix + '<g'
         + options.prefix + 'class="actdia-connectors"'
+        + options.prefix + 'data-actdia-generated="true"'
       + options.prefix + '>'
         + connectorSVG
       + options.prefix + '</g>';
@@ -2144,6 +2153,7 @@ export default class ActDia {
         + attributePrefix + `y="${y}"`
         + attributePrefix + `width="${width}"`
         + attributePrefix + `height="${height}"`
+        + attributePrefix + `data-actdia-generated="true"`
       + options.prefix + '/>';
   }
 
@@ -2166,14 +2176,13 @@ export default class ActDia {
     const item = shape instanceof Item? shape: shape.item;
     if (!item)
       throw new Error(_('Trying to update a shape without an associated item.'));
-    
+
     const data = this.getShapeSVGData(shape, item);
     shape.svgElement = this.updateSVGElementFromData(
-      shape.svgElement,
       data,
       {
         item,
-        parent: shape?.parent?.svgElement ?? item.svgElement,
+        parent: shape?.parent?.svgElement ?? item.svgElement ?? options.parent,
         ...options,
       }
     );
@@ -2181,27 +2190,32 @@ export default class ActDia {
       return;
   }
 
-  updateSVGElementFromData(svgElement, data, options) {
+  updateSVGElementFromData(data, options = {}) {
     if (!data)
-      return;
+      throw new Error('No data to update SVG element from.');
 
+    let shape = data.shape;
+    if (!shape) {
+      throw new Error('No data.shape to update SVG element from.');
+    }
+    
+    let svgElement = shape.svgElement;
     if (svgElement && svgElement.tagName.toUpperCase() !== data.tag.toUpperCase()) {
       svgElement.remove();
       svgElement = null;
     }
 
-    options ??= {};
     if (!svgElement) {
-      if (!options.parent)
-        return;
+      if (!options.parent) {
+        throw new Error('No parent element to append SVG element to.');
+      }
 
       svgElement = document.createElementNS('http://www.w3.org/2000/svg', data.tag);
+      svgElement.setAttribute('data-actdia-generated', 'true');
       options.parent.appendChild(svgElement);
 
-      if (data.shape) {
-        data.shape.svgElement = svgElement;
-        this.updateListeners(svgElement, data.shape);
-      }
+      shape.svgElement = svgElement;
+      this.updateListeners(svgElement, data.shape);
     } else if (options.parent && !options.parent.contains(svgElement)) {
       options.parent.appendChild(svgElement);
     }
@@ -2228,7 +2242,9 @@ export default class ActDia {
     
     Object.entries(data.attributes).forEach(([key, value]) => {
       if (value === null || typeof value === 'undefined') {
-        svgElement.removeAttribute(key);
+        if (key !== 'data-actdia-generated') {
+          svgElement.removeAttribute(key);
+        }
       } else if (svgElement.getAttribute(key) != value) {
         svgElement.setAttribute(key, value);
       }
@@ -2239,15 +2255,22 @@ export default class ActDia {
         svgElement.textContent = data.cData;
     }
 
+    const existingChildren = [];
     if (!options.skipChildren && data.children?.length) {
-      data.children.forEach((childData, index) => {
-        this.updateSVGElementFromData(svgElement.children[index], childData, { item: options.item, parent: svgElement });
+      data.children.forEach(childData => {
+        this.updateSVGElementFromData(childData, { item: options.item, parent: svgElement });
+        existingChildren.push(childData.shape.svgElement);
       });
     }
 
-    if (Array.isArray(data.children)) {
-      while (svgElement.children.length > data.children.length) {
-        svgElement.removeChild(svgElement.lastChild);
+    for (var i = 0, e = svgElement.children.length; i < e; i++) {
+      const svgChildElement = svgElement.children[i];
+      if (!existingChildren.includes(svgChildElement)
+        && svgChildElement.getAttribute('data-actdia-generated') === 'true'
+      ) {
+        svgElement.removeChild(svgElement.children[i]);
+        i--;
+        e--;
       }
     }
 
@@ -2445,7 +2468,7 @@ export default class ActDia {
         this.selectedBox.svgElement.setAttribute('display', 'none');
       }
 
-      this.hotPlaces.forEach(hotPlace => hotPlace.svgElement.setAttribute('display', 'none'));
+      this.hotPlaces?.forEach(hotPlace => hotPlace.svgElement.setAttribute('display', 'none'));
       return;
     }
 
@@ -2918,7 +2941,7 @@ export default class ActDia {
       this.cancelDrag();
     }
 
-    this.hotPlaces.forEach(hotPlace => hotPlace.dragging = false);
+    this.hotPlaces?.forEach(hotPlace => hotPlace.dragging = false);
 
     if (evt.button === 0) {
       const hotPlace = this.hotPlaces?.find(hp => hp?.svgElement === evt.target);
