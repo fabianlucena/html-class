@@ -335,15 +335,15 @@ export default class ActDia {
       throw new Error(_('No container element to setup ActDia.'));
 
     this.container.classList.add('actdia');
-    this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    this.container.appendChild(this.svg);
-    this.svg.tabIndex = 0;
-    this.svg.focus();
+    this.svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.container.appendChild(this.svgElement);
+    this.svgElement.tabIndex = 0;
+    this.svgElement.focus();
     this.adjustSize();
 
     this.mainGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.mainGroup.setAttribute('transform', `scale(${this.style.sx},${this.style.sy})`);
-    this.svg.appendChild(this.mainGroup);
+    this.svgElement.appendChild(this.mainGroup);
     
     this.canvasLayerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     this.canvasLayerSVG.classList.add('actdia-canvas-layer');
@@ -378,13 +378,13 @@ export default class ActDia {
     window.addEventListener('resize', () => this.adjustSize());
 
     document.body.addEventListener('mousemove', evt => this.mouseMoveHandler(evt), true);
-    this.svg.addEventListener('mouseover', evt => this.mouseOverHandler(evt));
-    this.svg.addEventListener('mouseout', evt => this.mouseOutHandler(evt));
-    this.svg.addEventListener('click', evt => this.clickHandler(evt));
-    this.svg.addEventListener('contextmenu', evt => this.contextMenuHandler(evt));
-    this.svg.addEventListener('dblclick', evt => this.dblClickHandler(evt));
-    this.svg.addEventListener('mousedown', evt => this.mouseDownHandler(evt));
-    this.svg.addEventListener('mouseup', evt => this.mouseUpHandler(evt));
+    this.svgElement.addEventListener('mouseover', evt => this.mouseOverHandler(evt));
+    this.svgElement.addEventListener('mouseout', evt => this.mouseOutHandler(evt));
+    this.svgElement.addEventListener('click', evt => this.clickHandler(evt));
+    this.svgElement.addEventListener('contextmenu', evt => this.contextMenuHandler(evt));
+    this.svgElement.addEventListener('dblclick', evt => this.dblClickHandler(evt));
+    this.svgElement.addEventListener('mousedown', evt => this.mouseDownHandler(evt));
+    this.svgElement.addEventListener('mouseup', evt => this.mouseUpHandler(evt));
     window.addEventListener('beforeprint', () => this.container.classList.add('print'));
     window.addEventListener('afterprint', () => this.container.classList.remove('print'));
   }
@@ -394,7 +394,7 @@ export default class ActDia {
   }
 
   addEventListener(eventName, handler, bubbles) {
-    this.svg.addEventListener(eventName, handler, bubbles);
+    this.svgElement.addEventListener(eventName, handler, bubbles);
   }
 
   parseSVGFragment(svgFragment) {
@@ -651,9 +651,9 @@ export default class ActDia {
       };
 
       const data = this.getShapeSVGData(shape);
-      hotPlace.svg = document.createElementNS('http://www.w3.org/2000/svg', data.tag);
-      this.updateSVGElementFromData(hotPlace.svg, data);
-      this.othersLayerSVG.appendChild(hotPlace.svg);
+      hotPlace.svgElement = document.createElementNS('http://www.w3.org/2000/svg', data.tag);
+      this.updateSVGElementFromData(hotPlace.svgElement, data);
+      this.othersLayerSVG.appendChild(hotPlace.svgElement);
     }
   }
 
@@ -947,7 +947,7 @@ export default class ActDia {
 
     deletedItems.forEach(item => {
       item.removeReferences();
-      this.svg.querySelector(`#${CSS.escape(item.id)}`)?.remove();
+      this.svgElement.querySelector(`#${CSS.escape(item.id)}`)?.remove();
     });
 
     this.updateSelected();
@@ -965,8 +965,8 @@ export default class ActDia {
     this.width = this.pixelsWidth / sx;
     this.height = this.pixelsHeight / sy;
 
-    this.svg.setAttribute('width', this.pixelsWidth);
-    this.svg.setAttribute('height', this.pixelsHeight);
+    this.svgElement.setAttribute('width', this.pixelsWidth);
+    this.svgElement.setAttribute('height', this.pixelsHeight);
   }
 
   async getSVG(items, options) {
@@ -980,7 +980,7 @@ export default class ActDia {
       layersOptions = { ...options, prefix: baseOptions.prefix + baseOptions.tab },
       itemsOptions = { escapeHTML: true, ...options, prefix: layersOptions.prefix + options.tab };
 
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${this.svg.clientWidth}" height="${this.svg.clientHeight}">`
+    const svgElement = `<svg xmlns="http://www.w3.org/2000/svg" width="${this.svgElement.clientWidth}" height="${this.svgElement.clientHeight}">`
         + (options.includeStyles && await this.getSVGStyles(layersOptions) || '')
         + baseOptions.prefix + '<g'
           + layersOptions.prefix + `class="actdia"`
@@ -1016,7 +1016,7 @@ export default class ActDia {
         + baseOptions.prefix + '</g>'
       + options.prefix + '</svg>';
 
-    return svg;
+    return svgElement;
   }
 
   static itemsCss = null;
@@ -1159,7 +1159,7 @@ export default class ActDia {
 
     const url = item.getElementClassUrl();
 
-    const svg = options.prefix + '<g'
+    const svgElement = options.prefix + '<g'
         + (item.id && (childOptions.prefix + `id="${escapeHTML(item.id)}"`) || '')
         + (item.name && (childOptions.prefix + `name="${escapeHTML(item.name)}"`) || '')
         + childOptions.prefix + `class="${classList.join(' ')}"`
@@ -1171,7 +1171,7 @@ export default class ActDia {
         + components.join('')
       + options.prefix + '</g>';
 
-    return svg;
+    return svgElement;
   }
 
   getStyle({ style, className, classList, item, shape, type, options, ...styles }) {
@@ -1497,8 +1497,8 @@ export default class ActDia {
 
   getShapeSVG(shape, item, options) {
     const data = this.getShapeSVGData(shape, item, options);
-    const svg = this.getShapeSVGFromSVGData(data, options);
-    return svg;
+    const svgElement = this.getShapeSVGFromSVGData(data, options);
+    return svgElement;
   }
 
   getSVGAttribute(attribute, value, options = { prefix: '' }) {
@@ -1543,7 +1543,7 @@ export default class ActDia {
       attributePrefix + (options.escapeHTML ? escapeHTML(svgData.cData) : svgData.cData)
       : '';
 
-    const svg = options.prefix + `<${svgData.tag}`
+    const svgElement = options.prefix + `<${svgData.tag}`
       + (classList.size ? attributePrefix + `class="${[...classList].join(' ')}"` : '')
       + (attributes && Object.entries(attributes)
         .map(([key, value]) => this.getSVGAttribute(key, value, { prefix: attributePrefix }))
@@ -1554,7 +1554,7 @@ export default class ActDia {
       + cData
       + options.prefix + `</${svgData.tag}>`;
 
-    return svg;
+    return svgElement;
   }
 
   getRectData(shape, item, options) {
@@ -2296,8 +2296,8 @@ export default class ActDia {
       data.shape.svgElement = svgConnector;
       this.updateShape(data.shape, { connector });
     } else {
-      const svg = this.getShapeSVG(data.shape, connector.item);
-      connector.item.svgConnectors.innerHTML += svg;
+      const svgElement = this.getShapeSVG(data.shape, connector.item);
+      connector.item.svgConnectors.innerHTML += svgElement;
     }
   }
 
@@ -2382,19 +2382,19 @@ export default class ActDia {
       previousSelectedItems: this.#items.filter(i => i.selected),
     };
 
-    this.selectionBox.svg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    this.selectionBox.svg.classList.add('selection-box');
-    this.othersLayerSVG.appendChild(this.selectionBox.svg);
+    this.selectionBox.svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    this.selectionBox.svgElement.classList.add('selection-box');
+    this.othersLayerSVG.appendChild(this.selectionBox.svgElement);
 
-    this.selectionBox.svg.setAttribute('x', pos.x);
-    this.selectionBox.svg.setAttribute('y', pos.y);
-    this.selectionBox.svg.setAttribute('width', 0);
-    this.selectionBox.svg.setAttribute('height', 0);
+    this.selectionBox.svgElement.setAttribute('x', pos.x);
+    this.selectionBox.svgElement.setAttribute('y', pos.y);
+    this.selectionBox.svgElement.setAttribute('width', 0);
+    this.selectionBox.svgElement.setAttribute('height', 0);
   }
 
   endSelectionBox() {
-    if (this.selectionBox?.svg) {
-      this.selectionBox.svg.remove();
+    if (this.selectionBox?.svgElement) {
+      this.selectionBox.svgElement.remove();
       this.selectionBox = null;
     }
 
@@ -2416,10 +2416,10 @@ export default class ActDia {
     this.selectionBox.width = this.selectionBox.u - this.selectionBox.x;
     this.selectionBox.height = this.selectionBox.v - this.selectionBox.y;
 
-    this.selectionBox.svg.setAttribute('x', this.selectionBox.x);
-    this.selectionBox.svg.setAttribute('y', this.selectionBox.y);
-    this.selectionBox.svg.setAttribute('width', this.selectionBox.width);
-    this.selectionBox.svg.setAttribute('height', this.selectionBox.height);
+    this.selectionBox.svgElement.setAttribute('x', this.selectionBox.x);
+    this.selectionBox.svgElement.setAttribute('y', this.selectionBox.y);
+    this.selectionBox.svgElement.setAttribute('width', this.selectionBox.width);
+    this.selectionBox.svgElement.setAttribute('height', this.selectionBox.height);
 
     const inSelectionBox = this.#items.filter(item =>
         item.x + item.box.width >= this.selectionBox.x &&
@@ -2441,11 +2441,11 @@ export default class ActDia {
   updateSelected() {
     const selectedItems = this.getItems({ onlyNodes: true, onlySelected: true });
     if (!selectedItems.length) {
-      if (this.selectedBox?.svg) {
-        this.selectedBox.svg.setAttribute('display', 'none');
+      if (this.selectedBox?.svgElement) {
+        this.selectedBox.svgElement.setAttribute('display', 'none');
       }
 
-      this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', 'none'));
+      this.hotPlaces.forEach(hotPlace => hotPlace.svgElement.setAttribute('display', 'none'));
       return;
     }
 
@@ -2456,45 +2456,45 @@ export default class ActDia {
       y2 = Math.max(...selectedItems.map(i => i.y + (i.box.y ?? 0) + (i.box.height ?? 0)));
 
     this.selectedBox ??= {};
-    if (!this.selectedBox.svg) {
-      this.selectedBox.svg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      this.selectedBox.svg.classList.add('selected-box');
-      this.selectedLayerSVG.appendChild(this.selectedBox.svg);
+    if (!this.selectedBox.svgElement) {
+      this.selectedBox.svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      this.selectedBox.svgElement.classList.add('selected-box');
+      this.selectedLayerSVG.appendChild(this.selectedBox.svgElement);
     }
 
     this.selectedBox.x = x1;
     this.selectedBox.y = y1;
     this.selectedBox.width = x2 - x1;
     this.selectedBox.height = y2 - y1;
-    this.selectedBox.svg.setAttribute('x', x1 - .5);
-    this.selectedBox.svg.setAttribute('y', y1 - .5);
-    this.selectedBox.svg.setAttribute('width',  this.selectedBox.width + 1);
-    this.selectedBox.svg.setAttribute('height', this.selectedBox.height + 1);    
-    this.selectedBox.svg.setAttribute('display', '');
+    this.selectedBox.svgElement.setAttribute('x', x1 - .5);
+    this.selectedBox.svgElement.setAttribute('y', y1 - .5);
+    this.selectedBox.svgElement.setAttribute('width',  this.selectedBox.width + 1);
+    this.selectedBox.svgElement.setAttribute('height', this.selectedBox.height + 1);    
+    this.selectedBox.svgElement.setAttribute('display', '');
 
     let mx = x1 + (x2 - x1) / 2,
       my = y1 + (y2 - y1) / 2;
-    this.hotPlaces[0].svg.setAttribute('x', x1 - .75);
-    this.hotPlaces[0].svg.setAttribute('y', y1 - .75);
-    this.hotPlaces[1].svg.setAttribute('x', mx - .25);
-    this.hotPlaces[1].svg.setAttribute('y', y1 - .75);
-    this.hotPlaces[2].svg.setAttribute('x', x2 + .25);
-    this.hotPlaces[2].svg.setAttribute('y', y1 - .75);
-    this.hotPlaces[3].svg.setAttribute('x', x1 - .75);
-    this.hotPlaces[3].svg.setAttribute('y', my - .25);
-    this.hotPlaces[4].svg.setAttribute('x', x2 + .25);
-    this.hotPlaces[4].svg.setAttribute('y', my - .25);
-    this.hotPlaces[5].svg.setAttribute('x', x1 - .75);
-    this.hotPlaces[5].svg.setAttribute('y', y2 + .25);
-    this.hotPlaces[6].svg.setAttribute('x', mx - .25);
-    this.hotPlaces[6].svg.setAttribute('y', y2 + .25);
-    this.hotPlaces[7].svg.setAttribute('x', x2 + .25);
-    this.hotPlaces[7].svg.setAttribute('y', y2 + .25);
-    this.hotPlaces[8].svg.setAttribute('x', x2 + 1.5);
-    this.hotPlaces[8].svg.setAttribute('y', y1 + .5);
-    this.hotPlaces[9].svg.setAttribute('x', x2 + 1.5);
-    this.hotPlaces[9].svg.setAttribute('y', y1 + 1.5);
-    this.hotPlaces.forEach(hotPlace => hotPlace.svg.setAttribute('display', ''));
+    this.hotPlaces[0].svgElement.setAttribute('x', x1 - .75);
+    this.hotPlaces[0].svgElement.setAttribute('y', y1 - .75);
+    this.hotPlaces[1].svgElement.setAttribute('x', mx - .25);
+    this.hotPlaces[1].svgElement.setAttribute('y', y1 - .75);
+    this.hotPlaces[2].svgElement.setAttribute('x', x2 + .25);
+    this.hotPlaces[2].svgElement.setAttribute('y', y1 - .75);
+    this.hotPlaces[3].svgElement.setAttribute('x', x1 - .75);
+    this.hotPlaces[3].svgElement.setAttribute('y', my - .25);
+    this.hotPlaces[4].svgElement.setAttribute('x', x2 + .25);
+    this.hotPlaces[4].svgElement.setAttribute('y', my - .25);
+    this.hotPlaces[5].svgElement.setAttribute('x', x1 - .75);
+    this.hotPlaces[5].svgElement.setAttribute('y', y2 + .25);
+    this.hotPlaces[6].svgElement.setAttribute('x', mx - .25);
+    this.hotPlaces[6].svgElement.setAttribute('y', y2 + .25);
+    this.hotPlaces[7].svgElement.setAttribute('x', x2 + .25);
+    this.hotPlaces[7].svgElement.setAttribute('y', y2 + .25);
+    this.hotPlaces[8].svgElement.setAttribute('x', x2 + 1.5);
+    this.hotPlaces[8].svgElement.setAttribute('y', y1 + .5);
+    this.hotPlaces[9].svgElement.setAttribute('x', x2 + 1.5);
+    this.hotPlaces[9].svgElement.setAttribute('y', y1 + 1.5);
+    this.hotPlaces.forEach(hotPlace => hotPlace.svgElement.setAttribute('display', ''));
   }
 
   getShapeByKeyValue(children, key, value) {
@@ -2596,11 +2596,11 @@ export default class ActDia {
       }
     );
     
-    this.svg.dispatchEvent(event);
+    this.svgElement.dispatchEvent(event);
   }
 
   mouseMoveHandler(evt) {
-    const rect = this.svg.getBoundingClientRect();
+    const rect = this.svgElement.getBoundingClientRect();
     this.mouse.x = evt.clientX - rect.left;
     this.mouse.y = evt.clientY - rect.top;
     this.updateLabelPosition();
@@ -2885,7 +2885,7 @@ export default class ActDia {
         evt.stopImmediatePropagation();
         return original.call(event);
       };
-      this.svg.dispatchEvent(event);
+      this.svgElement.dispatchEvent(event);
 
       if (event.defaultPrevented)
         evt.preventDefault();
@@ -2921,7 +2921,7 @@ export default class ActDia {
     this.hotPlaces.forEach(hotPlace => hotPlace.dragging = false);
 
     if (evt.button === 0) {
-      const hotPlace = this.hotPlaces?.find(hp => hp?.svg === evt.target);
+      const hotPlace = this.hotPlaces?.find(hp => hp?.svgElement === evt.target);
       if (hotPlace) {
         if (hotPlace.name === 'delete') {
           this.deleteSelected();
