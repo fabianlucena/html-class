@@ -1,3 +1,4 @@
+import { isEqual } from '../utils/type.js';
 import Item from './item.js';
 
 export default class Connection extends Item {
@@ -265,19 +266,35 @@ export default class Connection extends Item {
       }
     }
 
+    let needUpdate = false;
     d += endD;
     this.shape.item = this;
-    this.shape.children[0].d = d;
-    this.shape.children[1] = {
+    if (this.shape.children[0].d !== d) {
+      this.shape.children[0].d = d;
+      needUpdate = true;
+    }
+
+    let markerStart = {
       ...this.shape.children[1],
       ...this.getMarkerShape(this.markerStart ?? this.actdia.style.connection.markerStart, fx, fy, fa),
     };
-    this.shape.children[2] = {
+    if (!isEqual(markerStart, this.shape.children[1])) {
+      this.shape.children[1] = markerStart;
+      needUpdate = true;
+    }
+
+    let markerEnd = {
       ...this.shape.children[2],
       ...this.getMarkerShape(this.markerEnd ?? this.actdia.style.connection.markerEnd, tx, ty, ta),
     };
+    if (!isEqual(markerEnd, this.shape.children[2])) {
+      this.shape.children[2] = markerEnd;
+      needUpdate = true;
+    }
 
-    this.tryUpdateShape(this.shape, { parent: this.actdia.connectionsLayerSVG });
+    if (needUpdate) {
+      this.tryUpdateShape(this.shape, { parent: this.actdia.connectionsLayerSVG });
+    }
   }
 
   getMarkerShape(marker, x, y, a) {
