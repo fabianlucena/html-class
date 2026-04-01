@@ -59,7 +59,7 @@ export function assignDeep(target, ...sources) {
   return target;
 }
 
-export function deepCopy(obj) {
+export function deepCopy(obj, options = {}) {
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
@@ -73,9 +73,42 @@ export function deepCopy(obj) {
   }
 
   if (obj instanceof Object) {
+    options = {
+      skipRecursive: true,
+      maxDeep: 5,
+      skipKeys: [],
+      copyKeys: [],
+      ...options,
+    };
+
+    if (options.maxDeep === 0) {
+      return {};
+    }
+
+    options.maxDeep--;
+    
+    if (options.skipRecursive) {
+      if (options.includedObjects?.has(obj)) {
+        return {};
+      }
+
+      options.includedObjects ??= new Set();
+      options.includedObjects.add(obj);
+    }
+
     const copiedObj = {};
     for (let key in obj) {
-      copiedObj[key] = deepCopy(obj[key]);
+      if (options.skipKeys.includes(key)) {
+        console.log('--- ', key)
+        continue;
+      }
+
+      if (options.copyKeys.includes(key)) {
+        copiedObj[key] = obj[key];
+        continue;
+      }
+
+      copiedObj[key] = deepCopy(obj[key], options);
     }
     return copiedObj;
   }
