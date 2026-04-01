@@ -167,7 +167,7 @@ export default class Connection extends Item {
       fx = ( fromCtm.e + this.from.connector.x * fromCtm.a + this.from.connector.y * fromCtm.c ) / this.actdia.style.sx,
       fy = ( fromCtm.f + this.from.connector.x * fromCtm.b + this.from.connector.y * fromCtm.d ) / this.actdia.style.sx;
     if (isNaN(fx) || isNaN(fy)) {
-      this.shape.children[0] = {};
+      this.shape.children[0].d = 'M 0 0 L 10 10';
       return; 
     }
 
@@ -182,7 +182,7 @@ export default class Connection extends Item {
       ty = ( toCtm.f + (this.to.connector.x ?? 0) * toCtm.b + (this.to.connector.y ?? 0) * toCtm.d ) / this.actdia.style.sy;
     }
     if (isNaN(tx) || isNaN(ty)) {
-      this.shape.children[0] = {};
+      this.shape.children[0].d = 'M 0 0 L 10 10';
       return; 
     }
 
@@ -266,24 +266,18 @@ export default class Connection extends Item {
     }
 
     d += endD;
-    const children = [{
-      shape: 'path',
-      d,
-    }];
-
-    children.push(this.getMarkerShape(this.markerStart ?? this.actdia.style.connection.markerStart, fx, fy, fa));
-    children.push(this.getMarkerShape(this.markerEnd ?? this.actdia.style.connection.markerEnd, tx, ty, ta));
-
     this.shape.item = this;
-    this.shape.svgElement = this.svgElement?.children[0];
-    this.shape.children = children
-      .filter(s => s)
-      .map(s => ({
-        item: this,
-        ...s,
-      }));
+    this.shape.children[0].d = d;
+    this.shape.children[1] = {
+      ...this.shape.children[1],
+      ...this.getMarkerShape(this.markerStart ?? this.actdia.style.connection.markerStart, fx, fy, fa),
+    };
+    this.shape.children[2] = {
+      ...this.shape.children[2],
+      ...this.getMarkerShape(this.markerEnd ?? this.actdia.style.connection.markerEnd, tx, ty, ta),
+    };
 
-    this.tryUpdateShape(this.shape);
+    this.tryUpdateShape(this.shape, { parent: this.actdia.connectionsLayerSVG });
   }
 
   getMarkerShape(marker, x, y, a) {
@@ -403,7 +397,10 @@ export default class Connection extends Item {
       };
     }
 
-    return null;
+    return {
+      shape: 'g',
+      children: [],
+    };
   }
 
   statusUpdated(options = {}) {
