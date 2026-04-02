@@ -55,19 +55,12 @@ export default async function create({ actdia, Node }) {
       this.shape.children[0].width = value;
       this.shape.children[1].width = value;
 
-      this.connectors[0].x = value / 2;
-
       super.setWidth(...arguments);
     }
 
     setHeight(value) {
-      const dy = (value % 2) / 2;
-      this.shape.y = dy;
-      this.box.y = dy;
-
       this.shape.children[0].height = value;
-
-      this.connectors[0].y = dy;
+      this.shape.children[1].height = value;
 
       super.setHeight(...arguments);
     }
