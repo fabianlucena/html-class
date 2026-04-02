@@ -123,3 +123,7 @@
   opacity: 1;
   animation: blink 1s steps(1) infinite;
 }
+
+.actdia .console {
+  font-family: Consolas, "Courier New", monospace;
+}

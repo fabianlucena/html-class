@@ -1992,6 +1992,16 @@ export default class ActDia {
     const lines = shape.text?.split?.('\n') ?? [];
     const linesCount = lines.length;
     const dy = style.lineSpacing || style.fontSize || 1.2;
+    const normalizeText = textShape.attributes['xml:space'] === 'preserve' ?
+      text => {
+        if (!text)
+          return '\u00A0';
+
+        text = text.replace(/\s+/g, match => '\u00A0'.repeat(match.length));
+
+        return text;
+      } : text => text;
+    
     for (let i = 0; i < linesCount; i++) {
       let tspanShape = textShapeChildren[i];
       if (!tspanShape) {
@@ -1999,14 +2009,8 @@ export default class ActDia {
         textShapeChildren[i] = tspanShape;
       }
 
-      let text = lines[i];
-      if (!text.trim()) {
-        text = '\u200C'; // '\u8204'; // zero-width space to keep empty lines
-      }
-
       tspanShape.attributes = { x, dy };
-      tspanShape.cData = text;
-
+      tspanShape.cData = normalizeText(lines[i]);
     }
     textShapeChildren[0].attributes.dy = 0;
     textShape.children = textShapeChildren.slice(0, linesCount);

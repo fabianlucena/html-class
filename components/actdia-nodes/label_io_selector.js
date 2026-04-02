@@ -115,6 +115,10 @@ export default async function create({ actdia, Node }) {
     }
     
     update() {
+      if (!this.#baseShape) {
+        return;
+      }
+
       const width = this.box.width;
       const lines = Math.max(2, this.labelsCount);
       this.#baseShape.d = `M .5 0 h ${width - 1} l .5 .5 l -.5 .5 v ${lines} h -${width - 1} v -${lines} l -.5 -.5 l .5 -.5 z`;
