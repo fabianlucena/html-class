@@ -39,7 +39,10 @@ export default async function create({ actdia, Node }) {
           editable: true,
           onInput: evt => {
             this.isEditing = true;
+            const selectedIndex = this.selectedIndex;
             this.labels = evt.data;
+            this.selectLabelIndex(selectedIndex);
+
           },
           onBlur: () => this.isEditing = false,
         },
@@ -84,6 +87,11 @@ export default async function create({ actdia, Node }) {
       }
     }
 
+    get selectedIndex() {
+      const labels = this.labels.split('\n');
+      return labels.findIndex(label => label === this.label);
+    }
+
     init() {
       super.init(...arguments);
       this.#baseShape = this.getShape('base');
@@ -92,6 +100,7 @@ export default async function create({ actdia, Node }) {
     }
     
     update() {
+
       const width = this.box.width;
       const labels = this.labels.split('\n');
       const labelsCount = labels.length;
@@ -113,13 +122,16 @@ export default async function create({ actdia, Node }) {
         r: .4,
       }));
 
-      const selectedLabelIndex = this.labels.split('\n').findIndex(label => label === this.label);
-      if (selectedLabelIndex !== -1) {
+      let selectedIndex = this.selectedIndex;
+      this.selectLabelIndex(selectedIndex);
+      selectedIndex = this.selectedIndex;
+      
+      if (selectedIndex !== -1) {
         this.#buttonsShape.children.push({
           shape: 'circle',
           name: `thumb`,
           x: 1,
-          y: .5 + selectedLabelIndex,
+          y: .5 + selectedIndex,
           r: .28,
           fill: 'lightblue',
         });
@@ -143,7 +155,15 @@ export default async function create({ actdia, Node }) {
     }
 
     selectLabelIndex(newIndex) {
-      const newLabel = this.labels.split('\n')[newIndex];
+      const labels = this.labels.split('\n');
+      const labelsCount = labels.length;
+      if (newIndex < 0) {
+        newIndex = 0;
+      } else if (newIndex >= labelsCount) {
+        newIndex = labelsCount - 1;
+      }
+
+      const newLabel = labels[newIndex];
       if (this.label !== newLabel) {
         this.label = newLabel;
         this.update();
