@@ -57,6 +57,11 @@ export default async function create({ actdia, Node }) {
       width: 7,
       height: 2,
     };
+    
+    connectors = [
+      { name: 'io1', type: 'io', x: -3, y: 0, direction: 'left',  extends: 'small' },
+      { name: 'io2', type: 'io', x:  3, y: 0, direction: 'right', extends: 'small' },
+    ];
 
     canChangeWidth = true;
 
@@ -121,15 +126,15 @@ export default async function create({ actdia, Node }) {
 
       const width = this.box.width;
       const lines = Math.max(2, this.labelsCount);
-      this.#baseShape.d = `M .5 0 h ${width - 1} l .5 .5 l -.5 .5 v ${lines} h -${width - 1} v -${lines} l -.5 -.5 l .5 -.5 z`;
+      this.#baseShape.d = `M .5 0 h ${width - 1} v .5 l .5 .5 l -.5 .5 v ${lines - 1} h -${width - 1} v -${lines - 1} l -.5 -.5 l .5 -.5 v -.5 z`;
       this.#labelsShape.text = this.labels.join('\n');
       this.#labelsShape.width = width - 2.75;
       this.#labelsShape.height = lines;
-      this.box.height = lines + 1;
+      this.box.height = lines + .5;
       this.io1.x = 0;
-      this.io1.y = .5;
+      this.io1.y = 1;
       this.io2.x = width;
-      this.io2.y = .5;
+      this.io2.y = 1;
 
       this.#buttonsShape.children = Array.from({ length: this.labelsCount }, (_, i) => ({
         shape: 'circle',
