@@ -1,13 +1,18 @@
+let initialized = false;
+
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
   const { LabelIO } = await actdia.getElementsClassOrImportForMeta('label_io.js', import.meta);
 
-  actdia.addLabeledStatusListener((label, status, item) => {
-    const items = actdia.items
-      .filter(i => i.elementClass === 'LabelIOSelector' && i.label === label && i !== item);
+  if (!initialized) {
+    initialized = true;
+    actdia.addLabeledStatusListener((label, status, item) => {
+      const items = actdia.items
+        .filter(i => i.elementClass === 'LabelIOSelector' && i.label === label && i !== item);
 
-    items.forEach(item => item.setStatus(status, { force: true }));
-  });
+      items.forEach(item => item.setStatus(status, { force: true }));
+    });
+  }
 
   return class LabelIOSelector extends LabelIO {
     static label = 'Label IO selector';

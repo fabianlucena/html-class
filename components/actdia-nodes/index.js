@@ -22,6 +22,7 @@ export default {
     'label_io_selector.js',
     'script.js',
     'terminal.js',
+    'input_accumulator.js',
   ],
   categories: [
     { url: 'uml', _label: 'UML' },

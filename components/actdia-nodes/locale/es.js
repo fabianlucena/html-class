@@ -10,6 +10,8 @@ export default {
   'Function': 'Función',
   'Height': 'Altura',
   'Horizontal': 'Horizontal',
+  'Input': 'Entrada',
+  'Input Accumulator': 'Acumulador de entrada',
   'Inverted': 'Invertido',
   'Label IO': 'IO con etiqueta',
   'Label input': 'Entrada con etiqueta',

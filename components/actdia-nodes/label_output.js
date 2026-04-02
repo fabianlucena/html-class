@@ -1,12 +1,17 @@
+let initialized = false;
+
 export default async function create({ actdia, Node }) {
   await actdia.loadLocaleForMeta(import.meta);
 
-  actdia.addLabeledStatusListener((label, status) => {
-    const outputs = actdia.items
-      .filter(i => i.elementClass === 'LabelOutput' && i.label === label);
+  if (!initialized) {
+    initialized = true;
+    actdia.addLabeledStatusListener((label, status) => {
+      const outputs = actdia.items
+        .filter(i => i.elementClass === 'LabelOutput' && i.label === label);
 
-    outputs.forEach(item => item.setStatus(status));
-  });
+      outputs.forEach(item => item.setStatus(status));
+    });
+  }
 
   return class LabelOutput extends Node {
     static label = 'Label output';
