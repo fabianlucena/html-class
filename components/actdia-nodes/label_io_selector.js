@@ -39,9 +39,7 @@ export default async function create({ actdia, Node }) {
           editable: true,
           onInput: evt => {
             this.isEditing = true;
-            const selectedIndex = this.selectedIndex;
             this.labels = evt.data;
-            this.selectLabelIndex(selectedIndex);
 
           },
           onBlur: () => this.isEditing = false,
@@ -71,25 +69,36 @@ export default async function create({ actdia, Node }) {
       },
     ];
 
+    #labels = [ 'Label 1', 'Label 2', 'Label 3' ];
     #baseShape = null;
     #labelsShape = null;
     #buttonsShape = null;
 
     get labels() {
-      return this.#labelsShape.text;
+      return this.#labels;
     }
     
     set labels(value) {
-      if (this.#labelsShape.text !== value) {
-        this.#labelsShape.text = value;
-        if (this.#labelsShape.svgElement)
-          this.update();
+      if (typeof value === 'string') {
+        value = value.split('\n');
+      } else if (!Array.isArray(value)) {
+        value = [ String(value) ];
       }
+
+      const selectedIndex = this.selectedIndex;
+      this.#labels = value;
+      this.selectLabelIndex(selectedIndex);
+
+      if (this.#labelsShape?.svgElement)
+          this.update();
+    }
+
+    get labelsCount() {
+      return this.#labels.length;
     }
 
     get selectedIndex() {
-      const labels = this.labels.split('\n');
-      return labels.findIndex(label => label === this.label);
+      return this.labels.findIndex(label => label === this.label);
     }
 
     init() {
@@ -98,14 +107,18 @@ export default async function create({ actdia, Node }) {
       this.#labelsShape = this.getShape('labels');
       this.#buttonsShape = this.getShape('buttons');
     }
+
+    getData() {
+      const data = super.getData();
+      data.labels = this.labels;
+      return data;
+    }
     
     update() {
-
       const width = this.box.width;
-      const labels = this.labels.split('\n');
-      const labelsCount = labels.length;
-      const lines = Math.max(2, labelsCount);
+      const lines = Math.max(2, this.labelsCount);
       this.#baseShape.d = `M .5 0 h ${width - 1} l .5 .5 l -.5 .5 v ${lines} h -${width - 1} v -${lines} l -.5 -.5 l .5 -.5 z`;
+      this.#labelsShape.text = this.labels.join('\n');
       this.#labelsShape.width = width - 2.75;
       this.#labelsShape.height = lines;
       this.box.height = lines + 1;
@@ -114,7 +127,7 @@ export default async function create({ actdia, Node }) {
       this.io2.x = width;
       this.io2.y = .5;
 
-      this.#buttonsShape.children = Array.from({ length: labelsCount }, (_, i) => ({
+      this.#buttonsShape.children = Array.from({ length: this.labelsCount }, (_, i) => ({
         shape: 'circle',
         name: `label-${i}`,
         x: 1,
@@ -155,15 +168,16 @@ export default async function create({ actdia, Node }) {
     }
 
     selectLabelIndex(newIndex) {
-      const labels = this.labels.split('\n');
-      const labelsCount = labels.length;
       if (newIndex < 0) {
         newIndex = 0;
-      } else if (newIndex >= labelsCount) {
-        newIndex = labelsCount - 1;
+      } else {
+        const labelsCount = this.labelsCount;
+        if (newIndex >= labelsCount) {
+          newIndex = labelsCount - 1;
+        }
       }
 
-      const newLabel = labels[newIndex];
+      const newLabel = this.labels[newIndex];
       if (this.label !== newLabel) {
         this.label = newLabel;
         this.update();
