@@ -63,6 +63,24 @@ export default class ActDia {
                 shape: 'circle',
                 cx: 0,
                 cy: 0,
+                r: 0.4,
+              },
+              {
+                shape: 'path',
+                d: `M 0.2 -0.2
+                  L -0.2 0
+                  L  0.2 0.2`,
+              },
+            ],
+          },
+        },
+        small: {
+          shape: {
+            children: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
                 r: 0.3,
               },
               {
@@ -120,6 +138,24 @@ export default class ActDia {
                 shape: 'circle',
                 cx: 0,
                 cy: 0,
+                r: 0.4,
+              },
+              {
+                shape: 'path',
+                d: `M -0.2 -0.2
+                  L  0.2 0
+                  L -0.2 0.2`,
+              },
+            ],
+          },
+        },
+        mini: {
+          shape: {
+            children: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
                 r: 0.3,
               },
               {
@@ -168,6 +204,38 @@ export default class ActDia {
         ],
       },
       styles: {
+        small: {
+          shape: {
+            children: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
+                r: 0.4,
+              },
+              {
+                shape: 'path',
+                d: `M 0 -.3 l .3 .3 l -.3 .3 l -.3 -.3 z`,
+              },
+            ],
+          },
+        },
+        mini: {
+          shape: {
+            children: [
+              {
+                shape: 'circle',
+                cx: 0,
+                cy: 0,
+                r: 0.3,
+              },
+              {
+                shape: 'path',
+                d: `M 0 -.25 l .25 .25 l -.25 .25 l -.25 -.25 z`,
+              },
+            ],
+          },
+        },
         tiny: {
           shape: {
             children: [
@@ -179,13 +247,11 @@ export default class ActDia {
               },
               {
                 shape: 'path',
-                d: `M 0.1 -0.1
-                  L -0.15 0
-                  L  0.1 0.1`,
+                d: `M 0 -.15 l .15 .15 l -.15 .15 l -.15 -.15 z`,
               },
             ],
           },
-        }
+        },
       },
     },
 
