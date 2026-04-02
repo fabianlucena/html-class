@@ -1356,11 +1356,11 @@ export default class ActDia {
 
     let dominantBaseline = style.dominantBaseline;
     if (dominantBaseline === 'top') {
-      dominantBaseline = 'text-before-edge';
+      dominantBaseline = 'text-after-edge';
     } else if (dominantBaseline === 'middle') {
       dominantBaseline = 'central';
     } else if (dominantBaseline === 'bottom') {
-      dominantBaseline = 'text-after-edge';
+      dominantBaseline = 'text-before-edge';
     } else if (!dominantBaseline) {
       dominantBaseline = 'central';
     }
@@ -1886,12 +1886,9 @@ export default class ActDia {
 
   getTextSVGData(shape, item, options) {
     const { x, y, width, height, style, attributes: dataTextAttributes } = this.getTextData(shape, item, options?.style, options);
-    const lines = shape.text?.split?.('\n') ?? [];
     const commonAttributes = this.getStyleSVGAttributes(style, options);
     const fontAttibutes = this.getFontStyleSVGAttributes(style);
     const attributes = {
-      x,
-      y,
       ...commonAttributes,
       style: {
         ...commonAttributes.style,
@@ -1940,57 +1937,98 @@ export default class ActDia {
       textAttributes['numerical'] = true;
     }
 
-    const children = lines.map((line, index) => {
-      const dy = index === 0 ? 0 : (style.lineSpacing || style.fontSize || 1.2);
-      return {
-        tag: 'tspan',
-        attributes: { x, dy },
-        cData: line,
+    let normalizedShape = shape.normalizedShape;
+    if (!normalizedShape) {
+      normalizedShape = {
+        tag: 'g',
+        attributes,
+        children: [],
       };
-    });
 
-    const clipId = attributes.id ? `${attributes.id}-clip` : newId();
-    const clip = {
-      tag: 'clipPath',
-      attributes: {
-        id: clipId,
-      },
-      children: [
-        {
-          tag: 'rect',
-          attributes: {
-            x: shape.x,
-            y: shape.y,
-            width,
-            height,
-          },
-        },
-      ],
-    };
-
-    textAttributes['clip-path'] = `url(#${clipId})`;
-
-    const text = {
-      tag: 'text',
-      attributes: textAttributes,
-      children,
-    };
-
-    if (!shape.normalizedShape) {
-      shape.normalizedShape = {};
+      shape.normalizedShape = normalizedShape;
     }
 
-    const normalizedShape = shape.normalizedShape;
+    let textShape = normalizedShape.children?.[0];
+    let clipShape = normalizedShape.children?.[1];
+    let clipId;
 
-    return {
-      shape: normalizedShape,
-      tag: 'g',
-      attributes,
+    if (!textShape) {
+      textShape = {
+        tag: 'text',
+        children: [],
+      };
+
+      normalizedShape.children.push(textShape);
+    }
+
+    if (!clipShape) {
+      clipId = newId();
+      clipShape = {
+        tag: 'clipPath',
+        attributes: {
+          id: clipId,
+        },
+        children: [
+          {
+            tag: 'rect',
+            attributes: {},
+          },
+        ],
+      };
+      normalizedShape.children.push(clipShape);
+    } else {
+      clipId = clipShape.attributes?.id;
+    }
+
+    textAttributes['clip-path'] = `url(#${clipId})`;
+    textShape.attributes = textAttributes;
+
+    clipShape.children[0].attributes.x = shape.x ?? 0;
+    clipShape.children[0].attributes.y = shape.y ?? 0;
+    clipShape.children[0].attributes.width = width;
+    clipShape.children[0].attributes.height = height;
+
+    const textShapeChildren = textShape.children;
+    const lines = shape.text?.split?.('\n') ?? [];
+    const linesCount = lines.length;
+    const dy = style.lineSpacing || style.fontSize || 1.2;
+    for (let i = 0; i < linesCount; i++) {
+      let tspanShape = textShapeChildren[i];
+      if (!tspanShape) {
+        tspanShape = { tag: 'tspan' };
+        textShapeChildren[i] = tspanShape;
+      }
+
+      let text = lines[i];
+      if (!text.trim()) {
+        text = '\u200C'; // '\u8204'; // zero-width space to keep empty lines
+      }
+
+      tspanShape.attributes = { x, dy };
+      tspanShape.cData = text;
+
+    }
+    textShapeChildren[0].attributes.dy = 0;
+    textShape.children = textShapeChildren.slice(0, linesCount);
+
+    const data = {
+      ...normalizedShape,
+      shape: shape.normalizedShape,
       children: [
-        clip,
-        text,
+        {
+          ...clipShape,
+          shape: clipShape,
+          children: clipShape.children.map(s => ({ ...s, shape: s })),
+        },
+        {
+          ...textShape,
+          shape: textShape,
+          children: textShape.children.map(tspan => ({ ...tspan, shape: tspan })),
+        },
       ]
     };
+
+    return data;
   }
 
   getConnectorsSVG(node, options) {
@@ -2251,8 +2289,9 @@ export default class ActDia {
     });
 
     if (data.cData) {
-      if (svgElement.textContent !== data.cData)
-        svgElement.textContent = data.cData;
+      let textContent = data.cData;
+      if (svgElement.textContent !== textContent)
+        svgElement.textContent = textContent;
     }
 
     const existingChildren = [];
