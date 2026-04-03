@@ -2014,18 +2014,9 @@ export default class ActDia {
       shape.normalizedShape = normalizedShape;
     }
 
-    let textShape = normalizedShape.children?.[0];
-    let clipShape = normalizedShape.children?.[1];
+    let clipShape = normalizedShape.children?.[0];
+    let textShape = normalizedShape.children?.[1];
     let clipId;
-
-    if (!textShape) {
-      textShape = {
-        tag: 'text',
-        children: [],
-      };
-
-      normalizedShape.children.push(textShape);
-    }
 
     if (!clipShape) {
       clipId = newId();
@@ -2044,6 +2035,15 @@ export default class ActDia {
       normalizedShape.children.push(clipShape);
     } else {
       clipId = clipShape.attributes?.id;
+    }
+
+    if (!textShape) {
+      textShape = {
+        tag: 'text',
+        children: [],
+      };
+
+      normalizedShape.children.push(textShape);
     }
 
     textAttributes['clip-path'] = `url(#${clipId})`;
