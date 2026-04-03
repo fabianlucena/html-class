@@ -77,13 +77,13 @@ export default async function create({ actdia, Node }) {
               className: 'console',
             },
             {
+              name: 'cursor',
               shape: 'path',
               className: 'selected-blink',
-              name: 'cursor',
               d: 'M 0 0 h 1',
-              stroke: '#a1a1a1',
+              stroke: '#d0d0d0',
               fill: 'none',
-              strokeWidth: .2,
+              strokeWidth: .12,
             },
           ],
         },
@@ -201,10 +201,10 @@ export default async function create({ actdia, Node }) {
           this.rows = Math.floor(vHeight);
           this.cols = Math.floor(vWidth / width);
 
-          this.#charWidth = vWidth / this.cols;
+          this.#charWidth = width;
           this.#charHeight = vHeight / this.rows;
 
-          this.#cursorShape.d = `M 0 ${this.#charHeight} h ${this.#charWidth}`;
+          this.#cursorShape.d = `M ${this.#charWidth * .1} ${this.#charHeight * .85} h ${this.#charWidth * .9}`;
         }
       }
 
