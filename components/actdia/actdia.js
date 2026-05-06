@@ -2016,6 +2016,8 @@ export default class ActDia {
 
     let clipShape = normalizedShape.children?.[0];
     let textShape = normalizedShape.children?.[1];
+    let verticalScrollShape = normalizedShape.children?.[2];
+    let horizontalScrollShape = normalizedShape.children?.[3];
     let clipId;
 
     if (!clipShape) {
@@ -2044,6 +2046,104 @@ export default class ActDia {
       };
 
       normalizedShape.children.push(textShape);
+    }
+
+    if (!verticalScrollShape) {
+      verticalScrollShape = {
+        tag: 'g',
+        attributes: {},
+        children: [
+          {
+            tag: 'rect',
+            width: 1,
+            attributes: {
+              rx: .15,
+              ry: .15,
+              width: .3,
+              fill: '#000000D8',
+              stroke: 'none',
+            },
+          },
+          {
+            tag: 'rect',
+            width: 1,
+            attributes: {
+              rx: .15,
+              ry: .15,
+              width: .3,
+              fill: '#FFFFFF',
+              stroke: 'none',
+            },
+          },
+          {
+            tag: 'path',
+            attributes: {
+              d: 'M .15 0 l .3 .5 h -.6 z',
+              fill: '#FFFFFF',
+              stroke: 'none',
+            },
+          },
+          {
+            tag: 'path',
+            attributes: {
+              d: 'M .15 0 l .3 -.5 h -.6 z',
+              fill: '#FFFFFF',
+              stroke: 'none',
+            },
+          },
+        ],
+      }
+
+      normalizedShape.children.push(verticalScrollShape);
+    }
+
+    if (!horizontalScrollShape) {
+      horizontalScrollShape = {
+        tag: 'g',
+        attributes: {},
+        children: [
+          {
+            tag: 'rect',
+            height: 1,
+            attributes: {
+              rx: .15,
+              ry: .15,
+              height: .3,
+              fill: '#000000D8',
+              stroke: 'none',
+            },
+          },
+          {
+            tag: 'rect',
+            height: 1,
+            attributes: {
+              rx: .15,
+              ry: .15,
+              height: .3,
+              fill: '#FFFFFF',
+              stroke: 'none',
+            },
+          },
+          {
+            tag: 'path',
+            attributes: {
+              d: 'M 0 .15 l .5 .3 v -.6 z',
+              fill: '#FFFFFF',
+              stroke: 'none',
+            },
+          },
+          {
+            tag: 'path',
+            attributes: {
+              d: 'M 0 .15 l -.5 .3 v -.6 z',
+              fill: '#FFFFFF',
+              stroke: 'none',
+            },
+          },
+        ],
+      }
+
+      normalizedShape.children.push(horizontalScrollShape);
     }
 
     textAttributes['clip-path'] = `url(#${clipId})`;
@@ -2081,6 +2181,38 @@ export default class ActDia {
     textShapeChildren[0].attributes.dy = 0;
     textShape.children = textShapeChildren.slice(0, linesCount);
 
+    const fHeight = linesCount * dy;
+    if (fHeight > height) {
+      verticalScrollShape.attributes.opacity = .8;
+      const vHeight = height - .4;
+      const sHeight = Math.max(vHeight - 1.4, 0);
+      const vFactor = sHeight / fHeight;
+      verticalScrollShape.attributes.transform = `translate(${x + width - .5}, ${shape.y ?? 0})`;
+      verticalScrollShape.children[0].attributes.y = .7;
+      verticalScrollShape.children[0].attributes.height = sHeight;
+      verticalScrollShape.children[1].attributes.y = .7 + (1 - vFactor) * sHeight;
+      verticalScrollShape.children[1].attributes.height = sHeight * vFactor;
+      verticalScrollShape.children[3].attributes.transform = `translate(0, ${vHeight})`;
+    } else {
+      verticalScrollShape.attributes.opacity = 0;
+    }
+
+    const fWidth = Math.max(...(lines.map(l => l.length))) * (style.fontSize || 1.2) * 0.555;
+    if (fWidth > width) {
+      horizontalScrollShape.attributes.opacity = .8;
+      const vWidth = width - .4;
+      const sWidth = Math.max(vWidth - 1.4, 0);
+      const hFactor = sWidth / fWidth;
+      horizontalScrollShape.attributes.transform = `translate(${shape.x ?? 0}, ${height - .5})`;
+      horizontalScrollShape.children[0].attributes.x = .7;
+      horizontalScrollShape.children[0].attributes.width = sWidth;
+      horizontalScrollShape.children[1].attributes.x = .7 + (1 - hFactor) * sWidth;
+      horizontalScrollShape.children[1].attributes.width = sWidth * hFactor;
+      horizontalScrollShape.children[3].attributes.transform = `translate(${vWidth}, 0)`;
+    } else {
+      horizontalScrollShape.attributes.opacity = 0;
+    }
+
     const data = {
       ...normalizedShape,
       shape: shape.normalizedShape,
@@ -2093,7 +2225,17 @@ export default class ActDia {
         {
           ...textShape,
           shape: textShape,
-          children: textShape.children.map(tspan => ({ ...tspan, shape: tspan })),
+          children: textShape.children.map(s => ({ ...s, shape: s })),
+        },
+        {
+          ...verticalScrollShape,
+          shape: verticalScrollShape,
+          children: verticalScrollShape.children.map(s => ({ ...s, shape: s })),
+        },
+        {
+          ...horizontalScrollShape,
+          shape: horizontalScrollShape,
+          children: horizontalScrollShape.children.map(s => ({ ...s, shape: s })),
         },
       ]
     };

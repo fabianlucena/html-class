@@ -1,0 +1,71 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 2em;
+  background-color: #B7D5D4;
+}
+
+h1 {
+  font-size: 2em;
+  margin: .5em 0;
+  text-align: center;
+  background-color: #373E40;
+  color: white;
+  margin: 0;
+  padding: .5em;
+}
+
+form {
+  padding: 1em;
+}
+
+.field {
+  font-size: 1.3em;
+  padding-top: .8em;
+}
+
+.field label {
+  display: block;
+  color: #344d53;
+}
+
+.field input,
+.field select,
+.field button {
+  background-color: #dbf0f5;
+  border: none;
+  width: 100%;
+  font-size: 1em;
+  padding: .5em;
+  box-sizing: border-box;
+  color: #305252;
+}
+
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="32" width="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1.5em;        /* ← acá agrandás la flecha */
+}
+
+.field select option {
+  font-size: .5em;
+  padding: 0;
+  margin: 0;
+}
+
+.field button {
+  background-color: #305252;
+  border-radius: .5em;
+  color: white;
+}
+
+.field.footer {
+  margin-top: 1em;
+  text-align: center;
+}
