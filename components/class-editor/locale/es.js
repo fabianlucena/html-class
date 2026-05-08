@@ -1,5 +1,7 @@
 export default {
+  'Blockquote': 'Cita',
   'Bold': 'Negrita',
+  'Bullets': 'Viñetas',
   'Heading': 'Encabezado',
   'Heading 1': 'Encabezado 1',
   'Heading 2': 'Encabezado 2',
@@ -8,5 +10,9 @@ export default {
   'Heading 5': 'Encabezado 5',
   'Heading 6': 'Encabezado 6',
   'Italic': 'Cursiva',
+  'Numbering': 'Numeración',
+  'Paragraph': 'Párrafo',
+  'Task list': 'Lista de tareas',
   'Type "/" for commands': 'Escribe "/" para comandos',
+  'Underline': 'Subrayado',
 };

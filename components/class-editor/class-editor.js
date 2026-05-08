@@ -22,16 +22,22 @@ function setMenuItems(items) {
     {
       label: _('Heading'),
       items: [
-        { label: _('Heading 1'), action: () => applyFormat('formatBlock', false, 'h1') },
-        { label: _('Heading 2'), action: () => applyFormat('formatBlock', false, 'h2') },
-        { label: _('Heading 3'), action: () => applyFormat('formatBlock', false, 'h3') },
-        { label: _('Heading 4'), action: () => applyFormat('formatBlock', false, 'h4') },
-        { label: _('Heading 5'), action: () => applyFormat('formatBlock', false, 'h5') },
-        { label: _('Heading 6'), action: () => applyFormat('formatBlock', false, 'h6') },
+        { label: _('Heading 1'), action: () => applyFormat('formatBlock', false, 'H1') },
+        { label: _('Heading 2'), action: () => applyFormat('formatBlock', false, 'H2') },
+        { label: _('Heading 3'), action: () => applyFormat('formatBlock', false, 'H3') },
+        { label: _('Heading 4'), action: () => applyFormat('formatBlock', false, 'H4') },
+        { label: _('Heading 5'), action: () => applyFormat('formatBlock', false, 'H5') },
+        { label: _('Heading 6'), action: () => applyFormat('formatBlock', false, 'H6') },
       ]
     },
-    { label: _('Bold'),      action: () => applyFormat('bold') },
-    { label: _('Italic'),    action: () => applyFormat('italic') },
+    { label: _('Bold'),       action: () => applyFormat('bold') },
+    { label: _('Underline'),  action: () => applyFormat('underline') },
+    { label: _('Italic'),     action: () => applyFormat('italic') },
+    { label: _('Numbering'),  action: () => applyFormat('insertOrderedList') },
+    { label: _('Bullets'),    action: () => applyFormat('insertUnorderedList') },
+    { label: _('Task list'),  action: () => applyFormat('insertTaskList') },
+    { label: _('Paragraph'),  action: () => applyFormat('formatBlock', false, 'P') },
+    { label: _('Blockquote'), action: () => applyFormat('formatBlock', false, 'BLOCKQUOTE') },
   ];
 }
 
@@ -78,7 +84,7 @@ function init() {
   menu = new Menu({
     className: 'floating',
     parent: document.body,
-    // display: false,
+    display: false,
   });
   setMenuItems();
 }
@@ -122,17 +128,23 @@ function onKeyDown(event) {
   if (!editor.classList.contains('class-editor'))
     return;
 
+  if (menu.showing) {
+    event.preventDefault();
+    event.stopPropagation();
+    menu.handleKeyDown(event);
+  }
+
   switch (event.key) {
     case '/':
       slashDownHandler(event, editor);
       return;
-    
-    case 'Escape':
-      if (menu.showing) {
-        menu.hide();
-        event.preventDefault();
-        event.stopPropagation();
-      }
+
+    case 'Tab':
+      event.preventDefault();
+      if (event.shiftKey)
+        document.execCommand('outdent', false);
+      else
+        document.execCommand('indent', false);
   }
 }
 
@@ -164,7 +176,7 @@ function applyFormat(format, ...args) {
   if (inEditorMenu) {
     inEditorMenu.focus();
     console.log('Applying format:', format, args);
-    document.execCommand(format, false, ...args);
+    document.execCommand(...arguments);
   }
   
   menu.hide();
