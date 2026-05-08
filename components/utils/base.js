@@ -29,7 +29,7 @@ export default class Base {
 
   create(options = {}) {
     for (let [key, value] of Object.entries(options)) {
-      const setter = `set#${key[0].toUpperCase() + key.slice(1)}`;
+      const setter = `set${key[0].toUpperCase() + key.slice(1)}`;
       if (this[setter]) {
         this[setter](value);
         continue;

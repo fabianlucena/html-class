@@ -1,4 +1,4 @@
-export default{
+export default {
   'Cancel': 'Cancelar',
   'No': 'No',
   'OK': 'Aceptar',

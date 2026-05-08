@@ -1,0 +1,17 @@
+.menu {
+  padding: 0;
+  border: none;
+}
+
+.menu.floating {
+  position: absolute;
+}
+
+.menu > .submenu {
+  display: block;
+}
+
+.menu.has-submenu::after {
+  content: '';
+  display: 'none';
+}

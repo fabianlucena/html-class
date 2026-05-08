@@ -1,0 +1,58 @@
+.menu-item {
+  --local-menu-item-color: var(--menu-item-color, #404040);
+  --local-menu-item-bg: var(--menu-item-bg, #d0d0d0);
+  --local-menu-item-border-color: var(--menu-item-border-color, #808080);
+  
+  --local-menu-item-submenu-mark: var(--menu-item-submenu-mark, '▶');
+  --local-menu-item-submenu-mark-size: var(--menu-item-submenu-mark-size, .75em);
+  --local-menu-item-submenu-mark-color: var(--menu-item-submenu-mark-color, #6d6d6d);
+
+  --local-menu-item-hover-bg: var(--menu-item-hover-bg, #c0c0c0);
+  --local-menu-item-hover-color: var(--menu-item-hover-color, #000000);
+}
+
+.menu-item {
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  color: var(--local-menu-item-color);
+  background: var(--local-menu-item-bg);
+  border: 1px solid var(--local-menu-item-border-color);
+  padding: .2em .3em;
+  white-space: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.menu-item > .submenu:not(.horizontal) > .menu-item:not(:first-child) {
+  border-top: none;
+}
+
+.menu-item > .submenu.horizontal > .menu-item:not(:first-child) {
+  border-left: none;
+}
+
+.menu-item:hover:not(:has(.menu-item:hover)) {
+  background: var(--local-menu-item-hover-bg);
+  color: var(--local-menu-item-hover-color);
+}
+
+.menu-item.has-submenu::after {
+  content: var(--local-menu-item-submenu-mark);
+  font-size: var(--local-menu-item-submenu-mark-size);
+  color: var(--local-menu-item-submenu-mark-color);
+  float: right;
+  padding-left: .5em;
+  align-self: top;
+}
+
+.menu-item .submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+}
+
+.menu-item > .submenu {
+  display: none;
+}

@@ -16,6 +16,14 @@ export function importCss(url, file) {
   document.head.appendChild(link);
 }
 
+export function insertCss(css) {
+  const style = document.createElement('style');
+  style.textContent = css;
+  document.head.appendChild(style);
+  
+  return style;
+}
+
 export async function loadTextCss(url) {
   try {
     if (isVite) {
