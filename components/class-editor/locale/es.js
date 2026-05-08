@@ -1,4 +1,5 @@
 export default {
+  'Block': 'Bloque',
   'Blockquote': 'Cita',
   'Bold': 'Negrita',
   'Bullets': 'Viñetas',
