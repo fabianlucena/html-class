@@ -1,0 +1,16 @@
+.class-editor {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 2em;
+  --hint-text: 'Type "/" for commands'
+}
+
+.class-editor.show-hint::after {
+  content: var(--hint-text);
+  position: absolute;
+  color: rgba(0,0,0,0.20);
+  pointer-events: none;
+  z-index: 0;
+  pointer-events: none;
+  margin-top: -1em;
+}
