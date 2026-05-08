@@ -7,5 +7,11 @@ export default class Menu extends MenuItem {
   constructor(options) {
     super(options);
     this.addClass('menu');
+    this.showSubmenu();
+  }
+
+  addItem(...items) {
+    super.addItem(...items);
+    this.showSubmenu();
   }
 }

@@ -7,8 +7,8 @@
   --local-menu-item-submenu-mark-size: var(--menu-item-submenu-mark-size, .75em);
   --local-menu-item-submenu-mark-color: var(--menu-item-submenu-mark-color, #6d6d6d);
 
-  --local-menu-item-hover-bg: var(--menu-item-hover-bg, #c0c0c0);
-  --local-menu-item-hover-color: var(--menu-item-hover-color, #000000);
+  --local-menu-item-active-bg: var(--menu-item-active-bg, #c0c0c0);
+  --local-menu-item-active-color: var(--menu-item-active-color, #000000);
 }
 
 .menu-item {
@@ -33,9 +33,10 @@
   border-left: none;
 }
 
-.menu-item:hover:not(:has(.menu-item:hover)) {
-  background: var(--local-menu-item-hover-bg);
-  color: var(--local-menu-item-hover-color);
+.menu-item.active,
+.menu-item.focused {
+  background: var(--local-menu-item-active-bg);
+  color: var(--local-menu-item-active-color);
 }
 
 .menu-item.has-submenu::after {
@@ -53,6 +54,6 @@
   left: 100%;
 }
 
-.menu-item > .submenu {
+.menu-item > .submenu.hidden {
   display: none;
 }
