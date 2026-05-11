@@ -4,10 +4,6 @@ import Base from '../utils/base.js';
 importCss('./menu-item.css', import.meta.url);
 
 export default class MenuItem extends Base {
-  #element = null;
-  #parent = null;
-  #parentElement = null;
-  #labelElement = null;
   #subMenuElement = null;
   #items = [];
 
@@ -19,31 +15,9 @@ export default class MenuItem extends Base {
   }
 
   create(options) {
-    const { parent, parentElement, element, display, show, hide, className,...rest } = options;
+    super.create(rest);
 
-    if (parentElement instanceof HTMLElement) {
-      this.#parentElement = parentElement;
-    } else if (parent instanceof HTMLElement) {
-      this.#parentElement = parent;
-    }
-    
-    if (parent instanceof MenuItem) {
-      this.#parent = parent;
-    } else if (parentElement instanceof MenuItem) {
-      this.#parent = parentElement;
-    }
-
-    if (!this.#parentElement) {
-      if (this.#parent && this.#parent.#element instanceof HTMLElement)
-        this.#parentElement = this.#parent.#subMenuElement;
-
-      if (!this.#parentElement)
-        this.#parentElement = document.body;
-    }
-
-    this.#element = element ?? document.createElement('div');
-
-    this.#parentElement.appendChild(this.#element);
+    this.addClass('menu-item');
 
     this.onMouseOver = this.handleMouseOver.bind(this);
     this.#element.addEventListener('mouseover', this.onMouseOver);
@@ -54,16 +28,6 @@ export default class MenuItem extends Base {
 
     this.#labelElement = document.createElement('span');
     this.#element.appendChild(this.#labelElement);
-
-    this.addClass('menu-item', className);
-
-    super.create(rest);
-
-    if (show === false || hide)
-      this.hide();
-
-    if (typeof display !== 'undefined')
-      this.display = display;
   }
 
   destroy() {
@@ -76,33 +40,6 @@ export default class MenuItem extends Base {
     this.#element.removeEventListener('mousedown', this.onMouseDown);
     this.#element.remove();
     this.#element = null;
-  }
-
-  addClass(...classNames) {
-    for (const className of classNames) {
-      if (!className)
-        return;
-
-      if (Array.isArray(className))
-        this.#element.classList.add(...className);
-      else if (className instanceof Set)
-        this.#element.classList.add(...className);
-      else if (typeof className === 'string')
-        this.#element.classList.add(...className.trim().split(/\s+/).filter((c) => c));
-      else if (typeof className === 'object') {
-        for (const key of className) {
-          let value = className[key];
-          if (!value)
-            continue;
-
-          if (typeof value === 'function')
-            value = value();
-
-          if (value)
-            this.#element.classList.add(key);
-        }
-      }
-    }
   }
 
   set label(label) {
@@ -144,28 +81,8 @@ export default class MenuItem extends Base {
     return this.#items.length > 0;
   }
 
-  set display(value) {
-    this.#element.style.display = value ? '' : 'none';
-  }
-
-  get display() {
-    return this.#element.style.display !== 'none';
-  }
-
   get showing() {
     return this.display;
-  }
-
-  hide() {
-    this.display = false;
-  }
-
-  show() {
-    this.display = true;
-  }
-
-  hide() {
-    this.#element.style.display = 'none';
   }
 
   setPos(x, y) {
