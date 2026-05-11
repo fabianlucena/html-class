@@ -149,7 +149,7 @@ export default class Note extends StaffItem {
       this.#ledgerLinesElement = null;
     }
 
-    this.element.setAttribute('note', this.note);
+    this.element.setAttribute('note', this.note + this.octave);
     this.element.setAttribute('value', this.#symbol.id);
     this.element.setAttribute('href', `#${this.#symbol.id}`);
     this.element.setAttribute('x', x + this.#symbol.offset.x);
