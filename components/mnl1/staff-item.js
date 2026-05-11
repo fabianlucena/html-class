@@ -13,11 +13,23 @@ export default class StaffItem extends Mnl1Item {
   }
 
   set x(value) {
+    if (isNaN(value)) {
+      console.warn('Invalid x value:', value);
+      console.trace();
+      return;
+    }
+
     this.#x = value;
     this.update();
   }
 
   set y(value) {
+    if (isNaN(value)) {
+      console.warn('Invalid y value:', value);
+      console.trace();
+      return;
+    }
+
     this.#y = value;
     this.update();
   }

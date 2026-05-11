@@ -105,7 +105,7 @@ export default class Staff extends ScoreItem {
       item.x = this.cursor.x;
       item.y = this.cursor.y;
       item.update();
-      this.cursor.x += item.width;
+      this.cursor.x += item.width ?? 0;
     }
   }
 

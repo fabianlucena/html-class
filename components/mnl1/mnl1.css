@@ -2,12 +2,13 @@
   background-color: #eee;
 }
 
-.staff .lines {
+.staff .lines,
+.staff .ledger-lines,
+.staff .cut-time {
   stroke: black;
   stroke-width: 0.07;
 }
 
-.staff .ledger-lines line {
-  stroke: black;
-  stroke-width: 0.07;
+.staff .cut-time {
+  stroke-width: 0.15;
 }
