@@ -20,18 +20,16 @@ const symbols = [
 ];
 
 const values = {
-  'q': {
-    use: 'quarter-note',
-  },
-  'h': {
-    use: 'half-note',
-  },
+  q: 'quarter-note',
+  h: 'half-note',
 };
 
 export default class Note extends StaffItem {
   #pitch;
+  #octave;
   #value = 'q';
-  #symbol = symbols.find(s => s.id === values[this.#value]?.use);
+  #symbol = symbols.find(s => s.id === values[this.#value]);
+  #ledgerLinesElement;
 
   constructor(options) {
     if (typeof options === 'string') {
@@ -61,10 +59,24 @@ export default class Note extends StaffItem {
     this.pitch = (value.charCodeAt(0) - 'a'.charCodeAt(0)) / 2;
   }
 
+  set octave(value) {
+    this.#octave = value;
+    this.pitch += (value - 4) * 3.5;
+    this.update();
+  }
+
+  get octave() {
+    return this.#octave;
+  }
+
+  get note() {
+    return String.fromCharCode(Math.round(this.pitch * 2 % 8) + 'a'.charCodeAt(0));
+  }
+
   set value(newValue) {
     this.#value = newValue;
     const symbolInfo = values[this.#value];
-    this.#symbol = symbols.find(s => s.id === symbolInfo.use);
+    this.#symbol = symbols.find(s => s.id === symbolInfo);
     this.addSymbolIfNotExists(this.#symbol);
   }
 
@@ -73,17 +85,79 @@ export default class Note extends StaffItem {
     this.update();
   }
 
+  get pitch() {
+    return this.#pitch;
+  }
+
   update() {
     if (!this.parent)
       return;
 
+    if (this.#octave === undefined) {
+      const staffLastPitch = this.staffLastPitch;
+      if (staffLastPitch) {
+        let diff = this.pitch - staffLastPitch;
+        let bias = 0;
+        while (diff <= -1.5) {
+          bias += 3.5;
+          diff += 3.5;
+        }
+
+        while (diff >= 2) {
+          bias -= 3.5;
+          diff -= 3.5;
+        }
+
+        this.#pitch += bias;
+      }
+    }
+
+    const x = this.x;
+    const y = this.y - this.#pitch - this.staffPitch;
+    let llFrom, llTo;
+    if (y < this.lastStaffLine) {
+      llFrom = Math.ceil(y);
+      llTo = this.lastStaffLine;
+    } else if (y > this.firstStaffLine) {
+      llFrom = this.firstStaffLine + 1;
+      llTo = Math.ceil(y + .5);
+    }
+
+    if (llFrom < llTo) {
+      if (!this.#ledgerLinesElement) {
+        this.#ledgerLinesElement = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        this.#ledgerLinesElement.setAttribute('class', 'ledger-lines');
+        this.parent.element.appendChild(this.#ledgerLinesElement);
+      } else {
+        while (this.#ledgerLinesElement.firstChild) {
+          this.#ledgerLinesElement.removeChild(this.#ledgerLinesElement.firstChild);
+        }
+      }
+
+      const xi = x - .2,
+        xf = x + this.#symbol.width + .2;
+      for (let i = llFrom; i < llTo; i++) {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', xi);
+        line.setAttribute('y1', i);
+        line.setAttribute('x2', xf);
+        line.setAttribute('y2', i);
+        this.#ledgerLinesElement.appendChild(line);
+      }
+    } else if (this.#ledgerLinesElement) {
+      this.parent.element.removeChild(this.#ledgerLinesElement);
+      this.#ledgerLinesElement = null;
+    }
+
+    this.element.setAttribute('note', this.note);
+    this.element.setAttribute('value', this.#symbol.id);
     this.element.setAttribute('href', `#${this.#symbol.id}`);
-    this.element.setAttribute('x', this.x + this.#symbol.offset.x);
-    this.element.setAttribute('y', this.y + this.#symbol.offset.y - this.#pitch - this.staffPitch);
+    this.element.setAttribute('x', x + this.#symbol.offset.x);
+    this.element.setAttribute('y', y + this.#symbol.offset.y);
     this.element.setAttribute('width', this.#symbol.width);
     this.element.setAttribute('height', this.#symbol.height);
 
-    this.staffNoteReference = this;
+    this.staffLastPitch = this.#pitch;
     this.width = this.#symbol.width;
   }
 }

@@ -17,15 +17,25 @@ function init() {
   const staff = score.addStaff();
 
   staff.addItem(new Clef('G'));
-  staff.addItem(new Note('a'));
+  /*staff.addItem(new Note('a'));
   staff.addItem(new Note('b'));
   staff.addItem(new Note('c'));
   staff.addItem(new Note('d'));
   staff.addItem(new Note('e'));
+  staff.addItem(new Note('f'));*/
+  //staff.addItem(new Note('g'));
+  //staff.addItem(new Note('a'));
+  staff.addItem(new Note({ note: 'b', octave: 5 }));
+  staff.addItem(new Note({ note: 'f', octave: 2 }));
+  staff.addItem(new Note({ note: 'c', octave: 5 }));
+  staff.addItem(new Note({ note: 'g', octave: 2 }));
+  /*staff.addItem(new Note('c'));
+  staff.addItem(new Note('d'));
+  staff.addItem(new Note('e'));
   staff.addItem(new Note('f'));
-  staff.addItem(new Note('g'));
+  staff.addItem(new Note('g'));*/
 
-  staff.addItem(new Clef('F'));
+  /*staff.addItem(new Clef('F'));
   staff.addItem(new Note('a'));
   staff.addItem(new Note('b'));
   staff.addItem(new Note('c'));
@@ -41,7 +51,7 @@ function init() {
   staff.addItem(new Note('d'));
   staff.addItem(new Note('e'));
   staff.addItem(new Note('f'));
-  staff.addItem(new Note('g'));
+  staff.addItem(new Note('g'));*/
 
   mnl1.update();
 }

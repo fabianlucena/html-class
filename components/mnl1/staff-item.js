@@ -31,13 +31,21 @@ export default class StaffItem extends Mnl1Item {
       this.parent.staffPitch = value;
   }
 
-  get staffNoteReference() {
-    return this.parent?.staffNoteReference;
+  get staffLastPitch() {
+    return this.parent?.staffLastPitch;
   }
 
-  set staffNoteReference(value) {
+  set staffLastPitch(value) {
     if (this.parent)
-      this.parent.staffNoteReference = value;
+      this.parent.staffLastPitch = value;
+  }
+
+  get firstStaffLine() {
+    return this.parent?.firstStaffLine ?? 0;
+  }
+
+  get lastStaffLine() {
+    return this.parent?.lastStaffLine ?? 0;
   }
 
   update() {

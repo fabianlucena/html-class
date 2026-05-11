@@ -8,7 +8,7 @@ export default class Staff extends ScoreItem {
   #items = [];
   #cursor = { x: 0, y: 0 };
   #staffPitch = 2;
-  #staffNoteReference = null;
+  #staffLastPitch = null;
 
   constructor(options) {
     super(options);
@@ -54,12 +54,20 @@ export default class Staff extends ScoreItem {
     this.#staffPitch = value;
   }
 
-  get staffNoteReference() {
-    return this.#staffNoteReference;
+  get staffLastPitch() {
+    return this.#staffLastPitch;
   }
 
-  set staffNoteReference(value) {
-    this.#staffNoteReference = value;
+  set staffLastPitch(value) {
+    this.#staffLastPitch = value;
+  }
+
+  get firstStaffLine() {
+    return this.marginTop + this.lineCount - 1;
+  }
+
+  get lastStaffLine() {
+    return this.marginTop;
   }
 
   update() {
@@ -85,6 +93,7 @@ export default class Staff extends ScoreItem {
     }
 
     this.#staffPitch = this.lineCount / 2 - .5;
+    this.#staffLastPitch = 0;
     this.cursor.x = this.marginLeft + 1;
     this.cursor.y = this.marginTop + this.lineCount - 1;
 

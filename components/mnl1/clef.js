@@ -27,27 +27,29 @@ const symbols = [
   },
 ];
 
-const clefs = {
+const clefsData = {
   'C': {
     pitch: 3,
     staffLine: 3,
     use: 'c-clef',
+    staffPitch: -3.5,
   },
   'F': {
     pitch: 2,
     staffLine: 4,
     use: 'f-clef',
+    staffPitch: -3.5,
   },
   'G': {
     pitch: .5,
     staffLine: 2,
     use: 'g-clef',
+    staffPitch: 0,
   },
 };
 
 export default class Clef extends StaffItem {
-  #staffLine;
-  #pitch;
+  #clefData;
   #symbol;
 
   constructor(options) {
@@ -65,10 +67,8 @@ export default class Clef extends StaffItem {
   }
 
   set clef(value) {
-    const clef = clefs[value] || clefs['G'];
-    this.#staffLine = clef.staffLine;
-    this.#pitch = clef.pitch;
-    this.#symbol = symbols.find(s => s.id === clef.use);
+    this.#clefData = clefsData[value] || clefsData['G'];
+    this.#symbol = symbols.find(s => s.id === this.#clefData.use);
     this.addSymbolIfNotExists(this.#symbol);
   }
 
@@ -84,11 +84,12 @@ export default class Clef extends StaffItem {
 
     this.element.setAttribute('href', `#${this.#symbol.id}`);
     this.element.setAttribute('x', this.x + this.#symbol.offset.x);
-    this.element.setAttribute('y', this.y + this.#symbol.offset.y - this.#staffLine + 1);
+    this.element.setAttribute('y', this.y + this.#symbol.offset.y - this.#clefData.staffLine + 1);
     this.element.setAttribute('width', this.#symbol.width);
     this.element.setAttribute('height', this.#symbol.height);
     this.width = this.#symbol.width;
 
-    this.staffPitch = this.#pitch + this.#staffLine / 2;
+    this.staffPitch = this.#clefData.pitch + this.#clefData.staffLine / 2;
+    this.staffLastPitch = this.#clefData.staffPitch;
   }
 }

@@ -2,8 +2,8 @@ import Mnl1Item from './mnl1-item.js';
 import Staff from './staff.js';
 
 export default class Score extends Mnl1Item {
-  #scaleX = 12;
-  #scaleY = 12;
+  #scaleX = 24;
+  #scaleY = 24;
   #items = [];
 
   constructor(options) {
