@@ -22,6 +22,10 @@ export default class StaffItem extends Mnl1Item {
     this.update();
   }
 
+  get staffLineCount() {
+    return this.parent?.staffLineCount ?? 0;
+  }
+
   get staffPitch() {
     return this.parent?.staffPitch ?? 0;
   }

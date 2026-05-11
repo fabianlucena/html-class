@@ -46,6 +46,10 @@ export default class Staff extends ScoreItem {
     return this.#items;
   }
 
+  get staffLineCount() {
+    return this.lineCount;
+  }
+
   get staffPitch() {
     return this.#staffPitch;
   }

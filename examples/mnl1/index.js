@@ -25,10 +25,17 @@ function init() {
   staff.addItem(new Note('f'));*/
   //staff.addItem(new Note('g'));
   //staff.addItem(new Note('a'));
-  staff.addItem(new Note({ note: 'b', octave: 5 }));
+  /*staff.addItem(new Note({ note: 'b', octave: 5 }));
   staff.addItem(new Note({ note: 'f', octave: 2 }));
   staff.addItem(new Note({ note: 'c', octave: 5 }));
-  staff.addItem(new Note({ note: 'g', octave: 2 }));
+  staff.addItem(new Note({ note: 'g', octave: 2 }));*/
+  staff.addItem(new Note({ rest: true, value: 'w' }));
+  staff.addItem(new Note({ rest: true, value: 'h' }));
+  staff.addItem(new Note({ rest: true, value: 'q' }));
+  staff.addItem(new Note({ rest: true, value: 'e' }));
+  staff.addItem(new Note({ rest: true, value: 's' }));
+  staff.addItem(new Note({ rest: true, value: 't' }));
+  staff.addItem(new Note({ rest: true, value: 'i' }));
   /*staff.addItem(new Note('c'));
   staff.addItem(new Note('d'));
   staff.addItem(new Note('e'));
