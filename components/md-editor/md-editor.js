@@ -1,12 +1,12 @@
 import { importCss, insertCss } from '../utils/import-css.js';
-import PandocMDViewer from '../pandoc-md-viewer/pandoc-md-viewer.js';
+import MDViewer from '../md-viewer/md-viewer.js';
 import { addLocaleUrl, _, onLanguageLoaded } from '../locale/locale.js';
 //import Menu from '../menu/menu.js';
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
-importCss('./pandoc-md-editor.css', import.meta.url);
-const style = insertCss(`.pandoc-md-editor { --hint-text: "Type \\"/\\" for commands"; } `);
+importCss('./md-editor.css', import.meta.url);
+const style = insertCss(`.md-editor { --hint-text: "Type \\"/\\" for commands"; } `);
 
 onLanguageLoaded(() => {
   setHint(_('Type "/" for commands'));
@@ -14,7 +14,7 @@ onLanguageLoaded(() => {
 });
 
 function setHint(text) {
-  style.textContent = `.pandoc-md-editor { --hint-text: "${text.replace(/"/g, '\\"')}"; } `;
+  style.textContent = `.md-editor { --hint-text: "${text.replace(/"/g, '\\"')}"; } `;
 }
 /*
 function setMenuItems(items) {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   init();
 });
 */
-export default class PandocMDEditor extends PandocMDViewer {
+export default class MDEditor extends MDViewer {
   constructor(options) {
     super(options);
   }
@@ -54,7 +54,7 @@ export default class PandocMDEditor extends PandocMDViewer {
   create(options) {
     super.create(options);
 
-    this.element.classList.add('pandoc-md-editor');
+    this.element.classList.add('md-editor');
     this.element.tabIndex = 0;
     this.element.contentEditable = true;
   }
@@ -102,7 +102,7 @@ function addCharacter(char) {
 
 function onKeyUp(event) {
   const editor = event.target;
-  if (!editor.classList.contains('pandoc-md-editor'))
+  if (!editor.classList.contains('md-editor'))
     return;
 
   updateHint(editor);
@@ -110,7 +110,7 @@ function onKeyUp(event) {
 
 function onMouseUp(event) {
   const editor = event.target;
-  if (!editor.classList.contains('pandoc-md-editor'))
+  if (!editor.classList.contains('md-editor'))
     return;
 
   updateHint(editor);
@@ -118,7 +118,7 @@ function onMouseUp(event) {
   
 function onKeyDown(event) {
   const editor = event.target;
-  if (!editor.classList.contains('pandoc-md-editor'))
+  if (!editor.classList.contains('md-editor'))
     return;
 
   if (menu.showing) {

@@ -1,5 +1,5 @@
 import { importCss } from '../../components/utils/import-css.js';
-import PandocMDEditor from '../../components/pandoc-md-editor/pandoc-md-editor.js';
+import MDEditor from '../../components/md-editor/md-editor.js';
 import { loadLanguage } from '../../components/locale/locale.js';
 import { getPath } from '../../components/utils/path.js';
 import { setBasePath } from '../../components/router/router.js';
@@ -14,5 +14,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function init() {
-  const pandocMDEditor = new PandocMDEditor({ element: 'pandoc-md-editor' });
+  const mdEditor = new MDEditor({ element: 'md-editor' });
 }

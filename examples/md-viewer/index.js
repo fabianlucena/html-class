@@ -1,5 +1,5 @@
 import { importCss } from '../../components/utils/import-css.js';
-import PandocMDViewer from '../../components/pandoc-md-viewer/pandoc-md-viewer.js';
+import MDViewer from '../../components/md-viewer/md-viewer.js';
 import { loadLanguage } from '../../components/locale/locale.js';
 import { getPath } from '../../components/utils/path.js';
 import { setBasePath } from '../../components/router/router.js';
@@ -14,16 +14,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function init() {
-  const viewer = new PandocMDViewer({ element: 'pandoc-md-viewer' });
+  const mdViewer = new MDViewer({ element: 'md-viewer' });
 
-  viewer.md = `
+  mdViewer.md = `
 ---
-title: "Manual Completo de Características: Pandoc Markdown"
+title: "Manual Completo de Características: Markdown"
 author: "Equipo de Ingeniería"
 date: "2026-10-31"
 abstract: |
   Este documento sirve como referencia y demostración exhaustiva 
-  de todas las capacidades extendidas soportadas nativamente por Pandoc Markdown.
+  de todas las capacidades extendidas soportadas nativamente por Markdown.
 lang: "es"
 ---
 
@@ -59,7 +59,7 @@ Listas de tareas interactivas:
 # 3. Notas al Pie y Citas Bibliográficas
 
 Puedes insertar notas al pie en cualquier parte del texto[^1], así como referencias 
-cruzadas a bibliografía externa usando la sintaxis estándar [@smith2024pandoc].
+cruzadas a bibliografía externa usando la sintaxis estándar [@smith2024].
 
 [^1]: Esta es la nota al pie detallada que se renderiza automáticamente al final.
 
@@ -67,7 +67,7 @@ cruzadas a bibliografía externa usando la sintaxis estándar [@smith2024pandoc]
 
 # 4. Fórmulas Matemáticas (Sintaxis LaTeX)
 
-Pandoc procesa expresiones matemáticas de forma nativa. 
+Procesa expresiones matemáticas de forma nativa. 
 En línea: $f(x) = \\sum_{i=1}^{n} x_i^2$.
 
 En bloque independiente:
@@ -113,7 +113,7 @@ También se puede incluir bloques de código en línea, por ejemplo: \`resultado
 
 > "La simplicidad es la máxima sofisticación." - Leonardo da Vinci
 
-> Cita de dos líneas para demostrar el soporte de Pandoc Markdown en bloques de texto extendidos.
+> Cita de dos líneas para demostrar el soporte de Markdown en bloques de texto extendidos.
 > Esta es la segunda línea de la cita, mostrando cómo se puede mantener el formato y la indentación.
 
 ---
