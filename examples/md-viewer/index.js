@@ -73,6 +73,8 @@ En línea: $f(x) = \\sum_{i=1}^{n} x_i^2$.
 En bloque independiente:
 $$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
 
+Solución de la ecuación cuadrática: $x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$
+
 ---
 
 # 5. Tablas Estructuradas con Leyendas (*Captions*)

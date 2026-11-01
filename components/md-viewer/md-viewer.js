@@ -42,10 +42,8 @@ function md2Html(md) {
   let lines = md.split(/\n/gm);
   // console.log(lines);
 
-  
-  while (lines.length && !lines[0].trim()) {
+  while (lines.length && !lines[0].trim())
     lines.shift();
-  }
 
   const htmlParts = [];
 
@@ -97,10 +95,11 @@ function mdFormat(md) {
   if (!md)
     return '';
 
-  md = md.replace(/\[\^([^\]]+)\]/g, '<sup><a href="#fn-$1">$1</a></sup>');
-
   md = md
     .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/\$\$(.+?)\$\$/g, (_, math) => math2html(math, { display: 'block' }))
+    .replace(/\$(.+?)\$/g, (_, math) => math2html(math, { display: 'inline' }))
+    .replace(/\[\^([^\]]+)\]/g, '<sup><a href="#fn-$1">$1</a></sup>')
     .replace(/\*{3}(.+?)\*{3}/g, '<strong><i>$1</i></strong>')
     .replace(/\*{2}(.+?)\*{2}/g, '<strong>$1</strong>')
     .replace(/\*{1}(.+?)\*{1}/g, '<em>$1</em>')
@@ -121,6 +120,191 @@ function mdFormat(md) {
       .replace(/\\pi/g, '&pi;');
 
     return md;
+}
+
+function math2html(math, { display = 'block' } = {}) {
+  const tokens = mathTokenizer(math);
+  return `<math xmlns="http://www.w3.org/1998/Math/MathML" display="${display}">
+    <mrow>
+      ${tokens2html(tokens)}
+    </mrow>
+  </math>`;
+}
+
+function mathTokenizer(math) {
+  const tokens = [];
+  const words = ['sin', 'cos', 'tan', 'log', 'ln', 'lim', 'max', 'min', 'exp', 'mod', 'gcd', 'lcm', 'det', 'dim', 'arg', 'ker', 'deg', 'hom', 'span', 'div', 'curl', 'grad'];
+
+  for (let i = 0; i < math.length; i++) {
+    const char = math[i];
+
+    if (/\s/.test(char))
+      continue;
+
+    if (char === '\\') {
+      let cmd = '\\';
+      i++;
+      while (i < math.length && /[a-zA-Z]/.test(math[i])) {
+        cmd += math[i];
+        i++;
+      }
+      i--;
+      tokens.push({ type: 'COMMAND', value: cmd });
+    } else if (/[0-9]/.test(char)) {
+      let word = '';
+      while (i < math.length && /[0-9]/.test(math[i])) {
+        word += math[i];
+        i++;
+      }
+      i--;
+
+      const token = { type: 'NUMBER', value: word };
+      tokens.push(token);
+    } else if (/[a-zA-Z]/.test(char)) {
+      let word = '';
+      while (i < math.length && /[a-zA-Z]/.test(math[i])) {
+        word += math[i];
+        i++;
+      }
+      i--;
+
+      if (words.includes(word)) {
+        const token = { type: 'COMMAND', value: '\\' + word };
+        tokens.push(token);
+      } else {
+        for (const letter of word) {
+          const token = { type: 'IDENTIFIER', value: letter };
+          tokens.push(token);
+        }
+      }
+    } else {
+      tokens.push({ type: 'SYMBOL', value: char });
+    }
+  }
+
+  return tokens;
+}
+
+function tokens2html(tokens, single) {
+  const commandsMap = {
+    '\\sum': {
+      symbol: '&sum;',
+      msub: 'munder',
+      msup: 'mover',
+      msubsup: 'munderover',
+    },
+    '\\int': {
+      symbol: '&int;',
+    },
+    '\\sqrt': {
+      tag: 'msqrt',
+      children: 1,
+    },
+    '\\infty': {
+      symbol: '&infin;',
+    },
+    '\\pi': {
+      symbol: '&pi;',
+    },
+    '\\pm': {
+      symbol: '&plusmn;',
+    },
+    '\\frac': {
+      tag: 'mfrac',
+      children: 2,
+    },
+  };
+
+  let result = '', currentCommand, node;
+  while (tokens.length) {
+    currentCommand = null;
+    let token = tokens.shift();
+
+    if (token.type === 'IDENTIFIER') {
+      node = `<mi>${token.value}</mi>`;
+    } else if (token.type === 'NUMBER') {
+      node = `<mn>${token.value}</mn>`;
+    } else if (token.type === 'COMMAND') {
+      currentCommand = commandsMap[token.value];
+      if (currentCommand) {
+        let innerHtml = '';
+        if (currentCommand.children) {
+          for (let i = 0; i < currentCommand.children; i++) {
+            innerHtml += tokens2html(tokens, true);
+          }
+        }
+
+        if (currentCommand.tag)
+          node = `<${currentCommand.tag}>${innerHtml}</${currentCommand.tag}>`;
+        else
+          node = `<mo>${currentCommand?.symbol ?? token.value}${innerHtml}</mo>`;
+      } else {
+        node = `<mo>${token.value}</mo>`;
+      }
+    } else if (token.type === 'SYMBOL') {
+      if (token.value === '{') {
+        const innerTokens = [];
+        let braceCount = 1;
+        while (tokens.length && braceCount > 0) {
+          const innerToken = tokens.shift();
+          if (innerToken.value === '{') {
+            braceCount++;
+          } else if (innerToken.value === '}') {
+            braceCount--;
+          }
+          innerTokens.push(innerToken);
+        }
+        innerTokens.pop();
+        node = `<mrow>${tokens2html(innerTokens)}</mrow>`;
+      } else if (token.value === '^') {
+        const exponent = tokens2html(tokens, true);
+        node = `<msup>${exponent}</msup>`;
+      } else if (token.value === '_') {
+        const subscript = tokens2html(tokens, true);
+        node = `<msub>${subscript}</msub>`;
+      } else {
+        node = `<mo>${token.value}</mo>`;
+      }
+    } else {
+      console.warn('Unknown token type:', token.type, 'with value:', token.value);
+    }
+
+    if (!single && tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
+      tokens.shift();
+      const exponent = tokens2html(tokens, true);
+      if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
+        tokens.shift();
+        const subscript = tokens2html(tokens, true);
+        const tag = currentCommand?.msubsup || 'msubsup';
+        node = `<${tag}>${node}${subscript}${exponent}</${tag}>`;
+      } else {
+        const tag = currentCommand?.msup || 'msup';
+        node = `<${tag}>${node}${exponent}</${tag}>`;
+      }
+    } else if (!single && tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
+      tokens.shift();
+      const subscript = tokens2html(tokens, true);
+      if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
+        tokens.shift();
+        const exponent = tokens2html(tokens, true);
+        const tag = currentCommand?.msubsup || 'msubsup';
+        node = `<${tag}>${node}${subscript}${exponent}</${tag}>`;
+      } else {
+        const tag = currentCommand?.msub || 'msub';
+        node = `<${tag}>${node}${subscript}</${tag}>`;
+      }
+    }
+
+    if (node) {
+      result += node;
+      node = null;
+    }
+
+    if (single)
+      break;
+  }
+
+  return result;
 }
 
 function extractYaml(lines) {
