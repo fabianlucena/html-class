@@ -5,3 +5,21 @@
   margin: .5em;
   min-height: 2em;
 }
+
+.pandoc-md-viewer .interactive-list {
+  list-style: none;
+  padding-left: 1em;
+}
+
+.pandoc-md-viewer table {
+  border-collapse: collapse;
+  td, th {
+    border: .1em solid #444;
+    padding: .3em .8em;
+  }
+
+  th {
+    background-color: #55a;
+    color: white;
+  }
+}

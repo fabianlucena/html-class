@@ -138,7 +138,7 @@ function pandocMdList2Html(lines) {
   const ineractiveListRegExp = /^(\s*)(-\s+\[[ xX]\])\s+(.+)$/;
 
   const line = lines[0];
-  let regExp, marker, matches, tag, interactive, checked, className;
+  let regExp, marker, matches, tag, className;
   if (matches = normalListRegExp.exec(line)) {
     marker = '*';
     regExp = normalListRegExp;
@@ -158,19 +158,14 @@ function pandocMdList2Html(lines) {
     marker = '[]';
     regExp = ineractiveListRegExp;
     tag = 'ul';
-    interactive = true;
     className = 'interactive-list';
-    checked = /\[[xX]\]/.test(matches[2]);
   } else {
     return;
   }
 
-  lines.shift();
-  
   const items = [];
   const indent = matches[1];
 
-  items.push('<li>' + (interactive ? '<input type="checkbox" ' + (checked ? 'checked' : '') + '>' : '') + pandocMdFormat(matches[3]) + '</li>');
   let nextItem;
   while (nextItem = pandocMdItem2Html(lines, regExp, indent, marker)) {
     items.push(nextItem);
@@ -192,19 +187,21 @@ function pandocMdItem2Html(lines, regExp, indent, marker) {
 
   lines.shift();
 
-  let thisMarker = matches[2], interactive, checked;
+  let text = pandocMdFormat(matches[3]);
+  let thisMarker = matches[2];
   if (/\d+/.test(thisMarker))
     thisMarker = '1.';
   else if (/-\s+\[[ xX]\]/.test(thisMarker)) {
-    interactive = true;
-    checked = /\[[xX]\]/.test(thisMarker);
+    const id = 'interactive-item-' + Math.random().toString(36).slice(2, 16);
+    const checked = /\[[xX]\]/.test(thisMarker) ? ' checked' : '';
     thisMarker = '[]';
+    text = `<input id=${id} type="checkbox" ' + ${checked}><label for=${id}>${text}</label>`;
   }
 
   if (thisMarker !== marker)
     return;
 
-  return `<li>${(interactive ? '<input type="checkbox" ' + (checked ? 'checked' : '') + '>' : '') + pandocMdFormat(matches[3])}</li>`;
+  return `<li>${text}</li>`;
 }
 
 function pandocMdBlockquote2Html(lines) {
@@ -277,7 +274,6 @@ function pandocMdTable2Html(lines) {
   const rows = [];
   let defaultStyles = [];
   do {
-    lines.shift();
     if (rows.length === 1 && tableHeaderRegexp.test(lines[0])) {
       matches[1].split('|').map((cell, i) => {
         let style = defaultStyles[i] || '';
@@ -323,6 +319,7 @@ function pandocMdTable2Html(lines) {
       }));
     }
 
+    lines.shift();
   } while (matches = tableRowRegexp.exec(lines[0]));
   lines.shift();
 
