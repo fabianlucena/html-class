@@ -42,8 +42,19 @@ function pandocMd2Html(md) {
   let lines = md.split(/\n/gm);
   // console.log(lines);
 
-  let htmlPart, htmlP = [];
+  
+  while (lines.length && !lines[0].trim()) {
+    lines.shift();
+  }
+
   const htmlParts = [];
+
+  const metadata = extractYaml(lines);
+  if (metadata) {
+    htmlParts.push(pandocMdMetadata2Html(metadata));
+  }
+
+  let htmlPart, htmlP = [];
   while (lines.length) {
     htmlPart = pandocMdRule2Html(lines)
       ?? pandocMdHeading2Html(lines)
@@ -110,6 +121,73 @@ function pandocMdFormat(md) {
       .replace(/\\pi/g, '&pi;');
 
     return md;
+}
+
+function extractYaml(lines) {
+  const beginYamlRegExp = /^\s{0,3}---\s*$/;
+  const endYamlRegExp = /^\s{0,3}---\s*$/;
+  const kvReExp = /^([a-zA-Z0-9_-]+):\s*(.*)$/;
+
+  const match = beginYamlRegExp.exec(lines[0]);
+  if (!match)
+    return;
+
+  lines.shift();
+
+  let key;
+  const metadata = {};
+  while (lines.length && !endYamlRegExp.test(lines[0])) {
+    const line = lines.shift();
+
+    const matchKV = kvReExp.exec(line);
+    if (matchKV) {
+      key = matchKV[1];
+      const value = matchKV[2].trim();
+
+      if (value === '|' || value === '>') {
+          metadata[key] = '';
+      } else {
+        metadata[key] = value.replace(/^["'](.*)["']$/, '$1');
+        key = null;
+      }
+    } else if (key && line.startsWith('  ')) {
+      metadata[key] += (metadata[key] ? '\n' : '') + line.trim();
+    }
+  }
+
+  lines.shift();
+
+  return metadata;
+}
+
+function pandocMdMetadata2Html(metadata) {
+  if (!metadata)
+    return '';
+
+  const { title, author, date, abstract, lang, ...rest } = metadata;
+
+  let html = '';
+
+  if (title)
+    html += `<h1>${title}</h1>`;
+
+  if (author)
+    html += `<div class="metadata-item"><span class="metadata-key">Author:</span> <span class="metadata-value">${author}</span></div>`;
+
+  if (date)
+    html += `<div class="metadata-item"><span class="metadata-key">Date:</span> <span class="metadata-value">${date}</span></div>`;
+
+  if (abstract)
+    html += `<div class="metadata-item"><span class="metadata-key">Abstract:</span> <span class="metadata-value">${abstract}</span></div>`;
+
+  if (lang)
+    html += `<div class="metadata-item"><span class="metadata-key">Language:</span> <span class="metadata-value">${lang}</span></div>`;
+
+  for (const [key, value] of Object.entries(rest)) {
+    html += `<div class="metadata-item"><span class="metadata-key">${key}:</span> <span class="metadata-value">${value}</span></div>`;
+  }
+  
+  return `<div class="metadata">${html}</div><hr>`;
 }
 
 function pandocMdRule2Html(lines) {
