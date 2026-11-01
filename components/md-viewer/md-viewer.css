@@ -1,9 +1,14 @@
 .md-viewer {
-  border: .15em solid #888;
   border-radius: 1em;
-  padding: .5em;
+  padding: .5em 1em;
   margin: .5em;
   min-height: 2em;
+  border: .15em solid rgba(0, 0, 0, 0.6);
+  box-shadow: 0 .3em 1em rgba(0, 0, 0, 0.6);
+
+  a {
+    text-decoration: none;
+  }
 
   .interactive-list {
     list-style: none;
@@ -18,14 +23,13 @@
     }
 
     th {
-      background-color: #55a;
+      background-color: rgb(80, 80, 238);
       color: white;
     }
   }
 
   code {
-    background-color: #444;
-    color: white;
+    background-color: #ccc;
     padding: .1em .2em;
     border-radius: .3em;
   }
@@ -41,6 +45,7 @@
     padding: .5em .5em;
     border-radius: .6em;
     border-left: .4em solid transparent;
+    border-color: #999;
     background-color: #f3f4f6;
     color: #1f2937;
   }
@@ -76,6 +81,31 @@
   }
 
   @media (prefers-color-scheme: dark) {
+    border: .15em solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 .3em 1em rgba(255, 255, 255, 0.6);
+    
+    color: #aaa;
+    background-color: #222522;
+
+    a {
+      color: #99f;
+    }
+
+    table {
+      td, th {
+        border: .1em solid #444;
+      }
+
+      th {
+        background-color: rgb(41, 41, 92);
+        color: #ccc;
+      }
+    }
+
+    code {
+      background-color: #233;
+    }
+
     .note.note {
       border-color: #9ca3af;
       background-color: #1f2937;
