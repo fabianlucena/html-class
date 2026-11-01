@@ -1,11 +1,11 @@
-.mdx-editor {
+.pandoc-md-viewer {
   border: 1px solid #ccc;
   padding: 10px;
   min-height: 2em;
   --hint-text: 'Type "/" for commands'
 }
 
-.mdx-editor.show-hint::after {
+.mdpandoc-viewer.show-hint::after {
   content: var(--hint-text);
   position: absolute;
   color: rgba(0,0,0,0.20);
@@ -15,7 +15,7 @@
   margin-top: -1em;
 }
 
-.mdx-editor .block {
+.pandoc-md-viewer .block {
   border-left: .3em solid #606060;
   background: #d0d0d0;
   border-radius: .7em;
