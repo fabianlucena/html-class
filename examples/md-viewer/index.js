@@ -27,6 +27,30 @@ abstract: |
 lang: "es"
 ---
 
+# 0. Líneas de Separación y Reglas Horizontales
+
+Linea simple de separación
+___
+
+Doble línea de separación
+===
+
+Triple línea de separación
+≡≡≡
+
+Línea punteada de separación
+*** 
+. . . 
+...
+
+Línea de separación con guiones
+- - -
+:::
+
+
+
+---
+
 # 1. Tipografía y Formato de Texto Básico
 
 ## Subtítulos y Encabezados
@@ -145,6 +169,12 @@ Esta es una información general o nota informativa para el equipo.
 ::: error
 Nota de error: Se ha producido un fallo crítico en el sistema.
 :::
+
+***
+
+# 10. Imágnes y Multimedia
+
+![Boca Corazón](https://wallpaperbat.com/img/939147-boca-juniors-hd-wallpaper-and-background.jpg "CABJ")
 
 `;
 }

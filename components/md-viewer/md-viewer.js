@@ -120,7 +120,7 @@ function mdFormat(md) {
     })
     .replace(imageRegex, (_, alt, url, title) => {
       const titleAttr = title ? ` title="${title}"` : '';
-      return `<img src="${url.trim()}" alt="${alt}"${titleAttr} loading="lazy" />`;
+      return `<img src="${url.trim()}" alt="${alt}"${titleAttr} style="max-width: 100%; height: auto;" loading="lazy" />`;
     })
     .replace(linkRegex, (_, textContent, url, title) => {
       const titleAttr = title ? ` title="${title}"` : '';
@@ -389,16 +389,36 @@ function mdMetadata2Html(metadata) {
     html += `<div class="metadata-item"><span class="metadata-key">${key}:</span> <span class="metadata-value">${value}</span></div>`;
   }
   
-  return `<div class="metadata">${html}</div><hr>`;
+  return `<div class="metadata">${html}</div><hr class="single-rule">`;
 }
 
 function mdRule2Html(lines) {
-  const regExp = /^\s{0,3}---$/;
-  if (!regExp.test(lines[0]))
+  const regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|:::+|- - -|. . .)/;
+  const matches = regExp.exec(lines[0]);
+  if (!matches)
     return;
 
+  let className;
+  let pattern = matches[1].slice(0, 5);
+  className = pattern === '- - -' ? 'dashed-rule' :
+    pattern === '. . .' ? 'dotted-rule' :
+    '';
+    
+  if (!className) {
+    pattern = matches[1].slice(0, 3);
+    className = pattern === '---' ? 'single-rule' :
+      pattern === '___' ? 'single-rule' :
+      pattern === '===' ? 'double-rule' :
+      pattern === '===' ? 'double-rule' :
+      pattern === '≡≡≡' ? 'triple-rule' :
+      pattern === '...' ? 'dotted-rule' :
+      pattern === ':::' ? 'dashed-rule' :
+      pattern === '***' ? 'dotted2-rule' :
+      'single-rule';
+  }
+
   lines.shift();
-  return '<hr>';
+  return `<hr class="${className}">`;
 }
 
 function mdHeading2Html(lines) {
@@ -502,7 +522,7 @@ function mdBlockquote2Html(lines) {
 }
 
 function mdDefinitions2Html(lines) {
-  const ddRegExp = /^\s{0,3}:\s*(.+)$/;
+  const ddRegExp = /^\s{0,3}:[^:]\s*(.+)$/;
 
   let defs = [];
   while (true) {
