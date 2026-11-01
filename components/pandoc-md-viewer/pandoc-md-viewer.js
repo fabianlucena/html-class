@@ -39,35 +39,42 @@ export default class PandocMDViewer extends Base {
 }
 
 function pandocMd2Html(md) {
-  const lines = md.split(/\n/gm);
-  console.log(lines);
+  let lines = md.split(/\n/gm);
+  // console.log(lines);
 
-  let res;
-  let matches;
+  let htmlPart, htmlP = [];
   const htmlParts = [];
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-    if (!line)
-      continue;
+  while (lines.length) {
+    htmlPart = pandocMdRule2Html(lines)
+      ?? pandocMdHeading2Html(lines)
+      ?? pandocMdList2Html(lines)
+      ?? pandocMdBlockquote2Html(lines)
+      ?? pandocMdDefinitions2Html(lines)
+      ?? pandocMdFootNote2Html(lines)
+      ?? pandocMdTable2Html(lines)
+      ?? pandocMdCodeBlock2Html(lines);
 
-    res = pandocMdRule2Html(lines, i)
-      ?? pandocMdHeading2Html(lines, i)
-      ?? pandocMdList2Html(lines, i)
-      ?? pandocMdBlockquote2Html(lines, i)
-      ?? pandocMdDefinitions2Html(lines, i)
-      ?? pandocMdFootNote2Html(lines, i)
-      ?? pandocMdTable2Html(lines, i)
-      ?? pandocMdCodeBlock2Html(lines, i);
-
-    if (res) {
-      i = res.i;
-      htmlParts.push(res.html);
+    if (htmlPart) {
+      if (htmlP.length) {
+        htmlParts.push(`<p>${htmlP.join(' ')}</p>`);
+        htmlP = [];
+      }
+      
+      htmlParts.push(htmlPart);
       continue;
     }
 
-    let text = line.trim();
+    const line = lines.shift().trim();
+    if (!line) {
+      if (htmlP.length) {
+        htmlParts.push(`<p>${htmlP.join(' ')}</p>`);
+        htmlP = [];
+      }
 
-    htmlParts.push('<p>' + pandocMdFormat(text) + '</p>');
+      continue;
+    }
+
+    htmlP.push(pandocMdFormat(line));
   }
 
   return htmlParts.join('');
@@ -103,77 +110,87 @@ function pandocMdFormat(md) {
     return md;
 }
 
-function pandocMdRule2Html(lines, i) {
-  if (!/^\s{0,3}---$/.test(lines[i]))
+function pandocMdRule2Html(lines) {
+  const regExp = /^\s{0,3}---$/;
+  if (!regExp.test(lines[0]))
     return;
 
-  return { i, html: '<hr>' };
+  lines.shift();
+  return '<hr>';
 }
 
-function pandocMdHeading2Html(lines, i) {
-  const matches = /^\s{0,3}(#+)\s+(.+)?$/.exec(lines[i]);
+function pandocMdHeading2Html(lines) {
+  const regExp = /^\s{0,3}(#+)\s+(.+)?$/;
+  const matches = regExp.exec(lines[0]);
   if (!matches)
     return;
 
+  lines.shift();
   const level = matches[1].length;
   const headingTag = 'h' + level;
-  const html = '<' + headingTag + '>' + pandocMdFormat(matches[2]) + '</' + headingTag + '>';
-  return { i, html };
+  return '<' + headingTag + '>' + pandocMdFormat(matches[2]) + '</' + headingTag + '>';
 }
 
-function pandocMdList2Html(lines, i) {
+function pandocMdList2Html(lines) {
   const normalListRegExp = /^(\s*)(\*)\s+(.+)$/;
   const orderedListRegExp = /^(\s*)(\d+\.)\s+(.+)$/;
   const automaticListRegExp = /^(\s*)(\(@\))\s+(.+)$/;
   const ineractiveListRegExp = /^(\s*)(-\s+\[[ xX]\])\s+(.+)$/;
 
-  let regExp, marker, matches, tag, interactive, checked;
-  if (matches = normalListRegExp.exec(lines[i])) {
+  const line = lines[0];
+  let regExp, marker, matches, tag, interactive, checked, className;
+  if (matches = normalListRegExp.exec(line)) {
     marker = '*';
     regExp = normalListRegExp;
     tag = 'ul';
-  } else if (matches = orderedListRegExp.exec(lines[i])) {
+    className = 'normal-list';
+  } else if (matches = orderedListRegExp.exec(line)) {
     marker = '1.';
     regExp = orderedListRegExp;
     tag = 'ol';
-  } else if (matches = automaticListRegExp.exec(lines[i])) {
+    className = 'ordered-list';
+  } else if (matches = automaticListRegExp.exec(line)) {
     marker = '(@)';
     regExp = automaticListRegExp;
     tag = 'ol';
-  } else if (matches = ineractiveListRegExp.exec(lines[i])) {
+    className = 'automatic-list';
+  } else if (matches = ineractiveListRegExp.exec(line)) {
     marker = '[]';
     regExp = ineractiveListRegExp;
     tag = 'ul';
     interactive = true;
+    className = 'interactive-list';
     checked = /\[[xX]\]/.test(matches[2]);
   } else {
     return;
   }
+
+  lines.shift();
   
   const items = [];
   const indent = matches[1];
 
   items.push('<li>' + (interactive ? '<input type="checkbox" ' + (checked ? 'checked' : '') + '>' : '') + pandocMdFormat(matches[3]) + '</li>');
   let nextItem;
-  while (nextItem = pandocMdItem2Html(lines, i + 1, regExp, indent, marker)) {
-    i = nextItem.i;
-    items.push(nextItem.html);
+  while (nextItem = pandocMdItem2Html(lines, regExp, indent, marker)) {
+    items.push(nextItem);
   }
 
-  const html = `<${tag}>` + items.join('') + `</${tag}>`;
-  return { i, html };
+  return `<${tag} class="${className}">${items.join('')}</${tag}>`;
 }
 
-function pandocMdItem2Html(lines, i, regExp, indent, marker) {
-  const matches = regExp.exec(lines[i]);
+function pandocMdItem2Html(lines, regExp, indent, marker) {
+  const matches = regExp.exec(lines[0]);
   if (!matches)
     return;
 
   if (matches[1].length > indent.length)
-    return pandocMdList2Html(lines, i);
+    return pandocMdList2Html(lines);
 
   if (matches[1].length !== indent.length)
     return;
+
+  lines.shift();
 
   let thisMarker = matches[2], interactive, checked;
   if (/\d+/.test(thisMarker))
@@ -187,80 +204,81 @@ function pandocMdItem2Html(lines, i, regExp, indent, marker) {
   if (thisMarker !== marker)
     return;
 
-  const html = `<li>` + (interactive ? '<input type="checkbox" ' + (checked ? 'checked' : '') + '>' : '') + pandocMdFormat(matches[3]) + `</li>`;
-  return { i, html };
+  return `<li>${(interactive ? '<input type="checkbox" ' + (checked ? 'checked' : '') + '>' : '') + pandocMdFormat(matches[3])}</li>`;
 }
 
-function pandocMdBlockquote2Html(lines, i) {
-  let matches = /^\s{0,3}>\s+(.+)$/.exec(lines[i]);
+function pandocMdBlockquote2Html(lines) {
+  const regExp = /^\s{0,3}>\s+(.+)$/;
+  let matches = regExp.exec(lines[0]);
   if (!matches)
     return;
 
   let htmlLines = [];
   do {
+    lines.shift();
     htmlLines.push(pandocMdFormat(matches[1]));
-  } while (matches = /^\s{0,3}>\s+(.+)$/.exec(lines[++i]));
-  i--;
+  } while (matches = regExp.exec(lines[0]));
   
-  
-  return { i, html: '<blockquote>' + htmlLines.join('<br>') + '</blockquote>' };
+  return '<blockquote>' + htmlLines.join('<br>') + '</blockquote>';
 }
 
-function pandocMdDefinitions2Html(lines, i) {
-  let prev = i;
+function pandocMdDefinitions2Html(lines) {
+  const ddRegExp = /^\s{0,3}:\s*(.+)$/;
+
   let defs = [];
   while (true) {
-    const term = lines[i].trim();
+    const term = lines[0].trim();
     if (!term)
       break;
 
-    let matches = /^\s{0,3}:\s*(.+)$/.exec(lines[i + 1]);
+    let matches = ddRegExp.exec(lines[1]);
     if (!matches)
       break;
 
+    lines.shift();
+    lines.shift();
     let def = `<dt>${pandocMdFormat(term)}</dt><dd>${pandocMdFormat(matches[1])}</dd>`;
-    i += 2;
-    prev = i;
     
-    while (matches = /^\s{0,3}:\s*(.+)$/.exec(lines[i])) {
+    while (matches = ddRegExp.exec(lines[0])) {
+      lines.shift();
       def += `<dd>${pandocMdFormat(matches[1])}</dd>`;
-      i++;
-      prev = i;
     }
 
     defs.push(def);
 
-    while (!lines[i].trim() && i < lines.length)
-      i++;
+    while (!lines[0].trim())
+      lines.shift();
   }
 
   if (!defs.length)
-    return null;
+    return;
 
-  i = prev;
-  const html = defs.length ? `<dl>${defs.join('')}</dl>` : '';
-
-  return { i, html };
+  return `<dl>${defs.join('')}</dl>` ;
 }
 
-function pandocMdFootNote2Html(lines, i) {
-  const matches = /^\s{0,3}\[\^([^\]]+)\]:\s+(.+)$/.exec(lines[i]);
+function pandocMdFootNote2Html(lines) {
+  const regExp = /^\s{0,3}\[\^([^\]]+)\]:\s+(.+)$/;
+  const matches = regExp.exec(lines[0]);
   if (!matches)
     return;
 
-  const html = '<p><sup id="fn-' + matches[1] + '">' + matches[1] + '</sup>' + pandocMdFormat(matches[2]) + '</p>';
-  return { i, html };
+  lines.shift();
+  return `<p><sup id="fn-${matches[1]}">${matches[1]}</sup>${pandocMdFormat(matches[2])}</p>`;
 }
 
-function pandocMdTable2Html(lines, i) {
-  let matches = /^\s{0,3}\|\s*(.+)$/.exec(lines[i]);  
+function pandocMdTable2Html(lines) {
+  const tableRowRegexp = /^\s{0,3}\|\s*(.+)\s*\|$/;
+  const tableHeaderRegexp = /^\s{0,3}\|\s*(:?-+:?\s*\|)+\s*$/;
+
+  let matches = tableRowRegexp.exec(lines[0]);  
   if (!matches)
     return;
 
   const rows = [];
   let defaultStyles = [];
   do {
-    if (rows.length === 1 && /^\s{0,3}\|\s*(:?-+:?\s*\|)+\s*$/.test(lines[i])) {
+    lines.shift();
+    if (rows.length === 1 && tableHeaderRegexp.test(lines[0])) {
       matches[1].split('|').map((cell, i) => {
         let style = defaultStyles[i] || '';
         if (cell.startsWith(':')) {
@@ -305,35 +323,36 @@ function pandocMdTable2Html(lines, i) {
       }));
     }
 
-  } while (matches = /^\s{0,3}\|\s*(.+)$/.exec(lines[++i]));
-  i--;
+  } while (matches = tableRowRegexp.exec(lines[0]));
+  lines.shift();
 
   let tableHtml = '';
   rows.forEach(row => {
     tableHtml += '<tr>' + row.join('') + '</tr>';
   });
-  const html = '<table>' + tableHtml + '</table>';
 
-  return { i, html };
+  return '<table>' + tableHtml + '</table>';
 }
 
-function pandocMdCodeBlock2Html(lines, i) {
-  let matches  = /^\s{0,3}```\s*(\w+)?\s*(\{[^\}]+\})?\s*$/.exec(lines[i]);
+function pandocMdCodeBlock2Html(lines) {
+  const beginRegExp = /^\s{0,3}```\s*(\w+)?\s*(\{[^\}]+\})?\s*$/;
+  const endRegExp = /^\s{0,3}```\s*$/;
+
+  let matches = beginRegExp.exec(lines[0]);
   if (!matches)
     return;
 
-  i++;
+  lines.shift();
   let lang = matches[1] || '';
   let attrs = matches[2] || '';
   let codeLines = [];
   do {
-    if (/^\s{0,3}```\s*$/.test(lines[i]))
+    const line = lines.shift();
+    if (endRegExp.test(line)) 
       break;
 
-    codeLines.push(lines[i++]);
-  } while (i < lines.length);
-
-  const html = '<pre><code class="language-' + lang + '" ' + attrs + '>' + codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n') + '</code></pre>';
- 
-  return { i, html };
+    codeLines.push(line);
+  } while (lines.length);
+  
+  return `<pre><code class="language-${lang}" ${attrs}>${codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`;
 }
