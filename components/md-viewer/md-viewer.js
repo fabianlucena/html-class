@@ -92,6 +92,8 @@ function md2Html(md) {
 
 function mdFormat(md) {
   const citationRegex = /\[@([a-zA-Z0-9_-]+)(?:,\s*([^\]]+))?\]/g;
+  const imageRegex = /!\[([^\]]*?)\]\(([^)]+?)(?:\s+"([^"]+)")?\)/g;
+  const linkRegex = /\[([^\]]+?)\]\(([^)]+?)(?:\s+"([^"]+)")?\)/g;
 
   md = md.trim();
   if (!md)
@@ -112,9 +114,19 @@ function mdFormat(md) {
     .replace(/~(.+?)~/g, '<sub>$1</sub>')
     .replace(/\^(.+?)\^/g, '<sup>$1</sup>')
     .replace(/==(.+?)==/g, '<mark>$1</mark>')
-    .replace(citationRegex, (match, key, page) => {
-        const detalle = page ? `, ${page}` : '';
-        return `<cite class="citation" data-ref="${key}"><a href="#ref-${key}">(${key}${detalle})</a></cite>`;
+    .replace(citationRegex, (_, key, page) => {
+      const detalle = page ? `, ${page}` : '';
+      return `<cite class="citation" data-ref="${key}"><a href="#ref-${key}">(${key}${detalle})</a></cite>`;
+    })
+    .replace(imageRegex, (_, alt, url, title) => {
+      const titleAttr = title ? ` title="${title}"` : '';
+      return `<img src="${url.trim()}" alt="${alt}"${titleAttr} loading="lazy" />`;
+    })
+    .replace(linkRegex, (_, textContent, url, title) => {
+      const titleAttr = title ? ` title="${title}"` : '';
+      const isExternal = url.startsWith('http');
+      const targetAttr = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+      return `<a href="${url.trim()}"${titleAttr}${targetAttr}>${textContent}</a>`;
     });
 
   if (md.includes('\\'))
