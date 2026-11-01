@@ -106,6 +106,7 @@ def procesar_datos(vector):
     return [sum(vector[:i+1]) for i in range(len(vector))]
 \`\`\`
 
+También se puede incluir bloques de código en línea, por ejemplo: \`resultado = procesar_datos([1, 2, 3])\` en cualquier parte de la oración.
 ---
 
 # 8. Citas y Bloques de Texto Especializados
@@ -115,6 +116,33 @@ def procesar_datos(vector):
 > Cita de dos líneas para demostrar el soporte de Pandoc Markdown en bloques de texto extendidos.
 > Esta es la segunda línea de la cita, mostrando cómo se puede mantener el formato y la indentación.
 
+---
+
+# 9. Notas
+
+:::
+Nota genérica: Este es un bloque de nota informativa que puede contener múltiples líneas y formatos.
+:::
+
+::: info
+Esta es una información general o nota informativa para el equipo.
+:::
+
+::: tip
+**Consejo útil:** Puedes usar comandos rápidos escribiendo "/tip" directamente en el editor visual.
+:::
+
+::: warning
+**Advertencia:** Esta acción no se puede deshacer una vez ejecutada.
+:::
+
+::: {.success}
+¡El despliegue del módulo se ha completado con éxito!
+:::
+
+::: error
+Nota de error: Se ha producido un fallo crítico en el sistema.
+:::
+
 `;
 }
-

@@ -52,7 +52,8 @@ function pandocMd2Html(md) {
       ?? pandocMdDefinitions2Html(lines)
       ?? pandocMdFootNote2Html(lines)
       ?? pandocMdTable2Html(lines)
-      ?? pandocMdCodeBlock2Html(lines);
+      ?? pandocMdCodeBlock2Html(lines)
+      ?? pandocMdNoteBlock2Html(lines);
 
     if (htmlPart) {
       if (htmlP.length) {
@@ -88,6 +89,7 @@ function pandocMdFormat(md) {
   md = md.replace(/\[\^([^\]]+)\]/g, '<sup><a href="#fn-$1">$1</a></sup>');
 
   md = md
+    .replace(/`(.+?)`/g, '<code>$1</code>')
     .replace(/\*{3}(.+?)\*{3}/g, '<strong><i>$1</i></strong>')
     .replace(/\*{2}(.+?)\*{2}/g, '<strong>$1</strong>')
     .replace(/\*{1}(.+?)\*{1}/g, '<em>$1</em>')
@@ -243,7 +245,7 @@ function pandocMdDefinitions2Html(lines) {
 
     defs.push(def);
 
-    while (!lines[0].trim())
+    while (lines[0] && !lines[0].trim())
       lines.shift();
   }
 
@@ -351,5 +353,40 @@ function pandocMdCodeBlock2Html(lines) {
     codeLines.push(line);
   } while (lines.length);
   
-  return `<pre><code class="language-${lang}" ${attrs}>${codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`;
+  return `<pre><code class="language-${lang} block" ${attrs}>${codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`;
+}
+
+function pandocMdNoteBlock2Html(lines) {
+const beginRegExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/gm;
+  const endRegExp = /^\s{0,3}:{3}\s*$/;
+
+  let matches = beginRegExp.exec(lines[0]);
+  if (!matches)
+    return;
+
+  lines.shift();
+  let noteLines = [];
+  do {
+    const line = lines.shift();
+    if (endRegExp.test(line)) 
+      break;
+
+    noteLines.push(pandocMdFormat(line));
+  } while (lines.length);
+
+  let className = 'note';
+  const attr = [];
+  const noteType = matches[1] ? matches[1].trim() : '';
+  const optionsMatches = /\{(.+)\}/.exec(noteType);
+  if (optionsMatches) {
+    optionsMatches[1].split(/\s+/).forEach(option => {
+      if (option.startsWith('.')) {
+        attr.push(option.slice(1));
+      }
+    });
+  } else if (noteType) {
+    className += ' ' + noteType.toLocaleLowerCase();
+  }
+  
+  return `<div class="${className} ${attr.join(' ')}">${noteLines.join('\n')}</div>`;
 }

@@ -4,22 +4,112 @@
   padding: .5em;
   margin: .5em;
   min-height: 2em;
-}
 
-.pandoc-md-viewer .interactive-list {
-  list-style: none;
-  padding-left: 1em;
-}
-
-.pandoc-md-viewer table {
-  border-collapse: collapse;
-  td, th {
-    border: .1em solid #444;
-    padding: .3em .8em;
+  .interactive-list {
+    list-style: none;
+    padding-left: 1em;
   }
 
-  th {
-    background-color: #55a;
+  table {
+    border-collapse: collapse;
+    td, th {
+      border: .1em solid #444;
+      padding: .3em .8em;
+    }
+
+    th {
+      background-color: #55a;
+      color: white;
+    }
+  }
+
+  code {
+    background-color: #444;
     color: white;
+    padding: .1em .2em;
+    border-radius: .3em;
+  }
+
+  code.block {
+    display: block;
+    padding: .5em .5em;
+    border-radius: .3em;
+  }
+
+  .note {
+    margin: 1em .2em;
+    padding: .5em .5em;
+    border-radius: .6em;
+    border-left: .4em solid transparent;
+    background-color: #f3f4f6;
+    color: #1f2937;
+  }
+
+  .note.info {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+    color: #1e3a8a;
+  }
+
+  .note.tip {
+    border-color: #10b981;
+    background-color: #ecfdf5;
+    color: #064e3b;
+  }
+
+  .note.success {
+    border-color: #22c55e;
+    background-color: #f0fdf4;
+    color: #14532d;
+  }
+
+  .note.warning {
+    border-color: #f59e0b;
+    background-color: #fffbeb;
+    color: #78350f;
+  }
+
+  .note.error {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+    color: #7f1d1d;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .note.note {
+      border-color: #9ca3af;
+      background-color: #1f2937;
+      color: #f3f4f6;
+    }
+
+    .note.info {
+      border-color: #60a5fa;
+      background-color: #172554;
+      color: #dbeafe;
+    }
+
+    .note.tip {
+      border-color: #34d399;
+      background-color: #022c22;
+      color: #d1fae5;
+    }
+
+    .note.success {
+      border-color: #4ade80;
+      background-color: #052e16;
+      color: #dcfce7;
+    }
+
+    .note.warning {
+      border-color: #fbbf24;
+      background-color: #451a03;
+      color: #fef3c7;
+    }
+
+    .note.error {
+      border-color: #f87171;
+      background-color: #450a0a;
+      color: #fee2e2;
+    }
   }
 }
