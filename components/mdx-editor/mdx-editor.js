@@ -1,22 +1,22 @@
 import { importCss, insertCss } from '../utils/import-css.js';
-import Base from '../utils/base.js';
+import MdxViewer from '../mdx-viewer/mdx-viewer.js';
 import { addLocaleUrl, _, onLanguageLoaded } from '../locale/locale.js';
-import Menu from '../menu/menu.js';
+//import Menu from '../menu/menu.js';
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
-importCss('./class-editor.css', import.meta.url);
-const style = insertCss(`.class-editor { --hint-text: "Type \\"/\\" for commands"; } `);
+importCss('./mdx-editor.css', import.meta.url);
+const style = insertCss(`.mdx-editor { --hint-text: "Type \\"/\\" for commands"; } `);
 
 onLanguageLoaded(() => {
   setHint(_('Type "/" for commands'));
-  setMenuItems();
+  //setMenuItems();
 });
 
 function setHint(text) {
-  style.textContent = `.class-editor { --hint-text: "${text.replace(/"/g, '\\"')}"; } `;
+  style.textContent = `.mdx-editor { --hint-text: "${text.replace(/"/g, '\\"')}"; } `;
 }
-
+/*
 function setMenuItems(items) {
   menu.items = [
     {
@@ -45,24 +45,16 @@ function setMenuItems(items) {
 document.addEventListener('DOMContentLoaded', async () => {
   init();
 });
-
-export default class ClassEditor extends Base {
+*/
+export default class MdxEditor extends MdxViewer {
   constructor(options) {
-    super();
-    this.create(options);
+    super(options);
   }
 
   create(options) {
     super.create(options);
-    if (!this.parent)
-      this.parent = document.body;
 
-    if (!this.element) {
-      this.element = document.createElement('div');
-      this.parent.appendChild(this.element);
-    }
-
-    this.element.classList.add('class-editor');
+    this.element.classList.add('mdx-editor');
     this.element.tabIndex = 0;
     this.element.contentEditable = true;
   }
@@ -72,7 +64,7 @@ export default class ClassEditor extends Base {
     this.element = null;
   }
 }
-
+/*
 var menu,
   activeEditor = null;
 
@@ -110,7 +102,7 @@ function addCharacter(char) {
 
 function onKeyUp(event) {
   const editor = event.target;
-  if (!editor.classList.contains('class-editor'))
+  if (!editor.classList.contains('mdx-editor'))
     return;
 
   updateHint(editor);
@@ -118,7 +110,7 @@ function onKeyUp(event) {
 
 function onMouseUp(event) {
   const editor = event.target;
-  if (!editor.classList.contains('class-editor'))
+  if (!editor.classList.contains('mdx-editor'))
     return;
 
   updateHint(editor);
@@ -126,7 +118,7 @@ function onMouseUp(event) {
   
 function onKeyDown(event) {
   const editor = event.target;
-  if (!editor.classList.contains('class-editor'))
+  if (!editor.classList.contains('mdx-editor'))
     return;
 
   if (menu.showing) {
@@ -333,3 +325,4 @@ function createBlock() {
 
   document.execCommand('formatBlock', false, 'P');
 }
+*/

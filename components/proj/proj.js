@@ -80,14 +80,10 @@ export default class Proj extends Base {
   }
   
   create(options = {}) {
-    super.create(options);
-    if (!this.parent)
-      this.parent = document.body;
+    super.create({ ...options, defaultParentElement: document.body });
     
-    if (!this.element) {
+    if (!this.element)
       this.element = document.createElement('div');
-      this.parent.appendChild(this.element);
-    }
 
     this.element.className = 'proj';
 

@@ -36,8 +36,8 @@ export default class Form extends Base {
     this.element.addEventListener('input', this.inputHandlerBinded);
     this.element.addEventListener('click', this.clickHandler.bind(this));
 
-    if (this.parent) {
-      this.parent.appendChild(this.element);
+    if (this.parentElement) {
+      this.parentElement.appendChild(this.element);
       if (this.fields?.length)
         this.render();
     }
@@ -61,7 +61,7 @@ export default class Form extends Base {
       .join('');
 
     if (options.parent)
-      this.parent.appendChild(this.element);
+      this.parentElement.appendChild(this.element);
 
     this.element.innerHTML = html;
   }
