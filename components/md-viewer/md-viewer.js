@@ -91,6 +91,8 @@ function md2Html(md) {
 }
 
 function mdFormat(md) {
+  const citationRegex = /\[@([a-zA-Z0-9_-]+)(?:,\s*([^\]]+))?\]/g;
+
   md = md.trim();
   if (!md)
     return '';
@@ -109,7 +111,11 @@ function mdFormat(md) {
     .replace(/~~(.+?)~~/g, '<del>$1</del>')
     .replace(/~(.+?)~/g, '<sub>$1</sub>')
     .replace(/\^(.+?)\^/g, '<sup>$1</sup>')
-    .replace(/==(.+?)==/g, '<mark>$1</mark>');
+    .replace(/==(.+?)==/g, '<mark>$1</mark>')
+    .replace(citationRegex, (match, key, page) => {
+        const detalle = page ? `, ${page}` : '';
+        return `<cite class="citation" data-ref="${key}"><a href="#ref-${key}">(${key}${detalle})</a></cite>`;
+    });
 
   if (md.includes('\\'))
     md = md

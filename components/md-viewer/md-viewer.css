@@ -91,6 +91,11 @@
       color: #99f;
     }
 
+    mark {
+      background-color: #5f5322;
+      color: inherit;
+    }
+
     table {
       td, th {
         border: .1em solid #444;
