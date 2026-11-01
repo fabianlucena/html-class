@@ -393,7 +393,7 @@ function mdMetadata2Html(metadata) {
 }
 
 function mdRule2Html(lines) {
-  const regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|:::+|- - -|. . .)/;
+  const regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|- - -|\. \. \.)/;
   const matches = regExp.exec(lines[0]);
   if (!matches)
     return;
@@ -412,7 +412,6 @@ function mdRule2Html(lines) {
       pattern === '===' ? 'double-rule' :
       pattern === '≡≡≡' ? 'triple-rule' :
       pattern === '...' ? 'dotted-rule' :
-      pattern === ':::' ? 'dashed-rule' :
       pattern === '***' ? 'dotted2-rule' :
       'single-rule';
   }
@@ -657,7 +656,7 @@ function mdCodeBlock2Html(lines) {
 }
 
 function mdNoteBlock2Html(lines) {
-const beginRegExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/gm;
+  const beginRegExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/gm;
   const endRegExp = /^\s{0,3}:{3}\s*$/;
 
   let matches = beginRegExp.exec(lines[0]);

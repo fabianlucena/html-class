@@ -45,9 +45,6 @@ Línea punteada de separación
 
 Línea de separación con guiones
 - - -
-:::
-
-
 
 ---
 
