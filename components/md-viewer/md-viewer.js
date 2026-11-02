@@ -62,7 +62,7 @@ function md2Html(md) {
       ?? mdFootNote2Html(lines)
       ?? mdTable2Html(lines)
       ?? mdCodeBlock2Html(lines)
-      ?? mdNoteBlock2Html(lines);
+      ?? mdBlock2Html(lines);
 
     if (htmlPart) {
       if (htmlP.length) {
@@ -655,7 +655,7 @@ function mdCodeBlock2Html(lines) {
   return `<pre><code class="language-${lang} block" ${attrs}>${codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`;
 }
 
-function mdNoteBlock2Html(lines) {
+function mdBlock2Html(lines) {
   const beginRegExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/gm;
   const endRegExp = /^\s{0,3}:{3}\s*$/;
 
@@ -664,28 +664,28 @@ function mdNoteBlock2Html(lines) {
     return;
 
   lines.shift();
-  let noteLines = [];
+  let blockLines = [];
   do {
     const line = lines.shift();
     if (endRegExp.test(line)) 
       break;
 
-    noteLines.push(mdFormat(line));
+    blockLines.push(mdFormat(line));
   } while (lines.length);
 
-  let className = 'note';
+  let className = 'block';
   const attr = [];
-  const noteType = matches[1] ? matches[1].trim() : '';
-  const optionsMatches = /\{(.+)\}/.exec(noteType);
+  const blockType = matches[1] ? matches[1].trim() : '';
+  const optionsMatches = /\{(.+)\}/.exec(blockType);
   if (optionsMatches) {
     optionsMatches[1].split(/\s+/).forEach(option => {
       if (option.startsWith('.')) {
         attr.push(option.slice(1));
       }
     });
-  } else if (noteType) {
-    className += ' ' + noteType.toLocaleLowerCase();
+  } else if (blockType) {
+    className += ' ' + blockType.toLocaleLowerCase();
   }
   
-  return `<div class="${className} ${attr.join(' ')}">${noteLines.join('\n')}</div>`;
+  return `<div class="${className} ${attr.join(' ')}">${blockLines.join('\n')}</div>`;
 }
