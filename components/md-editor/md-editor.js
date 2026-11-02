@@ -284,8 +284,8 @@ function checkInInteractiveList() {
   if (!li)
     return;
 
-  const ul = li.closest('ul');
-  if (!ul || !ul.classList.contains('interactive-list'))
+  const ul = li.parentNode;
+  if (!ul || ul.tagName !== 'UL' || !ul.classList.contains('interactive-list'))
     return;
 
   return { li };
