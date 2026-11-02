@@ -30,15 +30,15 @@ function setMenuItems(items) {
         { label: _('Heading 6'), action: () => applyFormat('formatBlock', 'H6') },
       ]
     },
-    { label: _('Bold'),       action: () => applyFormat('bold') },
-    { label: _('Underline'),  action: () => applyFormat('underline') },
-    { label: _('Italic'),     action: () => applyFormat('italic') },
-    { label: _('Numbering'),  action: () => applyFormat('insertOrderedList') },
-    { label: _('Bullets'),    action: () => applyFormat('insertUnorderedList') },
-    { label: _('Task list'),  action: () => applyFormat('insertTaskList') },
-    { label: _('Paragraph'),  action: () => applyFormat('formatBlock', 'P') },
-    { label: _('Blockquote'), action: () => applyFormat('formatBlock', 'BLOCKQUOTE') },
-    { label: _('Block'),      action: () => applyFormat('insertBlock') },
+    { label: _('Bold'),              action: () => applyFormat('bold') },
+    { label: _('Underline'),         action: () => applyFormat('underline') },
+    { label: _('Italic'),            action: () => applyFormat('italic') },
+    { label: _('Numbering'),         action: () => applyFormat('insertOrderedList') },
+    { label: _('Bullets'),           action: () => applyFormat('insertUnorderedList') },
+    { label: _('Interactive list'),  action: () => applyFormat('insertInteractiveList') },
+    { label: _('Paragraph'),         action: () => applyFormat('formatBlock', 'P') },
+    { label: _('Blockquote'),        action: () => applyFormat('formatBlock', 'BLOCKQUOTE') },
+    { label: _('Block'),             action: () => applyFormat('insertBlock') },
   ];
 }
 
@@ -127,6 +127,9 @@ function onKeyDown(event) {
     menu.handleKeyDown(event);
   }
 
+  if (event.defaultPrevented)
+    return;
+
   switch (event.key) {
     case '/':
       slashDownHandler(event, editor);
@@ -141,13 +144,13 @@ function onKeyDown(event) {
       return;
 
     case 'Enter':
-      const taskInfo = checkInTaskList();
+      const taskInfo = checkInInteractiveList();
       if (taskInfo) {
         event.preventDefault();
 
         const text = taskInfo.li.textContent.trim();
         if (text === '') {
-          exitTaskList(taskInfo.li);
+          exitInteractiveList(taskInfo.li);
           return;
         }
 
@@ -187,9 +190,9 @@ function applyFormat(format, ...args) {
 
   if (activeEditor) {
     activeEditor.focus();
-    if (format === 'insertTaskList') {
+    if (format === 'insertInteractiveList') {
       toggleTaskItem()
-        || createTaskList();
+        || createInteractiveList();
     } else if (format === 'insertBlock') {
       createBlock();
     } else {
@@ -227,30 +230,48 @@ function toggleTaskItem() {
   return true;
 }
 
-function createTaskList() {
-  document.execCommand('insertUnorderedList', false);
-
-  const range = document.createRange();
+function createInteractiveList() {
   const sel = window.getSelection();
-  let node = sel.anchorNode;
-  if (node.nodeType === Node.TEXT_NODE) {
-    node = node.parentNode;
+  if (!sel.rangeCount) 
+    return;
+
+  const range = sel.getRangeAt(0);;
+
+  let currentBlock = range.startContainer;
+  if (currentBlock.nodeType === Node.TEXT_NODE) {
+    currentBlock = currentBlock.parentNode;
   }
-  const li = node.closest('li');
+
+  const textContent = currentBlock.textContent || '';
+
+  const ul = document.createElement('ul');
+  ul.className = 'interactive-list';
+
+  const li = document.createElement('li');
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.className = 'task-checkbox';
-  li.prepend(checkbox);
-  
-  range.setStartAfter(checkbox);
-  range.collapse(true);
+
+  const space = document.createTextNode(' ');
+  const textNode = document.createTextNode(textContent);
+
+  li.appendChild(checkbox);
+  li.appendChild(space);
+  li.appendChild(textNode);
+  ul.appendChild(li);
+
+  currentBlock.append(ul);
+
+  const newRange = document.createRange();
+  newRange.setStartAfter(textNode);
+  newRange.collapse(true);
 
   sel.removeAllRanges();
-  sel.addRange(range);
+  sel.addRange(newRange);
 }
 
-function checkInTaskList() {
+function checkInInteractiveList() {
   const sel = window.getSelection();
   if (!sel || sel.rangeCount === 0)
     return;
@@ -263,11 +284,14 @@ function checkInTaskList() {
   if (!li)
     return;
 
-  const checkbox = li.querySelector('input[type="checkbox"]');
-  return { li, checkbox };
+  const ul = li.closest('ul');
+  if (!ul || !ul.classList.contains('interactive-list'))
+    return;
+
+  return { li };
 }
 
-function exitTaskList(li) {
+function exitInteractiveList(li) {
   const p = document.createElement('p');
   p.innerHTML = '<br>';
 

@@ -10,10 +10,10 @@ export default {
   'Heading 4': 'Encabezado 4',
   'Heading 5': 'Encabezado 5',
   'Heading 6': 'Encabezado 6',
+  'Interactive list': 'Lista interactiva',
   'Italic': 'Cursiva',
   'Numbering': 'Numeración',
   'Paragraph': 'Párrafo',
-  'Task list': 'Lista de tareas',
   'Type "/" for commands': 'Escribe "/" para comandos',
   'Underline': 'Subrayado',
 };
