@@ -76,7 +76,7 @@
     border-radius: .3em;
   }
 
-  .block {
+  div.block {
     margin: 1em .2em;
     padding: 1em .6em;
     border-radius: .7em;
@@ -147,7 +147,11 @@
       background-color: #233;
     }
 
-    .block {
+    div.block {
+      border-color: #9ca3af;
+      background-color: #1f2937;
+      color: #f3f4f6;
+
       &.note {
         border-color: #9ca3af;
         background-color: #1f2937;
@@ -174,7 +178,7 @@
 
       &.warning {
         border-color: #fbbf24;
-        background-color: #451a03;
+        background-color: #463a08;
         color: #fef3c7;
       }
 
