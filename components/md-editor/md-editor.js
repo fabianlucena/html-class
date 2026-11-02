@@ -144,17 +144,17 @@ function onKeyDown(event) {
       return;
 
     case 'Enter':
-      const taskInfo = checkInInteractiveList();
-      if (taskInfo) {
+      const item = checkInInteractiveList();
+      if (item) {
         event.preventDefault();
 
-        const text = taskInfo.li.textContent.trim();
+        const text = item.textContent.trim();
         if (text === '') {
-          exitInteractiveList(taskInfo.li);
+          exitInteractiveList(item);
           return;
         }
 
-        createNewTaskBelow(taskInfo.li);
+        createNewInteractiveItemBelow(item);
       }
 
       return;
@@ -249,16 +249,18 @@ function createInteractiveList() {
 
   const li = document.createElement('li');
 
+  const id = 'interactive-item-' + Math.random().toString(36).slice(2, 16);
   const checkbox = document.createElement('input');
+  checkbox.id = id;
   checkbox.type = 'checkbox';
-  checkbox.className = 'task-checkbox';
 
-  const space = document.createTextNode(' ');
+  const label = document.createElement('label');
   const textNode = document.createTextNode(textContent);
+  label.appendChild(textNode);
+  label.htmlFor = id;
 
   li.appendChild(checkbox);
-  li.appendChild(space);
-  li.appendChild(textNode);
+  li.appendChild(label);
   ul.appendChild(li);
 
   currentBlock.append(ul);
@@ -288,7 +290,7 @@ function checkInInteractiveList() {
   if (!ul || ul.tagName !== 'UL' || !ul.classList.contains('interactive-list'))
     return;
 
-  return { li };
+  return li;
 }
 
 function exitInteractiveList(li) {
@@ -305,21 +307,29 @@ function exitInteractiveList(li) {
   sel.addRange(range);
 }
 
-function createNewTaskBelow(li) {
+function createNewInteractiveItemBelow(li) {
   const newLi = document.createElement('li');
 
+  const id = 'interactive-item-' + Math.random().toString(36).slice(2, 16);
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
+  checkbox.id = id;
+
+  const label = document.createElement('label');
+  const textNode = document.createTextNode('');
+  label.appendChild(textNode);
+  label.htmlFor = id;
 
   newLi.appendChild(checkbox);
-  newLi.appendChild(document.createTextNode(' '));
+  newLi.appendChild(label);
 
   li.after(newLi);
 
   const range = document.createRange();
-  const sel = window.getSelection();
-  range.setStart(newLi, 1);
+  range.setStart(textNode, 0);
   range.collapse(true);
+  
+  const sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
 }
