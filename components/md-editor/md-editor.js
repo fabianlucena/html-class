@@ -1,7 +1,7 @@
 import { importCss, insertCss } from '../utils/import-css.js';
 import MDViewer from '../md-viewer/md-viewer.js';
 import { addLocaleUrl, _, onLanguageLoaded } from '../locale/locale.js';
-//import Menu from '../menu/menu.js';
+import Menu from '../menu/menu.js';
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
@@ -10,13 +10,13 @@ const style = insertCss(`.md-editor { --hint-text: "Type \\"/\\" for commands"; 
 
 onLanguageLoaded(() => {
   setHint(_('Type "/" for commands'));
-  //setMenuItems();
+  setMenuItems();
 });
 
 function setHint(text) {
   style.textContent = `.md-editor { --hint-text: "${text.replace(/"/g, '\\"')}"; } `;
 }
-/*
+
 function setMenuItems(items) {
   menu.items = [
     {
@@ -45,7 +45,7 @@ function setMenuItems(items) {
 document.addEventListener('DOMContentLoaded', async () => {
   init();
 });
-*/
+
 export default class MDEditor extends MDViewer {
   constructor(options) {
     super(options);
@@ -64,7 +64,7 @@ export default class MDEditor extends MDViewer {
     this.element = null;
   }
 }
-/*
+
 var menu,
   activeEditor = null;
 
@@ -76,7 +76,7 @@ function init() {
 
   menu = new Menu({
     className: 'floating',
-    parent: document.body,
+    parentElement: document.body,
     display: false,
   });
   setMenuItems();
@@ -325,4 +325,3 @@ function createBlock() {
 
   document.execCommand('formatBlock', false, 'P');
 }
-*/
