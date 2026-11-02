@@ -1,6 +1,5 @@
 export default class Base {
   #element = null;
-  #parentElement = null;
 
   constructor(options = {}) {
   }
@@ -10,49 +9,53 @@ export default class Base {
   }
 
   set element(newElement) {
-    if (!newElement) {
-      this.destroyElement();
-      return;
-    }
-
-    if (typeof newElement === 'string')
+    if (newElement && typeof newElement === 'string')
       newElement = document.getElementById(newElement);
 
+    var parentElement = this.parentElement;
+    if (this.element !== newElement)
+      this.destroyElement();
+
+    if (!newElement)
+      return;
+
     this.#element = newElement;
-    if (this.#parentElement)
-      this.#parentElement.appendChild(this.#element);
+    if (parentElement)
+      parentElement.appendChild(this.#element);
   }
 
   get parentElement() {
-    return this.#parentElement;
+    return this.#element?.parentNode;
   }
 
   set parentElement(newParentElement) {
-    if (!newParentElement) {
-      this.#parentElement = null;
-      this.#element?.remove();
-      return;
-    }
-
     if (typeof newParentElement === 'string')
-      this.#parentElement = document.getElementById(newParentElement);
+      newParentElement = document.getElementById(newParentElement);
 
-    this.#parentElement = newParentElement;
-    if (this.#element)
-      this.#parentElement.appendChild(this.#element);
+    if (newParentElement === this.parentElement)
+      return;
+    
+   if (this.#element) {
+      this.#element?.remove();
+      if (!newParentElement)
+        return;
+
+      if (!newParentElement.contains(this.#element))
+        newParentElement.appendChild(this.#element);
+    }
   }
 
   create(options = {}) {
     if (typeof options === 'string')
       options = { element: options };
 
-    let { parent, parentElement, element, show, hide, display, className, defaultParentElement, ...rest } = options;
+    let { parentElement, element, show, hide, display, className, defaultParentElement, ...rest } = options;
 
     if (typeof element === 'string')
       element = document.getElementById(element);
 
-    this.parentElement = parentElement || parent || defaultParentElement;
     this.element = element;
+    this.parentElement = parentElement ?? defaultParentElement;
 
     this.addClass(className);
 
@@ -74,7 +77,10 @@ export default class Base {
   }
 
   destroy() {
-    this.element = null;
+    if (this.element) {
+      this.element.remove();
+      this.element = null;
+    }
   }
 
   destroyElement() {
