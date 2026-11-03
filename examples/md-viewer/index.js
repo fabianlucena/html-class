@@ -88,6 +88,7 @@ Puedes insertar notas al pie en cualquier parte del texto[^1], así como referen
 cruzadas a bibliografía externa usando la sintaxis estándar [@smith2024].
 
 [^1]: Esta es la nota al pie detallada que se renderiza automáticamente al final.
+De dos líneas para demostrar el soporte de Markdown en notas al pie extendidas **A ver**.
 
 ---
 

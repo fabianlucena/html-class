@@ -2,9 +2,10 @@ import { getDelimitedString } from './string.js';
 
 export default class MDParser {
   #parsers = [
-    this.headingParser,
-    this.ruleParser,
-    this.listParser,
+    HeadingParser,
+    RuleParser,
+    ListParser,
+    FootnoteParser,
   ];
   get parsers() {
     return this.#parsers;
@@ -51,7 +52,7 @@ export default class MDParser {
     let paragraphLines = [];
     while (lines.length) {
       for (const parser of this.parsers) {
-        const node = parser.call(this, lines);
+        const node = parser.parse(lines, { parser: this });
         if (node)
           return node;
       }
@@ -105,7 +106,7 @@ export default class MDParser {
     return metadata;
   }
 
-  parseLine(line) {
+  parseLine(line, options = {}) {
     const nodes = [];
     let node;
     let text = '';
@@ -208,114 +209,88 @@ export default class MDParser {
       'pi'
     ];
 
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      if (char === '\\') {
-        i++;
-        for (const command of backslashCommands) {
-          if (line.substring(i, i + command.length) === command) {
-            node = { type: 'command', command };
-            i += command.length;
-            break;
+    line = line.trim();
+    while (line) {
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '\\') {
+          i++;
+          for (const command of backslashCommands) {
+            if (line.substring(i, i + command.length) === command) {
+              node = { type: 'command', command };
+              i += command.length - 1;
+              break;
+            }
+          }
+
+          if (!node) {
+            text += char + line[i];
+            continue;
           }
         }
 
         if (!node) {
-          text += char + line[i];
-          continue;
-        }
-      }
+          let definitions = grouppedDefinitions[char];
+          if (definitions) {
+            for (const definition of definitions) {
+              const openLength = definition.open.length;
+              if (line.substring(i, i + openLength) === definition.open) {
+                if (definition.close) {
+                  let text = getDelimitedString(line.slice(i + openLength), definition.close, { escape: '\\' });
+                  i += text.length + openLength + definition.close.length - 1;
 
-      if (!node) {
-        let definitions = grouppedDefinitions[char];
-        if (definitions) {
-          for (const definition of definitions) {
-            const openLength = definition.open.length;
-            if (line.substring(i, i + openLength) === definition.open) {
-              if (definition.close) {
-                let text = getDelimitedString(line.slice(i + openLength), definition.close, { escape: '\\' });
-                i += text.length + openLength + definition.close.length;
+                  let property = definition.property || 'content';
+                  if (property === 'content')
+                    text = this.parseLine(text);
 
-                let property = definition.property || 'content';
-                if (property === 'content')
-                  text = this.parseLine(text);
-
-                node = { type: definition.type, [property]: text };
-                break;
-              } else if (definition.parser) {
-                let res = definition.parser.call(this, line.slice(i), { detailed: true });
-                if (res.node) {
-                  node = res.node;
-                  i += res.length;
+                  node = { type: definition.type, [property]: text };
                   break;
+                } else if (definition.parser) {
+                  let res = definition.parser.call(this, line.slice(i), { detailed: true });
+                  if (res.node) {
+                    node = res.node;
+                    i += res.length - 1;
+                    break;
+                  }
                 }
               }
             }
           }
         }
-      }
 
-      if (node) {
-        if (text) {
-          nodes.push({ type: 'text', text: text.trim() || ' ' });
-          text = '';
+        if (node) {
+          if (text) {
+            nodes.push({ type: 'text', text: text.trim() || ' ' });
+            text = '';
+          }
+
+          nodes.push(node);
+          node = null;
+
+          continue;
         }
 
-        nodes.push(node);
-        node = null;
-
-        continue;
+        text += char;
       }
 
-      text += char;
+      if (!options.multiline || !options.lines?.length)
+        break;
+
+      for (const parser of this.parsers) {
+        const node = parser.check(options.lines, { parser: this });
+        if (node)
+          return node;
+      }
+      
+      line = options.lines.shift().trim();
+      if (!line)
+        break;
     }
 
     if (text)
       nodes.push({ type: 'text', text: text.trim() || ' ' });
 
     return nodes;
-  }
-
-  headingParser(lines) {
-    const regExp = /^\s{0,3}(#+)\s+(.+)?$/;
-    const matches = regExp.exec(lines[0]);
-    if (!matches)
-      return;
-
-    lines.shift();
-    const level = matches[1].length;
-    return {
-      type: 'heading',
-      level,
-      content: this.parseLine(matches[2]),
-    };
-  }
-
-  ruleParser(lines) {
-    const regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|- - -|\. \. \.)/;
-    const matches = regExp.exec(lines[0]);
-    if (!matches)
-      return;
-
-    let pattern = matches[1].slice(0, 5);
-    let variant = pattern === '- - -' ? 'dashed' :
-      pattern === '. . .' ? 'dotted' :
-      '';
-      
-    if (!variant) {
-      pattern = matches[1].slice(0, 3);
-      variant = pattern === '---' ? 'single' :
-        pattern === '___' ? 'single' :
-        pattern === '===' ? 'double' :
-        pattern === '===' ? 'double' :
-        pattern === '≡≡≡' ? 'triple' :
-        pattern === '...' ? 'dotted' :
-        pattern === '***' ? 'dotted2' :
-        'single';
-    }
-
-    lines.shift();
-    return { type: 'rule', variant };
   }
 
   linkParser(line, options = {}) {
@@ -373,11 +348,73 @@ export default class MDParser {
 
     return node;
   }
+}
 
-  #listItemRegExp = /^(\s*)(\*|\d+\.|\(@\)|-\s+\[[ xX]\])\s+(.+)$/;
-  listParser(lines) {
-    const line = lines[0];
-    const matches = this.#listItemRegExp.exec(line);
+class HeadingParser {
+  static #regExp = /^\s{0,3}(#+)\s+(.+)?$/;
+
+  static check(lines) {
+    return this.#regExp.exec(lines[0]);
+  }
+
+  static parse(lines, options = {}) {
+    const matches = this.check(lines);
+    if (!matches)
+      return;
+
+    lines.shift();
+    const level = matches[1].length;
+    return {
+      type: 'heading',
+      level,
+      content: options?.parser?.parseLine(matches[2], { multiline: true, lines }) ?? matches[2],
+    };
+  }
+}
+
+class RuleParser {
+  static #regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|- - -|\. \. \.)/;
+  
+  static check(lines) {
+    return this.#regExp.exec(lines[0]);
+  }
+
+  static parse(lines) {
+    const matches = this.check(lines);
+    if (!matches)
+      return;
+
+    let pattern = matches[1].slice(0, 5);
+    let variant = pattern === '- - -' ? 'dashed' :
+      pattern === '. . .' ? 'dotted' :
+      '';
+      
+    if (!variant) {
+      pattern = matches[1].slice(0, 3);
+      variant = pattern === '---' ? 'single' :
+        pattern === '___' ? 'single' :
+        pattern === '===' ? 'double' :
+        pattern === '===' ? 'double' :
+        pattern === '≡≡≡' ? 'triple' :
+        pattern === '...' ? 'dotted' :
+        pattern === '***' ? 'dotted2' :
+        'single';
+    }
+
+    lines.shift();
+    return { type: 'rule', variant };
+  }
+}
+
+class ListParser {
+  static #regExp = /^(\s*)(\*|\d+\.|\(@\)|-\s+\[[ xX]\])\s+(.+)$/;
+
+  static check(lines) {
+    return this.#regExp.exec(lines[0]);
+  }
+  
+  static parse(lines, options = {}) {
+    const matches = this.check(lines);
     if (!matches)
       return;
 
@@ -391,7 +428,7 @@ export default class MDParser {
 
     let nextItem;
     const content = [];
-    while (nextItem = this.parseListItem(lines, indent, listType))
+    while (nextItem = this.parseListItem(lines, indent, listType, options))
       content.push(nextItem);
 
     let node = {
@@ -406,7 +443,7 @@ export default class MDParser {
     return node;
   }
 
-  getListItemType(marker) {
+  static getListItemType(marker) {
     if (marker === '*')
       return 'bullet';
     
@@ -420,14 +457,14 @@ export default class MDParser {
       return 'task';
   }
 
-  parseListItem(lines, indent, listType) {
-    const matches = this.#listItemRegExp.exec(lines[0]);
+  static parseListItem(lines, indent, listType, options = {}) {
+    const matches = this.check(lines);
     if (!matches)
       return;
 
     let thisIndent = matches[1].length;
     if (thisIndent > indent)
-      return this.listParser(lines);
+      return this.parse(lines, options);
 
     if (thisIndent !== indent)
       return;
@@ -435,15 +472,13 @@ export default class MDParser {
     let thisMarker = matches[2];
     let thisItemType = this.getListItemType(thisMarker);
     if (thisItemType !== listType)
-      return this.listParser(lines);
+      return this.parse(lines, options);
 
     lines.shift();
-
-    let content = this.parseLine(matches[3]);
-
+    
     let node = {
       type: 'list-item',
-      content,
+      content: options?.parser?.parseLine(matches[3], { multiline: true, lines }) ?? matches[3],
     };
 
     if (thisItemType === 'task') {
@@ -451,5 +486,44 @@ export default class MDParser {
     }
 
     return node;
+  }
+}
+
+/* class 
+  blockquoteParser(lines) {
+    const regExp = /^\s{0,3}>\s+(.+)$/;
+    let matches = regExp.exec(lines[0]);
+    if (!matches)
+      return;
+
+    let htmlLines = [];
+    do {
+      lines.shift();
+      htmlLines.push(mdFormat(matches[1]));
+    } while (matches = regExp.exec(lines[0]));
+    
+    return '<blockquote>' + htmlLines.join('<br>') + '</blockquote>';
+  }
+*/
+  // mdDefinitions2Html
+
+class FootnoteParser {
+  static #regExp = /^\s{0,3}\[\^([^\]]+)\]:\s+(.+)$/;
+
+  static check(lines) {
+    return this.#regExp.exec(lines[0]);
+  }
+  
+  static parse(lines, options = {}) {
+    const matches = this.check(lines);
+    if (!matches)
+      return;
+
+    lines.shift();
+    return {
+      type: 'footnote',
+      id: matches[1],
+      content: options?.parser?.parseLine(matches[2], { multiline: true, lines }) ?? matches[2],
+    };
   }
 }
