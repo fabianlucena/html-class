@@ -5,7 +5,9 @@ export default class MDParser {
     HeadingParser,
     RuleParser,
     ListParser,
+    BlockquoteParser,
     FootnoteParser,
+    DefinitionsParser,
   ];
   get parsers() {
     return this.#parsers;
@@ -48,10 +50,16 @@ export default class MDParser {
     return nodes;
   }
 
-  parseSingleNode(lines) {
+  parseSingleNode(lines, { skipParser, closeRegExp } = {}) {
     let paragraphLines = [];
     while (lines.length) {
+      if (closeRegExp && closeRegExp.test(lines[0]))
+        break;
+
       for (const parser of this.parsers) {
+        if (skipParser && parser === skipParser)
+          continue;
+
         const node = parser.parse(lines, { parser: this });
         if (node)
           return node;
@@ -62,11 +70,13 @@ export default class MDParser {
         if (!paragraphLines.length)
           continue;
 
-        return { type: 'paragraph', content: this.parseLine(paragraphLines.join(' ')) };
+        break;
       } else {
         paragraphLines.push(line);
       }
     }
+
+    return { type: 'paragraph', content: this.parseLine(paragraphLines.join(' ')) };
   }
 
   parseYaml(lines) {
@@ -276,12 +286,17 @@ export default class MDParser {
       if (!options.multiline || !options.lines?.length)
         break;
 
+      let isBlock = false;
       for (const parser of this.parsers) {
-        const node = parser.check(options.lines, { parser: this });
-        if (node)
-          return node;
+        if (parser.check(options.lines, { parser: this })) {
+          isBlock = true;
+          break;
+        }
       }
-      
+
+      if (isBlock)
+        break;
+
       line = options.lines.shift().trim();
       if (!line)
         break;
@@ -367,7 +382,7 @@ class HeadingParser {
     return {
       type: 'heading',
       level,
-      content: options?.parser?.parseLine(matches[2], { multiline: true, lines }) ?? matches[2],
+      content: options.parser.parseLine(matches[2], { multiline: true, lines }),
     };
   }
 }
@@ -478,7 +493,7 @@ class ListParser {
     
     let node = {
       type: 'list-item',
-      content: options?.parser?.parseLine(matches[3], { multiline: true, lines }) ?? matches[3],
+      content: options.parser.parseLine(matches[3], { multiline: true, lines }),
     };
 
     if (thisItemType === 'task') {
@@ -489,23 +504,68 @@ class ListParser {
   }
 }
 
-/* class 
-  blockquoteParser(lines) {
-    const regExp = /^\s{0,3}>\s+(.+)$/;
-    let matches = regExp.exec(lines[0]);
+class BlockquoteParser {
+  static #regExp = /^\s{0,3}>\s+(.+)$/;
+
+  static check(lines) {
+    return this.#regExp.exec(lines[0]);
+  }
+
+  static parse(lines, options = {}) {
+    let matches = this.check(lines);
     if (!matches)
       return;
 
-    let htmlLines = [];
+    let content = [];
     do {
       lines.shift();
-      htmlLines.push(mdFormat(matches[1]));
-    } while (matches = regExp.exec(lines[0]));
+      const thisLine = options.parser.parseLine(matches[1]);
+      content.push(...thisLine);
+    } while (matches = this.check(lines));
     
-    return '<blockquote>' + htmlLines.join('<br>') + '</blockquote>';
+    return {
+      type: 'blockquote',
+      content,
+    };
   }
-*/
-  // mdDefinitions2Html
+}
+
+class DefinitionsParser {
+  static #ddRegExp = /^\s{0,3}:[^:]\s*(.+)$/;
+
+  static check(lines) {
+    if (this.#ddRegExp.test(lines[0]))
+      return;
+
+    return this.#ddRegExp.exec(lines[1]);
+  }
+
+  static parse(lines, options = {}) {
+    let matches = this.check(lines);
+    if (!matches)
+      return;
+    
+    const term = lines[0].trim();
+    if (!term)
+      return;
+
+    lines.shift();
+
+    let node = {
+      type: 'definition',
+      term: options.parser.parseLine(term) ?? [term],
+      definitions: [],
+    };
+
+    do {
+      lines.splice(0, 1, matches[1]);
+      const def = options.parser.parseSingleNode(lines, { closeRegExp: this.#ddRegExp, skipParser: this });
+      node.definitions.push(def);
+    } while (matches = this.#ddRegExp.exec(lines[0]));
+
+    return node;
+  }
+}
 
 class FootnoteParser {
   static #regExp = /^\s{0,3}\[\^([^\]]+)\]:\s+(.+)$/;
@@ -523,7 +583,135 @@ class FootnoteParser {
     return {
       type: 'footnote',
       id: matches[1],
-      content: options?.parser?.parseLine(matches[2], { multiline: true, lines }) ?? matches[2],
+      content: options.parser.parseLine(matches[2], { multiline: true, lines }),
     };
   }
 }
+
+/*
+
+function mdTable2Html(lines) {
+  const tableRowRegexp = /^\s{0,3}\|\s*(.+)\s*\|$/;
+  const tableHeaderRegexp = /^\s{0,3}\|\s*(:?-+:?\s*\|)+\s*$/;
+
+  let matches = tableRowRegexp.exec(lines[0]);  
+  if (!matches)
+    return;
+
+  const rows = [];
+  let defaultStyles = [];
+  do {
+    if (rows.length === 1 && tableHeaderRegexp.test(lines[0])) {
+      matches[1].split('|').map((cell, i) => {
+        let style = defaultStyles[i] || '';
+        if (cell.startsWith(':')) {
+          if (cell.endsWith(':')) {
+            style="text-align:center";
+          } else {
+            style="text-align:left";
+          }
+        } else if (cell.endsWith(':')) {
+          style="text-align:right";
+        }
+
+        defaultStyles.push(style);
+      });
+    } else {
+      rows.push(matches[1].split('|').map((cell, i) => {
+        let style = defaultStyles[i] || '';
+        cell = cell.trim();
+        if (cell.startsWith(':')) {
+          if (cell.endsWith(':')) {
+            style="text-align:center";
+            cell = cell.slice(1, -1).trim();
+          } else {
+            style="text-align:left";
+            cell = cell.slice(1).trim();
+          }
+        } else if (cell.endsWith(':')) {
+          style="text-align:right";
+          cell = cell.slice(0, -1).trim();
+        }
+
+        if (rows.length === 1) {
+          if (/^-*$/.test(cell))
+            cell = '';
+          
+          defaultStyles.push(style);
+        }
+
+        const tag = rows.length === 0 ? 'th' : 'td';
+
+        return '<' + tag + ' style="' + style + '">' + cell.trim() + '</' + tag + '>';
+      }));
+    }
+
+    lines.shift();
+  } while (matches = tableRowRegexp.exec(lines[0]));
+  lines.shift();
+
+  let tableHtml = '';
+  rows.forEach(row => {
+    tableHtml += '<tr>' + row.join('') + '</tr>';
+  });
+
+  return '<table>' + tableHtml + '</table>';
+}
+
+function mdCodeBlock2Html(lines) {
+  const beginRegExp = /^\s{0,3}```\s*(\w+)?\s*(\{[^\}]+\})?\s*$/;
+  const endRegExp = /^\s{0,3}```\s*$/;
+
+  let matches = beginRegExp.exec(lines[0]);
+  if (!matches)
+    return;
+
+  lines.shift();
+  let lang = matches[1] || '';
+  let attrs = matches[2] || '';
+  let codeLines = [];
+  do {
+    const line = lines.shift();
+    if (endRegExp.test(line)) 
+      break;
+
+    codeLines.push(line);
+  } while (lines.length);
+  
+  return `<pre><code class="language-${lang} block" ${attrs}>${codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`;
+}
+
+function mdBlock2Html(lines) {
+  const beginRegExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/gm;
+  const endRegExp = /^\s{0,3}:{3}\s*$/;
+
+  let matches = beginRegExp.exec(lines[0]);
+  if (!matches)
+    return;
+
+  lines.shift();
+  let blockLines = [];
+  do {
+    const line = lines.shift();
+    if (endRegExp.test(line)) 
+      break;
+
+    blockLines.push(mdFormat(line));
+  } while (lines.length);
+
+  let className = 'block';
+  const attr = [];
+  const blockType = matches[1] ? matches[1].trim() : '';
+  const optionsMatches = /\{(.+)\}/.exec(blockType);
+  if (optionsMatches) {
+    optionsMatches[1].split(/\s+/).forEach(option => {
+      if (option.startsWith('.')) {
+        attr.push(option.slice(1));
+      }
+    });
+  } else if (blockType) {
+    className += ' ' + blockType.toLocaleLowerCase();
+  }
+  
+  return `<div class="${className} ${attr.join(' ')}">${blockLines.join('\n')}</div>`;
+}*/

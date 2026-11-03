@@ -123,7 +123,7 @@ Término Uno
 
 Término Dos
 : Primera definición del segundo término.
-: Segunda alternativa o aclaración del mismo término.
+: Segunda alternativa o aclaración del ***mismo*** término.
 
 ---
 
