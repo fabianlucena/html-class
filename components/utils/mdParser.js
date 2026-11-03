@@ -328,43 +328,40 @@ export default class MDParser {
       return;
 
     from++;
-    let type;
-    let includeDestination = false;
+
+    let node = {};
+    let includeTarget = false;
     if (line[0] === '!') {
-      type = 'image';
-      includeDestination = true;
+      node.type = 'image';
+      includeTarget = true;
     } else if (line[from] === '^') {
-      type = 'footnote';
+      node.type = 'reference';
+      node.refType = 'footnote';
       from++;
     } else if (line[from] === '@') {
-      type = 'citation';
+      node.type = 'reference';
+      node.refType = 'citation';
       from++;
     } else {
-      type = 'link';
-      includeDestination = true;
+      node.type = 'link';
+      includeTarget = true;
     }
 
-    let destination = getDelimitedString(line.slice(from), ']', { escape: '\\' });
-    from += destination.length + 1;
+    node.target = getDelimitedString(line.slice(from), ']', { escape: '\\' });
+    from += node.target.length + 1;
 
-    let node;
-    if (includeDestination) {
-      let text = destination;
+    if (includeTarget) {
+      node.text = node.target;
       if (line[from] === '(') {
-        destination = getDelimitedString(line.slice(from + 1), ')', { escape: '\\' });
-        from += destination.length + 2;
+        node.target = getDelimitedString(line.slice(from + 1), ')', { escape: '\\' });
+        from += node.target.length + 2;
       }
 
-      let title;
-      let parts = destination.split(' "');
+      let parts = node.target.split(' "');
       if (parts.length > 1) {
-        destination = parts[0];
-        title = parts.slice(1).join(' "').slice(0, -1);
+        node.target = parts[0];
+        node.title = parts.slice(1).join(' "').slice(0, -1);
       }
-
-      node = { type, destination, text, title };
-    } else {
-      node = { type, destination };
     }
 
     if (options.detailed) {
