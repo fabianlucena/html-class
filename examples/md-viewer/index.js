@@ -55,16 +55,21 @@ Línea de separación con guiones
 El texto plano permite estilos comunes como **negrita**, *cursiva*, ~~tachado~~, 
 subíndice (H~2~O) y superíndice (X^2^). También podemos resaltar texto con ==marcador==.
 
+\\sum
+
 ---
 
 # 2. Listas Avanzadas y de Tareas
 
-*   Elemento de lista normal.
-    *   Sub-elemento anidado.
-*   Otro elemento con saltos.
+* Elemento de lista normal.
+  * Sub-elemento anidado.
+* Otro elemento con saltos.
 
-*   Segundo elemento con saltos.
-*   Tercero elemento con saltos.
+* Segundo elemento con saltos.
+* Tercero elemento con saltos.
+  1. Primer sub-elemento numerado.
+  2. Segundo sub-elemento numerado.
+  1. Tercer sub-elemento numerado.
 
 Listas ordenadas automáticas:
 (@) Primer paso del proceso técnico.
