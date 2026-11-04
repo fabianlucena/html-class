@@ -9,6 +9,8 @@ export default class MDParser {
     FootnoteParser,
     DefinitionsParser,
     TableParser,
+    CodeBlockParser,
+    CustomBlockParser,
   ];
   get parsers() {
     return this.#parsers;
@@ -722,11 +724,16 @@ class TableParser {
   }
 }
 
-  /*function mdCodeBlock2Html(lines) {
-    const beginRegExp = /^\s{0,3}```\s*(\w+)?\s*(\{[^\}]+\})?\s*$/;
-    const endRegExp = /^\s{0,3}```\s*$/;
+class CodeBlockParser {
+  static #regExp = /^\s{0,3}```\s*(\w+)?\s*(\{[^\}]+\})?\s*$/;
+  static #endRegExp = /^\s{0,3}```\s*$/;
 
-    let matches = beginRegExp.exec(lines[0]);
+  static check(lines) {
+    return this.#regExp.exec(lines[0]);
+  }
+
+  static parse(lines, options = {}) {
+    const matches = this.check(lines);
     if (!matches)
       return;
 
@@ -736,33 +743,52 @@ class TableParser {
     let codeLines = [];
     do {
       const line = lines.shift();
-      if (endRegExp.test(line)) 
+      if (this.#endRegExp.test(line)) 
         break;
 
       codeLines.push(line);
     } while (lines.length);
     
-    return `<pre><code class="language-${lang} block" ${attrs}>${codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`;
+    let node = {
+      type: 'code-block',
+      lang,
+      attrs,
+      content: codeLines.join('\n'),
+    };
+
+    return node;
+  }
+}
+
+class CustomBlockParser {
+  static #regExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/;
+  static #endRegExp = /^\s{0,3}:{3}\s*$/;
+
+  static check(lines) {
+    return this.#regExp.exec(lines[0]);
   }
 
-  function mdBlock2Html(lines) {
-    const beginRegExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/gm;
-    const endRegExp = /^\s{0,3}:{3}\s*$/;
-
-    let matches = beginRegExp.exec(lines[0]);
+  static parse(lines, options = {}) {
+    const matches = this.check(lines);
     if (!matches)
       return;
 
     lines.shift();
-    let blockLines = [];
+    let blockNodes = [];
     do {
-      const line = lines.shift();
-      if (endRegExp.test(line)) 
+      const node = options.parser.parseSingleNode(lines, { closeRegExp: this.#endRegExp });
+      if (!node)
         break;
 
-      blockLines.push(mdFormat(line));
-    } while (lines.length);
+      blockNodes.push(node);
+    } while (lines[0] && !this.#endRegExp.test(lines[0]));
 
+    while (lines.length && !lines[0].trim())
+      lines.shift();
+
+    if (lines[0] && this.#endRegExp.test(lines[0]))
+      lines.shift();
+    
     let className = 'block';
     const attr = [];
     const blockType = matches[1] ? matches[1].trim() : '';
@@ -777,5 +803,13 @@ class TableParser {
       className += ' ' + blockType.toLocaleLowerCase();
     }
     
-    return `<div class="${className} ${attr.join(' ')}">${blockLines.join('\n')}</div>`;
-  }*/
+    const node = {
+      type: 'custom-block',
+      className,
+      attrs: attr,
+      content: blockNodes,
+    };
+
+    return node;
+  }
+}

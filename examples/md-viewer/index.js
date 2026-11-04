@@ -147,10 +147,15 @@ También se puede incluir bloques de código en línea, por ejemplo: \`resultado
 
 ---
 
-# 9. Notas
+# 9. Bloques y Notas
 
 :::
-Nota genérica: Este es un bloque de nota informativa que puede contener múltiples líneas y formatos.
+Bloque genérico: Este es un bloque genérico que puede contener múltiples líneas y formatos.
+
+::: anidado
+Este es un bloque anidado dentro del bloque genérico, demostrando la capacidad de Markdown para manejar estructuras jerárquicas.
+:::
+
 :::
 
 ::: info
