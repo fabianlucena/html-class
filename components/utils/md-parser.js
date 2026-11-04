@@ -16,6 +16,19 @@ export default class MDParser {
     return this.#parsers;
   }
 
+  #plugins = [];
+  get plugins() {
+    return this.#plugins;
+  }
+
+  constructor(options = {}) {
+    if (options.parsers)
+      this.#parsers.push(...options.parsers);
+
+    if (options.plugins)
+      this.#plugins.push(...options.plugins);
+  }
+
   parse(md) {
     const lines = md.split(/\n/gm);
     const doc = {
@@ -138,14 +151,14 @@ export default class MDParser {
           open:  '$$',
           close: '$$',
           type:  'math',
-          property: 'math',
+          property: 'raw',
           variant: 'block',
         },
         {
           open:  '$',
           close: '$',
           type:  'math',
-          property: 'math',
+          property: 'raw',
         },
       ],
       '*': [
@@ -273,11 +286,14 @@ export default class MDParser {
 
         if (node) {
           if (text) {
-            nodes.push({ type: 'text', text: text.trim() || ' ' });
+            let node = { type: 'text', text: text.trim() || ' ' };
+            node = this.applyPlugins(node);
+            nodes.push(node);
             text = '';
           }
 
           nodes.push(node);
+          node = this.applyPlugins(node);
           node = null;
 
           continue;
@@ -305,8 +321,11 @@ export default class MDParser {
         break;
     }
 
-    if (text)
-      nodes.push({ type: 'text', text: text.trim() || ' ' });
+    if (text) {
+      let node = { type: 'text', text: text.trim() || ' ' };
+      node = this.applyPlugins(node);
+      nodes.push(node);
+    }
 
     return nodes;
   }
@@ -364,6 +383,14 @@ export default class MDParser {
       };
     }
 
+    return node;
+  }
+
+  applyPlugins(node) {
+    for (const plugin of this.plugins) {
+      node = plugin(node);
+    }
+    
     return node;
   }
 }

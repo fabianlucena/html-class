@@ -11,9 +11,9 @@ export default defineConfig({
     },
     host: true,
     port: 5173,
-    https: {
+    /*https: {
       key: fs.readFileSync('./cert-key.pem'),
       cert: fs.readFileSync('./cert.pem'),
-    },
+    },*/
   }
 });

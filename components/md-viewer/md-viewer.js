@@ -1,12 +1,18 @@
 import { importCss, insertCss } from '../utils/import-css.js';
 import Base from '../utils/base.js';
 import MDParser from '../utils/md-parser.js';
+import { MathParserMDPlugin } from '../utils/math-parser.js';
 
 importCss('./md-viewer.css', import.meta.url);
 
 export default class MDViewer extends Base {
   #md = '';
   #doc = null;
+  #mdParser = new MDParser({
+    plugins: [
+      MathParserMDPlugin,
+    ],
+  });
 
   constructor(options) {
     super();
@@ -32,7 +38,7 @@ export default class MDViewer extends Base {
 
   set md(md) {
     this.#md = md;
-    this.#doc = (new MDParser()).parse(md);
+    this.#doc = this.#mdParser.parse(md);
     this.render(md);
 
     console.log(this.#doc.content.slice(0, 300));

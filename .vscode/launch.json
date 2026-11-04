@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Firefox",
+      "type": "firefox",
+      "request": "launch",
+      "url": "http://localhost:5173/examples/md-viewer/",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "vite",
+      "pathMappings": [
+        {
+          "url": "http://localhost:5173/components",
+          "path": "${workspaceFolder}/components"
+        }
+      ]
+    }
+  ]
+}
