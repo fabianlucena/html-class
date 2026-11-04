@@ -1,6 +1,6 @@
 import { importCss, insertCss } from '../utils/import-css.js';
 import Base from '../utils/base.js';
-import MDParser from '../utils/mdParser.js';
+import MDParser from '../utils/md-parser.js';
 
 importCss('./md-viewer.css', import.meta.url);
 
