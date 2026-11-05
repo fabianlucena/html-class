@@ -28,8 +28,12 @@ export default class MathViewer extends Base {
     'lim': {
       sub: 'munder',
     },
-    'int': '&int;',
+    'int': {
+      symbol: '&int;',
+      segregateBody: true,
+    },
     'sqrt': { tag: 'msqrt' },
+    'root': { render: this.renderRoot.bind(this) },
     'frac': { render: this.renderFraction.bind(this) },
   };
   #symbols = {
@@ -227,6 +231,20 @@ export default class MathViewer extends Base {
     }
 
     return result;
+  }
+
+  renderRoot(node) {
+    let element;
+    if (node.index) {
+      element = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mroot');
+      this.renderNode(node.body, element);
+      this.renderNode(node.index, element);
+    } else {
+      element = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'msqrt');
+      this.renderNode(node.body, element);
+    }
+
+    return { element, skipBody: true };
   }
 
   renderFraction(node) {
