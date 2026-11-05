@@ -176,13 +176,13 @@ export default class MathParser {
 
   parse(raw) {
     const tokens = this.tokenize(raw);
-    console.log([...tokens]);
+    //console.log([...tokens]);
     const node = {
       type: 'math',
       body: this.parseTokens(tokens),
     };
     //console.log(node);
-    console.log(JSON.stringify(node, null, 2));
+    //console.log(JSON.stringify(node, null, 2));
     return node;
   }
 
