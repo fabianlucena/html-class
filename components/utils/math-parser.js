@@ -33,7 +33,7 @@ export default class MathParser {
     },
     '\\sqrt': {
       type: 'operator',
-      symbol: (node) => node.index ? 'root' : 'root',
+      symbol: (node) => node.index ? 'root' : 'sqrt',
       children: 1,
       optionalPreChildren: {
         open: '[',
