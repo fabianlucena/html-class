@@ -23,6 +23,7 @@ export default class MathViewer extends Base {
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
+      segregateBody: true,
     },
     'lim': {
       sub: 'munder',
@@ -112,7 +113,7 @@ export default class MathViewer extends Base {
       return;
     }
 
-    const element = renderer(node, parentElement);
+    let element = renderer(node, parentElement);
 
     if (node.sub) {
       if (node.sup) {
@@ -146,7 +147,16 @@ export default class MathViewer extends Base {
 
     if (node.body && !element.skipBody) {
       const bodyChild = this.renderNode(node.body, parentElement);
-      element.element.appendChild(bodyChild.element);
+
+      if (element.segregateBody) {
+        const bodyElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mrow');
+        parentElement.appendChild(bodyElement);
+        bodyElement.appendChild(bodyChild.element);
+
+        element = bodyElement;
+      } else {
+        element.element.appendChild(bodyChild.element);
+      }
     }
   }
 
@@ -208,6 +218,12 @@ export default class MathViewer extends Base {
 
       if (op.subsup)
         result.subsup = op.subsup;
+
+      if (op.skipBody)
+        result.skipBody = op.skipBody;
+
+      if (op.segregateBody)
+        result.segregateBody = op.segregateBody;
     }
 
     return result;
