@@ -8,7 +8,7 @@ export function mathRenderMdPlugin(md, node, parentElement) {
   mathElement.setAttribute('display', 'block');
   parentElement.appendChild(mathElement);
 
-  console.log(node);
+  // console.log(node);
 
   mathViewer.renderNodes(node.body, mathElement);
 }
@@ -20,18 +20,28 @@ export default class MathViewer extends Base {
     'number': this.renderNumber.bind(this),
     'group': this.renderGroup.bind(this),
     'operator': this.renderOperator.bind(this),
+    'matrix': this.renderMatrix.bind(this),
+    'frac': this.renderFraction.bind(this),
   };
   #operators = {
-    'sum': '&sum;',
-    'int': '&int;',
-    'sqrt': {
-      tag: 'msqrt',
+    'sum': {
+      symbol: '&sum;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
     },
+    'lim': {
+      sub: 'munder',
+    },
+    'int': '&int;',
+    'sqrt': { tag: 'msqrt' },
+    'frac': { render: this.renderFraction.bind(this) },
   };
   #symbols = {
     'infty': '&infin;',
     'pi': '&pi;',
     'pm': '&plusmn;',
+    'to': '&rarr;',
   };
 
   renderError(message, parentElement) {
@@ -94,6 +104,7 @@ export default class MathViewer extends Base {
     const renderer = this.#nodeRenderers[node.type];
     if (!renderer) {
       this.renderError('Tipo de elemento desconocido: ' + node.type, parentElement);
+      console.error(node);
       return;
     }
 
@@ -167,19 +178,92 @@ export default class MathViewer extends Base {
   renderOperator(node) {
     let element;
     const op = this.#operators[node.symbol];
-    if (op && op.tag) {
-      element = document.createElementNS('http://www.w3.org/1998/Math/MathML', op.tag);
-    } else {
-      element = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mo');
-      element.innerHTML = op || node.symbol;
+    if (op) {
+      if (op.render) {
+        return op.render(node);
+      } else if (op.tag) {
+        element = document.createElementNS('http://www.w3.org/1998/Math/MathML', op.tag);
+      }
     }
 
-    return {
-      element,
-      sub: 'munder',
-      sup: 'mover',
-      subsup: 'munderover',
+    if (!element) {
+      element = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mo');
+      element.innerHTML = op?.symbol ? op.symbol
+        : (typeof op === 'string') ? op
+        : node.symbol;
     }
+
+    const result = { element };
+
+    if (op) {
+      if (op.sub)
+        result.sub = op.sub;
+
+      if (op.sup)
+        result.sup = op.sup;
+
+      if (op.subsup)
+        result.subsup = op.subsup;
+    }
+
+    return result;
+  }
+
+  renderFraction(node) {
+    const element = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mfrac');
+
+    const numerator = this.renderNode(node.numerator, element);
+    element.appendChild(numerator.element);
+
+    const denominator = this.renderNode(node.denominator, element);
+    element.appendChild(denominator.element);
+    
+    return { element, skipBody: true };
+  }
+
+  renderMatrix(node) {
+    let element, tableElement;
+
+    if (node.open || node.close) {
+      element = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mrow');
+
+      if (node.open) {
+        const openElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mo');
+        openElement.textContent = node.open;
+        element.appendChild(openElement);
+      }
+
+      tableElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mtable');
+      element.appendChild(tableElement);
+      tableElement.textContent = node.value;
+    } else {
+      element = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mtable');
+      element.textContent = node.value;
+
+      tableElement = element;
+    }
+
+    node.rows.forEach(row => {
+      const rowElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mtr');
+      tableElement.appendChild(rowElement);
+      row.forEach(cell => {
+        const cellElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mtd');
+        rowElement.appendChild(cellElement);
+
+        const itemElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mi');
+        cellElement.appendChild(itemElement);
+        
+        this.renderNode(cell, itemElement);
+      });
+    });
+
+    if (node.close) {
+      const closeElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mo');
+      closeElement.textContent = node.close;
+      element.appendChild(closeElement);
+    }
+
+    return { element };
   }
 }
 

@@ -47,11 +47,6 @@ export default class MathParser {
       children: 2,
       properties: ['numerator', 'denominator'],
     },
-    '\\oint': {
-      type: 'operator',
-      symbol: 'oint',
-      children: 1,
-    },
     '\\coprod': {
       type: 'operator',
       symbol: 'coprod',
@@ -147,6 +142,10 @@ export default class MathParser {
       symbol: 'bar',
       children: 1,
     },
+    '\\lim': {
+      type: 'operator',
+      symbol: 'lim',
+    },
   };
   #groupSymbols = {
     '\\{': {
@@ -163,15 +162,15 @@ export default class MathParser {
   };
   #operatorSymbols = ['+', '-', '*', '/', '=', '<', '>', '^', '_', '!', '%', '&', '|', ':', ';', ',', '.', '?'];
   #blockEnv = {
-    'array': { open: '', close: '' },
-    'matrix': { open: '', close: '' },
-    'pmatrix': { open: '(', close: ')' },
-    'bmatrix': { open: '[', close: ']' },
-    'Bmatrix': { open: '\\{', close: '\\}' },
-    'pmatrix': { open: '\\(', close: '\\)' },
-    'vmatrix': { open: '|', close: '|' },
-    'Vmatrix': { open: '\\|', close: '\\|' },
-    'cases': { open: '{', close: '' },
+    'array':   { type: 'matrix', variant: 'array',   open: '',  close: '' },
+    'matrix':  { type: 'matrix', variant: 'matrix',  open: '',  close: '' },
+    'pmatrix': { type: 'matrix', variant: 'pmatrix', open: '(', close: ')' },
+    'bmatrix': { type: 'matrix', variant: 'bmatrix', open: '[', close: ']' },
+    'Bmatrix': { type: 'matrix', variant: 'Bmatrix', open: '{', close: '}' },
+    'pmatrix': { type: 'matrix', variant: 'pmatrix', open: '(', close: ')' },
+    'vmatrix': { type: 'matrix', variant: 'vmatrix', open: '|', close: '|' },
+    'Vmatrix': { type: 'matrix', variant: 'Vmatrix', open: '|', close: '|' },
+    'cases':   { type: 'matrix', variant: 'cases',   open: '{', close: '' },
   };
 
   parse(raw) {
@@ -320,6 +319,9 @@ export default class MathParser {
             type: block.type ?? token.env,
             rows: [],
           };
+
+          if (block.variant)
+            node.variant = block.variant;
 
           if (block.open)
             node.open = block.open;
