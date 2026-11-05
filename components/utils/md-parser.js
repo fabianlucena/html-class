@@ -292,8 +292,8 @@ export default class MDParser {
             text = '';
           }
 
-          nodes.push(node);
           node = this.applyPlugins(node);
+          nodes.push(node);
           node = null;
 
           continue;

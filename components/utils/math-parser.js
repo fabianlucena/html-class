@@ -2,8 +2,8 @@ export function MathParserMDPlugin(node) {
   if (node.type !== 'math' || node.content || !node.raw)
     return node;
 
-  const parser = new MathParser();
   const newNode = parser.parse(node.raw);
+  newNode.raw = node.raw;
 
   return newNode;
 }
@@ -44,14 +44,14 @@ export default class MathParser {
 
   parse(raw) {
     const tokens = this.tokenize(raw);
-    console.log([...tokens]);
+    //console.log([...tokens]);
     const node = {
       type: 'math',
       content: this.parseTokens(tokens),
     };
-    console.log(node);
-    console.log(JSON.stringify(node, null, 2));
-    //return html;
+    //console.log(node);
+    //console.log(JSON.stringify(node, null, 2));
+    return node;
   }
 
   tokenize(raw) {
@@ -196,3 +196,5 @@ export default class MathParser {
     return nodes;
   }
 }
+
+const parser = new MathParser();
