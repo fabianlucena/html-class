@@ -2,6 +2,7 @@ import { importCss, insertCss } from '../utils/import-css.js';
 import Base from '../utils/base.js';
 import MDParser from '../utils/md-parser.js';
 import { MathParserMDPlugin } from '../utils/math-parser.js';
+import { mathRenderMdPlugin } from '../math-viewer/math-viewer.js';
 
 importCss('./md-viewer.css', import.meta.url);
 
@@ -13,6 +14,37 @@ export default class MDViewer extends Base {
       MathParserMDPlugin,
     ],
   });
+  #nodeRenderers = {
+    'document': this.renderDocument.bind(this),
+    'text': this.renderText.bind(this),
+    'heading': this.renderHeading.bind(this),
+    'rule': this.renderRule.bind(this),
+    'paragraph': this.renderParagraph.bind(this),
+    'strong': this.renderStrong.bind(this),
+    'em': this.renderEmphasis.bind(this),
+    'strong-italic': this.renderStrongItalic.bind(this),
+    'mark': this.renderMark.bind(this),
+    'sub': this.renderSubscript.bind(this),
+    'sup': this.renderSuperscript.bind(this),
+    'command': this.renderCommand.bind(this),
+    'list': this.renderList.bind(this),
+    'list-item': this.renderListItem.bind(this),
+    'ref': this.renderReference.bind(this),
+    'link': this.renderLink.bind(this),
+    'image': this.renderImage.bind(this),
+    'footnote': this.renderFootnote.bind(this),
+    'definition': this.renderDefinition.bind(this),
+    'code-block': this.renderCodeBlock.bind(this),
+    'blockquote': this.renderBlockquote.bind(this),
+    'custom-block': this.renderCustomBlock.bind(this),
+    'table': this.renderTable.bind(this),
+    'table-head': this.renderTableHead.bind(this),
+    'table-foot': this.renderTableFoot.bind(this),
+    'table-body': this.renderTableBody.bind(this),
+    'table-row': this.renderTableRow.bind(this),
+    'table-cell': this.renderTableCell.bind(this),
+    'math': (...args) => mathRenderMdPlugin(this, ...args),
+  };
 
   constructor(options) {
     super();
@@ -72,37 +104,6 @@ export default class MDViewer extends Base {
 
     return true;
   }
-
-  #nodeRenderers = {
-    'document': this.renderDocument.bind(this),
-    'text': this.renderText.bind(this),
-    'heading': this.renderHeading.bind(this),
-    'rule': this.renderRule.bind(this),
-    'paragraph': this.renderParagraph.bind(this),
-    'strong': this.renderStrong.bind(this),
-    'em': this.renderEmphasis.bind(this),
-    'strong-italic': this.renderStrongItalic.bind(this),
-    'mark': this.renderMark.bind(this),
-    'sub': this.renderSubscript.bind(this),
-    'sup': this.renderSuperscript.bind(this),
-    'command': this.renderCommand.bind(this),
-    'list': this.renderList.bind(this),
-    'list-item': this.renderListItem.bind(this),
-    'ref': this.renderReference.bind(this),
-    'link': this.renderLink.bind(this),
-    'image': this.renderImage.bind(this),
-    'footnote': this.renderFootnote.bind(this),
-    'definition': this.renderDefinition.bind(this),
-    'code-block': this.renderCodeBlock.bind(this),
-    'blockquote': this.renderBlockquote.bind(this),
-    'custom-block': this.renderCustomBlock.bind(this),
-    'table': this.renderTable.bind(this),
-    'table-head': this.renderTableHead.bind(this),
-    'table-foot': this.renderTableFoot.bind(this),
-    'table-body': this.renderTableBody.bind(this),
-    'table-row': this.renderTableRow.bind(this),
-    'table-cell': this.renderTableCell.bind(this),
-  };
 
   renderNode(node, parentElement) {
     if (!this.checkNodeAndParent(node, parentElement))
@@ -473,6 +474,7 @@ export default class MDViewer extends Base {
     parentElement.appendChild(cellElement);
   }
 }
+
 /*
 function md2Html(md) {
   let lines = md.split(/\n/gm);
@@ -574,191 +576,6 @@ function mdFormat(md) {
       .replace(/\\pi/g, '&pi;');
 
     return md;
-}
-
-function math2html(math, { display = 'block' } = {}) {
-  const tokens = mathTokenizer(math);
-  return `<math xmlns="http://www.w3.org/1998/Math/MathML" display="${display}">
-    <mrow>
-      ${tokens2html(tokens)}
-    </mrow>
-  </math>`;
-}
-
-function mathTokenizer(math) {
-  const tokens = [];
-  const words = ['sin', 'cos', 'tan', 'log', 'ln', 'lim', 'max', 'min', 'exp', 'mod', 'gcd', 'lcm', 'det', 'dim', 'arg', 'ker', 'deg', 'hom', 'span', 'div', 'curl', 'grad'];
-
-  for (let i = 0; i < math.length; i++) {
-    const char = math[i];
-
-    if (/\s/.test(char))
-      continue;
-
-    if (char === '\\') {
-      let cmd = '\\';
-      i++;
-      while (i < math.length && /[a-zA-Z]/.test(math[i])) {
-        cmd += math[i];
-        i++;
-      }
-      i--;
-      tokens.push({ type: 'COMMAND', value: cmd });
-    } else if (/[0-9]/.test(char)) {
-      let word = '';
-      while (i < math.length && /[0-9]/.test(math[i])) {
-        word += math[i];
-        i++;
-      }
-      i--;
-
-      const token = { type: 'NUMBER', value: word };
-      tokens.push(token);
-    } else if (/[a-zA-Z]/.test(char)) {
-      let word = '';
-      while (i < math.length && /[a-zA-Z]/.test(math[i])) {
-        word += math[i];
-        i++;
-      }
-      i--;
-
-      if (words.includes(word)) {
-        const token = { type: 'COMMAND', value: '\\' + word };
-        tokens.push(token);
-      } else {
-        for (const letter of word) {
-          const token = { type: 'IDENTIFIER', value: letter };
-          tokens.push(token);
-        }
-      }
-    } else {
-      tokens.push({ type: 'SYMBOL', value: char });
-    }
-  }
-
-  return tokens;
-}
-
-function tokens2html(tokens, single) {
-  const commandsMap = {
-    '\\sum': {
-      symbol: '&sum;',
-      msub: 'munder',
-      msup: 'mover',
-      msubsup: 'munderover',
-    },
-    '\\int': {
-      symbol: '&int;',
-    },
-    '\\sqrt': {
-      tag: 'msqrt',
-      children: 1,
-    },
-    '\\infty': {
-      symbol: '&infin;',
-    },
-    '\\pi': {
-      symbol: '&pi;',
-    },
-    '\\pm': {
-      symbol: '&plusmn;',
-    },
-    '\\frac': {
-      tag: 'mfrac',
-      children: 2,
-    },
-  };
-
-  let result = '', currentCommand, node;
-  while (tokens.length) {
-    currentCommand = null;
-    let token = tokens.shift();
-
-    if (token.type === 'IDENTIFIER') {
-      node = `<mi>${token.value}</mi>`;
-    } else if (token.type === 'NUMBER') {
-      node = `<mn>${token.value}</mn>`;
-    } else if (token.type === 'COMMAND') {
-      currentCommand = commandsMap[token.value];
-      if (currentCommand) {
-        let innerHtml = '';
-        if (currentCommand.children) {
-          for (let i = 0; i < currentCommand.children; i++) {
-            innerHtml += tokens2html(tokens, true);
-          }
-        }
-
-        if (currentCommand.tag)
-          node = `<${currentCommand.tag}>${innerHtml}</${currentCommand.tag}>`;
-        else
-          node = `<mo>${currentCommand?.symbol ?? token.value}${innerHtml}</mo>`;
-      } else {
-        node = `<mo>${token.value}</mo>`;
-      }
-    } else if (token.type === 'SYMBOL') {
-      if (token.value === '{') {
-        const innerTokens = [];
-        let braceCount = 1;
-        while (tokens.length && braceCount > 0) {
-          const innerToken = tokens.shift();
-          if (innerToken.value === '{') {
-            braceCount++;
-          } else if (innerToken.value === '}') {
-            braceCount--;
-          }
-          innerTokens.push(innerToken);
-        }
-        innerTokens.pop();
-        node = `<mrow>${tokens2html(innerTokens)}</mrow>`;
-      } else if (token.value === '^') {
-        const exponent = tokens2html(tokens, true);
-        node = `<msup>${exponent}</msup>`;
-      } else if (token.value === '_') {
-        const subscript = tokens2html(tokens, true);
-        node = `<msub>${subscript}</msub>`;
-      } else {
-        node = `<mo>${token.value}</mo>`;
-      }
-    } else {
-      console.warn('Unknown token type:', token.type, 'with value:', token.value);
-    }
-
-    if (!single && tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
-      tokens.shift();
-      const exponent = tokens2html(tokens, true);
-      if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
-        tokens.shift();
-        const subscript = tokens2html(tokens, true);
-        const tag = currentCommand?.msubsup || 'msubsup';
-        node = `<${tag}>${node}${subscript}${exponent}</${tag}>`;
-      } else {
-        const tag = currentCommand?.msup || 'msup';
-        node = `<${tag}>${node}${exponent}</${tag}>`;
-      }
-    } else if (!single && tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
-      tokens.shift();
-      const subscript = tokens2html(tokens, true);
-      if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
-        tokens.shift();
-        const exponent = tokens2html(tokens, true);
-        const tag = currentCommand?.msubsup || 'msubsup';
-        node = `<${tag}>${node}${subscript}${exponent}</${tag}>`;
-      } else {
-        const tag = currentCommand?.msub || 'msub';
-        node = `<${tag}>${node}${subscript}</${tag}>`;
-      }
-    }
-
-    if (node) {
-      result += node;
-      node = null;
-    }
-
-    if (single)
-      break;
-  }
-
-  return result;
 }
 
 function extractYaml(lines) {

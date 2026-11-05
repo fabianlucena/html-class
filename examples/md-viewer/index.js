@@ -97,6 +97,8 @@ De dos líneas para demostrar el soporte de Markdown en notas al pie extendidas 
 Procesa expresiones matemáticas de forma nativa. 
 En línea: $f(x) = \\sum_{i=1}^{n} x_i^2$.
 
+$$f(x) = \\sum_{i=1}^{n} x_i^2$$
+
 En bloque independiente:
 $$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
 
