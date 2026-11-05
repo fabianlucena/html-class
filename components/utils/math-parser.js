@@ -2,7 +2,7 @@ export function MathParserMDPlugin(node) {
   if (node.type !== 'math' || node.content || !node.raw)
     return node;
 
-  const newNode = parser.parse(node.raw);
+  const newNode = parser.parse(node.raw, { display: node.variant ? 'block' : 'inline' });
   newNode.raw = node.raw;
 
   return newNode;
@@ -173,11 +173,12 @@ export default class MathParser {
     'cases':   { type: 'matrix', variant: 'cases',   open: '{', close: '' },
   };
 
-  parse(raw) {
+  parse(raw, options = {}) {
     const tokens = this.tokenize(raw);
     //console.log([...tokens]);
     const node = {
       type: 'math',
+      ...options,
       body: this.parseTokens(tokens),
     };
     //console.log(node);

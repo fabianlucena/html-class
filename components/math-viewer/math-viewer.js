@@ -4,13 +4,7 @@ export function mathRenderMdPlugin(md, node, parentElement) {
   if (!md.checkNodeAndParent(node, parentElement, 'math'))
     return;
 
-  const mathElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'math');
-  mathElement.setAttribute('display', 'block');
-  parentElement.appendChild(mathElement);
-
-  // console.log(node);
-
-  mathViewer.renderNodes(node.body, mathElement);
+  mathViewer.render(node, parentElement);
 }
 
 export default class MathViewer extends Base {
@@ -43,6 +37,16 @@ export default class MathViewer extends Base {
     'pm': '&plusmn;',
     'to': '&rarr;',
   };
+
+  render(node, parentElement) {
+    const mathElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'math');
+    if (node.display)
+      mathElement.setAttribute('display', node.display);
+    parentElement.appendChild(mathElement);
+    console.log(node);
+
+    this.renderNodes(node.body, mathElement);
+  }
 
   renderError(message, parentElement) {
     if (!message || !parentElement)

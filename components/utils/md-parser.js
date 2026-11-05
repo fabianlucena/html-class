@@ -270,6 +270,8 @@ export default class MDParser {
                     text = this.parseLine(text);
 
                   node = { type: definition.type, [property]: text };
+                  if (definition.variant)
+                    node.variant = definition.variant;
                   break;
                 } else if (definition.parser) {
                   let res = definition.parser.call(this, line.slice(i), { detailed: true });
