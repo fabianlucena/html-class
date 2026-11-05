@@ -102,6 +102,13 @@ $$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
 
 Solución de la ecuación cuadrática: $x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$
 
+Matrices:
+
+$$\\begin{array}{cc}
+  a & b \\\\
+  c & d
+\\end{array}_{2\\times2}$$
+
 ---
 
 # 5. Tablas Estructuradas con Leyendas (*Captions*)

@@ -87,16 +87,26 @@ export default class MathParser {
     'langle': 'rangle',
   };
   #operatorSymbols = ['+', '-', '*', '/', '=', '<', '>', '^', '_', '!', '%', '&', '|', ':', ';', ',', '.', '?'];
+  #blockEnv = {
+    'array': { open: '', close: '' },
+    'matrix': { open: '', close: '' },
+    'pmatrix': { open: '(', close: ')' },
+    'bmatrix': { open: '[', close: ']' },
+    'Bmatrix': { open: '\\{', close: '\\}' },
+    'pmatrix': { open: '\\(', close: '\\)' },
+    'vmatrix': { open: '|', close: '|' },
+    'Vmatrix': { open: '\\|', close: '\\|' },
+  };
 
   parse(raw) {
     const tokens = this.tokenize(raw);
-    console.log([...tokens]);
+    //console.log([...tokens]);
     const node = {
       type: 'math',
       body: this.parseTokens(tokens),
     };
-    console.log(node);
-    console.log(JSON.stringify(node, null, 2));
+    //console.log(node);
+    //console.log(JSON.stringify(node, null, 2));
     return node;
   }
 
@@ -112,7 +122,16 @@ export default class MathParser {
       if (char === '\\') {
         let cmd = '\\';
         i++;
-        if (i < raw.length && (raw[i] === '{' || raw[i] === '}')) {
+
+        let matches;
+        if (matches = /^(begin|end)\{([^}]*)\}(?:\{([^}]*)\})?/.exec(raw.slice(i))) {
+          tokens.push({ type: 'COMMAND', value: '\\' + matches[1], env: matches[2], align: matches[3] });
+          i += matches[0].length - 1;
+        } else if (i < raw.length && (raw[i] === '{' || raw[i] === '}')) {
+          cmd += raw[i];
+          i++;
+          tokens.push({ type: 'SYMBOL', value: cmd });
+        } else if (raw[i] === '\\') {
           cmd += raw[i];
           i++;
           tokens.push({ type: 'SYMBOL', value: cmd });
@@ -219,39 +238,74 @@ export default class MathParser {
       } else if (token.type === 'COMMAND') {
         currentCommand = this.#commandsMap[token.value];
 
-        if (!currentCommand) {
-          currentCommand = {
-            type: 'symbol',
-            symbol: token.value.slice(1),
+        if (!currentCommand && token.value === '\\begin') {
+          let block = this.#blockEnv[token.env] || { open: '', close: '' };
+          node = {
+            type: block.type ?? token.env,
+            rows: [],
           };
-        }
 
-        node = {
-          type: currentCommand?.type ?? 'command',
-          symbol: currentCommand?.symbol ?? token.value,
-        };
-        
-        if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
-          tokens.shift();
-          node.sub = this.parseTokens(tokens, { single: true });
-        }
+          if (block.open)
+            node.open = block.open;
 
-        if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
+          if (block.close)
+            node.close = block.close;
+
+          if (token.align)
+            node.align = token.align?.split('');
+
+          let row = [];
+          do {
+            row.push(...this.parseTokens(tokens, { single: true, end: { type: 'COMMAND', value: '\\end', env: token.env } }));
+            if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '\\\\') {
+              tokens.shift();
+              node.rows.push(row);
+              row = [];
+            }
+
+            if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '&')
+              tokens.shift();
+          } while (tokens[0]?.type !== 'COMMAND' || tokens[0]?.value !== '\\end' || tokens[0]?.env !== token.env);
+          
+          if (row.length > 0)
+            node.rows.push(row);
+
           tokens.shift();
-          node.sup = this.parseTokens(tokens, { single: true });
-        }
-        
-        if (currentCommand?.children) {
-          for (let i = 0; i < currentCommand.children; i++) {
-            const child = this.parseTokens(tokens, { single: true });
-            const property = currentCommand.properties?.[i] ?? 'body';
-            if (node[property] === undefined) {
-              node[property] = child;
-            } else {
-              if (!Array.isArray(node[property])) {
-                node[property] = [node[property]];
+        } else {
+          if (!currentCommand) {
+            currentCommand = {
+              type: 'symbol',
+              symbol: token.value.slice(1),
+            };
+          }
+
+          node = {
+            type: currentCommand?.type ?? 'command',
+            symbol: currentCommand?.symbol ?? token.value,
+          };
+          
+          if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
+            tokens.shift();
+            node.sub = this.parseTokens(tokens, { single: true });
+          }
+
+          if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
+            tokens.shift();
+            node.sup = this.parseTokens(tokens, { single: true });
+          }
+          
+          if (currentCommand?.children) {
+            for (let i = 0; i < currentCommand.children; i++) {
+              const child = this.parseTokens(tokens, { single: true });
+              const property = currentCommand.properties?.[i] ?? 'body';
+              if (node[property] === undefined) {
+                node[property] = child;
+              } else {
+                if (!Array.isArray(node[property])) {
+                  node[property] = [node[property]];
+                }
+                node[property].push(...child);
               }
-              node[property].push(...child);
             }
           }
         }
