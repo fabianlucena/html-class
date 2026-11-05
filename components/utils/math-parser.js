@@ -369,6 +369,11 @@ export default class MathParser {
             tokens.shift();
             node.sup = this.parseTokens(tokens, { single: true });
           }
+          
+          if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
+            tokens.shift();
+            node.sub = this.parseTokens(tokens, { single: true });
+          }
 
           if (currentCommand?.optionalPreChildren) {
             const { open, close, property } = currentCommand.optionalPreChildren;
@@ -409,6 +414,11 @@ export default class MathParser {
         if (!skipSup && tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
           tokens.shift();
           node.sup = this.parseTokens(tokens, { single: true });
+        }
+
+        if (!skipSub && tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
+          tokens.shift();
+          node.sub = this.parseTokens(tokens, { single: true, skipSup: true });
         }
         
         nodes.push(node);
