@@ -94,20 +94,7 @@ De dos líneas para demostrar el soporte de Markdown en notas al pie extendidas 
 
 # 4. Fórmulas Matemáticas (Sintaxis LaTeX)
 
-Procesa expresiones matemáticas de forma nativa. 
-En línea: $f(x) = \\sum_{i=1}^{n} x_i^2$.
-
-En bloque independiente:
-$$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
-
-Solución de la ecuación cuadrática: $x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$
-
-Matrices:
-
-$$\\begin{array}{cc}
-  a & b \\\\
-  c & d
-\\end{array}_{2\\times2}$$
+$$ \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 1 $$
 
 ---
 

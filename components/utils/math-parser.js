@@ -35,6 +35,11 @@ export default class MathParser {
       type: 'operator',
       symbol: 'sqrt',
       children: 1,
+      optionalPreChildren: {
+        open: '[',
+        close: ']',
+        property: 'index',
+      },
     },
     '\\frac': {
       type: 'operator',
@@ -96,17 +101,18 @@ export default class MathParser {
     'pmatrix': { open: '\\(', close: '\\)' },
     'vmatrix': { open: '|', close: '|' },
     'Vmatrix': { open: '\\|', close: '\\|' },
+    'cases': { open: '{', close: '' },
   };
 
   parse(raw) {
     const tokens = this.tokenize(raw);
-    //console.log([...tokens]);
+    console.log([...tokens]);
     const node = {
       type: 'math',
       body: this.parseTokens(tokens),
     };
     //console.log(node);
-    //console.log(JSON.stringify(node, null, 2));
+    console.log(JSON.stringify(node, null, 2));
     return node;
   }
 
@@ -292,6 +298,17 @@ export default class MathParser {
           if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '^') {
             tokens.shift();
             node.sup = this.parseTokens(tokens, { single: true });
+          }
+
+          if (currentCommand?.optionalPreChildren) {
+            const { open, close, property } = currentCommand.optionalPreChildren;
+            if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === open) {
+              tokens.shift();
+              
+              property ??= 'body';
+              node[property] = this.parseTokens(tokens, { single: true, end: { type: 'SYMBOL', value: close } });
+              tokens.shift();
+            }
           }
           
           if (currentCommand?.children) {
