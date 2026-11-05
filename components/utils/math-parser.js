@@ -33,7 +33,7 @@ export default class MathParser {
     },
     '\\sqrt': {
       type: 'operator',
-      symbol: 'sqrt',
+      symbol: (node) => node.index ? 'root' : 'root',
       children: 1,
       optionalPreChildren: {
         open: '[',
@@ -360,7 +360,6 @@ export default class MathParser {
 
           node = {
             type: currentCommand?.type ?? 'command',
-            symbol: currentCommand?.symbol ?? token.value,
           };
           
           if (tokens[0]?.type === 'SYMBOL' && tokens[0].value === '_') {
@@ -402,6 +401,12 @@ export default class MathParser {
                 node[property].push(...child);
               }
             }
+          }
+
+          if (typeof currentCommand?.symbol === 'function') {
+            node.symbol = currentCommand.symbol(node);
+          } else {
+            node.symbol = currentCommand?.symbol ?? token.value;
           }
         }
       } else {
