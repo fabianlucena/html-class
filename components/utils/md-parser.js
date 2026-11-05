@@ -347,11 +347,11 @@ export default class MDParser {
       node.type = 'image';
       includeTarget = true;
     } else if (line[from] === '^') {
-      node.type = 'reference';
+      node.type = 'ref';
       node.refType = 'footnote';
       from++;
     } else if (line[from] === '@') {
-      node.type = 'reference';
+      node.type = 'ref';
       node.refType = 'citation';
       from++;
     } else {
@@ -372,7 +372,7 @@ export default class MDParser {
       let parts = node.target.split(' "');
       if (parts.length > 1) {
         node.target = parts[0];
-        node.title = parts.slice(1).join(' "').slice(0, -1);
+        node.label = parts.slice(1).join(' "').slice(0, -1);
       }
     }
 
@@ -780,7 +780,7 @@ class CodeBlockParser {
       type: 'code-block',
       lang,
       attrs,
-      content: codeLines.join('\n'),
+      code: codeLines.join('\n'),
     };
 
     return node;
@@ -816,23 +816,23 @@ class CustomBlockParser {
     if (lines[0] && this.#endRegExp.test(lines[0]))
       lines.shift();
     
-    let className = 'block';
+    let variant = '';
     const attr = [];
     const blockType = matches[1] ? matches[1].trim() : '';
     const optionsMatches = /\{(.+)\}/.exec(blockType);
     if (optionsMatches) {
       optionsMatches[1].split(/\s+/).forEach(option => {
         if (option.startsWith('.')) {
-          attr.push(option.slice(1));
+          attr.className = option.slice(1);
         }
       });
     } else if (blockType) {
-      className += ' ' + blockType.toLocaleLowerCase();
+      variant = blockType.toLocaleLowerCase();
     }
     
     const node = {
       type: 'custom-block',
-      className,
+      variant,
       attrs: attr,
       content: blockNodes,
     };

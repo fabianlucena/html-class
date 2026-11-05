@@ -81,6 +81,27 @@ export default class MDViewer extends Base {
     'paragraph': this.renderParagraph.bind(this),
     'strong': this.renderStrong.bind(this),
     'em': this.renderEmphasis.bind(this),
+    'strong-italic': this.renderStrongItalic.bind(this),
+    'mark': this.renderMark.bind(this),
+    'sub': this.renderSubscript.bind(this),
+    'sup': this.renderSuperscript.bind(this),
+    'command': this.renderCommand.bind(this),
+    'list': this.renderList.bind(this),
+    'list-item': this.renderListItem.bind(this),
+    'ref': this.renderReference.bind(this),
+    'link': this.renderLink.bind(this),
+    'image': this.renderImage.bind(this),
+    'footnote': this.renderFootnote.bind(this),
+    'definition': this.renderDefinition.bind(this),
+    'code-block': this.renderCodeBlock.bind(this),
+    'blockquote': this.renderBlockquote.bind(this),
+    'custom-block': this.renderCustomBlock.bind(this),
+    'table': this.renderTable.bind(this),
+    'table-head': this.renderTableHead.bind(this),
+    'table-foot': this.renderTableFoot.bind(this),
+    'table-body': this.renderTableBody.bind(this),
+    'table-row': this.renderTableRow.bind(this),
+    'table-cell': this.renderTableCell.bind(this),
   };
 
   renderNode(node, parentElement) {
@@ -103,6 +124,14 @@ export default class MDViewer extends Base {
   renderNodes(nodes, parentElement) {
     if (!parentElement)
       throw new Error('El elemento padre es nulo o indefinido.');
+    
+    if (!nodes)
+      throw new Error('El contenido de los nodos es nulo o indefinido.');
+
+    if (!Array.isArray(nodes)) {
+      this.renderNode(nodes, parentElement);
+      return;
+    }
     
     if (!nodes?.length)
       return;
@@ -173,8 +202,277 @@ export default class MDViewer extends Base {
     this.renderContent(node.content, emElement);
     parentElement.appendChild(emElement);
   }
-}
 
+  renderStrongItalic(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'strong-italic'))
+      return;
+
+    const strongItalicElement = document.createElement('strong');
+    const emElement = document.createElement('em');
+    this.renderContent(node.content, emElement);
+    strongItalicElement.appendChild(emElement);
+    parentElement.appendChild(strongItalicElement);
+  }
+
+  renderMark(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'mark'))
+      return;
+
+    let markElement = document.createElement('mark');
+    this.renderContent(node.content, markElement);
+    parentElement.appendChild(markElement);
+  }
+
+  renderSubscript(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'sub'))
+      return;
+
+    let subElement = document.createElement('sub');
+    this.renderContent(node.content, subElement);
+    parentElement.appendChild(subElement);
+  }
+
+  renderSuperscript(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'sup'))
+      return;
+
+    let supElement = document.createElement('sup');
+    this.renderContent(node.content, supElement);
+    parentElement.appendChild(supElement);
+  }
+
+  #commands = {
+    'sum': '&sum;',
+    'int': '&int;',
+    'sqrt': '&radic;',
+    'infty': '&infin;',
+    'pi': '&pi;',
+  };
+  renderCommand(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'command'))
+      return;
+
+    let commandElement = document.createElement('span');
+    commandElement.classList.add('command');
+    commandElement.innerHTML = this.#commands[node.command] || node.command;
+    parentElement.appendChild(commandElement);
+  }
+
+  renderList(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'list'))
+      return;
+
+    let listElement = document.createElement(node.ordered ? 'ol' : 'ul');
+    this.renderContent(node.content, listElement);
+    parentElement.appendChild(listElement);
+  }
+
+  renderListItem(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'list-item'))
+      return;
+
+    let listItemElement = document.createElement('li');
+    this.renderContent(node.content, listItemElement);
+    parentElement.appendChild(listItemElement);
+  }
+
+  renderReference(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'ref'))
+      return;
+
+    let refElement = document.createElement('span');
+    refElement.classList.add('reference');
+    parentElement.appendChild(refElement);
+    if (node.label) {
+      refElement.innerHTML = node.label;
+    } else {
+      refElement.innerHTML = node.refType === 'footnote' ? `[^${node.target}]` : `[@${node.target}]`;
+    }
+  }
+
+  renderLink(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'link'))
+      return;
+
+    let linkElement = document.createElement('a');
+    linkElement.href = node.target;
+    if (node.title)
+      linkElement.title = node.title;
+
+    this.renderContent(node.content, linkElement);
+    parentElement.appendChild(linkElement);
+  }
+
+  renderImage(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'image'))
+      return;
+
+    let imageElement = document.createElement('img');
+    imageElement.src = node.target;
+    if (node.label)
+      imageElement.alt = node.label;
+    if (node.title)
+      imageElement.title = node.title;
+    parentElement.appendChild(imageElement);
+  }
+
+  renderFootnote(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'footnote'))
+      return;
+
+    let footnoteElement = document.createElement('span');
+    footnoteElement.classList.add('footnote');
+    footnoteElement.innerHTML = `[^${node.id}]`;
+    parentElement.appendChild(footnoteElement);
+    this.renderContent(node.content, footnoteElement);
+  }
+
+  renderDefinition(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'definition'))
+      return;
+
+    let defElement;
+    if (parentElement.lastChild?.tagName === 'DL') {
+      defElement = parentElement.lastChild;
+    } else {
+      defElement = document.createElement('dl');
+      parentElement.appendChild(defElement);
+    }
+
+    const dtElement = document.createElement('dt');
+    defElement.appendChild(dtElement);
+    this.renderNodes(node.term, dtElement);
+    
+    for (const definition of node.definitions) {
+      const ddElement = document.createElement('dd');
+      defElement.appendChild(ddElement);
+      this.renderNodes(definition, ddElement);
+    }
+  }
+
+  renderCodeBlock(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'code-block'))
+      return;
+    
+    let preElement = document.createElement('pre');
+    let codeElement = document.createElement('code');
+    codeElement.classList.add('block');
+    codeElement.classList.add(`language-${node.lang || 'plaintext'}`);
+    codeElement.textContent = node.code
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    codeElement.dataset.attrs = node.attrs || '';
+
+    preElement.appendChild(codeElement);
+    parentElement.appendChild(preElement);
+  }
+
+  renderBlockquote(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'blockquote'))
+      return;
+
+    let blockquoteElement = document.createElement('blockquote');
+    this.renderContent(node.content, blockquoteElement);
+    parentElement.appendChild(blockquoteElement);
+  }
+
+  renderCustomBlock(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'custom-block'))
+      return;
+
+    const customBlockElement = document.createElement('div');
+    customBlockElement.classList.add('custom-block');
+    
+    if (node.variant)
+      customBlockElement.classList.add(node.variant);
+    
+    if (node.attrs) {
+      for (const [key, value] of Object.entries(node.attrs)) {
+        if (key === 'class' || key === 'className') {
+          let className = [...value.split(/\s+/)].filter(Boolean);
+          customBlockElement.classList.add(...className);
+        } else {
+          customBlockElement.setAttribute(key, value);
+        }
+      }
+    }
+
+    this.renderContent(node.content, customBlockElement);
+    parentElement.appendChild(customBlockElement);
+  }
+
+  renderTable(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'table'))
+      return;
+
+    let tableElement = document.createElement('table');
+    if (node.attrs) {
+      for (const [key, value] of Object.entries(node.attrs)) {
+        tableElement.setAttribute(key, value);
+      }
+    }
+
+    if (node.head)
+      this.renderContent(node.head, tableElement);
+
+    if (node.foot)
+      this.renderContent(node.foot, tableElement);
+
+    this.renderContent(node.bodies, tableElement);
+    parentElement.appendChild(tableElement);
+  }
+
+  renderTableHead(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'table-head'))
+      return;
+
+    let theadElement = document.createElement('thead');
+    this.renderContent(node.rows, theadElement);
+    parentElement.appendChild(theadElement);
+  }
+
+  renderTableFoot(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'table-foot'))
+      return;
+
+    let tfootElement = document.createElement('tfoot');
+    this.renderContent(node.rows, tfootElement);
+    parentElement.appendChild(tfootElement);
+  }
+
+  renderTableBody(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'table-body'))
+      return;
+
+    let tbodyElement = document.createElement('tbody');
+    this.renderContent(node.rows, tbodyElement);
+    parentElement.appendChild(tbodyElement);
+  }
+
+  renderTableRow(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'table-row'))
+      return;
+
+    let trElement = document.createElement('tr');
+    this.renderContent(node.cells, trElement);
+    parentElement.appendChild(trElement);
+  }
+
+  renderTableCell(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'table-cell'))
+      return;
+
+    let cellElement = document.createElement(node.header ? 'th' : 'td');
+    if (node.attrs) {
+      for (const [key, value] of Object.entries(node.attrs)) {
+        cellElement.setAttribute(key, value);
+      }
+    }
+
+    this.renderContent(node.content, cellElement);
+    parentElement.appendChild(cellElement);
+  }
+}
 /*
 function md2Html(md) {
   let lines = md.split(/\n/gm);
