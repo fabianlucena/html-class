@@ -35,6 +35,83 @@ export default class MathViewer extends Base {
     'sqrt': { tag: 'msqrt' },
     'root': { render: this.renderRoot.bind(this) },
     'frac': { render: this.renderFraction.bind(this) },
+    'max': {
+      symbol: '&max;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'min': {
+      symbol: '&min;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'sup': {
+      symbol: '&sup;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'inf': {
+      symbol: '&inf;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'sum': {
+      symbol: '&sum;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'prod': {
+      symbol: '&prod;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'coprod': {
+      symbol: '&coprod;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'bigcup': {
+      symbol: '&bigcup;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'bigcap': {
+      symbol: '&bigcap;',
+        sub: 'munder',
+        sup: 'mover',
+        subsup: 'munderover',
+        segregateBody: true,
+    },
+    'bigvee': {
+      symbol: '&bigvee;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
+    'bigwedge': {
+      symbol: '&bigwedge;',
+      sub: 'munder',
+      sup: 'mover',
+      subsup: 'munderover',
+      segregateBody: true,
+    },
   };
   #symbols = {
     'infty': '&infin;',
@@ -48,7 +125,6 @@ export default class MathViewer extends Base {
     if (node.display)
       mathElement.setAttribute('display', node.display);
     parentElement.appendChild(mathElement);
-    console.log(node);
 
     this.renderNodes(node.body, mathElement);
   }
