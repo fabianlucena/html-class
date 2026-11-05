@@ -77,6 +77,76 @@ export default class MathParser {
       symbol: 'bigwedge',
       children: 1,
     },
+    '\\overline': {
+      type: 'decoration',
+      symbol: 'overline',
+      children: 1,
+    },
+    '\\underline': {
+      type: 'decoration',
+      symbol: 'underline',
+      children: 1,
+    },
+    '\\overbrace': {
+      type: 'decoration',
+      symbol: 'overbrace',
+      children: 1,
+    },
+    '\\underbrace': {
+      type: 'decoration',
+      symbol: 'underbrace',
+      children: 1,
+    },
+    '\\hat': {
+      type: 'decoration',
+      symbol: 'hat',
+      children: 1,
+    },
+    '\\widehat': {
+      type: 'decoration',
+      symbol: 'widehat',
+      children: 1,
+    },
+    '\\tilde': {
+      type: 'decoration',
+      symbol: 'tilde',
+      children: 1,
+    },
+    '\\widetilde': {
+      type: 'decoration',
+      symbol: 'widetilde',
+      children: 1,
+    },
+    '\\dot': {
+      type: 'decoration',
+      symbol: 'dot',
+      children: 1,
+    },
+    '\\ddot': {
+      type: 'decoration',
+      symbol: 'ddot',
+      children: 1,
+    },
+    '\\vec': {
+      type: 'decoration',
+      symbol: 'vec',
+      children: 1,
+    },
+    '\\overrightarrow': {
+      type: 'decoration',
+      symbol: 'overrightarrow',
+      children: 1,
+    },
+    '\\overleftarrow': {
+      type: 'decoration',
+      symbol: 'overleftarrow',
+      children: 1,
+    },
+    '\\bar': {
+      type: 'decoration',
+      symbol: 'bar',
+      children: 1,
+    },
   };
   #groupSymbols = {
     '\\{': {
