@@ -39,16 +39,143 @@ export default class MDViewer extends Base {
   set md(md) {
     this.#md = md;
     this.#doc = this.#mdParser.parse(md);
-    this.render(md);
+    this.render();
 
     console.log(this.#doc.content.slice(0, 300));
   }
 
-  render(md) {
-    this.element.innerHTML = md2Html(md);
+  render() {
+    this.renderNode(this.#doc, this.element);
+  }
+
+  renderError(message, parentElement) {
+    if (!message || !parentElement)
+      return;
+
+    console.error(message);
+
+    let errorElement = document.createElement('div');
+    errorElement.classList.add('error');
+    errorElement.textContent = message;
+    parentElement.appendChild(errorElement);
+  }
+
+  checkNodeAndParent(node, parentElement, type) {
+    if (!parentElement)
+      throw new Error('El elemento padre es nulo o indefinido.');
+    
+    if (!node)
+      this.renderError('El nodo es nulo o indefinido.', parentElement);
+
+    if (type && node?.type !== type)
+      this.renderError(`El tipo de nodo recibido "${node?.type}" no es el esperado: ${type}.`, parentElement);
+
+    return true;
+  }
+
+  #nodeRenderers = {
+    'document': this.renderDocument.bind(this),
+    'text': this.renderText.bind(this),
+    'heading': this.renderHeading.bind(this),
+    'rule': this.renderRule.bind(this),
+    'paragraph': this.renderParagraph.bind(this),
+    'strong': this.renderStrong.bind(this),
+    'em': this.renderEmphasis.bind(this),
+  };
+
+  renderNode(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement))
+      return;
+
+    const renderer = this.#nodeRenderers[node.type];
+    if (!renderer) {
+      this.renderError("Tipo de elemento desconocido: " + node.type, parentElement);
+      return;
+    }
+
+    renderer(node, parentElement);
+  }
+
+  renderContent(content, parentElement) {
+    this.renderNodes(content, parentElement);
+  }
+
+  renderNodes(nodes, parentElement) {
+    if (!parentElement)
+      throw new Error('El elemento padre es nulo o indefinido.');
+    
+    if (!nodes?.length)
+      return;
+
+    for (const node of nodes)
+      this.renderNode(node, parentElement);
+  }
+
+  renderText(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'text'))
+      return;
+
+    let textNode = document.createTextNode(node.text);
+    parentElement.appendChild(textNode);
+  }
+
+  renderDocument(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'document'))
+      return;
+
+    const docElement = document.createElement('div');
+    docElement.classList.add('document');
+    parentElement.appendChild(docElement);
+    this.renderContent(node.content, docElement);
+  }
+
+  renderHeading(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'heading'))
+      return;
+
+    let headingElement = document.createElement(`h${node.level}`);
+    this.renderContent(node.content, headingElement);
+    parentElement.appendChild(headingElement);
+  }
+
+  renderRule(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'rule'))
+      return;
+
+    let ruleElement = document.createElement('hr');
+    ruleElement.classList.add('rule');
+    parentElement.appendChild(ruleElement);
+  }
+
+  renderParagraph(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'paragraph'))
+      return;
+
+    let paragraphElement = document.createElement('p');
+    this.renderContent(node.content, paragraphElement);
+    parentElement.appendChild(paragraphElement);
+  }
+
+  renderStrong(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'strong'))
+      return;
+
+    let strongElement = document.createElement('strong');
+    this.renderContent(node.content, strongElement);
+    parentElement.appendChild(strongElement);
+  }
+
+  renderEmphasis(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'em'))
+      return;
+
+    let emElement = document.createElement('em');
+    this.renderContent(node.content, emElement);
+    parentElement.appendChild(emElement);
   }
 }
 
+/*
 function md2Html(md) {
   let lines = md.split(/\n/gm);
   // console.log(lines);
@@ -700,3 +827,4 @@ function mdBlock2Html(lines) {
   
   return `<div class="${className} ${attr.join(' ')}">${blockLines.join('\n')}</div>`;
 }
+*/
