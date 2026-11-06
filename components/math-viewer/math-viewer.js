@@ -23,94 +23,88 @@ export default class MathViewer extends Base {
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'lim': {
       sub: 'munder',
     },
     'int': {
       symbol: '&int;',
-      segregateBody: true,
     },
-    'sqrt': { tag: 'msqrt' },
-    'root': { render: this.renderRoot.bind(this) },
-    'frac': { render: this.renderFraction.bind(this) },
+    'sqrt': {
+      tag: 'msqrt',
+      bodyAsChild: true,
+    },
+    'root': {
+      render: this.renderRoot.bind(this),
+      bodyAsChild: true,
+    },
+    'frac': { render: this.renderFraction.bind(this),
+    },
     'max': {
       symbol: '&max;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'min': {
       symbol: '&min;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'sup': {
       symbol: '&sup;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'inf': {
       symbol: '&inf;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'sum': {
       symbol: '&sum;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'prod': {
       symbol: '&prod;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'coprod': {
       symbol: '&coprod;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'bigcup': {
       symbol: '&bigcup;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'bigcap': {
       symbol: '&bigcap;',
         sub: 'munder',
         sup: 'mover',
         subsup: 'munderover',
-        segregateBody: true,
     },
     'bigvee': {
       symbol: '&bigvee;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
     'bigwedge': {
       symbol: '&bigwedge;',
       sub: 'munder',
       sup: 'mover',
       subsup: 'munderover',
-      segregateBody: true,
     },
   };
   #symbols = {
@@ -228,14 +222,14 @@ export default class MathViewer extends Base {
     if (node.body && !element.skipBody) {
       const bodyChild = this.renderNode(node.body, parentElement);
 
-      if (element.segregateBody) {
+      if (element.bodyAsChild) {
+        element.element.appendChild(bodyChild.element);
+      } else {
         const bodyElement = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mrow');
         parentElement.appendChild(bodyElement);
         bodyElement.appendChild(bodyChild.element);
 
         element = bodyElement;
-      } else {
-        element.element.appendChild(bodyChild.element);
       }
     }
   }
@@ -287,24 +281,7 @@ export default class MathViewer extends Base {
         : node.symbol;
     }
 
-    const result = { element };
-
-    if (op) {
-      if (op.sub)
-        result.sub = op.sub;
-
-      if (op.sup)
-        result.sup = op.sup;
-
-      if (op.subsup)
-        result.subsup = op.subsup;
-
-      if (op.skipBody)
-        result.skipBody = op.skipBody;
-
-      if (op.segregateBody)
-        result.segregateBody = op.segregateBody;
-    }
+    const result = { ...op, element };
 
     return result;
   }
