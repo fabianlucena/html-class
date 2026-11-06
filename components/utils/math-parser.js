@@ -17,10 +17,21 @@ export function mathParserMDPlugin() {
         parser: mathParserMDPluginParser,
       },
     ],
+
+    block: [
+      {
+        open:  /^\s{0,3}\$\$(.*)/,
+        close: /(.*)\$\$(.*)/,
+        type:  'math',
+        property: 'raw',
+        variant: 'block',
+        parser: mathParserMDPluginParser,
+      },
+    ],
   };
 }
 
-function mathParserMDPluginParser(node) {
+export function mathParserMDPluginParser(node) {
   if (node.type !== 'math' || node.content || !node.raw)
     return node;
 
@@ -28,6 +39,12 @@ function mathParserMDPluginParser(node) {
   newNode.raw = node.raw;
 
   return newNode;
+}
+
+export class MathParserMDParser {
+  test(node) {
+    return node.type === 'math' && node.raw;
+  }
 }
 
 export default class MathParser {

@@ -11,14 +11,10 @@ export default class MDParser {
     TableParser,
     CodeBlockParser,
     CustomBlockParser,
+    PluginBlockParser,
   ];
   get parsers() {
     return this.#parsers;
-  }
-
-  #plugins = [];
-  get plugins() {
-    return this.#plugins;
   }
 
   #grouppedInlineParsers = {
@@ -104,6 +100,16 @@ export default class MDParser {
     'pi'
   ];
 
+  #blockParsers = [];
+  get blockParsers() {
+    return this.#blockParsers;
+  }
+
+  #plugins = [];
+  get plugins() {
+    return this.#plugins;
+  }
+
   constructor(options = {}) {
     if (options.parsers)
       this.#parsers.push(...options.parsers);
@@ -122,9 +128,27 @@ export default class MDParser {
     if (!plugin)
       return;
 
+    if (plugin.parsers) {
+      this.addParsers(plugin.parsers);
+    }
+
     if (plugin.inline) {
       this.addInlineParsers(plugin.inline);
     }
+
+    if (plugin.block) {
+      this.addBlockParsers(plugin.block);
+    }
+  }
+
+  addParsers(parsers) {
+    for (const parser of parsers) {
+      this.addParser(parser);
+    }
+  }
+
+  addParser(parser) {
+    this.#parsers.push(parser);
   }
 
   addInlineParsers(inlineParsers) {
@@ -140,6 +164,16 @@ export default class MDParser {
     }
 
     this.#grouppedInlineParsers[char].push(inlineParser);
+  }
+
+  addBlockParsers(blockParsers) {
+    for (const blockParser of blockParsers) {
+      this.addBlockParser(blockParser);
+    }
+  }
+
+  addBlockParser(blockParser) {
+    this.#blockParsers.push(blockParser);
   }
 
   parse(md) {
@@ -857,6 +891,65 @@ class CustomBlockParser {
       attrs: attr,
       content: blockNodes,
     };
+
+    return node;
+  }
+}
+
+class PluginBlockParser {
+  static check(lines, { parser } = {}) {
+    let line = lines[0], matches;
+    for (const testBlock of parser.blockParsers) {
+      if (matches = testBlock.open.exec(line)) {
+        console.log(matches);
+        return matches;
+      }
+    }
+  }
+
+  static parse(lines, { parser } = {}) {
+    let block;
+    let line = lines[0], matches;
+    for (const testBlock of parser.blockParsers) {
+      if (matches = testBlock.open.exec(line)) {
+        block = testBlock;
+        line = matches[1];
+        break;
+      }
+    }
+
+    if (!block)
+      return;
+
+    lines.shift();
+
+    const rawLines = [];
+
+    do {
+      if (matches = block.close.exec(line)) {
+        if (matches[1])
+          rawLines.push(matches[1]);
+
+        if (matches[2])
+          rawLines.push(matches[2]);
+
+        break;
+      }
+
+      rawLines.push(line);
+      line = lines.shift();
+    } while (lines.length);
+    
+    const property = block.property || 'raw';
+    let node = {
+      type: block.type,
+      [property]: rawLines.join('\n'),
+    };
+
+    if (block.variant)
+      node.variant = block.variant;
+
+    node = block.parser(node);
 
     return node;
   }
