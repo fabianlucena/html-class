@@ -1,5 +1,11 @@
 import { getDelimitedString } from './string.js';
 
+/**
+ * Regla:
+ * Todo texto almacenado en nodos text tiene los espacios iniciales y finales
+ * normalizados a un único espacio.
+ */
+
 export default class MDParser {
   #parsers = [
     HeadingParser,
@@ -228,7 +234,7 @@ export default class MDParser {
           return node;
       }
 
-      const line = lines.shift().trim();
+      const line = lines.shift().replace(/^\s+/, ' ').replace(/\s+$/, ' ');
       if (!line) {
         if (!paragraphLines.length)
           continue;
@@ -284,7 +290,7 @@ export default class MDParser {
     let node;
     let text = '';
 
-    line = line.trim();
+    line = line.replace(/^\s+/, ' ').replace(/\s+$/, ' ');
     while (line) {
       for (let i = 0; i < line.length; i++) {
         const char = line[i];
@@ -341,7 +347,7 @@ export default class MDParser {
 
         if (node) {
           if (text) {
-            let node = { type: 'text', text: text.trim() || ' ' };
+            let node = { type: 'text', text: text.replace(/^\s+/, ' ').replace(/\s+$/, ' ') || '' };
             node = this.applyPlugins(node);
             nodes.push(node);
             text = '';
@@ -377,7 +383,7 @@ export default class MDParser {
     }
 
     if (text) {
-      let node = { type: 'text', text: text.trim() || ' ' };
+      let node = { type: 'text', text: text.replace(/^\s+/, ' ').replace(/\s+$/, ' ') || '' };
       node = this.applyPlugins(node);
       nodes.push(node);
     }
