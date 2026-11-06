@@ -122,7 +122,7 @@ $$ \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 1 $$
 # 5. Tablas Estructuradas con Leyendas (*Captions*)
 
 | Módulo | Estado | Cobertura | Prioridad |
-|:---|:---:|---:|:---:|
+|:---|:---|---:|:---:|
 | Autenticación | Activo | 98% | Alta |
 | Base de Datos | En pruebas | 85% | Media |
 | Interfaz UI | Pendiente | 40% | Baja |

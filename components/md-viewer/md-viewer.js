@@ -129,7 +129,7 @@ export default class MDViewer extends Base {
     return true;
   }
 
-  renderNode(node, parentElement) {
+  renderNode(node, parentElement, options) {
     if (!this.checkNodeAndParent(node, parentElement))
       return;
 
@@ -139,14 +139,14 @@ export default class MDViewer extends Base {
       return;
     }
 
-    renderer(node, parentElement);
+    renderer(node, parentElement, options);
   }
 
-  renderContent(content, parentElement) {
-    this.renderNodes(content, parentElement);
+  renderContent(content, parentElement, options) {
+    this.renderNodes(content, parentElement, options);
   }
 
-  renderNodes(nodes, parentElement) {
+  renderNodes(nodes, parentElement, options) {
     if (!parentElement)
       throw new Error('El elemento padre es nulo o indefinido.');
     
@@ -154,7 +154,7 @@ export default class MDViewer extends Base {
       throw new Error('El contenido de los nodos es nulo o indefinido.');
 
     if (!Array.isArray(nodes)) {
-      this.renderNode(nodes, parentElement);
+      this.renderNode(nodes, parentElement, options);
       return;
     }
     
@@ -162,7 +162,7 @@ export default class MDViewer extends Base {
       return;
 
     for (const node of nodes)
-      this.renderNode(node, parentElement);
+      this.renderNode(node, parentElement, options);
   }
 
   renderText(node, parentElement) {
@@ -438,59 +438,84 @@ export default class MDViewer extends Base {
     }
 
     if (node.head)
-      this.renderContent(node.head, tableElement);
+      this.renderContent(node.head, tableElement, { table: node });
 
     if (node.foot)
-      this.renderContent(node.foot, tableElement);
+      this.renderContent(node.foot, tableElement, { table: node });
 
-    this.renderContent(node.bodies, tableElement);
+    this.renderContent(node.bodies, tableElement, { table: node });
     parentElement.appendChild(tableElement);
   }
 
-  renderTableHead(node, parentElement) {
+  renderTableHead(node, parentElement, options) {
     if (!this.checkNodeAndParent(node, parentElement, 'table-head'))
       return;
 
     let theadElement = document.createElement('thead');
-    this.renderContent(node.rows, theadElement);
+    this.renderContent(node.rows, theadElement, { ...options, head: node });
     parentElement.appendChild(theadElement);
   }
 
-  renderTableFoot(node, parentElement) {
+  renderTableFoot(node, parentElement, options) {
     if (!this.checkNodeAndParent(node, parentElement, 'table-foot'))
       return;
 
     let tfootElement = document.createElement('tfoot');
-    this.renderContent(node.rows, tfootElement);
+    this.renderContent(node.rows, tfootElement, { ...options, foot: node });
     parentElement.appendChild(tfootElement);
   }
 
-  renderTableBody(node, parentElement) {
+  renderTableBody(node, parentElement, options) {
     if (!this.checkNodeAndParent(node, parentElement, 'table-body'))
       return;
 
     let tbodyElement = document.createElement('tbody');
-    this.renderContent(node.rows, tbodyElement);
+    this.renderContent(node.rows, tbodyElement, { ...options, body: node });
     parentElement.appendChild(tbodyElement);
   }
 
-  renderTableRow(node, parentElement) {
+  renderTableRow(node, parentElement, options) {
     if (!this.checkNodeAndParent(node, parentElement, 'table-row'))
       return;
 
     let trElement = document.createElement('tr');
-    this.renderContent(node.cells, trElement);
+    this.renderContent(node.cells, trElement, { ...options, row: node });
     parentElement.appendChild(trElement);
   }
 
-  renderTableCell(node, parentElement) {
+  renderTableCell(node, parentElement, options) {
     if (!this.checkNodeAndParent(node, parentElement, 'table-cell'))
       return;
 
-    let cellElement = document.createElement(node.header ? 'th' : 'td');
+    let cellElement = document.createElement(options.head ? 'th' : 'td');
     if (node.attrs) {
       for (const [key, value] of Object.entries(node.attrs)) {
         cellElement.setAttribute(key, value);
+      }
+    }
+
+    const body = options.body || options.head || options.foot;
+    const columns = body?.columns;
+    if (columns) {
+      let columnIndex;
+      const row = options.row;
+      if (row)
+        columnIndex = options.row?.cells?.indexOf(node);
+      
+      if (typeof columnIndex === 'undefined' || columnIndex < 0)
+        columnIndex = parentElement.children.length;
+
+      const column = columns[columnIndex];
+      if (column) {
+        if (column.attrs) {
+          for (const [key, value] of Object.entries(column.attrs)) {
+            cellElement.setAttribute(key, value);
+          }
+        }
+
+        if (column.align) {
+          cellElement.style.textAlign = column.align;
+        }
       }
     }
 
@@ -500,107 +525,6 @@ export default class MDViewer extends Base {
 }
 
 /*
-function md2Html(md) {
-  let lines = md.split(/\n/gm);
-  // console.log(lines);
-
-  while (lines.length && !lines[0].trim())
-    lines.shift();
-
-  const htmlParts = [];
-
-  const metadata = extractYaml(lines);
-  if (metadata) {
-    htmlParts.push(mdMetadata2Html(metadata));
-  }
-
-  let htmlPart, htmlP = [];
-  while (lines.length) {
-    htmlPart = mdRule2Html(lines)
-      ?? mdHeading2Html(lines)
-      ?? mdList2Html(lines)
-      ?? mdBlockquote2Html(lines)
-      ?? mdDefinitions2Html(lines)
-      ?? mdFootNote2Html(lines)
-      ?? mdTable2Html(lines)
-      ?? mdCodeBlock2Html(lines)
-      ?? mdBlock2Html(lines);
-
-    if (htmlPart) {
-      if (htmlP.length) {
-        htmlParts.push(`<p>${htmlP.join(' ')}</p>`);
-        htmlP = [];
-      }
-      
-      htmlParts.push(htmlPart);
-      continue;
-    }
-
-    const line = lines.shift().trim();
-    if (!line) {
-      if (htmlP.length) {
-        htmlParts.push(`<p>${htmlP.join(' ')}</p>`);
-        htmlP = [];
-      }
-
-      continue;
-    }
-
-    htmlP.push(mdFormat(line));
-  }
-
-  return htmlParts.join('');
-}
-
-function mdFormat(md) {
-  const citationRegex = /\[@([a-zA-Z0-9_-]+)(?:,\s*([^\]]+))?\]/g;
-  const imageRegex = /!\[([^\]]*?)\]\(([^)]+?)(?:\s+"([^"]+)")?\)/g;
-  const linkRegex = /\[([^\]]+?)\]\(([^)]+?)(?:\s+"([^"]+)")?\)/g;
-
-  md = md.trim();
-  if (!md)
-    return '';
-
-  md = md
-    .replace(/`(.+?)`/g, '<code>$1</code>')
-    .replace(/\$\$(.+?)\$\$/g, (_, math) => math2html(math, { display: 'block' }))
-    .replace(/\$(.+?)\$/g, (_, math) => math2html(math, { display: 'inline' }))
-    .replace(/\[\^([^\]]+)\]/g, '<sup><a href="#fn-$1">$1</a></sup>')
-    .replace(/\*{3}(.+?)\*{3}/g, '<strong><i>$1</i></strong>')
-    .replace(/\*{2}(.+?)\*{2}/g, '<strong>$1</strong>')
-    .replace(/\*{1}(.+?)\*{1}/g, '<em>$1</em>')
-    .replace(/_{3}(.+?)_{3}/g, '<strong><i>$1</i></strong>')
-    .replace(/_{2}(.+?)_{2}/g, '<strong>$1</strong>')
-    .replace(/_{1}(.+?)_{1}/g, '<em>$1</em>')
-    .replace(/~~(.+?)~~/g, '<del>$1</del>')
-    .replace(/~(.+?)~/g, '<sub>$1</sub>')
-    .replace(/\^(.+?)\^/g, '<sup>$1</sup>')
-    .replace(/==(.+?)==/g, '<mark>$1</mark>')
-    .replace(citationRegex, (_, key, page) => {
-      const detalle = page ? `, ${page}` : '';
-      return `<cite class="citation" data-ref="${key}"><a href="#ref-${key}">(${key}${detalle})</a></cite>`;
-    })
-    .replace(imageRegex, (_, alt, url, title) => {
-      const titleAttr = title ? ` title="${title}"` : '';
-      return `<img src="${url.trim()}" alt="${alt}"${titleAttr} style="max-width: 100%; height: auto;" loading="lazy" />`;
-    })
-    .replace(linkRegex, (_, textContent, url, title) => {
-      const titleAttr = title ? ` title="${title}"` : '';
-      const isExternal = url.startsWith('http');
-      const targetAttr = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
-      return `<a href="${url.trim()}"${titleAttr}${targetAttr}>${textContent}</a>`;
-    });
-
-  if (md.includes('\\'))
-    md = md
-      .replace(/\\sum/g, '&sum;')
-      .replace(/\\int/g, '&int;')
-      .replace(/\\sqrt/g, '&radic;')
-      .replace(/\\infty/g, '&infin;')
-      .replace(/\\pi/g, '&pi;');
-
-    return md;
-}
 
 function extractYaml(lines) {
   const beginYamlRegExp = /^\s{0,3}---\s*$/;
@@ -782,65 +706,6 @@ function mdItem2Html(lines, regExp, indent, marker) {
   return `<li>${text}</li>`;
 }
 
-function mdBlockquote2Html(lines) {
-  const regExp = /^\s{0,3}>\s+(.+)$/;
-  let matches = regExp.exec(lines[0]);
-  if (!matches)
-    return;
-
-  let htmlLines = [];
-  do {
-    lines.shift();
-    htmlLines.push(mdFormat(matches[1]));
-  } while (matches = regExp.exec(lines[0]));
-  
-  return '<blockquote>' + htmlLines.join('<br>') + '</blockquote>';
-}
-
-function mdDefinitions2Html(lines) {
-  const ddRegExp = /^\s{0,3}:[^:]\s*(.+)$/;
-
-  let defs = [];
-  while (true) {
-    const term = lines[0].trim();
-    if (!term)
-      break;
-
-    let matches = ddRegExp.exec(lines[1]);
-    if (!matches)
-      break;
-
-    lines.shift();
-    lines.shift();
-    let def = `<dt>${mdFormat(term)}</dt><dd>${mdFormat(matches[1])}</dd>`;
-    
-    while (matches = ddRegExp.exec(lines[0])) {
-      lines.shift();
-      def += `<dd>${mdFormat(matches[1])}</dd>`;
-    }
-
-    defs.push(def);
-
-    while (lines[0] && !lines[0].trim())
-      lines.shift();
-  }
-
-  if (!defs.length)
-    return;
-
-  return `<dl>${defs.join('')}</dl>` ;
-}
-
-function mdFootNote2Html(lines) {
-  const regExp = /^\s{0,3}\[\^([^\]]+)\]:\s+(.+)$/;
-  const matches = regExp.exec(lines[0]);
-  if (!matches)
-    return;
-
-  lines.shift();
-  return `<p><sup id="fn-${matches[1]}">${matches[1]}</sup>${mdFormat(matches[2])}</p>`;
-}
-
 function mdTable2Html(lines) {
   const tableRowRegexp = /^\s{0,3}\|\s*(.+)\s*\|$/;
   const tableHeaderRegexp = /^\s{0,3}\|\s*(:?-+:?\s*\|)+\s*$/;
@@ -909,61 +774,4 @@ function mdTable2Html(lines) {
   return '<table>' + tableHtml + '</table>';
 }
 
-function mdCodeBlock2Html(lines) {
-  const beginRegExp = /^\s{0,3}```\s*(\w+)?\s*(\{[^\}]+\})?\s*$/;
-  const endRegExp = /^\s{0,3}```\s*$/;
-
-  let matches = beginRegExp.exec(lines[0]);
-  if (!matches)
-    return;
-
-  lines.shift();
-  let lang = matches[1] || '';
-  let attrs = matches[2] || '';
-  let codeLines = [];
-  do {
-    const line = lines.shift();
-    if (endRegExp.test(line)) 
-      break;
-
-    codeLines.push(line);
-  } while (lines.length);
-  
-  return `<pre><code class="language-${lang} block" ${attrs}>${codeLines.map(line => line?.replace(/</g, '&lt;').replace(/>/g, '&gt;')).join('\n')}</code></pre>`;
-}
-
-function mdBlock2Html(lines) {
-  const beginRegExp = /^\s{0,3}:{3}(?:\s+(.+))?\s*$/gm;
-  const endRegExp = /^\s{0,3}:{3}\s*$/;
-
-  let matches = beginRegExp.exec(lines[0]);
-  if (!matches)
-    return;
-
-  lines.shift();
-  let blockLines = [];
-  do {
-    const line = lines.shift();
-    if (endRegExp.test(line)) 
-      break;
-
-    blockLines.push(mdFormat(line));
-  } while (lines.length);
-
-  let className = 'block';
-  const attr = [];
-  const blockType = matches[1] ? matches[1].trim() : '';
-  const optionsMatches = /\{(.+)\}/.exec(blockType);
-  if (optionsMatches) {
-    optionsMatches[1].split(/\s+/).forEach(option => {
-      if (option.startsWith('.')) {
-        attr.push(option.slice(1));
-      }
-    });
-  } else if (blockType) {
-    className += ' ' + blockType.toLocaleLowerCase();
-  }
-  
-  return `<div class="${className} ${attr.join(' ')}">${blockLines.join('\n')}</div>`;
-}
 */
