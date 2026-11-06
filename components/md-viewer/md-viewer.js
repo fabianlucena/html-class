@@ -97,7 +97,7 @@ export default class MDViewer extends Base {
     this.#doc = this.#mdParser.parse(md);
     this.render();
 
-    console.log(this.#doc.content.slice(0, 300));
+    //console.log(this.#doc.content.slice(0, 300));
   }
 
   render() {
