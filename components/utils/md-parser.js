@@ -21,12 +21,125 @@ export default class MDParser {
     return this.#plugins;
   }
 
+  #grouppedInlineParsers = {
+    '`': [
+      {
+        open:  '`',
+        close: '`',
+        type:  'code',
+        property: 'code',
+      },
+    ],
+    '*': [
+      {
+        open:  '***',
+        close: '***',
+        type:  'strong-italic',
+      },
+      {
+        open:  '**',
+        close: '**',
+        type:  'strong',
+      },
+      {
+        open:  '*',
+        close: '*',
+        type:  'em',
+      },
+    ],
+    '_': [
+      {
+        open:  '__',
+        close: '__',
+        type:  'em',
+      },
+    ],
+    '~': [
+      {
+        open:  '~~',
+        close: '~~',
+        type:  'del',
+      },
+    ],
+    '=': [
+      {
+        open:  '==',
+        close: '==',
+        type:  'mark',
+      },
+    ],
+    '^': [
+      {
+        open:  '^',
+        close: '^',
+        type:  'sup',
+      },
+    ],
+    '~': [
+      {
+        open:  '~',
+        close: '~',
+        type:  'sub',
+      },
+    ],
+    '[': [
+      {
+        open: '[',
+        parser: this.linkParser,
+      },
+    ],
+    '!': [
+      {
+        open: '![',
+        parser: this.linkParser,
+      },
+    ],
+  };
+
+  #inlineBackslashCommands = [
+    'sum',
+    'int',
+    'sqrt',
+    'infty',
+    'pi'
+  ];
+
   constructor(options = {}) {
     if (options.parsers)
       this.#parsers.push(...options.parsers);
 
     if (options.plugins)
       this.#plugins.push(...options.plugins);
+  }
+
+  addPlugins(plugins) {
+    for (const plugin of plugins) {
+      this.addPlugin(plugin);
+    }
+  }
+
+  addPlugin(plugin) {
+    if (!plugin)
+      return;
+
+    if (plugin.inline) {
+      this.addInlineParsers(plugin.inline);
+    }
+  }
+
+  addInlineParsers(inlineParsers) {
+    for (const inlineParser of inlineParsers) {
+      this.addInlineParser(inlineParser);
+    }
+  }
+
+  addInlineParser(inlineParser) {
+    const char = inlineParser.open[0];
+    if (!this.#grouppedInlineParsers[char]) {
+      this.#grouppedInlineParsers[char] = [];
+    }
+
+    this.#grouppedInlineParsers[char].push(inlineParser);
   }
 
   parse(md) {
@@ -137,111 +250,13 @@ export default class MDParser {
     let node;
     let text = '';
 
-    const grouppedDefinitions = {
-      '`': [
-        {
-          open:  '`',
-          close: '`',
-          type:  'code',
-          property: 'code',
-        },
-      ],
-      '$': [
-        {
-          open:  '$$',
-          close: '$$',
-          type:  'math',
-          property: 'raw',
-          variant: 'block',
-        },
-        {
-          open:  '$',
-          close: '$',
-          type:  'math',
-          property: 'raw',
-        },
-      ],
-      '*': [
-        {
-          open:  '***',
-          close: '***',
-          type:  'strong-italic',
-        },
-        {
-          open:  '**',
-          close: '**',
-          type:  'strong',
-        },
-        {
-          open:  '*',
-          close: '*',
-          type:  'em',
-        },
-      ],
-      '_': [
-        {
-          open:  '__',
-          close: '__',
-          type:  'em',
-        },
-      ],
-      '~': [
-        {
-          open:  '~~',
-          close: '~~',
-          type:  'del',
-        },
-      ],
-      '=': [
-        {
-          open:  '==',
-          close: '==',
-          type:  'mark',
-        },
-      ],
-      '^': [
-        {
-          open:  '^',
-          close: '^',
-          type:  'sup',
-        },
-      ],
-      '~': [
-        {
-          open:  '~',
-          close: '~',
-          type:  'sub',
-        },
-      ],
-      '[': [
-        {
-          open: '[',
-          parser: this.linkParser,
-        },
-      ],
-      '!': [
-        {
-          open: '![',
-          parser: this.linkParser,
-        },
-      ],
-    };
-
-    const backslashCommands = [
-      'sum',
-      'int',
-      'sqrt',
-      'infty',
-      'pi'
-    ];
-
     line = line.trim();
     while (line) {
       for (let i = 0; i < line.length; i++) {
         const char = line[i];
         if (char === '\\') {
           i++;
-          for (const command of backslashCommands) {
+          for (const command of this.#inlineBackslashCommands) {
             if (line.substring(i, i + command.length) === command) {
               node = { type: 'command', command };
               i += command.length - 1;
@@ -256,25 +271,29 @@ export default class MDParser {
         }
 
         if (!node) {
-          let definitions = grouppedDefinitions[char];
-          if (definitions) {
-            for (const definition of definitions) {
-              const openLength = definition.open.length;
-              if (line.substring(i, i + openLength) === definition.open) {
-                if (definition.close) {
-                  let text = getDelimitedString(line.slice(i + openLength), definition.close, { escape: '\\' });
-                  i += text.length + openLength + definition.close.length - 1;
+          let parsers = this.#grouppedInlineParsers[char];
+          if (parsers) {
+            for (const parser of parsers) {
+              const openLength = parser.open.length;
+              if (line.substring(i, i + openLength) === parser.open) {
+                if (parser.close) {
+                  let text = getDelimitedString(line.slice(i + openLength), parser.close, { escape: '\\' });
+                  i += text.length + openLength + parser.close.length - 1;
 
-                  let property = definition.property || 'content';
+                  let property = parser.property || 'content';
                   if (property === 'content')
                     text = this.parseLine(text);
 
-                  node = { type: definition.type, [property]: text };
-                  if (definition.variant)
-                    node.variant = definition.variant;
+                  node = { type: parser.type, [property]: text };
+                  if (parser.variant)
+                    node.variant = parser.variant;
+
+                  if (parser.parser)
+                    node = parser.parser.call(this, node, { detailed: true });
+
                   break;
-                } else if (definition.parser) {
-                  let res = definition.parser.call(this, line.slice(i), { detailed: true });
+                } else if (parser.parser) {
+                  let res = parser.parser.call(this, line.slice(i), { detailed: true });
                   if (res.node) {
                     node = res.node;
                     i += res.length - 1;

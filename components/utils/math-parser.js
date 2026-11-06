@@ -1,4 +1,26 @@
-export function MathParserMDPlugin(node) {
+export function mathParserMDPlugin() {
+  return {
+    inline: [
+      {
+        open:  '$$',
+        close: '$$',
+        type:  'math',
+        property: 'raw',
+        variant: 'block',
+        parser: mathParserMDPluginParser,
+      },
+      {
+        open:  '$',
+        close: '$',
+        type:  'math',
+        property: 'raw',
+        parser: mathParserMDPluginParser,
+      },
+    ],
+  };
+}
+
+function mathParserMDPluginParser(node) {
   if (node.type !== 'math' || node.content || !node.raw)
     return node;
 

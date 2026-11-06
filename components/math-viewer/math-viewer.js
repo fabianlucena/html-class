@@ -1,10 +1,25 @@
 import Base from '../utils/base.js';
+import { mathParserMDPlugin } from '../utils/math-parser.js';
 
-export function mathRenderMdPlugin(md, node, parentElement) {
+export function mathRenderMdPlugin() {
+  return {
+    name: 'math',
+    renderer: mathRenderMdPluginRenderer,
+  };
+}
+
+export function mathRenderMdPluginRenderer({ md, node, parentElement }) {
   if (!md.checkNodeAndParent(node, parentElement, 'math'))
     return;
 
   mathViewer.render(node, parentElement);
+}
+
+export function mathMDViewerPlugin() {
+  return {
+    parsers: [ mathParserMDPlugin() ],
+    renderers: [ mathRenderMdPlugin() ],
+  };
 }
 
 export default class MathViewer extends Base {
@@ -152,8 +167,10 @@ export default class MathViewer extends Base {
     if (!parentElement)
       throw new Error('El elemento padre es nulo o indefinido.');
     
-    if (!nodes)
-      throw new Error('El contenido de los nodos es nulo o indefinido.');
+    if (!nodes) {
+      this.renderError('El contenido de los nodos es nulo o indefinido.', parentElement);
+      return;
+    }
 
     if (!Array.isArray(nodes)) {
       this.renderNode(nodes, parentElement);

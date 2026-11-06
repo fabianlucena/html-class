@@ -1,19 +1,13 @@
 import { importCss, insertCss } from '../utils/import-css.js';
 import Base from '../utils/base.js';
 import MDParser from '../utils/md-parser.js';
-import { MathParserMDPlugin } from '../utils/math-parser.js';
-import { mathRenderMdPlugin } from '../math-viewer/math-viewer.js';
 
 importCss('./md-viewer.css', import.meta.url);
 
 export default class MDViewer extends Base {
   #md = '';
   #doc = null;
-  #mdParser = new MDParser({
-    plugins: [
-      MathParserMDPlugin,
-    ],
-  });
+  #mdParser = new MDParser();
   #nodeRenderers = {
     'document': this.renderDocument.bind(this),
     'text': this.renderText.bind(this),
@@ -43,12 +37,13 @@ export default class MDViewer extends Base {
     'table-body': this.renderTableBody.bind(this),
     'table-row': this.renderTableRow.bind(this),
     'table-cell': this.renderTableCell.bind(this),
-    'math': (...args) => mathRenderMdPlugin(this, ...args),
   };
 
   constructor(options) {
     super();
     this.create(options);
+
+    this.addPlugins(options?.plugins);
   }
 
   create(options) {
@@ -62,6 +57,35 @@ export default class MDViewer extends Base {
   destroy() {
     this.element.remove();
     this.element = null;
+  }
+
+  addPlugins(plugins) {
+    for (const plugin of plugins) {
+      this.addPlugin(plugin);
+    }
+  }
+
+  addPlugin(plugin) {
+    if (!plugin)
+      return;
+
+    if (plugin.parsers) {
+      this.#mdParser.addPlugins(plugin.parsers);
+    }
+
+    if (plugin?.renderers) {
+      this.addRenderers(plugin.renderers);
+    }
+  }
+
+  addRenderers(renderers) {
+    for (const renderer of renderers) {
+      this.addRenderer(renderer);
+    }
+  }
+
+  addRenderer(renderer) {
+    this.#nodeRenderers[renderer.name] = (node, parentElement) => renderer.renderer({ md: this, node, parentElement });
   }
 
   get md() {

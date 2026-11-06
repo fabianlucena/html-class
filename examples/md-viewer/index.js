@@ -3,6 +3,7 @@ import MDViewer from '../../components/md-viewer/md-viewer.js';
 import { loadLanguage } from '../../components/locale/locale.js';
 import { getPath } from '../../components/utils/path.js';
 import { setBasePath } from '../../components/router/router.js';
+import { mathMDViewerPlugin } from '../../components/math-viewer/math-viewer.js';
 
 importCss('./style.css', import.meta.url);
 
@@ -14,7 +15,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function init() {
-  const mdViewer = new MDViewer({ element: 'md-viewer' });
+  const mdViewer = new MDViewer({
+    element: 'md-viewer',
+    plugins: [
+      mathMDViewerPlugin(),
+    ],
+  });
 
   mdViewer.md = `
 ---
