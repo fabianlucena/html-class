@@ -540,6 +540,7 @@ class ListParser {
     let node = {
       type: 'list',
       listType,
+      ordered: listType === 'ordered' || listType === 'automatic',
       content,
     };
 

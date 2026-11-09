@@ -388,16 +388,35 @@ export default class MDViewer extends Base {
       return;
 
     let listElement = document.createElement(node.ordered ? 'ol' : 'ul');
-    this.renderContent(node.content, listElement);
     parentElement.appendChild(listElement);
+    if (node.listType)
+      listElement.classList.add(node.listType);
+    this.renderContent(node.content, listElement, { listType: node.listType, ordered: node.ordered });
   }
 
-  renderListItem(node, parentElement) {
+  renderListItem(node, parentElement, options) {
     if (!this.checkNodeAndParent(node, parentElement, 'list-item'))
       return;
 
-    let listItemElement = document.createElement('li');
-    this.renderContent(node.content, listItemElement);
+    const listItemElement = document.createElement('li');
+
+    if (options.listType === 'task') {
+      const id = Math.random().toString(36).slice(2, 16);
+      const checkerItem = document.createElement('input');
+      listItemElement.appendChild(checkerItem);
+      checkerItem.id = id;
+      checkerItem.type = 'checkbox';
+      if (node.checked)
+        checkerItem.checked = true;
+
+      const labelItem = document.createElement('label');
+      listItemElement.appendChild(labelItem);
+      labelItem.setAttribute('for', id);
+      this.renderContent(node.content, labelItem);
+    } else {
+      this.renderContent(node.content, listItemElement);
+    }
+
     parentElement.appendChild(listItemElement);
   }
 
@@ -651,78 +670,5 @@ function mdRule2Html(lines) {
 
   lines.shift();
   return `<hr class="${className}">`;
-}
-
-function mdList2Html(lines) {
-  const normalListRegExp = /^(\s*)(\*)\s+(.+)$/;
-  const orderedListRegExp = /^(\s*)(\d+\.)\s+(.+)$/;
-  const automaticListRegExp = /^(\s*)(\(@\))\s+(.+)$/;
-  const ineractiveListRegExp = /^(\s*)(-\s+\[[ xX]\])\s+(.+)$/;
-
-  const line = lines[0];
-  let regExp, marker, matches, tag, className;
-  if (matches = normalListRegExp.exec(line)) {
-    marker = '*';
-    regExp = normalListRegExp;
-    tag = 'ul';
-    className = 'normal-list';
-  } else if (matches = orderedListRegExp.exec(line)) {
-    marker = '1.';
-    regExp = orderedListRegExp;
-    tag = 'ol';
-    className = 'ordered-list';
-  } else if (matches = automaticListRegExp.exec(line)) {
-    marker = '(@)';
-    regExp = automaticListRegExp;
-    tag = 'ol';
-    className = 'automatic-list';
-  } else if (matches = ineractiveListRegExp.exec(line)) {
-    marker = '[]';
-    regExp = ineractiveListRegExp;
-    tag = 'ul';
-    className = 'interactive-list';
-  } else {
-    return;
-  }
-
-  const items = [];
-  const indent = matches[1];
-
-  let nextItem;
-  while (nextItem = mdItem2Html(lines, regExp, indent, marker)) {
-    items.push(nextItem);
-  }
-
-  return `<${tag} class="${className}">${items.join('')}</${tag}>`;
-}
-
-function mdItem2Html(lines, regExp, indent, marker) {
-  const matches = regExp.exec(lines[0]);
-  if (!matches)
-    return;
-
-  if (matches[1].length > indent.length)
-    return mdList2Html(lines);
-
-  if (matches[1].length !== indent.length)
-    return;
-
-  lines.shift();
-
-  let text = mdFormat(matches[3]);
-  let thisMarker = matches[2];
-  if (/\d+/.test(thisMarker))
-    thisMarker = '1.';
-  else if (/-\s+\[[ xX]\]/.test(thisMarker)) {
-    const id = 'interactive-item-' + Math.random().toString(36).slice(2, 16);
-    const checked = /\[[xX]\]/.test(thisMarker) ? ' checked' : '';
-    thisMarker = '[]';
-    text = `<input id=${id} type="checkbox" ' + ${checked}><label for=${id}>${text}</label>`;
-  }
-
-  if (thisMarker !== marker)
-    return;
-
-  return `<li>${text}</li>`;
 }
 */
