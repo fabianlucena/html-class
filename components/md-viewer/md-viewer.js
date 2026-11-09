@@ -1,8 +1,51 @@
 import { importCss, insertCss } from '../utils/import-css.js';
 import Base from '../utils/base.js';
 import MDParser from '../utils/md-parser.js';
+import { _, addLocaleUrl, onLanguageLoaded } from '../locale/locale.js';
 
 importCss('./md-viewer.css', import.meta.url);
+
+addLocaleUrl('/locale', ['es'], { file: import.meta.url });
+
+const renderDataDefaultOptions = {
+  items: [
+    {
+      key: 'title',
+      _label: 'Title',
+      label: 'Title',
+      showLabel: false,
+      tag: 'h1',
+    },
+    {
+      key: 'author',
+      _label: 'Author',
+      label: 'Author',
+    },
+    {
+      key: 'date',
+      _label: 'Date',
+      label: 'Date',
+    },
+    {
+      key: 'lang',
+      _label: 'Language',
+      label: 'Language',
+    },
+    {
+      key: 'abstract',
+      _label: 'Summary',
+      label: 'Summary',
+      valueTag: 'p',
+    },
+  ],
+  restItems: true,
+};
+
+onLanguageLoaded(() => {
+  renderDataDefaultOptions.items.forEach(item => {
+    item.label = _(item._label);
+  });
+});
 
 export default class MDViewer extends Base {
   #md = '';
@@ -97,10 +140,11 @@ export default class MDViewer extends Base {
     this.#doc = this.#mdParser.parse(md);
     this.render();
 
-    //console.log(this.#doc.content.slice(0, 300));
+    // console.log(this.#doc);
   }
 
   render() {
+    this.renderData(this.#doc?.metadata, this.element, { className: 'metadata' });
     this.renderNode(this.#doc, this.element);
   }
 
@@ -140,6 +184,62 @@ export default class MDViewer extends Base {
     }
 
     renderer(node, parentElement, options);
+  }
+
+  renderData(data, parentElement, options) {
+    if (!data || !parentElement)
+      return;
+
+    options = { ...renderDataDefaultOptions, ...options };
+
+    const element = document.createElement('div');
+    parentElement.appendChild(element);
+    element.classList.add('data');
+    if (options.className)
+      element.classList.add(options.className);
+
+    let ruleElement = document.createElement('hr');
+    ruleElement.classList.add('single-rule');
+    element.appendChild(ruleElement);
+
+    const items = options?.items || [];
+
+    if (!items.length || options?.restItems !== false) {
+      for (const [key, value] of Object.entries(data)) {
+        if (!items.some(item => item.key === key)) {
+          items.push({ key });
+        }
+      }  
+    }
+
+    for (const item of items) {
+      const [key, value] = Object.entries(data).find(([k]) => k === item.key) || [];
+
+      const tag = item.tag || 'div';
+      const itemElement = document.createElement(tag);
+      itemElement.classList.add('item');
+      element.appendChild(itemElement);
+
+      if (item.showLabel !== false) {
+        const keyTag = item.keyTag || 'span';
+        const keyElement = document.createElement(keyTag);
+        keyElement.classList.add('key');
+        keyElement.textContent = (item.label || key) + ': ';
+        itemElement.appendChild(keyElement);
+      }
+
+      const valueTag = item.valueTag || 'span';
+      const valueElement = document.createElement(valueTag);
+      valueElement.classList.add('value');
+      valueElement.textContent = value;
+      itemElement.appendChild(valueElement);
+    }
+
+    ruleElement = document.createElement('hr');
+    ruleElement.classList.add('single-rule');
+    element.appendChild(ruleElement);
+
+    return element;
   }
 
   renderContent(content, parentElement, options) {
@@ -525,74 +625,6 @@ export default class MDViewer extends Base {
 }
 
 /*
-
-function extractYaml(lines) {
-  const beginYamlRegExp = /^\s{0,3}---\s*$/;
-  const endYamlRegExp = /^\s{0,3}---\s*$/;
-  const kvReExp = /^([a-zA-Z0-9_-]+):\s*(.*)$/;
-
-  const match = beginYamlRegExp.exec(lines[0]);
-  if (!match)
-    return;
-
-  lines.shift();
-
-  let key;
-  const metadata = {};
-  while (lines.length && !endYamlRegExp.test(lines[0])) {
-    const line = lines.shift();
-
-    const matchKV = kvReExp.exec(line);
-    if (matchKV) {
-      key = matchKV[1];
-      const value = matchKV[2].trim();
-
-      if (value === '|' || value === '>') {
-          metadata[key] = '';
-      } else {
-        metadata[key] = value.replace(/^["'](.*)["']$/, '$1');
-        key = null;
-      }
-    } else if (key && line.startsWith('  ')) {
-      metadata[key] += (metadata[key] ? '\n' : '') + line.trim();
-    }
-  }
-
-  lines.shift();
-
-  return metadata;
-}
-
-function mdMetadata2Html(metadata) {
-  if (!metadata)
-    return '';
-
-  const { title, author, date, abstract, lang, ...rest } = metadata;
-
-  let html = '';
-
-  if (title)
-    html += `<h1>${title}</h1>`;
-
-  if (author)
-    html += `<div class="metadata-item"><span class="metadata-key">Author:</span> <span class="metadata-value">${author}</span></div>`;
-
-  if (date)
-    html += `<div class="metadata-item"><span class="metadata-key">Date:</span> <span class="metadata-value">${date}</span></div>`;
-
-  if (abstract)
-    html += `<div class="metadata-item"><span class="metadata-key">Abstract:</span> <span class="metadata-value">${abstract}</span></div>`;
-
-  if (lang)
-    html += `<div class="metadata-item"><span class="metadata-key">Language:</span> <span class="metadata-value">${lang}</span></div>`;
-
-  for (const [key, value] of Object.entries(rest)) {
-    html += `<div class="metadata-item"><span class="metadata-key">${key}:</span> <span class="metadata-value">${value}</span></div>`;
-  }
-  
-  return `<div class="metadata">${html}</div><hr class="single-rule">`;
-}
-
 function mdRule2Html(lines) {
   const regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|- - -|\. \. \.)/;
   const matches = regExp.exec(lines[0]);
@@ -619,18 +651,6 @@ function mdRule2Html(lines) {
 
   lines.shift();
   return `<hr class="${className}">`;
-}
-
-function mdHeading2Html(lines) {
-  const regExp = /^\s{0,3}(#+)\s+(.+)?$/;
-  const matches = regExp.exec(lines[0]);
-  if (!matches)
-    return;
-
-  lines.shift();
-  const level = matches[1].length;
-  const headingTag = 'h' + level;
-  return '<' + headingTag + '>' + mdFormat(matches[2]) + '</' + headingTag + '>';
 }
 
 function mdList2Html(lines) {
@@ -705,73 +725,4 @@ function mdItem2Html(lines, regExp, indent, marker) {
 
   return `<li>${text}</li>`;
 }
-
-function mdTable2Html(lines) {
-  const tableRowRegexp = /^\s{0,3}\|\s*(.+)\s*\|$/;
-  const tableHeaderRegexp = /^\s{0,3}\|\s*(:?-+:?\s*\|)+\s*$/;
-
-  let matches = tableRowRegexp.exec(lines[0]);  
-  if (!matches)
-    return;
-
-  const rows = [];
-  let defaultStyles = [];
-  do {
-    if (rows.length === 1 && tableHeaderRegexp.test(lines[0])) {
-      matches[1].split('|').map((cell, i) => {
-        let style = defaultStyles[i] || '';
-        if (cell.startsWith(':')) {
-          if (cell.endsWith(':')) {
-            style="text-align:center";
-          } else {
-            style="text-align:left";
-          }
-        } else if (cell.endsWith(':')) {
-          style="text-align:right";
-        }
-
-        defaultStyles.push(style);
-      });
-    } else {
-      rows.push(matches[1].split('|').map((cell, i) => {
-        let style = defaultStyles[i] || '';
-        cell = cell.trim();
-        if (cell.startsWith(':')) {
-          if (cell.endsWith(':')) {
-            style="text-align:center";
-            cell = cell.slice(1, -1).trim();
-          } else {
-            style="text-align:left";
-            cell = cell.slice(1).trim();
-          }
-        } else if (cell.endsWith(':')) {
-          style="text-align:right";
-          cell = cell.slice(0, -1).trim();
-        }
-
-        if (rows.length === 1) {
-          if (/^-*$/.test(cell))
-            cell = '';
-          
-          defaultStyles.push(style);
-        }
-
-        const tag = rows.length === 0 ? 'th' : 'td';
-
-        return '<' + tag + ' style="' + style + '">' + cell.trim() + '</' + tag + '>';
-      }));
-    }
-
-    lines.shift();
-  } while (matches = tableRowRegexp.exec(lines[0]));
-  lines.shift();
-
-  let tableHtml = '';
-  rows.forEach(row => {
-    tableHtml += '<tr>' + row.join('') + '</tr>';
-  });
-
-  return '<table>' + tableHtml + '</table>';
-}
-
 */
