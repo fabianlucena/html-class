@@ -576,6 +576,8 @@ export default class MDViewer extends Base {
       return;
     
     let preElement = document.createElement('pre');
+    preElement.classList.add('code', 'inline');
+
     let codeElement = document.createElement('code');
     codeElement.classList.add(`language-${node.lang || 'plaintext'}`);
     codeElement.textContent = node.code

@@ -169,7 +169,6 @@ def procesar_datos(vector):
     return [sum(vector[:i+1]) for i in range(len(vector))]
 \`\`\`
 
-También se puede incluir bloques de código en línea, por ejemplo: \`resultado = procesar_datos([1, 2, 3])\` en cualquier parte de la oración.
 ---
 
 # 8. Citas y Bloques de Texto Especializados

@@ -45,6 +45,10 @@
     border-radius: .3em;
   }
 
+  pre.code.inline {
+    display: inline;
+  }
+
   code.block {
     display: block;
     padding: .5em .5em;
