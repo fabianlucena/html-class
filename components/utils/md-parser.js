@@ -218,37 +218,52 @@ export default class MDParser {
     while (lines.length && !lines[0].trim())
       leadingLines.push(lines.shift());
     
-    let paragraphLines = [];
+    if (closeRegExp && closeRegExp.test(lines[0]))
+      return;
+
+    for (const parser of this.parsers) {
+      if (skipParser && parser === skipParser)
+        continue;
+
+      const node = parser.parse(lines, { parser: this });
+      if (node) {
+        node.leadingLines = leadingLines;
+        return node;
+      }
+    }
+
+    let paragraphLines = [],
+      line,
+      rawLines = [],
+      isNode;
+
     while (lines.length) {
-      if (closeRegExp && closeRegExp.test(lines[0]))
+      line = lines.shift();
+      rawLines.push(line);
+      paragraphLines.push(line.replace(/^\s+/, ' ').replace(/\s+$/, ' '));
+      
+      if (!lines[0].trim())
         break;
 
       for (const parser of this.parsers) {
         if (skipParser && parser === skipParser)
           continue;
 
-        const node = parser.parse(lines, { parser: this });
-        if (node) {
-          node.leadingLines = leadingLines;
-          return node;
+        if (parser.check(lines, { parser: this })) {
+          isNode = true;
+          break;
         }
       }
 
-      const line = lines.shift().replace(/^\s+/, ' ').replace(/\s+$/, ' ');
-      if (!line) {
-        if (!paragraphLines.length)
-          continue;
-
+      if (isNode)
         break;
-      } else {
-        paragraphLines.push(line);
-      }
     }
 
     return {
       type: 'paragraph',
       content: this.parseLine(paragraphLines.join(' ')),
       leadingLines,
+      rawLines,
     };
   }
 
@@ -1000,7 +1015,6 @@ class PluginBlockParser {
     let line = lines[0], matches;
     for (const testBlock of parser.blockParsers) {
       if (matches = testBlock.open.exec(line)) {
-        console.log(matches);
         return matches;
       }
     }
