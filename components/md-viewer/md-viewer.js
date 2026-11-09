@@ -198,9 +198,7 @@ export default class MDViewer extends Base {
     if (options.className)
       element.classList.add(options.className);
 
-    let ruleElement = document.createElement('hr');
-    ruleElement.classList.add('single-rule');
-    element.appendChild(ruleElement);
+    this.renderRule({ type: 'rule' }, element);
 
     const items = options?.items || [];
 
@@ -235,9 +233,7 @@ export default class MDViewer extends Base {
       itemElement.appendChild(valueElement);
     }
 
-    ruleElement = document.createElement('hr');
-    ruleElement.classList.add('single-rule');
-    element.appendChild(ruleElement);
+    this.renderRule({ type: 'rule' }, element);
 
     return element;
   }
@@ -296,9 +292,46 @@ export default class MDViewer extends Base {
     if (!this.checkNodeAndParent(node, parentElement, 'rule'))
       return;
 
-    let ruleElement = document.createElement('hr');
-    ruleElement.classList.add('rule');
+    const ruleElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     parentElement.appendChild(ruleElement);
+    ruleElement.classList.add('rule');
+    if (node.variant)
+      ruleElement.classList.add(node.variant);
+
+    const count = node.variant === 'triple' ? 3 :
+      node.variant === 'double' ? 2 :
+      1;
+
+    let strokeWidth = 1,
+      y = strokeWidth / 2;
+
+    ruleElement.setAttribute('height', strokeWidth * (1 + 3 * (count - 1)));
+    console.log(node.variant);
+
+    let dasharray = '';
+    if (node.variant === 'dashed') {
+      dasharray = `${strokeWidth * 4}, ${strokeWidth * 4}`;
+    } else if (node.variant === 'dotted') {
+      dasharray = `${strokeWidth * 1}, ${strokeWidth * 3}`;
+    } else if (node.variant === 'dotted2') {
+      dasharray = `${strokeWidth * 1}, ${strokeWidth * 9}`
+    }
+
+    for (let i = 0; i < count; i++) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ruleElement.appendChild(line);
+      line.setAttribute('x1', '0');
+      line.setAttribute('y1', y);
+      line.setAttribute('x2', '100%');
+      line.setAttribute('y2', y);
+      line.setAttribute('stroke', 'currentColor');
+      line.setAttribute('stroke-width', strokeWidth);
+      line.setAttribute('stroke-dasharray', dasharray);
+      line.setAttribute('stroke-linecap', 'round');
+      line.setAttribute('shape-rendering', 'crispEdges');
+
+      y += 3 * strokeWidth;
+    }
   }
 
   renderParagraph(node, parentElement) {
@@ -642,33 +675,3 @@ export default class MDViewer extends Base {
     parentElement.appendChild(cellElement);
   }
 }
-
-/*
-function mdRule2Html(lines) {
-  const regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|- - -|\. \. \.)/;
-  const matches = regExp.exec(lines[0]);
-  if (!matches)
-    return;
-
-  let className;
-  let pattern = matches[1].slice(0, 5);
-  className = pattern === '- - -' ? 'dashed-rule' :
-    pattern === '. . .' ? 'dotted-rule' :
-    '';
-    
-  if (!className) {
-    pattern = matches[1].slice(0, 3);
-    className = pattern === '---' ? 'single-rule' :
-      pattern === '___' ? 'single-rule' :
-      pattern === '===' ? 'double-rule' :
-      pattern === '===' ? 'double-rule' :
-      pattern === '≡≡≡' ? 'triple-rule' :
-      pattern === '...' ? 'dotted-rule' :
-      pattern === '***' ? 'dotted2-rule' :
-      'single-rule';
-  }
-
-  lines.shift();
-  return `<hr class="${className}">`;
-}
-*/
