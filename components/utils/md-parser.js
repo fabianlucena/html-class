@@ -8,6 +8,7 @@ import { getDelimitedString } from './string.js';
 
 export default class MDParser {
   #parsers = [
+    YamlParser,
     HeadingParser,
     RuleParser,
     ListParser,
@@ -189,14 +190,13 @@ export default class MDParser {
       content: [],
     };
 
-    while (lines.length && !lines[0].trim())
-      lines.shift();
-
-    const metadata = this.parseYaml(lines);
+    const metadata = this.parseSingleNode(lines);
     if (metadata)
       doc.metadata = metadata;
 
     doc.content.push(...this.parseLines(lines));
+
+    console.log(doc);
     
     return doc;
   }
@@ -246,43 +246,6 @@ export default class MDParser {
     }
 
     return { type: 'paragraph', content: this.parseLine(paragraphLines.join(' ')) };
-  }
-
-  parseYaml(lines) {
-    const beginYamlRegExp = /^\s{0,3}---\s*$/;
-    const endYamlRegExp = /^\s{0,3}---\s*$/;
-    const kvReExp = /^([a-zA-Z0-9_-]+):\s*(.*)$/;
-
-    const match = beginYamlRegExp.exec(lines[0]);
-    if (!match)
-      return;
-
-    lines.shift();
-
-    let key;
-    const metadata = {};
-    while (lines.length && !endYamlRegExp.test(lines[0])) {
-      const line = lines.shift();
-
-      const matchKV = kvReExp.exec(line);
-      if (matchKV) {
-        key = matchKV[1];
-        const value = matchKV[2].trim();
-
-        if (value === '|' || value === '>') {
-            metadata[key] = '';
-        } else {
-          metadata[key] = value.replace(/^["'](.*)["']$/, '$1');
-          key = null;
-        }
-      } else if (key && line.startsWith('  ')) {
-        metadata[key] += (metadata[key] ? '\n' : '') + line.trim();
-      }
-    }
-
-    lines.shift();
-
-    return metadata;
   }
 
   parseLine(line, options = {}) {
@@ -452,6 +415,131 @@ export default class MDParser {
       node = plugin(node);
     }
     
+    return node;
+  }
+}
+
+class YamlParser {
+  static beginYamlRegExp = /^\s{0,3}---\s*$/;
+  static endYamlRegExp = /^\s{0,3}---\s*$/;
+  static kvReExp = /^\s{0,3}([a-zA-Z0-9_-]+):\s*(.*)$/;
+  static multiLineRegExp = /^\s{0,3}([a-zA-Z0-9_-]+):\s*\|\s*(.*)$/;
+
+  static check(lines) {
+    let i = 0, max = 100;
+    while (i < lines.length && !lines[i].trim())
+      i++;
+
+    let beginLine;
+    if (this.beginYamlRegExp.test(lines[i])) {
+      beginLine = true;
+      i++;
+    }
+
+    let multilineValue = false, data;
+    while (lines[i]) {
+      if (i > max)
+        return;
+
+      while (i < lines.length && !lines[i].trim())
+        i++;
+      
+      if (beginLine && this.endYamlRegExp.test(lines[i])) {
+        i++;
+        break;
+      }
+
+      if (this.multiLineRegExp.test(lines[i])) {
+        multilineValue = true;
+        data = true;
+      } else if (this.kvReExp.test(lines[i])) {
+        multilineValue = false;
+        data = true;
+      } else if (!multilineValue) {
+        if (beginLine)
+          return;
+
+        break;
+      }
+
+      i++;
+    }
+
+    if (!i)
+      return;
+
+    if (!data)
+      return;
+
+    return lines.slice(0, i);
+  }
+
+  static parse(lines) {
+    const raw = this.check(lines);
+    if (!raw)
+      return;
+
+    lines.splice(0, raw.length);
+
+    let i = 0,
+      match,
+      data = {},
+      multilineKey = false,
+      beginLine = false,
+      endLine = false,
+      error;
+
+    while (i < raw.length && !raw[i].trim())
+      i++;
+
+    if (this.beginYamlRegExp.test(raw[i])) {
+      i++;
+      beginLine = true;
+    }
+
+    while (raw[i]) {
+      while (i < raw.length && !raw[i].trim())
+        i++;
+
+      if (beginLine && this.endYamlRegExp.test(raw[i])) {
+        endLine = true;
+        i++;
+        break;
+      }
+
+      if (match = this.multiLineRegExp.exec(raw[i])) {
+        multilineKey = match[1].trim();
+        data[multilineKey] = match[2].trim().replace(/^["'](.*)["']$/, '$1');
+      } else if (match = this.kvReExp.exec(raw[i])) {
+        multilineKey = false;
+        const key = match[1].trim();
+        const value = match[2].trim();
+
+        data[key] = value.replace(/^["'](.*)["']$/, '$1');
+        multilineKey = null;
+      } else if (multilineKey && (match = /^\s{2,}(.*)$/.exec(raw[i]))) {
+        data[multilineKey] += (data[multilineKey] ? '\n' : '') + raw[i].trim();
+      } else {
+        if (beginLine)
+          error = new Error('Invalid YAML format');
+
+        break;
+      }
+
+      i++;
+    }
+
+    const node = {
+      type: 'data',
+      data,
+      beginLine,
+      endLine,
+      raw: raw.join('\n'),
+    };
+
+    if (error)
+      node.error = error;
+
     return node;
   }
 }

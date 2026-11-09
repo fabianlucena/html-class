@@ -127,7 +127,7 @@ $$ \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 1 $$
 | Base de Datos | En pruebas | 85% | Media |
 | Interfaz UI | Pendiente | 40% | Baja |
 
-Table: Estado actual de módulos del sistema.
+Table\\: Estado actual de módulos del sistema.
 
 ---
 

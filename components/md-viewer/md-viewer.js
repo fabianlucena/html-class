@@ -7,7 +7,7 @@ importCss('./md-viewer.css', import.meta.url);
 
 addLocaleUrl('/locale', ['es'], { file: import.meta.url });
 
-const renderDataDefaultOptions = {
+const renderMetadataOptions = {
   items: [
     {
       key: 'title',
@@ -42,7 +42,7 @@ const renderDataDefaultOptions = {
 };
 
 onLanguageLoaded(() => {
-  renderDataDefaultOptions.items.forEach(item => {
+  renderMetadataOptions.items.forEach(item => {
     item.label = _(item._label);
   });
 });
@@ -54,6 +54,7 @@ export default class MDViewer extends Base {
   #nodeRenderers = {
     'document': this.renderDocument.bind(this),
     'text': this.renderText.bind(this),
+    'data': this.renderData.bind(this),
     'heading': this.renderHeading.bind(this),
     'rule': this.renderRule.bind(this),
     'paragraph': this.renderParagraph.bind(this),
@@ -145,7 +146,7 @@ export default class MDViewer extends Base {
   }
 
   render() {
-    this.renderData(this.#doc?.metadata, this.element, { className: 'metadata' });
+    this.renderNode(this.#doc.metadata, this.element, renderMetadataOptions);
     this.renderNode(this.#doc, this.element);
   }
 
@@ -187,58 +188,6 @@ export default class MDViewer extends Base {
     renderer(node, parentElement, options);
   }
 
-  renderData(data, parentElement, options) {
-    if (!data || !parentElement)
-      return;
-
-    options = { ...renderDataDefaultOptions, ...options };
-
-    const element = document.createElement('div');
-    parentElement.appendChild(element);
-    element.classList.add('data');
-    if (options.className)
-      element.classList.add(options.className);
-
-    this.renderRule({ type: 'rule' }, element);
-
-    const items = options?.items || [];
-
-    if (!items.length || options?.restItems !== false) {
-      for (const [key, value] of Object.entries(data)) {
-        if (!items.some(item => item.key === key)) {
-          items.push({ key });
-        }
-      }  
-    }
-
-    for (const item of items) {
-      const [key, value] = Object.entries(data).find(([k]) => k === item.key) || [];
-
-      const tag = item.tag || 'div';
-      const itemElement = document.createElement(tag);
-      itemElement.classList.add('item');
-      element.appendChild(itemElement);
-
-      if (item.showLabel !== false) {
-        const keyTag = item.keyTag || 'span';
-        const keyElement = document.createElement(keyTag);
-        keyElement.classList.add('key');
-        keyElement.textContent = (item.label || key) + ': ';
-        itemElement.appendChild(keyElement);
-      }
-
-      const valueTag = item.valueTag || 'span';
-      const valueElement = document.createElement(valueTag);
-      valueElement.classList.add('value');
-      valueElement.textContent = value;
-      itemElement.appendChild(valueElement);
-    }
-
-    this.renderRule({ type: 'rule' }, element);
-
-    return element;
-  }
-
   renderContent(content, parentElement, options) {
     this.renderNodes(content, parentElement, options);
   }
@@ -268,6 +217,59 @@ export default class MDViewer extends Base {
 
     let textNode = document.createTextNode(node.text);
     parentElement.appendChild(textNode);
+  }
+
+  renderData(node, parentElement, options) {
+    if (!node || !parentElement)
+      return;
+
+    const element = document.createElement('div');
+    parentElement.appendChild(element);
+    element.classList.add('data');
+    if (options.className)
+      element.classList.add(options.className);
+
+    if (node.beginLine)
+      this.renderRule({ type: 'rule' }, element);
+
+    const items = options?.items || [],
+      data = node.data;
+
+    if (!items.length || options?.restItems !== false) {
+      for (const [key, value] of Object.entries(node.data)) {
+        if (!items.some(item => item.key === key)) {
+          items.push({ key });
+        }
+      }  
+    }
+
+    for (const item of items) {
+      const [key, value] = Object.entries(data).find(([k]) => k === item.key) || [];
+
+      const tag = item.tag || 'div';
+      const itemElement = document.createElement(tag);
+      itemElement.classList.add('item');
+      element.appendChild(itemElement);
+
+      if (item.showLabel !== false) {
+        const keyTag = item.keyTag || 'span';
+        const keyElement = document.createElement(keyTag);
+        keyElement.classList.add('key');
+        keyElement.textContent = (item.label || key) + ': ';
+        itemElement.appendChild(keyElement);
+      }
+
+      const valueTag = item.valueTag || 'span';
+      const valueElement = document.createElement(valueTag);
+      valueElement.classList.add('value');
+      valueElement.textContent = value;
+      itemElement.appendChild(valueElement);
+    }
+
+    if (node.endLine)
+      this.renderRule({ type: 'rule' }, element);
+
+    return element;
   }
 
   renderDocument(node, parentElement) {
