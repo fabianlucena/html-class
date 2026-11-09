@@ -306,7 +306,6 @@ export default class MDViewer extends Base {
       y = strokeWidth / 2;
 
     ruleElement.setAttribute('height', strokeWidth * (1 + 3 * (count - 1)));
-    console.log(node.variant);
 
     let dasharray = '';
     if (node.variant === 'dashed') {
