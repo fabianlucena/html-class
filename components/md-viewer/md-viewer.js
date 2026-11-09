@@ -163,13 +163,13 @@ export default class MDViewer extends Base {
 
   checkNodeAndParent(node, parentElement, type) {
     if (!parentElement)
-      throw new Error('El elemento padre es nulo o indefinido.');
+      throw new Error(_('The parent element is null or undefined.'));
     
     if (!node)
-      this.renderError('El nodo es nulo o indefinido.', parentElement);
+      this.renderError(_('The node is null or undefined.'), parentElement);
 
     if (type && node?.type !== type)
-      this.renderError(`El tipo de nodo recibido "${node?.type}" no es el esperado: ${type}.`, parentElement);
+      this.renderError(_('The type of the received node "%s" is not the expected: %s.', node?.type, type), parentElement);
 
     return true;
   }
@@ -245,10 +245,10 @@ export default class MDViewer extends Base {
 
   renderNodes(nodes, parentElement, options) {
     if (!parentElement)
-      throw new Error('El elemento padre es nulo o indefinido.');
+      throw new Error(_('The parent element is null or undefined.'));
     
     if (!nodes)
-      throw new Error('El contenido de los nodos es nulo o indefinido.');
+      throw new Error(_('The content of the nodes is null or undefined.'));
 
     if (!Array.isArray(nodes)) {
       this.renderNode(nodes, parentElement, options);
@@ -304,9 +304,10 @@ export default class MDViewer extends Base {
       1;
 
     let strokeWidth = 1,
+      separation = 4,
       y = strokeWidth / 2;
 
-    ruleElement.setAttribute('height', strokeWidth * (1 + 3 * (count - 1)));
+    ruleElement.setAttribute('height', strokeWidth * count + separation * (count - 1));
 
     let dasharray = '';
     if (node.variant === 'dashed') {
@@ -330,7 +331,7 @@ export default class MDViewer extends Base {
       line.setAttribute('stroke-linecap', 'round');
       line.setAttribute('shape-rendering', 'crispEdges');
 
-      y += 3 * strokeWidth;
+      y += separation;
     }
   }
 
