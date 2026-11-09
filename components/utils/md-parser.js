@@ -203,13 +203,7 @@ export default class MDParser {
 
   parseLines(lines) {
     const nodes = [];
-    while (true) {
-      while (lines.length && !lines[0].trim())
-        lines.shift();
-
-      if (!lines.length)
-        break;
-
+    while (lines.length) {
       const node = this.parseSingleNode(lines);
       if (!node)
         continue;
@@ -220,6 +214,10 @@ export default class MDParser {
   }
 
   parseSingleNode(lines, { skipParser, closeRegExp } = {}) {
+    let leadingLines = [];
+    while (lines.length && !lines[0].trim())
+      leadingLines.push(lines.shift());
+    
     let paragraphLines = [];
     while (lines.length) {
       if (closeRegExp && closeRegExp.test(lines[0]))
@@ -230,8 +228,10 @@ export default class MDParser {
           continue;
 
         const node = parser.parse(lines, { parser: this });
-        if (node)
+        if (node) {
+          node.leadingLines = leadingLines;
           return node;
+        }
       }
 
       const line = lines.shift().replace(/^\s+/, ' ').replace(/\s+$/, ' ');
@@ -245,7 +245,11 @@ export default class MDParser {
       }
     }
 
-    return { type: 'paragraph', content: this.parseLine(paragraphLines.join(' ')) };
+    return {
+      type: 'paragraph',
+      content: this.parseLine(paragraphLines.join(' ')),
+      leadingLines,
+    };
   }
 
   parseLine(line, options = {}) {
@@ -426,11 +430,8 @@ class YamlParser {
   static multiLineRegExp = /^\s{0,3}([a-zA-Z0-9_-]+):\s*\|\s*(.*)$/;
 
   static check(lines) {
-    let i = 0, max = 100;
-    while (i < lines.length && !lines[i].trim())
-      i++;
-
-    let beginLine;
+    let i = 0,
+      beginLine;
     if (this.beginYamlRegExp.test(lines[i])) {
       beginLine = true;
       i++;
@@ -438,9 +439,6 @@ class YamlParser {
 
     let multilineValue = false, data;
     while (lines[i]) {
-      if (i > max)
-        return;
-
       while (i < lines.length && !lines[i].trim())
         i++;
       
@@ -475,13 +473,14 @@ class YamlParser {
   }
 
   static parse(lines) {
-    const raw = this.check(lines);
-    if (!raw)
+    const rawLines = this.check(lines);
+    if (!rawLines)
       return;
 
-    lines.splice(0, raw.length);
+    lines.splice(0, rawLines.length);
 
-    let i = 0,
+    let
+      i = 0,
       match,
       data = {},
       multilineKey = false,
@@ -489,36 +488,36 @@ class YamlParser {
       endLine = false,
       error;
 
-    while (i < raw.length && !raw[i].trim())
+    while (i < rawLines.length && !rawLines[i].trim())
       i++;
 
-    if (this.beginYamlRegExp.test(raw[i])) {
+    if (this.beginYamlRegExp.test(rawLines[i])) {
       i++;
       beginLine = true;
     }
 
-    while (raw[i]) {
-      while (i < raw.length && !raw[i].trim())
+    while (rawLines[i]) {
+      while (i < rawLines.length && !rawLines[i].trim())
         i++;
 
-      if (beginLine && this.endYamlRegExp.test(raw[i])) {
+      if (beginLine && this.endYamlRegExp.test(rawLines[i])) {
         endLine = true;
         i++;
         break;
       }
 
-      if (match = this.multiLineRegExp.exec(raw[i])) {
+      if (match = this.multiLineRegExp.exec(rawLines[i])) {
         multilineKey = match[1].trim();
         data[multilineKey] = match[2].trim().replace(/^["'](.*)["']$/, '$1');
-      } else if (match = this.kvReExp.exec(raw[i])) {
+      } else if (match = this.kvReExp.exec(rawLines[i])) {
         multilineKey = false;
         const key = match[1].trim();
         const value = match[2].trim();
 
         data[key] = value.replace(/^["'](.*)["']$/, '$1');
         multilineKey = null;
-      } else if (multilineKey && (match = /^\s{2,}(.*)$/.exec(raw[i]))) {
-        data[multilineKey] += (data[multilineKey] ? '\n' : '') + raw[i].trim();
+      } else if (multilineKey && (match = /^\s{2,}(.*)$/.exec(rawLines[i]))) {
+        data[multilineKey] += (data[multilineKey] ? '\n' : '') + rawLines[i].trim();
       } else {
         if (beginLine)
           error = new Error('Invalid YAML format');
@@ -534,7 +533,7 @@ class YamlParser {
       data,
       beginLine,
       endLine,
-      raw: raw.join('\n'),
+      rawLines,
     };
 
     if (error)
@@ -560,6 +559,7 @@ class HeadingParser {
     const level = matches[1].length;
     return {
       type: 'heading',
+      rawLines: [matches[0]],
       level,
       content: options.parser.parseLine(matches[2], { multiline: true, lines }),
     };
@@ -569,7 +569,7 @@ class HeadingParser {
 class RuleParser {
   static #regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|- - -|\. \. \.)/;
   
-  static check(lines) {
+  static check(lines) {    
     return this.#regExp.exec(lines[0]);
   }
 
@@ -578,6 +578,7 @@ class RuleParser {
     if (!matches)
       return;
 
+    lines.shift();
     let pattern = matches[1].slice(0, 5);
     let variant = pattern === '- - -' ? 'dashed' :
       pattern === '. . .' ? 'dotted' :
@@ -595,8 +596,11 @@ class RuleParser {
         'single';
     }
 
-    lines.shift();
-    return { type: 'rule', variant };
+    return {
+      type: 'rule',
+      rawLines: [matches[0]],
+      variant,
+    };
   }
 }
 
