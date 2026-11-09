@@ -582,7 +582,7 @@ class HeadingParser {
 }
 
 class RuleParser {
-  static #regExp = /^\s{0,3}(---+|===+|\*\*\*+|\.\.\.+|≡≡≡+|___+|- - -|\. \. \.)/;
+  static #regExp = /^\s{0,3}(===|\.\.\.|\*\*\*|≡≡≡|___|- - -|-  -  -|-   -   -|\. \. \.|\.  \.  \.|\* \* \*|\*  \*  \*|-- -|--- -|---|- \. \.|-\.\.|-\.|- \.|-- \. \.|--\.\.|--\.|-- \.)/;
   
   static check(lines) {    
     return this.#regExp.exec(lines[0]);
@@ -600,7 +600,7 @@ class RuleParser {
       '';
       
     if (!variant) {
-      pattern = matches[1].slice(0, 3);
+      pattern = matches[1];
       variant = pattern === '---' ? 'single' :
         pattern === '___' ? 'single' :
         pattern === '===' ? 'double' :
@@ -614,6 +614,7 @@ class RuleParser {
     return {
       type: 'rule',
       rawLines: [matches[0]],
+      pattern,
       variant,
     };
   }

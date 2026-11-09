@@ -306,19 +306,60 @@ export default class MDViewer extends Base {
       1;
 
     let strokeWidth = 1,
-      separation = 4,
-      y = strokeWidth / 2;
-
-    ruleElement.setAttribute('height', strokeWidth * count + separation * (count - 1));
+      separation = 4;
 
     let dasharray = '';
-    if (node.variant === 'dashed') {
-      dasharray = `${strokeWidth * 4}, ${strokeWidth * 4}`;
+    if (node.pattern?.startsWith('...')) {
+      dasharray = `1, ${strokeWidth * 3}`;
+    } else if (node.pattern?.startsWith('. . .')) {
+      dasharray = `1, ${strokeWidth * 6}`;
+    } else if (node.pattern?.startsWith('.  .  .')) {
+      dasharray = `1, ${strokeWidth * 9}`;
+    } else if (node.pattern?.startsWith('***')) {
+      strokeWidth = 6;
+      dasharray = `0, ${strokeWidth * 3}`;
+    } else if (node.pattern?.startsWith('* * *')) {
+      strokeWidth = 6;
+      dasharray = `1, ${strokeWidth * 6}`;
+    } else if (node.pattern?.startsWith('*  *  *')) {
+      strokeWidth = 6;
+      dasharray = `1, ${strokeWidth * 9}`;
+    } else if (node.pattern?.startsWith('- -')) {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 5}`;
+    } else if (node.pattern?.startsWith('-  -')) {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 10}`;
+    } else if (node.pattern?.startsWith('-   -')) {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 15}`;
+    } else if (node.pattern?.startsWith('-- -')) {
+      dasharray = `${strokeWidth * 14}, ${strokeWidth * 5}, ${strokeWidth * 5}, ${strokeWidth * 5}`;
+    } else if (node.pattern?.startsWith('--- -')) {
+      dasharray = `${strokeWidth * 21}, ${strokeWidth * 5}, ${strokeWidth * 5}, ${strokeWidth * 5}`;
+    } else if (node.pattern?.startsWith('-..')) {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
+    } else if (node.pattern?.startsWith('- . .')) {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 6}, 1, ${strokeWidth * 6}, 1, ${strokeWidth * 6}`;
+    } else if (node.pattern?.startsWith('-.')) {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
+    } else if (node.pattern?.startsWith('- .')) {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 5}, 1, ${strokeWidth * 5}`;
+    } else if (node.pattern?.startsWith('--..')) {
+      dasharray = `${strokeWidth * 14}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
+    } else if (node.pattern?.startsWith('-- . .')) {
+      dasharray = `${strokeWidth * 14}, ${strokeWidth * 6}, 1, ${strokeWidth * 6}, 1, ${strokeWidth * 6}`;
+    } else if (node.pattern?.startsWith('--.')) {
+      dasharray = `${strokeWidth * 14}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
+    } else if (node.pattern?.startsWith('-- .')) {
+      dasharray = `${strokeWidth * 14}, ${strokeWidth * 5}, 1, ${strokeWidth * 5}`;
+    } else if (node.variant === 'dashed') {
+      dasharray = `${strokeWidth * 7}, ${strokeWidth * 5}`;
     } else if (node.variant === 'dotted') {
-      dasharray = `${strokeWidth * 1}, ${strokeWidth * 3}`;
+      dasharray = `1, ${strokeWidth * 3}`;
     } else if (node.variant === 'dotted2') {
-      dasharray = `${strokeWidth * 1}, ${strokeWidth * 9}`
+      dasharray = `1, ${strokeWidth * 9}`;
     }
+
+    ruleElement.setAttribute('height', strokeWidth * count + separation * (count - 1));
+    let y = strokeWidth / 2;
 
     for (let i = 0; i < count; i++) {
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');

@@ -45,12 +45,29 @@ Triple línea de separación
 ≡≡≡
 
 Línea punteada de separación
-*** 
-. . . 
 ...
+. . . 
+.  .  .
+*** 
+* * * 
+*  *  *
 
 Línea de separación con guiones
 - - -
+-  -  -
+-   -   -
+-- -
+--- -
+
+Línea de separación con guiones y puntos
+-.
+- .
+-..
+- . .
+--.
+-- .
+--..
+-- . .
 
 ---
 
