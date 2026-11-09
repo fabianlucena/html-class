@@ -144,6 +144,8 @@ Término Dos
 
 # 7. Bloques de Código Enriquecidos y Atributos
 
+Se puede colocar código en línea con resaltado de sintaxis, por ejemplo: \`resultado = procesar_datos([1, 2, 3])\`.
+
 \`\`\`python {.line-numbers startFrom="1" caption="Función de cálculo principal"}
 def procesar_datos(vector):
     # Retorna la suma acumulada

@@ -71,6 +71,7 @@ export default class MDViewer extends Base {
     'image': this.renderImage.bind(this),
     'footnote': this.renderFootnote.bind(this),
     'definition': this.renderDefinition.bind(this),
+    'code': this.renderCode.bind(this),
     'code-block': this.renderCodeBlock.bind(this),
     'blockquote': this.renderBlockquote.bind(this),
     'custom-block': this.renderCustomBlock.bind(this),
@@ -179,7 +180,7 @@ export default class MDViewer extends Base {
 
     const renderer = this.#nodeRenderers[node.type];
     if (!renderer) {
-      this.renderError("Tipo de elemento desconocido: " + node.type, parentElement);
+      this.renderError(_('Unknown element type: "%s"', node.type), parentElement);
       return;
     }
 
@@ -524,6 +525,22 @@ export default class MDViewer extends Base {
       defElement.appendChild(ddElement);
       this.renderNodes(definition, ddElement);
     }
+  }
+
+  renderCode(node, parentElement) {
+    if (!this.checkNodeAndParent(node, parentElement, 'code'))
+      return;
+    
+    let preElement = document.createElement('pre');
+    let codeElement = document.createElement('code');
+    codeElement.classList.add(`language-${node.lang || 'plaintext'}`);
+    codeElement.textContent = node.code
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    codeElement.dataset.attrs = node.attrs || '';
+
+    preElement.appendChild(codeElement);
+    parentElement.appendChild(preElement);
   }
 
   renderCodeBlock(node, parentElement) {
