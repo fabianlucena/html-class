@@ -195,8 +195,6 @@ export default class MDParser {
       doc.metadata = metadata;
 
     doc.content.push(...this.parseLines(lines));
-
-    console.log(doc);
     
     return doc;
   }
@@ -436,6 +434,30 @@ export default class MDParser {
     
     return node;
   }
+
+  parseAttributes(raw) {
+    if (raw.startsWith('{') && raw.endsWith('}')) {
+      raw = raw.slice(1, -1);
+    }
+
+    const attributes = {};
+
+    let iterator = raw.matchAll(/([a-zA-Z_][a-zA-Z0-9_-]*)\s*=\s*("[^"]*"|'[^']*'|[^\s]+)/g);
+    for (const matches of iterator) {
+      const key = matches[1];
+      const value = matches[2].replace(/^["'](.*)["']$/, '$1');
+      attributes[key] = value;
+    }
+
+    iterator = raw.matchAll(/("[^"]*"|'[^']*'|[^\s]+)\s*:\s*("[^"]*"|'[^']*'|[^\s,]+)/g);
+    for (const matches of iterator) {
+      const key = matches[1].replace(/^["'](.*)["']$/, '$1');
+      const value = matches[2].replace(/^["'](.*)["']$/, '$1');
+      attributes[key] = value;
+    }
+
+    return attributes;
+  }
 }
 
 class YamlParser {
@@ -582,41 +604,81 @@ class HeadingParser {
 }
 
 class RuleParser {
-  static #regExp = /^\s{0,3}(===|\.\.\.|\*\*\*|≡≡≡|___|- - -|-  -  -|-   -   -|\. \. \.|\.  \.  \.|\* \* \*|\*  \*  \*|-- -|--- -|---|- \. \.|-\.\.|-\.|- \.|-- \. \.|--\.\.|--\.|-- \.)/;
+  static #regExp = /^\s{0,3}([-_=≡.*·•][\s-_=≡.*·•]{2,})\s*(.+)?$/;
   
-  static check(lines) {    
+  static check(lines) {
     return this.#regExp.exec(lines[0]);
   }
 
-  static parse(lines) {
+  static parse(lines, { parser } = {}) {
     const matches = this.check(lines);
     if (!matches)
       return;
 
     lines.shift();
-    let pattern = matches[1].slice(0, 5);
-    let variant = pattern === '- - -' ? 'dashed' :
-      pattern === '. . .' ? 'dotted' :
-      '';
-      
-    if (!variant) {
-      pattern = matches[1];
-      variant = pattern === '---' ? 'single' :
-        pattern === '___' ? 'single' :
-        pattern === '===' ? 'double' :
-        pattern === '===' ? 'double' :
-        pattern === '≡≡≡' ? 'triple' :
-        pattern === '...' ? 'dotted' :
-        pattern === '***' ? 'dotted2' :
-        'single';
-    }
-
-    return {
+    
+    const node = {
       type: 'rule',
       rawLines: [matches[0]],
-      pattern,
-      variant,
     };
+
+    if (matches[2] && parser) {
+      const attr = parser.parseAttributes(matches[2], { parser });
+      if (Object.keys(attr).length) {
+        Object.assign(node, attr);
+      } else {
+        let variant = matches[2].trim().toLowerCase();
+        if (variant.startsWith('{') && variant.endsWith('}'))
+          variant = variant.slice(1, -1).trim().toLowerCase();
+
+        node.variant = variant;
+      }
+    }
+
+    if (!node.pattern) {
+      if (node.variant === 'single') {
+        node.pattern = '-';
+        node.count ??= 1;
+      } else if (node.variant === 'double') {
+        node.pattern = '-';
+        node.count ??= 2;
+      } else if (node.variant === 'triple') {
+        node.pattern = '-';
+        node.count ??= 3;
+      } else if (node.variant === 'dashed') {
+        node.pattern = '- ';
+      } else if (node.variant === 'dotted') {
+        node.pattern = '. ';
+      } else {
+        node.pattern = matches[1];
+      }
+    }
+
+    if (!node.width && node.pattern) {
+      if (node.pattern.includes('*'))
+        node.width = 3;
+      else if (node.pattern.includes('•'))
+        node.width = 2;
+    }
+
+    let char;
+    if (char = /^(.)\1*$/.exec(node.pattern))
+      node.pattern = char[1];
+
+    if (!node.count) {
+      if (node.pattern[0] === '-')
+        node.count ??= 1;
+      else if (node.pattern[0] === '=')
+        node.count ??= 2;
+      else if (node.pattern[0] === '≡')
+        node.count ??= 3;
+    }
+
+    node.pattern = node.pattern
+      .replace(/[_=≡]/g, '-')
+      .replace(/[*·•]/g, '.');
+
+    return node;
   }
 }
 
@@ -929,7 +991,7 @@ class CodeBlockParser {
     return this.#regExp.exec(lines[0]);
   }
 
-  static parse(lines, options = {}) {
+  static parse(lines) {
     const matches = this.check(lines);
     if (!matches)
       return;

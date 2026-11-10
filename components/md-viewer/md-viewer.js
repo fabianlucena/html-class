@@ -301,80 +301,88 @@ export default class MDViewer extends Base {
     if (node.variant)
       ruleElement.classList.add(node.variant);
 
-    const count = node.variant === 'triple' ? 3 :
+    let count = node.count || (node.variant === 'triple' ? 3 :
       node.variant === 'double' ? 2 :
-      1;
+      1);
 
-    let strokeWidth = 1,
-      separation = 4;
+    let width = parseInt(node.width) || 1,
+      gap = parseInt(node.gap) || width,
+      dasharray = '',
+      x = 0;
+    if (node.pattern) {
+      let 
+        pattern = node.pattern,
+        dash = width * 7,
+        space = width * 5,
+        dot = width > 1 ? 0 : 1,
+        dashItems = [];
 
-    let dasharray = '';
-    if (node.pattern?.startsWith('...')) {
-      dasharray = `1, ${strokeWidth * 3}`;
-    } else if (node.pattern?.startsWith('. . .')) {
-      dasharray = `1, ${strokeWidth * 6}`;
-    } else if (node.pattern?.startsWith('.  .  .')) {
-      dasharray = `1, ${strokeWidth * 9}`;
-    } else if (node.pattern?.startsWith('***')) {
-      strokeWidth = 6;
-      dasharray = `0, ${strokeWidth * 3}`;
-    } else if (node.pattern?.startsWith('* * *')) {
-      strokeWidth = 6;
-      dasharray = `1, ${strokeWidth * 6}`;
-    } else if (node.pattern?.startsWith('*  *  *')) {
-      strokeWidth = 6;
-      dasharray = `1, ${strokeWidth * 9}`;
-    } else if (node.pattern?.startsWith('- -')) {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 5}`;
-    } else if (node.pattern?.startsWith('-  -')) {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 10}`;
-    } else if (node.pattern?.startsWith('-   -')) {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 15}`;
-    } else if (node.pattern?.startsWith('-- -')) {
-      dasharray = `${strokeWidth * 14}, ${strokeWidth * 5}, ${strokeWidth * 5}, ${strokeWidth * 5}`;
-    } else if (node.pattern?.startsWith('--- -')) {
-      dasharray = `${strokeWidth * 21}, ${strokeWidth * 5}, ${strokeWidth * 5}, ${strokeWidth * 5}`;
-    } else if (node.pattern?.startsWith('-..')) {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
-    } else if (node.pattern?.startsWith('- . .')) {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 6}, 1, ${strokeWidth * 6}, 1, ${strokeWidth * 6}`;
-    } else if (node.pattern?.startsWith('-.')) {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
-    } else if (node.pattern?.startsWith('- .')) {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 5}, 1, ${strokeWidth * 5}`;
-    } else if (node.pattern?.startsWith('--..')) {
-      dasharray = `${strokeWidth * 14}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
-    } else if (node.pattern?.startsWith('-- . .')) {
-      dasharray = `${strokeWidth * 14}, ${strokeWidth * 6}, 1, ${strokeWidth * 6}, 1, ${strokeWidth * 6}`;
-    } else if (node.pattern?.startsWith('--.')) {
-      dasharray = `${strokeWidth * 14}, ${strokeWidth * 3}, 1, ${strokeWidth * 3}`;
-    } else if (node.pattern?.startsWith('-- .')) {
-      dasharray = `${strokeWidth * 14}, ${strokeWidth * 5}, 1, ${strokeWidth * 5}`;
-    } else if (node.variant === 'dashed') {
-      dasharray = `${strokeWidth * 7}, ${strokeWidth * 5}`;
-    } else if (node.variant === 'dotted') {
-      dasharray = `1, ${strokeWidth * 3}`;
-    } else if (node.variant === 'dotted2') {
-      dasharray = `1, ${strokeWidth * 9}`;
+      const items = [...pattern.matchAll(/(.)\1*/g)];
+      if (items.length === 1 && items[0][0] === '.') {
+        dashItems.push(dot);
+        dashItems.push(space);
+        dasharray = dashItems.join(',');
+        x = width / 2;
+      } else if (items.length > 1) {
+        let prior = ' ';
+        for (const i in items) {
+          const item = items[i];
+          const char = item[0][0];
+          let repeatCount = item[0].length;
+
+          if (char === '.') {
+            if (prior !== ' ')
+              dashItems.push(space);
+
+            for (let i = 0; i < repeatCount - 1; i++) {
+              dashItems.push(dot);
+              dashItems.push(space);
+            }
+            dashItems.push(dot);
+          } else if (char === '-') {
+            if (prior !== ' ')
+              dashItems.push(space);
+
+            dashItems.push(repeatCount * dash);
+          } else {
+            if (prior === '.' || items[parseInt(i) + 1]?.[0][0] === '.')
+              repeatCount++;
+
+            dashItems.push(repeatCount * space);
+          }
+
+          prior = char;
+        }
+
+        if (dashItems.length % 2)
+          dashItems.push(space);
+
+        if (dashItems[0] === 0)
+          x = width / 2;
+
+        dasharray = dashItems.join(',');
+      }
     }
 
-    ruleElement.setAttribute('height', strokeWidth * count + separation * (count - 1));
-    let y = strokeWidth / 2;
+    ruleElement.setAttribute('height', width * count + gap * (count - 1));
+    let y = width / 2;
+
+    let color = node.color || 'currentColor';
 
     for (let i = 0; i < count; i++) {
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       ruleElement.appendChild(line);
-      line.setAttribute('x1', '0');
+      line.setAttribute('x1', x);
       line.setAttribute('y1', y);
       line.setAttribute('x2', '100%');
       line.setAttribute('y2', y);
-      line.setAttribute('stroke', 'currentColor');
-      line.setAttribute('stroke-width', strokeWidth);
-      line.setAttribute('stroke-dasharray', dasharray);
+      line.setAttribute('stroke', color);
+      line.setAttribute('stroke-width', width);
       line.setAttribute('stroke-linecap', 'round');
-      line.setAttribute('shape-rendering', 'crispEdges');
+      if (dasharray)
+        line.setAttribute('stroke-dasharray', dasharray);
 
-      y += separation;
+      y += width + gap;
     }
   }
 

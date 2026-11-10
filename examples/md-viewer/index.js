@@ -44,30 +44,100 @@ Doble línea de separación
 Triple línea de separación
 ≡≡≡
 
-Línea punteada de separación
-...
-. . . 
-.  .  .
-*** 
-* * * 
-*  *  *
-
 Línea de separación con guiones
-- - -
--  -  -
--   -   -
+
+\`- - {}\`
+- - {}
+
+\`-  {}\`
+-  {}
+
+\`-   {}\`
+-   {}
+
+\`-    {}\`
+-    {}
+
+\`-- -\`
 -- -
+
+\`--- -\`
 --- -
 
+\`---  -  {}\`
+---  -  {}
+
+\`---  --  -  {}\`
+---  --  -  {}
+
+Línea de separación punteada
+
+\`...\`
+...
+
+\`. . {}\`
+. . {}
+
+\`.  {}\`
+.  {}
+
+\`.   {}\`
+.   {}
+
+\`.    {}\`
+.    {}
+
+\`***\`
+***
+
+\`* * {}\`
+* * {}
+
+\`*  {}\`
+*  {}
+
+\`*   {}\`
+*   {}
+
+\`*    {}\`
+*    {}
+
 Línea de separación con guiones y puntos
--.
-- .
+
+\`=*-.\`
+=*-.
+
+\`- . {}\`
+- . {}
+
+\`-..\`
 -..
-- . .
+
+\`- . . \`
+- . . 
+
+\`--.\`
 --.
+
+\`-- .\`
 -- .
+
+\`--..\`
 --..
--- . .
+
+\`-- . . \`
+-- . . 
+
+Líneas de separación con atributos personalizados
+
+\`---{color=#ff0000 count=5 pattern="-.-" width=2}\`
+---{color=#ff0000 count=5 pattern="-.-" width=2}
+
+\`---{color: green, count: 3, pattern: "-.-", width: 3}\`
+---{color: green, count: 3, pattern: "-.-", width: 3}
+
+\`---{dotted}\`
+---{dotted}
 
 ---
 
