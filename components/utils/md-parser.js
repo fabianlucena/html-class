@@ -650,7 +650,7 @@ class RuleParser {
       } else if (node.variant === 'dashed') {
         node.pattern = '- ';
       } else if (node.variant === 'dotted') {
-        node.pattern = '. ';
+        node.pattern = '.';
       } else {
         node.pattern = matches[1];
       }
