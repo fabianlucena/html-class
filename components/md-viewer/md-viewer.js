@@ -185,11 +185,18 @@ export default class MDViewer extends Base {
       return;
     }
 
-    renderer(node, parentElement, options);
+    const element = renderer(node, parentElement, options);
+
+    if (element) {
+      node.element = element;
+      element.mdNode = node;
+    }
+
+    return element;
   }
 
   renderContent(content, parentElement, options) {
-    this.renderNodes(content, parentElement, options);
+    return this.renderNodes(content, parentElement, options);
   }
 
   renderNodes(nodes, parentElement, options) {
@@ -200,15 +207,17 @@ export default class MDViewer extends Base {
       throw new Error(_('The content of the nodes is null or undefined.'));
 
     if (!Array.isArray(nodes)) {
-      this.renderNode(nodes, parentElement, options);
-      return;
+      return this.renderNode(nodes, parentElement, options);
     }
     
     if (!nodes?.length)
       return;
 
+    const elements = [];
     for (const node of nodes)
-      this.renderNode(node, parentElement, options);
+      elements.push(this.renderNode(node, parentElement, options));
+
+    return elements;
   }
 
   renderText(node, parentElement) {
@@ -217,6 +226,8 @@ export default class MDViewer extends Base {
 
     let textNode = document.createTextNode(node.text);
     parentElement.appendChild(textNode);
+
+    return textNode;
   }
 
   renderData(node, parentElement, options) {
@@ -280,6 +291,8 @@ export default class MDViewer extends Base {
     docElement.classList.add('document');
     parentElement.appendChild(docElement);
     this.renderContent(node.content, docElement);
+
+    return docElement;
   }
 
   renderHeading(node, parentElement) {
@@ -289,6 +302,9 @@ export default class MDViewer extends Base {
     let headingElement = document.createElement(`h${node.level}`);
     this.renderContent(node.content, headingElement);
     parentElement.appendChild(headingElement);
+
+
+    return headingElement;
   }
 
   renderRule(node, parentElement) {
@@ -313,7 +329,7 @@ export default class MDViewer extends Base {
       let 
         pattern = node.pattern,
         dash = width * 7,
-        space = width * 5,
+        space = width * 4,
         dot = width > 1 ? 0 : 1,
         dashItems = [];
 
@@ -384,6 +400,8 @@ export default class MDViewer extends Base {
 
       y += width + gap;
     }
+
+    return ruleElement;
   }
 
   renderParagraph(node, parentElement) {
@@ -393,6 +411,8 @@ export default class MDViewer extends Base {
     let paragraphElement = document.createElement('p');
     this.renderContent(node.content, paragraphElement);
     parentElement.appendChild(paragraphElement);
+
+    return paragraphElement;
   }
 
   renderStrong(node, parentElement) {
@@ -402,6 +422,8 @@ export default class MDViewer extends Base {
     let strongElement = document.createElement('strong');
     this.renderContent(node.content, strongElement);
     parentElement.appendChild(strongElement);
+
+    return strongElement;
   }
 
   renderEmphasis(node, parentElement) {
@@ -411,6 +433,8 @@ export default class MDViewer extends Base {
     let emElement = document.createElement('em');
     this.renderContent(node.content, emElement);
     parentElement.appendChild(emElement);
+
+    return emElement;
   }
 
   renderStrongItalic(node, parentElement) {
@@ -422,6 +446,8 @@ export default class MDViewer extends Base {
     this.renderContent(node.content, emElement);
     strongItalicElement.appendChild(emElement);
     parentElement.appendChild(strongItalicElement);
+
+    return strongItalicElement;
   }
 
   renderMark(node, parentElement) {
@@ -431,6 +457,8 @@ export default class MDViewer extends Base {
     let markElement = document.createElement('mark');
     this.renderContent(node.content, markElement);
     parentElement.appendChild(markElement);
+
+    return markElement;
   }
 
   renderSubscript(node, parentElement) {
@@ -440,6 +468,8 @@ export default class MDViewer extends Base {
     let subElement = document.createElement('sub');
     this.renderContent(node.content, subElement);
     parentElement.appendChild(subElement);
+
+    return subElement;
   }
 
   renderSuperscript(node, parentElement) {
@@ -449,6 +479,8 @@ export default class MDViewer extends Base {
     let supElement = document.createElement('sup');
     this.renderContent(node.content, supElement);
     parentElement.appendChild(supElement);
+
+    return supElement;
   }
 
   #commands = {
@@ -466,6 +498,8 @@ export default class MDViewer extends Base {
     commandElement.classList.add('command');
     commandElement.innerHTML = this.#commands[node.command] || node.command;
     parentElement.appendChild(commandElement);
+
+    return commandElement;
   }
 
   renderList(node, parentElement) {
@@ -477,6 +511,8 @@ export default class MDViewer extends Base {
     if (node.listType)
       listElement.classList.add(node.listType);
     this.renderContent(node.content, listElement, { listType: node.listType, ordered: node.ordered });
+
+    return listElement;
   }
 
   renderListItem(node, parentElement, options) {
@@ -503,6 +539,8 @@ export default class MDViewer extends Base {
     }
 
     parentElement.appendChild(listItemElement);
+
+    return listItemElement;
   }
 
   renderReference(node, parentElement) {
@@ -517,6 +555,8 @@ export default class MDViewer extends Base {
     } else {
       refElement.innerHTML = node.refType === 'footnote' ? `[^${node.target}]` : `[@${node.target}]`;
     }
+
+    return refElement;
   }
 
   renderLink(node, parentElement) {
@@ -530,6 +570,8 @@ export default class MDViewer extends Base {
 
     this.renderContent(node.content, linkElement);
     parentElement.appendChild(linkElement);
+
+    return linkElement;
   }
 
   renderImage(node, parentElement) {
@@ -543,6 +585,8 @@ export default class MDViewer extends Base {
     if (node.title)
       imageElement.title = node.title;
     parentElement.appendChild(imageElement);
+
+    return imageElement;
   }
 
   renderFootnote(node, parentElement) {
@@ -554,6 +598,8 @@ export default class MDViewer extends Base {
     footnoteElement.innerHTML = `[^${node.id}]`;
     parentElement.appendChild(footnoteElement);
     this.renderContent(node.content, footnoteElement);
+
+    return footnoteElement;
   }
 
   renderDefinition(node, parentElement) {
@@ -577,6 +623,8 @@ export default class MDViewer extends Base {
       defElement.appendChild(ddElement);
       this.renderNodes(definition, ddElement);
     }
+
+    return defElement;
   }
 
   renderCode(node, parentElement) {
@@ -595,6 +643,8 @@ export default class MDViewer extends Base {
 
     preElement.appendChild(codeElement);
     parentElement.appendChild(preElement);
+
+    return preElement;
   }
 
   renderCodeBlock(node, parentElement) {
@@ -612,6 +662,8 @@ export default class MDViewer extends Base {
 
     preElement.appendChild(codeElement);
     parentElement.appendChild(preElement);
+
+    return preElement;
   }
 
   renderBlockquote(node, parentElement) {
@@ -621,6 +673,8 @@ export default class MDViewer extends Base {
     let blockquoteElement = document.createElement('blockquote');
     this.renderContent(node.content, blockquoteElement);
     parentElement.appendChild(blockquoteElement);
+
+    return blockquoteElement;
   }
 
   renderCustomBlock(node, parentElement) {
@@ -646,6 +700,8 @@ export default class MDViewer extends Base {
 
     this.renderContent(node.content, customBlockElement);
     parentElement.appendChild(customBlockElement);
+
+    return customBlockElement;
   }
 
   renderTable(node, parentElement) {
@@ -667,6 +723,8 @@ export default class MDViewer extends Base {
 
     this.renderContent(node.bodies, tableElement, { table: node });
     parentElement.appendChild(tableElement);
+
+    return tableElement;
   }
 
   renderTableHead(node, parentElement, options) {
@@ -676,6 +734,8 @@ export default class MDViewer extends Base {
     let theadElement = document.createElement('thead');
     this.renderContent(node.rows, theadElement, { ...options, head: node });
     parentElement.appendChild(theadElement);
+
+    return theadElement;
   }
 
   renderTableFoot(node, parentElement, options) {
@@ -685,6 +745,8 @@ export default class MDViewer extends Base {
     let tfootElement = document.createElement('tfoot');
     this.renderContent(node.rows, tfootElement, { ...options, foot: node });
     parentElement.appendChild(tfootElement);
+
+    return tfootElement;
   }
 
   renderTableBody(node, parentElement, options) {
@@ -694,6 +756,8 @@ export default class MDViewer extends Base {
     let tbodyElement = document.createElement('tbody');
     this.renderContent(node.rows, tbodyElement, { ...options, body: node });
     parentElement.appendChild(tbodyElement);
+
+    return tbodyElement;
   }
 
   renderTableRow(node, parentElement, options) {
@@ -703,6 +767,8 @@ export default class MDViewer extends Base {
     let trElement = document.createElement('tr');
     this.renderContent(node.cells, trElement, { ...options, row: node });
     parentElement.appendChild(trElement);
+
+    return trElement;
   }
 
   renderTableCell(node, parentElement, options) {
@@ -743,5 +809,7 @@ export default class MDViewer extends Base {
 
     this.renderContent(node.content, cellElement);
     parentElement.appendChild(cellElement);
+
+    return cellElement;
   }
 }

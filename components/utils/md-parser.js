@@ -195,6 +195,8 @@ export default class MDParser {
       doc.metadata = metadata;
 
     doc.content.push(...this.parseLines(lines));
+
+    console.log(doc);
     
     return doc;
   }
